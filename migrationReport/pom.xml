@@ -7,6 +7,8 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>ui-designer-backend-migrationReport</artifactId>
+  <name>Bonita UI Designer Migration Report</name>
+  <description>This module is the backend component for the migration report model of the UI Designer.</description>
   <scm>
     <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
   </scm>
