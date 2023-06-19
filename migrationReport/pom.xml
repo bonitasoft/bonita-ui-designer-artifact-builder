@@ -4,9 +4,11 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-01</version>
+    <version>1.0.0-alpha-02</version>
   </parent>
   <artifactId>ui-designer-backend-migrationReport</artifactId>
+  <name>Bonita UI Designer Migration Report</name>
+  <description>This module is the backend component for the migration report model of the UI Designer.</description>
   <scm>
     <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
   </scm>
