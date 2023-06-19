@@ -17,7 +17,7 @@
     <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
   </scm>
   <properties>
-    <spring-boot.version>2.7.12</spring-boot.version>
+    <spring-boot.version>3.1.0</spring-boot.version>
     <handlebar.version>4.3.1</handlebar.version>
   </properties>
   <dependencyManagement>
