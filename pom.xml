@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.bonitasoft.web</groupId>
   <artifactId>ui-designer-artifact-builder-parent</artifactId>
-  <version>1.0.0-alpha-02</version>
+  <version>1.0.0-alpha-03</version>
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Aggregator</name>
   <description>This module is the aggregator module</description>
@@ -54,7 +54,7 @@
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <uidModelVersion>2.5</uidModelVersion>
     <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
-    <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+    <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
     <maven-enforcer-plugin.version>3.3.0</maven-enforcer-plugin.version>
@@ -81,6 +81,10 @@
     <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
     <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
     <spotless-maven-plugin.version>2.37.0</spotless-maven-plugin.version>
+    <!-- Spotless resources location -->
+    <eclipse.formatter.file>${project.basedir}/formatter.xml</eclipse.formatter.file>
+    <eclipse.importorder.file>${project.basedir}/eclipse.importorder</eclipse.importorder.file>
+    <header.file>${project.basedir}/header.txt</header.file>
     <!-- Sonar -->
     <sonar.projectKey>${sonar.organization}_bonita-ui-designer-artifact-builder</sonar.projectKey>
     <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
@@ -275,6 +279,7 @@
             <versionsMavenPluginVersion>${versions-maven-plugin.version}</versionsMavenPluginVersion>
             <!-- 0: increment major digit on develop, 1: increment minor digit on develop, 2: increment patch digit on develop -->
             <versionDigitToIncrement>1</versionDigitToIncrement>
+            <commitMessagePrefix xml:space="preserve">chore(release): </commitMessagePrefix>
           </configuration>
         </plugin>
         <plugin>
@@ -304,16 +309,16 @@
             </pom>
             <java>
               <eclipse>
-                <file>./formatter.xml</file>
+                <file>${eclipse.formatter.file}</file>
               </eclipse>
               <importOrder>
-                <file>./eclipse.importorder</file>
+                <file>${eclipse.importorder.file}</file>
               </importOrder>
               <removeUnusedImports>
                 <engine>cleanthat-javaparser-unnecessaryimport</engine>
               </removeUnusedImports>
               <licenseHeader>
-                <file>./header.txt</file>
+                <file>${header.file}</file>
               </licenseHeader>
             </java>
           </configuration>
@@ -372,9 +377,11 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>check-format</id>
             <goals>
               <goal>check</goal>
             </goals>
+            <phase>process-sources</phase>
           </execution>
         </executions>
       </plugin>

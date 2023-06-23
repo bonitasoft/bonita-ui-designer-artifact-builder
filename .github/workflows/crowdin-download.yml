@@ -58,10 +58,10 @@ jobs:
       - name: Clean-up unwanted languages
         # Remove all po files with only 2 letters, such as lang-template-ar.po
         run: |
-          find . -name "lang-template-[a-z][a-z].po" -exec rm -f {} +
+          find . -name "widgets-lang-template-[a-z][a-z].po" -exec rm -f {} +
       - name: Remove comments
         run: |
-          find . -name "lang-template-*.po" -type f -exec sed -i '/^#/d' {} \;
+          find . -name "widgets-lang-template-*.po" -type f -exec sed -i '/^#/d' {} \;
       - name: Count modified lines
         run: |
           echo "modifiedlines=$(git diff --word-diff --unified=0 | grep -Ev "^diff --git|^index|^\+\+\+|^---|^@@|PO-Revision-Date" | wc -l)" >> $GITHUB_ENV

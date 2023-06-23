@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-02</version>
+    <version>1.0.0-alpha-03</version>
   </parent>
   <artifactId>ui-designer-artifact-builder</artifactId>
   <name>Bonita UI Designer Artifact Builder</name>
@@ -12,6 +12,11 @@
   <scm>
     <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
   </scm>
+  <properties>
+    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
+    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
+    <header.file>${project.parent.basedir}/header.txt</header.file>
+  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
