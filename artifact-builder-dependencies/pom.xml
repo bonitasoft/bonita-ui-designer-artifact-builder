@@ -19,6 +19,9 @@
   <properties>
     <spring-boot.version>2.7.12</spring-boot.version>
     <handlebar.version>4.3.1</handlebar.version>
+    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
+    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
+    <header.file>${project.parent.basedir}/header.txt</header.file>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -115,6 +118,16 @@
   </dependencyManagement>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <configuration>
+          <updatePomFile>true</updatePomFile>
+          <pomElements>
+            <dependencyManagement>expand</dependencyManagement>
+          </pomElements>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>

@@ -9,6 +9,11 @@
   <artifactId>coverage-report</artifactId>
   <packaging>pom</packaging>
   <name>Coverage report</name>
+  <properties>
+    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
+    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
+    <header.file>${project.parent.basedir}/header.txt</header.file>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
