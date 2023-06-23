@@ -19,7 +19,19 @@ Build pages designed with the UI Designer for your Bonita application or your ow
 
 #### Using Maven
 
-* Build it using maven `mvn clean package`
+* Build it using maven `mvn clean verify`
+
+## Branching strategy
+
+This repository follows the [gitflow branching strategy](https://gitversion.net/docs/learn/branching-strategies/gitflow/examples).
+
+## Release
+
+To release a new version, maintainers may use the Release and Publication GitHub actions.
+
+* Release action will invoke the `gitflow-maven-plugin` to perform all required merges, version updates and tag creation.
+* Publication action will build and deploy a given tag to Maven Central
+* A Github release should be created and associated to the tag.
 
 ## Contribute
 
@@ -29,15 +41,6 @@ If you want to report an issue or a bug use our [official bugtracker](https://bo
 
 ### How to contribute
 Before contributing, read the [guidelines][contributing.md]
-
-### Build and Test
-
-#### Build
-
-You can build entire project using maven.
-    
-    mvn clean package   
-    
 
 ## Resources
 
