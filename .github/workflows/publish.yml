@@ -24,7 +24,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 11
-          cache: 'maven'
           server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
           server-username: MAVEN_USERNAME # env variable for username in deploy
           server-password: MAVEN_CENTRAL_TOKEN # env variable for token in deploy
@@ -36,4 +35,4 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.ossrh_username }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.ossrh_password }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.gpg_passphrase }}
-        run: ./mvnw --batch-mode deploy -Prelease
+        run: ./mvnw -ntp --batch-mode deploy -Prelease
