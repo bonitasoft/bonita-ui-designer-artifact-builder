@@ -1,6 +1,6 @@
 {
   "name": "ui-designer-artifact-builder",
-  "version": "2.5.0",
+  "version": "1.0.0",
   "description": "Bonitasoft UI Designer artifact builder",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
     "build": "gulp build",
     "pot": "gulp pot",
     "start": "gulp serve",
-    "listDependencies": "license-checker --production --json --out ./target/ui-designer-artifact-builder.json"
+    "listDependencies": "license-checker --production --excludePackages ui-designer-artifact-builder@1.0.0 --customPath license_format.json  --json --out ./target/generated-resources/META-INF/NODE_DEPENDENCIES.json"
   },
   "engine": {
     "npm": ">=2.0.0"
