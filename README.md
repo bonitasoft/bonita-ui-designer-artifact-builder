@@ -20,18 +20,6 @@ Build pages designed with the [UI Designer][uid-repo] for your Bonita applicatio
 
 * Build it using maven `./mvnw clean verify`
 
-## Branching strategy
-
-This repository follows the [gitflow branching strategy](https://gitversion.net/docs/learn/branching-strategies/gitflow/examples).
-
-## Release
-
-To release a new version, maintainers may use the Release and Publication GitHub actions.
-
-* Release action will invoke the `gitflow-maven-plugin` to perform all required merges, version updates and tag creation.
-* Publication action will build and deploy a given tag to Maven Central
-* A Github release should be created and associated to the tag.
-
 ## Contribute
 
 ### Report issues
@@ -41,6 +29,18 @@ If you want to report an issue or a bug use our [official bugtracker](https://bo
 ### How to contribute
 
 Before contributing, read the [guidelines](CONTRIBUTING.md)
+
+### Branching strategy
+
+This repository follows the [gitflow branching strategy](https://gitversion.net/docs/learn/branching-strategies/gitflow/examples).
+
+### Release
+
+To release a new version, maintainers may use the Release and Publication GitHub actions.
+
+* Release action will invoke the `gitflow-maven-plugin` to perform all required merges, version updates and tag creation.
+* Publication action will build and deploy a given tag to Maven Central
+* A Github release should be created and associated to the tag.
 
 ## Resources
 
