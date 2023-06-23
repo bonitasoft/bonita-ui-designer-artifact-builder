@@ -6,20 +6,19 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.bonitasoft.web/ui-designer-artifact-builder.svg?label=Maven%20Central&color=orange&logo=apachemaven)](https://central.sonatype.com/artifact/org.bonitasoft.web/ui-designer-artifact-builder/)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-yellow.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
-Build pages designed with the UI Designer for your Bonita application or your own project.
+Build pages designed with the [UI Designer][uid-repo] for your Bonita application or your own project.
 
 ## Quick start
 
 ### Pre-requisite
 
-* [Maven][maven]
 * [Java 11][java] for compilation
 
 ### Build
 
 #### Using Maven
 
-* Build it using maven `mvn clean verify`
+* Build it using maven `./mvnw clean verify`
 
 ## Branching strategy
 
@@ -40,18 +39,16 @@ To release a new version, maintainers may use the Release and Publication GitHub
 If you want to report an issue or a bug use our [official bugtracker](https://bonita.atlassian.net/projects/BBPMC)
 
 ### How to contribute
-Before contributing, read the [guidelines][contributing.md]
+
+Before contributing, read the [guidelines](CONTRIBUTING.md)
 
 ## Resources
 
 * [Documentation][documentation]
 
 
-[maven]: https://maven.apache.org/
-[java]: https://www.java.com/fr/download/
+[java]: https://adoptium.net/temurin/releases/?version=11
 [uid-repo]: https://github.com/bonitasoft/bonita-ui-designer
-[download]: https://www.bonitasoft.com/downloads
 [documentation]: https://documentation.bonitasoft.com
-[contributing.md]: https://github.com/bonitasoft/bonita-developer-resources/blob/master/CONTRIBUTING.MD
 
     
