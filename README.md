@@ -3,7 +3,7 @@
 [![Build](https://github.com/bonitasoft/bonita-ui-designer-artifact-builder/workflows/Build/badge.svg)](https://github.com/bonitasoft/bonita-ui-designer-artifact-builder/actions/workflows/build.yml)
  [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=bonitasoft_bonita-ui-designer-artifact-builder&metric=alert_status)](https://sonarcloud.io/dashboard?id=bonitasoft_bonita-ui-designer-artifact-builder)
 [![GitHub release](https://img.shields.io/github/v/release/bonitasoft/bonita-ui-designer-artifact-builder?color=blue&label=Release)](https://github.com/bonitasoft/bonita-ui-designer-artifact-builder/releases)
-[![Maven Central](https://img.shields.io/maven-central/v/org.bonitasoft.web/bonita-ui-designer-artifact-builder.svg?label=Maven%20Central&color=orange)](https://central.sonatype.com/artifact/org.bonitasoft.web/ui-designer-artifact-builder)
+[![Maven Central](https://img.shields.io/maven-central/v/org.bonitasoft.web/bonita-ui-designer-artifact-builder.svg?label=Maven%20Central&color=orange&logo=apachemaven)](https://central.sonatype.com/artifact/org.bonitasoft.web/ui-designer-artifact-builder/)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-yellow.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 Build pages designed with the UI Designer for your Bonita application or your own project.
