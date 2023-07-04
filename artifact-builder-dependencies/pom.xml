@@ -26,6 +26,16 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-backend-migrationReport</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>3.12.0</version>
@@ -99,7 +109,7 @@
         <configuration>
           <updatePomFile>true</updatePomFile>
           <pomElements>
-            <dependencyManagement>expand</dependencyManagement>
+            <dependencyManagement>interpolate</dependencyManagement>
           </pomElements>
         </configuration>
       </plugin>
