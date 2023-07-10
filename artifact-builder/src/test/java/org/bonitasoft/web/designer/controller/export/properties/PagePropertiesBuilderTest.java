@@ -28,13 +28,13 @@ import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.data.Data;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.service.DefaultPageService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PagePropertiesBuilderTest {
 
     private static final String DESIGNER_VERSION = "1.12.1";
@@ -46,13 +46,11 @@ public class PagePropertiesBuilderTest {
     @Mock
     private DefaultPageService pageService;
 
-    private UiDesignerProperties uiDesignerProperties;
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         page = new Page();
         page.setName("myPage");
-        uiDesignerProperties = new UiDesignerProperties();
+        UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setVersion(DESIGNER_VERSION);
         pagePropertiesBuilder = new PagePropertiesBuilder(uiDesignerProperties, pageService);
     }

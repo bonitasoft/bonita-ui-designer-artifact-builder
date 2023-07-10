@@ -18,24 +18,24 @@ package org.bonitasoft.web.designer.controller.export.steps;
 
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_DIRECTORIES;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_DIRECTORIES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_FILES;
 import static org.mockito.Mockito.*;
 
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.controller.export.Zipper;
+import org.bonitasoft.web.designer.common.export.Zipper;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AssetExportStepTest {
 
     @Mock

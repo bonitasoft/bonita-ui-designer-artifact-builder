@@ -26,26 +26,24 @@ import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.model.page.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * @author Colin Puy
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class FragmentIdVisitorTest {
 
     @Mock
@@ -54,9 +52,9 @@ public class FragmentIdVisitorTest {
     @InjectMocks
     private FragmentIdVisitor fragmentIdVisitor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        when(fragmentRepository.get(anyString())).thenReturn(aFragment().build());  // return empty fragment
+        lenient().when(fragmentRepository.get(anyString())).thenReturn(aFragment().build()); // return empty fragment
     }
 
     @Test

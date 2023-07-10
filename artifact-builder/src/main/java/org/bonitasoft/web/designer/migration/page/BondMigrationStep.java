@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.migration.MigrationStep;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.AbstractPage;
@@ -27,7 +28,6 @@ import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
 import org.bonitasoft.web.designer.model.widget.BondType;
 import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.bonitasoft.web.designer.visitor.VisitorFactory;
 import org.slf4j.Logger;

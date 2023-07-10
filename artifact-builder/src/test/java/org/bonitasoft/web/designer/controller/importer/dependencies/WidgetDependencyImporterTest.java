@@ -22,21 +22,20 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WidgetDependencyImporterTest {
 
     @Mock
@@ -44,9 +43,6 @@ public class WidgetDependencyImporterTest {
 
     @InjectMocks
     private WidgetDependencyImporter widgetDependencyImporter;
-
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void should_verify_that_a_widget_exists_in_repository() throws Exception {
@@ -67,14 +63,14 @@ public class WidgetDependencyImporterTest {
     }
 
     @Test
-    public void should_load_custom_widgets() throws Exception {
-        File widgetsFolder = temporaryFolder.newFolder("widgets");
+    public void should_load_custom_widgets(@TempDir Path temporaryFolder) throws Exception {
+        Path widgetsFolder = Files.createDirectory(temporaryFolder.resolve("widgets"));
 
-        widgetDependencyImporter.load(null, temporaryFolder.toPath());
+        widgetDependencyImporter.load(null, temporaryFolder);
 
         ArgumentCaptor<DirectoryStream.Filter<Path>> captor = ArgumentCaptor.forClass(DirectoryStream.Filter.class);
 
-        verify(widgetRepository).loadAll(eq(widgetsFolder.toPath()), captor.capture());
-        assertThat(captor.getValue()).isEqualTo(WidgetDependencyImporter.CUSTOM_WIDGET_FILTER);
+        verify(widgetRepository).loadAll(eq(widgetsFolder), captor.capture());
+        assertThat(captor.getValue()).isEqualTo(WidgetRepository.CUSTOM_WIDGET_FILTER);
     }
 }

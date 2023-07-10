@@ -21,26 +21,26 @@ import static java.nio.file.Files.write;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.AbstractLiveFileBuilder;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.angularjs.GeneratorProperties;
+import org.bonitasoft.web.designer.common.livebuild.AbstractLiveFileBuilder;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
 
 public class LanguagePackBuilder extends AbstractLiveFileBuilder {
 
     private final LanguagePackFactory languagePackFactory;
-    private final WorkspaceUidProperties workspaceUidProperties;
+    private final GeneratorProperties generatorProperties;
 
     public LanguagePackBuilder(Watcher watcher, LanguagePackFactory languagePackFactory,
-            WorkspaceUidProperties workspaceUidProperties) {
-        super(watcher, workspaceUidProperties.isLiveBuildEnabled());
+            GeneratorProperties generatorProperties) {
+        super(watcher, generatorProperties.isLiveBuildEnabled());
         this.languagePackFactory = languagePackFactory;
-        this.workspaceUidProperties = workspaceUidProperties;
+        this.generatorProperties = generatorProperties;
     }
 
     @Override
     public void build(Path poFile) throws IOException {
         var jsonFileName = poFile.getFileName().toString().replace(".po", ".json");
-        write(workspaceUidProperties.getTmpI18nPath().resolve(jsonFileName),
+        write(generatorProperties.getTmpI18nPath().resolve(jsonFileName),
                 languagePackFactory.create(poFile.toFile()).toJson());
     }
 

@@ -25,19 +25,14 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.model.page.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AnyLocalContainerVisitorTest {
 
     @InjectMocks
@@ -45,7 +40,7 @@ public class AnyLocalContainerVisitorTest {
 
     private Component component;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         component = aComponent().build();
     }

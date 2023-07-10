@@ -27,23 +27,23 @@ import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
 import static org.bonitasoft.web.designer.model.widget.BondType.*;
 import static org.mockito.Mockito.when;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Container;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
 import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.bonitasoft.web.designer.visitor.VisitorFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BondMigrationStepTest {
 
     @Mock
@@ -68,7 +68,7 @@ public class BondMigrationStepTest {
 
     Property property = aProperty().name("foo").build();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         bondMigrationStep = new BondMigrationStep(new ComponentVisitor(fragmentRepository), widgetRepository,
                 new VisitorFactory());

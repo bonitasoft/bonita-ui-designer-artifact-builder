@@ -21,6 +21,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.bonitasoft.web.designer.common.repository.Repository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.asset.AssetService.OrderType;
@@ -28,7 +29,6 @@ import org.bonitasoft.web.designer.model.Assetable;
 import org.bonitasoft.web.designer.model.Identifiable;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetType;
-import org.bonitasoft.web.designer.repository.Repository;
 
 public abstract class AbstractAssetableArtifactService<R extends Repository<T>, T extends Identifiable & Assetable>
         extends AbstractArtifactService<R, T> implements AssetableArtifactService<T> {

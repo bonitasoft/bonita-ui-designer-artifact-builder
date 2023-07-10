@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.UiDesignerPropertiesTestBuilder.aUiDesignerProperties;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -29,6 +30,7 @@ import org.bonitasoft.web.designer.*;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.migration.page.UIBootstrapAssetMigrationStep;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
@@ -36,8 +38,9 @@ import org.bonitasoft.web.designer.model.widget.BondType;
 import org.bonitasoft.web.designer.model.widget.Widget;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class WorkspaceMigrationTest {
 
@@ -48,19 +51,22 @@ public class WorkspaceMigrationTest {
     private static WidgetService widgetService;
 
     private static Workspace workspace;
-    private static UiDesignerProperties uiDesignerProperties;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
+    @BeforeAll
+    public static void setUp(@TempDir Path tempdir) throws Exception {
         Path workspacePath = Paths.get(WorkspaceMigrationTest.class.getClassLoader().getResource("workspace").toURI());
-        Path uidWorkspacePath = Paths.get("target/uid-workspace");
 
         UiDesignerProperties uiDesignerProperties = aUiDesignerProperties(workspacePath);
         uiDesignerProperties.setModelVersion(HIGHER_MIGRATION_VERSION);
         uiDesignerProperties.setVersion("1.13.0-SNAPSHOT");
         uiDesignerProperties.setEdition("Community");
-        uiDesignerProperties.getWorkspaceUid().setPath(uidWorkspacePath);
-        uiDesignerProperties.getWorkspaceUid().setExtractPath(uidWorkspacePath.resolve("extract"));
+        uiDesignerProperties.getWorkspaceUid().setPath(tempdir);
+        Path extract = Files.createDirectories(tempdir.resolve("extract"));
+        uiDesignerProperties.getWorkspaceUid().setExtractPath(extract);
+
+        Path assetCss = Files.createDirectories(
+                uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve("angularjs/templates/page/assets/css"));
+        Files.createFile(assetCss.resolve("style.css"));
 
         JsonHandler jsonHandler = new JsonHandlerFactory().create();
         final UiDesignerCore core = new UiDesignerCoreFactory(uiDesignerProperties, jsonHandler).create();

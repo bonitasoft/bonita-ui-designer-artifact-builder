@@ -18,7 +18,8 @@ package org.bonitasoft.web.designer.workspace;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.bonitasoft.web.angularjs.workspace.HtmlSanitizer;
+import org.junit.jupiter.api.Test;
 
 public class HtmlSanitizerTest {
 

@@ -26,19 +26,17 @@ import org.bonitasoft.web.designer.builder.VariableBuilder;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.AbstractPage;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import junit.framework.TestCase;
-
-@RunWith(MockitoJUnitRunner.class)
-public class BusinessVariableMigrationStepTest extends TestCase {
+@ExtendWith(MockitoExtension.class)
+public class BusinessVariableMigrationStepTest {
 
     BusinessVariableMigrationStep<AbstractPage> businessVariableMigrationStep;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         businessVariableMigrationStep = new BusinessVariableMigrationStep<>();
     }

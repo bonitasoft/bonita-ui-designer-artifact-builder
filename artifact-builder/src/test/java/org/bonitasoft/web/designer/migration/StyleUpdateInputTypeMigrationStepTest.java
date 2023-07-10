@@ -24,14 +24,14 @@ import static org.mockito.Mockito.*;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StyleUpdateInputTypeMigrationStepTest {
 
     @Mock
@@ -40,7 +40,7 @@ public class StyleUpdateInputTypeMigrationStepTest {
     @InjectMocks
     private StyleUpdateInputTypeMigrationStep step;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         step = new StyleUpdateInputTypeMigrationStep(pageAssetService);
     }

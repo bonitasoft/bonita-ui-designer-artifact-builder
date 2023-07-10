@@ -20,23 +20,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WidgetPropertiesBuilderTest {
 
     private static final String DESIGNER_VERSION = "1.12.1";
 
     private WidgetPropertiesBuilder widgetPropertiesBuilder;
-    private UiDesignerProperties uiDesignerProperties;
     private Widget widget;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        uiDesignerProperties = new UiDesignerProperties();
+        UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setVersion(DESIGNER_VERSION);
         widgetPropertiesBuilder = new WidgetPropertiesBuilder(uiDesignerProperties);
         widget = new Widget();

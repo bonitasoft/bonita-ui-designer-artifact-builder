@@ -27,26 +27,28 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVariable;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.angularjs.visitor.VariableModelVisitor;
+import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.GenerationException;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class VariableModelVisitorTest {
 
     @Mock
@@ -57,7 +59,7 @@ public class VariableModelVisitorTest {
 
     private Variable variable;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         variable = aConstantVariable().value("bar").build();
     }
@@ -102,22 +104,22 @@ public class VariableModelVisitorTest {
                 .build())).containsExactly(entry("fragment-id", singletonMap("foo", variable)));
     }
 
-    @Test(expected = GenerationException.class)
+    @Test
     public void should_throw_a_generation_error_when_the_fragment_is_not_found() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenThrow(new NotFoundException(""));
 
-        variableModelVisitor.visit(aFragmentElement()
+        assertThrows(GenerationException.class, () -> variableModelVisitor.visit(aFragmentElement()
                 .withFragmentId("fragment-id")
-                .build());
+                .build()));
     }
 
-    @Test(expected = GenerationException.class)
+    @Test
     public void should_throw_a_generation_error_when_an_error_occur_in_the_fragment_repository() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenThrow(new GenerationException("", new RuntimeException()));
 
-        variableModelVisitor.visit(aFragmentElement()
+        assertThrows(GenerationException.class, () -> variableModelVisitor.visit(aFragmentElement()
                 .withFragmentId("fragment-id")
-                .build());
+                .build()));
     }
 
     @Test

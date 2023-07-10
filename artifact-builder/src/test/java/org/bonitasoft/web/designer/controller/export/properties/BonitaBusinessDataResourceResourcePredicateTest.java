@@ -21,15 +21,15 @@ import static org.bonitasoft.web.designer.model.data.DataType.BUSINESSDATA;
 import static org.bonitasoft.web.designer.model.data.DataType.URL;
 
 import org.bonitasoft.web.designer.model.data.Variable;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BonitaBusinessDataResourceResourcePredicateTest {
 
     private Variable variable;
     private BonitaBusinessDataResourcePredicate predicate;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         variable = new Variable(BUSINESSDATA, "");
         predicate = new BonitaBusinessDataResourcePredicate();

@@ -16,7 +16,6 @@
  */
 package org.bonitasoft.web.designer.controller.asset;
 
-import static junitparams.JUnitParamsRunner.$;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aFilledPage;
@@ -25,37 +24,32 @@ import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderTyp
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.INCREMENT;
 import static org.bonitasoft.web.designer.model.asset.AssetType.CSS;
 import static org.bonitasoft.web.designer.model.asset.AssetType.JAVASCRIPT;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Stream;
 
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.Repository;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.Repository;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
-@RunWith(JUnitParamsRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AssetServiceTest {
-
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private Repository<Page> repository;
@@ -68,7 +62,7 @@ public class AssetServiceTest {
 
     private AssetService assetService;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         assetService = new AssetService(repository, assetRepository, assetDependencyImporter);
     }
@@ -147,28 +141,28 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_not_return_error_when_adding_existing_asset_witherror_on_delete() throws Exception {
+    public void should_not_return_error_when_adding_existing_asset_witherror_on_delete() {
         Asset asset = anAsset().withId("anAsset").build();
         Page page = aPage().withAsset(asset).build();
-        doThrow(IOException.class).when(assetRepository).delete(asset);
+
         var save = assetService.save(page, asset);
 
         assertThat(asset).isNotNull();
     }
 
-    protected Object[] invalidArgsForDuplicate() throws Exception {
+    static Stream<Arguments> invalidArgsForDuplicate() throws Exception {
         Path tempPath = Files.createTempDirectory("test");
-        return $(
-                $(null, tempPath, "src-page-id", "page-id", "source page path is required"),
-                $(tempPath, null, "src-page-id", "page-id", "target page path is required"),
-                $(tempPath, tempPath, null, "page-id", "source page id is required"),
-                $(tempPath, tempPath, "src-page-id", null, "target page id is required"));
+        return Stream.of(
+                Arguments.of(null, tempPath, "src-page-id", "page-id", "source page path is required"),
+                Arguments.of(tempPath, null, "src-page-id", "page-id", "target page path is required"),
+                Arguments.of(tempPath, tempPath, null, "page-id", "source page id is required"),
+                Arguments.of(tempPath, tempPath, "src-page-id", null, "target page id is required"));
     }
 
-    @Parameters(method = "invalidArgsForDuplicate")
-    @Test
+    @ParameterizedTest
+    @MethodSource("invalidArgsForDuplicate")
     public void should_not_duplicate_asset_when_arg_invalid(Path artifactSourcePath, Path artifactTargetPath, String sourceArtifactId, String targetArtifactId,
-                                                            String expectedErrorMessage) throws Exception {
+                                                            String expectedErrorMessage) {
         when(repository.getComponentName()).thenReturn("page");
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 assetService.duplicateAsset(artifactSourcePath, artifactTargetPath, sourceArtifactId, targetArtifactId)
@@ -215,12 +209,12 @@ public class AssetServiceTest {
         page.getInactiveAssets().add("UIID");
         page.getAssets().add(asset);
 
-        Assert.assertEquals(page.getInactiveAssets().size(), 1);
+        assertThat(page.getInactiveAssets().size()).isEqualTo(1);
 
         assetService.delete(page, "UIID");
 
         verify(assetRepository).delete(asset);
-        Assert.assertEquals(page.getInactiveAssets().size(), 0);
+        assertThat(page.getInactiveAssets().size()).isEqualTo(0);
     }
 
     @Test
@@ -255,7 +249,6 @@ public class AssetServiceTest {
     public void should_increment_asset_order_in_component() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
-        when(repository.get("page-id")).thenReturn(page);
 
         assets[1].setComponentId("page-id");
         Asset assetReturned = assetService.changeAssetOrderInComponent(page, "asset2", INCREMENT);
@@ -271,7 +264,6 @@ public class AssetServiceTest {
     public void should_decrement_asset_order_in_component() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
-        when(repository.get("page-id")).thenReturn(page);
 
         assets[1].setComponentId("page-id");
         Asset assetReturned = assetService.changeAssetOrderInComponent(page, "asset2", DECREMENT);
@@ -287,7 +279,6 @@ public class AssetServiceTest {
     public void should_not_increment_asset_order_in_component_when_asset_is_the_last() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
-        when(repository.get("page-id")).thenReturn(page);
 
         assets[2].setComponentId("page-id");
         Asset assetReturned = assetService.changeAssetOrderInComponent(page, "asset3", INCREMENT);
@@ -303,7 +294,6 @@ public class AssetServiceTest {
     public void should_decrement_asset_order_in_component_when_asset_is_the_last() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
-        when(repository.get("page-id")).thenReturn(page);
 
         assets[2].setComponentId("page-id");
         Asset assetReturned = assetService.changeAssetOrderInComponent(page, "asset3", DECREMENT);
@@ -319,7 +309,6 @@ public class AssetServiceTest {
     public void should_not_decrement_asset_order_in_component_when_asset_is_the_first() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
-        when(repository.get("page-id")).thenReturn(page);
 
         assets[0].setComponentId("page-id");
         Asset assetReturned = assetService.changeAssetOrderInComponent(page, "asset1", DECREMENT);
@@ -335,7 +324,6 @@ public class AssetServiceTest {
     public void should_increment_asset_order_in_component_when_asset_is_the_first() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
-        when(repository.get("page-id")).thenReturn(page);
 
         assets[0].setComponentId("page-id");
         Asset assetReturned = assetService.changeAssetOrderInComponent(page, "asset1", INCREMENT);
@@ -354,9 +342,6 @@ public class AssetServiceTest {
                 .withName("my-page")
                 .withInactiveAsset("assetUIID")
                 .build();
-        when(repository.get("page-id")).thenReturn(page);
-
-        Asset assetSent = anAsset().withId("assetUIID").withComponentId("page-id").withName("myasset.js").build();
 
         assetService.changeAssetStateInPreviewable(page, "assetUIID", false);
 
@@ -369,9 +354,6 @@ public class AssetServiceTest {
                 .withId("page-id")
                 .withName("my-page")
                 .build();
-        when(repository.get("page-id")).thenReturn(page);
-
-        Asset assetSent = anAsset().withId("assetUIID").withComponentId("page-id").withName("myasset.js").build();
 
         assetService.changeAssetStateInPreviewable(page, "assetUIID", false);
 
@@ -386,9 +368,6 @@ public class AssetServiceTest {
                 .withName("my-page")
                 .withInactiveAsset("assetUIID")
                 .build();
-        when(repository.get("page-id")).thenReturn(page);
-
-        Asset assetSent = anAsset().withId("assetUIID").withComponentId("page-id").withName("myasset.js").build();
 
         assetService.changeAssetStateInPreviewable(page, "assetUIID", true);
 

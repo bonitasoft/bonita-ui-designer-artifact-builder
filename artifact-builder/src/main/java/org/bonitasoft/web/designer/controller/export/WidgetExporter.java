@@ -16,7 +16,7 @@
  */
 package org.bonitasoft.web.designer.controller.export;
 
-import org.bonitasoft.web.designer.controller.export.steps.ExportStep;
+import org.bonitasoft.web.designer.common.export.ExportStep;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.widget.Widget;
 import org.bonitasoft.web.designer.service.WidgetService;

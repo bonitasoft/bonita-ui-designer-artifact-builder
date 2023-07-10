@@ -28,6 +28,21 @@
         <version>${project.parent.version}</version>
       </dependency>
       <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder-common</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder-model</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder-generator-angularjs</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>3.13.0</version>

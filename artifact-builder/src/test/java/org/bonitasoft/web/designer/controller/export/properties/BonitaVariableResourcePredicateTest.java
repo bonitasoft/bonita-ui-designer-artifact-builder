@@ -20,15 +20,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.model.data.DataType.*;
 
 import org.bonitasoft.web.designer.model.data.Variable;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BonitaVariableResourcePredicateTest {
 
     private Variable variable;
     private BonitaVariableResourcePredicate predicate;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         variable = new Variable(URL, "");
         predicate = new BonitaVariableResourcePredicate("matches");

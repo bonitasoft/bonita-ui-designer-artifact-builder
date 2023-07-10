@@ -17,31 +17,29 @@
 package org.bonitasoft.web.designer.controller.importer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ImportStoreTest {
-
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Mock
     private AbstractArtifactImporter artifactImporter;
 
     private ImportStore importStore;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         importStore = new ImportStore();
     }
@@ -66,23 +64,23 @@ public class ImportStoreTest {
         assertThat(expectedImport).isEqualTo(fetchedImport);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void should_throw_not_found_exception_while_getting_an_unknown_import() throws Exception {
-        importStore.get("unknown-import");
+        assertThrows(NotFoundException.class, () -> importStore.get("unknown-import"));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void should_remove_a_stored_import() throws Exception {
         Import addedReport = importStore.store(artifactImporter, Paths.get("import/path"));
 
         importStore.remove(addedReport.getUUID());
 
-        importStore.get(addedReport.getUUID()); // should throw not found exception
+        assertThrows(NotFoundException.class, () -> importStore.get(addedReport.getUUID()));
     }
 
     @Test
-    public void should_delete_folder_while_removing_a_stored_import() throws Exception {
-        Path importFolder = temporaryFolder.newFolderPath("importFolder");
+    public void should_delete_folder_while_removing_a_stored_import(@TempDir Path temporaryFolder) throws Exception {
+        Path importFolder = Files.createDirectory(temporaryFolder.resolve("importFolder"));
         Import addedReport = importStore.store(artifactImporter, importFolder);
 
         importStore.remove(addedReport.getUUID());

@@ -16,15 +16,16 @@
  */
 package org.bonitasoft.web.designer.controller.export.steps;
 
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_FILES;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.controller.export.IncludeChildDirectoryPredicate;
-import org.bonitasoft.web.designer.controller.export.Zipper;
+import org.bonitasoft.web.angularjs.export.IncludeChildDirectoryPredicate;
+import org.bonitasoft.web.designer.common.export.ExportStep;
+import org.bonitasoft.web.designer.common.export.Zipper;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.model.page.AbstractPage;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
 
 public class FragmentsExportStep<T extends AbstractPage> implements ExportStep<T> {
 
