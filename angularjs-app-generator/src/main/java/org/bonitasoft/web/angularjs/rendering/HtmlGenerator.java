@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.angularjs.generator.rendering;
+package org.bonitasoft.web.angularjs.rendering;
 
 import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
 import org.bonitasoft.web.designer.model.Identifiable;

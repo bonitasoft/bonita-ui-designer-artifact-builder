@@ -28,6 +28,7 @@
     <module>artifact-builder</module>
     <module>migrationReport</module>
     <module>coverage-report</module>
+      <module>angularjs-app-generator</module>
   </modules>
   <scm>
     <connection>scm:git:git@github.com:bonitasoft/bonita-ui-designer-artifact-builder.git</connection>

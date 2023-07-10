@@ -14,18 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.angularjs.generator;
+package org.bonitasoft.web.angularjs;
 
 import java.util.List;
 
-import org.bonitasoft.web.angularjs.generator.localization.LocalizationFactory;
-import org.bonitasoft.web.angularjs.generator.rendering.DirectiveFileGenerator;
-import org.bonitasoft.web.angularjs.generator.rendering.DirectivesCollector;
-import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
-import org.bonitasoft.web.angularjs.generator.visitor.*;
+import org.bonitasoft.web.angularjs.localization.LocalizationFactory;
+import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
+import org.bonitasoft.web.angularjs.rendering.DirectivesCollector;
+import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.Generator;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.export.steps.*;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
@@ -33,7 +31,6 @@ import org.bonitasoft.web.designer.repository.AssetRepository;
 import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.repository.PageRepository;
 import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.visitor.*;
 
 public class AngularJsGenerator implements Generator {
 
