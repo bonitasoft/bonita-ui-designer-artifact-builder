@@ -33,10 +33,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
+import org.bonitasoft.web.angularjs.generator.visitor.VariableModelVisitor;
 import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.GenerationException;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
 import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.repository.exception.NotFoundException;
 import org.junit.Before;

@@ -1,5 +1,5 @@
 /** 
- * Copyright (C) 2015 BonitaSoft S.A.
+ * Copyright (C) 2023 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,26 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.controller.preview;
+package org.bonitasoft.web.designer;
 
 import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.page.Previewable;
+import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
+import org.bonitasoft.web.designer.controller.export.steps.ExportStep;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+public interface Generator {
 
-@Getter
-@RequiredArgsConstructor
-public class Previewer {
+    HtmlBuilderVisitor getHtmlBuilderVisitor();
 
-    private final HtmlGenerator generator;
+    HtmlGenerator getHtmlGenerator();
 
-    /**
-     * Build a preview for a previewable
-     */
-    public <T extends Previewable & Identifiable> String render(T previewable, String resourceContext) {
-        return generator.generateHtml(previewable, resourceContext);
-    }
-
+    ExportStep[] getPageExportStep();
 }

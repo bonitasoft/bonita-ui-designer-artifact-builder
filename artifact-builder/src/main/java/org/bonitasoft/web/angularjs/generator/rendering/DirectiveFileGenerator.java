@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.rendering;
+package org.bonitasoft.web.angularjs.generator.rendering;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.model.page.Previewable;
+import org.bonitasoft.web.designer.rendering.FilesConcatenator;
+import org.bonitasoft.web.designer.rendering.Minifier;
 import org.bonitasoft.web.designer.repository.WidgetRepository;
 import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
 

@@ -23,10 +23,10 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bonitasoft.web.angularjs.generator.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.designer.controller.export.IncludeChildDirectoryPredicate;
 import org.bonitasoft.web.designer.controller.export.Zipper;
 import org.bonitasoft.web.designer.model.page.AbstractPage;
-import org.bonitasoft.web.designer.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.designer.rendering.Minifier;
 import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
 

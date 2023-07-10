@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.io.FileUtils;
+import org.bonitasoft.web.angularjs.generator.rendering.WidgetFileHelper;
+import org.bonitasoft.web.angularjs.generator.workspace.FragmentDirectiveBuilder;
+import org.bonitasoft.web.angularjs.generator.workspace.WidgetDirectiveBuilder;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
 import org.bonitasoft.web.designer.config.DesignerInitializerException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
@@ -39,7 +42,6 @@ import org.bonitasoft.web.designer.migration.Version;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.rendering.WidgetFileHelper;
 import org.bonitasoft.web.designer.repository.PageRepository;
 import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
 import org.bonitasoft.web.designer.repository.WidgetRepository;

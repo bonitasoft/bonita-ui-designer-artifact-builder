@@ -21,6 +21,8 @@ import static org.bonitasoft.web.designer.utils.assertions.CustomAssertions.asse
 import java.io.File;
 import java.nio.file.Path;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+import org.bonitasoft.web.angularjs.generator.rendering.WidgetFileHelper;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.junit.Rule;
 import org.junit.Test;

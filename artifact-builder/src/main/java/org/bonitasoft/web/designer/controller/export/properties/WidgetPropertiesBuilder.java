@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.rendering.GenerationException;
 
 public class WidgetPropertiesBuilder {
 

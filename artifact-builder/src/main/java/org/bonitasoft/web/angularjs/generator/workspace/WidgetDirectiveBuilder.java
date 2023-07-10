@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.workspace;
+package org.bonitasoft.web.angularjs.generator.workspace;
 
 import static java.lang.String.valueOf;
 import static java.nio.file.Files.write;
@@ -24,11 +24,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
+import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.livebuild.AbstractLiveFileBuilder;
 import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
 import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.workspace.HtmlSanitizer;
 
 public class WidgetDirectiveBuilder extends AbstractLiveFileBuilder {
 

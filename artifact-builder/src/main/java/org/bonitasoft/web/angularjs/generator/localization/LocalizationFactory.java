@@ -14,16 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.localization;
+package org.bonitasoft.web.angularjs.generator.localization;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
 import org.bonitasoft.web.designer.model.Assetable;
 import org.bonitasoft.web.designer.model.Identifiable;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
 import org.bonitasoft.web.designer.repository.PageRepository;
 import org.bonitasoft.web.designer.visitor.PageFactory;
 import org.slf4j.Logger;

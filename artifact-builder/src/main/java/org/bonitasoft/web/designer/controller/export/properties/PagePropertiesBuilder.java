@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.GenerationException;
 import org.bonitasoft.web.designer.service.PageService;
 
 import lombok.RequiredArgsConstructor;

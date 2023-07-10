@@ -19,6 +19,8 @@ package org.bonitasoft.web.designer.rendering;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;

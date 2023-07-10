@@ -22,6 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+
 public final class FilesConcatenator {
 
     public static byte[] concat(List<Path> filePathToConcatenate) {

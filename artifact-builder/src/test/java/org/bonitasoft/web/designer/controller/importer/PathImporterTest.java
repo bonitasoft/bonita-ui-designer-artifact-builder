@@ -25,6 +25,7 @@ import static org.mockito.Mockito.*;
 
 import java.nio.file.Path;
 
+import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.AngularJsArtifactBuilder;
 import org.bonitasoft.web.designer.ArtifactBuilder;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
@@ -32,7 +33,6 @@ import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
 import org.bonitasoft.web.designer.controller.export.WidgetExporter;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;

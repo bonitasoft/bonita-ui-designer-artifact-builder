@@ -14,11 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.rendering;
+package org.bonitasoft.web.angularjs.generator.rendering;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bonitasoft.web.designer.rendering.IfEqualHelper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;

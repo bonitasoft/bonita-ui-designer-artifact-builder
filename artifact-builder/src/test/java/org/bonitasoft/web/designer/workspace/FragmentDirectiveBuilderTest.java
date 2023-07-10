@@ -32,14 +32,15 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.IOException;
 
+import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
+import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
+import org.bonitasoft.web.angularjs.generator.workspace.FragmentDirectiveBuilder;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.livebuild.PathListener;
 import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
-import org.bonitasoft.web.designer.visitor.HtmlBuilderVisitor;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.visitor;
+package org.bonitasoft.web.angularjs.generator.visitor;
 
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +32,7 @@ import org.bonitasoft.web.designer.model.page.TabContainer;
 import org.bonitasoft.web.designer.model.page.TabsContainer;
 import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.designer.visitor.ElementVisitor;
 
 import lombok.RequiredArgsConstructor;
 

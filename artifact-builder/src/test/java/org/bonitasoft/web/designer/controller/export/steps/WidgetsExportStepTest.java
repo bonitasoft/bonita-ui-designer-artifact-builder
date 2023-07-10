@@ -26,10 +26,10 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bonitasoft.web.angularjs.generator.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.controller.export.Zipper;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.designer.rendering.Minifier;
 import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.utils.rule.TemporaryWidgetRepository;

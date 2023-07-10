@@ -27,6 +27,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.controller.export.ExportException;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
@@ -42,8 +44,6 @@ import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.rendering.GenerationException;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
@@ -66,6 +66,7 @@ public class AngularJsArtifactBuilder implements ArtifactBuilder {
     private final PageExporter pageExporter;
     private final FragmentExporter fragmentExporter;
     private final WidgetExporter widgetExporter;
+    //TODO: Replace Specific
     private final HtmlGenerator htmlGenerator;
     private final ImportStore importStore;
     private final PageImporter pageImporter;

@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bonitasoft.web.angularjs.generator.visitor.RequiredModulesVisitor;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Component;

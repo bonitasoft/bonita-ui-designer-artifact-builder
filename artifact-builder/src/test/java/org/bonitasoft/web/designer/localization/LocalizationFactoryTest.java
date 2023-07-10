@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 
+import org.bonitasoft.web.angularjs.generator.localization.LocalizationFactory;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.repository.PageRepository;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;

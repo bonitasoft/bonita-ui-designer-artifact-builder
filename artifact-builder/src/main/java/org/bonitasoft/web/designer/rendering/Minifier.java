@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
 import org.inconspicuous.jsmin.JSMin;
 
 /**

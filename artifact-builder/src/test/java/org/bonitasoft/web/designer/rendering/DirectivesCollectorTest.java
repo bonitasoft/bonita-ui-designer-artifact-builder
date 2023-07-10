@@ -29,6 +29,8 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.assertj.core.api.Assertions;
+import org.bonitasoft.web.angularjs.generator.rendering.DirectiveFileGenerator;
+import org.bonitasoft.web.angularjs.generator.rendering.DirectivesCollector;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.builder.FragmentBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;

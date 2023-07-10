@@ -27,10 +27,10 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.nio.file.Paths;
 
+import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.controller.export.Zipper;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

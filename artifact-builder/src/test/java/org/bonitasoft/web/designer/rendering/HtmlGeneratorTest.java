@@ -21,9 +21,10 @@ import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.mockito.Mockito.when;
 
+import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
+import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.visitor.HtmlBuilderVisitor;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.junit.runner.RunWith;

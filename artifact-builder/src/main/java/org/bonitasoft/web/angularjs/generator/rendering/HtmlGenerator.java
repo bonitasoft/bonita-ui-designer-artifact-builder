@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.rendering;
+package org.bonitasoft.web.angularjs.generator.rendering;
 
+import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
 import org.bonitasoft.web.designer.model.Identifiable;
 import org.bonitasoft.web.designer.model.page.Previewable;
 import org.bonitasoft.web.designer.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.visitor.HtmlBuilderVisitor;
 import org.jsoup.parser.ParseSettings;
 import org.jsoup.parser.Parser;
 

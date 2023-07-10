@@ -32,10 +32,11 @@ import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContai
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 import static org.mockito.Mockito.when;
 
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+import org.bonitasoft.web.angularjs.generator.visitor.PropertyValuesVisitor;
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.rendering.GenerationException;
 import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.repository.exception.RepositoryException;

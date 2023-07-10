@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import org.bonitasoft.web.designer.rendering.GenerationException;
+import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
 
 public abstract class AbstractLiveFileBuilder {
 

@@ -23,10 +23,10 @@ import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.controller.export.Zipper;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 
 public class HtmlExportStep implements ExportStep<Page> {
 
