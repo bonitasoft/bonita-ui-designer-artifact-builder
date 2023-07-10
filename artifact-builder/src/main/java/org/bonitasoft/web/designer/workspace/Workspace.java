@@ -29,20 +29,21 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.io.FileUtils;
+import org.bonitasoft.web.angularjs.rendering.WidgetFileHelper;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
+import org.bonitasoft.web.designer.common.GeneratorStrategy;
+import org.bonitasoft.web.designer.common.migration.Version;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.config.DesignerInitializerException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
-import org.bonitasoft.web.designer.migration.Version;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.rendering.WidgetFileHelper;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileSystemUtils;
@@ -64,11 +65,8 @@ public class Workspace {
 
     private final PageRepository pageRepository;
 
+    private final GeneratorStrategy generatorStrategy;
     private final ResourcesCopier resourcesCopier;
-
-    private final WidgetDirectiveBuilder widgetDirectiveBuilder;
-
-    private final FragmentDirectiveBuilder fragmentDirectiveBuilder;
 
     private final AssetDependencyImporter<Widget> widgetAssetDependencyImporter;
 
@@ -82,18 +80,17 @@ public class Workspace {
 
     public Workspace(UiDesignerProperties uiDesignerProperties, WidgetRepository widgetRepository,
             PageRepository pageRepository,
-            WidgetDirectiveBuilder widgetDirectiveBuilder, FragmentDirectiveBuilder fragmentDirectiveBuilder,
+            GeneratorStrategy generatorStrategy,
             AssetDependencyImporter<Widget> widgetAssetDependencyImporter, ResourcesCopier resourcesCopier,
             List<LiveRepositoryUpdate> migrations,
             JsonHandler jsonHandler) {
         this.widgetRepository = widgetRepository;
         this.pageRepository = pageRepository;
+        this.generatorStrategy = generatorStrategy;
         this.resourcesCopier = resourcesCopier;
-        this.widgetDirectiveBuilder = widgetDirectiveBuilder;
-        this.fragmentDirectiveBuilder = fragmentDirectiveBuilder;
         this.widgetAssetDependencyImporter = widgetAssetDependencyImporter;
         this.uiDesignerProperties = uiDesignerProperties;
-        this.extractPath = uiDesignerProperties.getWorkspaceUid().getExtractPath();
+        this.extractPath = generatorStrategy.getGeneratorProperties().getExtractPath();
         this.migrations = migrations;
         this.jsonHandler = jsonHandler;
     }
@@ -258,7 +255,7 @@ public class Workspace {
             }
         }
 
-        widgetDirectiveBuilder.start(uiDesignerProperties.getWorkspace().getWidgets().getDir());
+        generatorStrategy.widgetFileBuilder().start(uiDesignerProperties.getWorkspace().getWidgets().getDir());
     }
 
     private void createWidget(Path widgetRepositorySourcePath, Widget widget) throws IOException {
@@ -321,7 +318,7 @@ public class Workspace {
     private void ensureFragmentRepositoryPresent() throws IOException {
         var fragmentsPath = uiDesignerProperties.getWorkspace().getFragments().getDir();
         createDirectories(fragmentsPath);
-        fragmentDirectiveBuilder.start(fragmentsPath);
+        generatorStrategy.fragmentDirectiveBuilder().start(fragmentsPath);
     }
 
     private boolean isFragmentDescriptorExist(Path fragWorkspace, String fragment) {

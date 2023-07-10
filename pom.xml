@@ -25,6 +25,9 @@
   </developers>
   <modules>
     <module>artifact-builder-dependencies</module>
+    <module>model</module>
+    <module>common</module>
+    <module>generator-angularjs</module>
     <module>artifact-builder</module>
     <module>migrationReport</module>
     <module>coverage-report</module>

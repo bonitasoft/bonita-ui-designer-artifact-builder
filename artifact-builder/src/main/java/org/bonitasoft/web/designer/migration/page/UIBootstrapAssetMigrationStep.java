@@ -25,13 +25,13 @@ import java.util.Optional;
 
 import org.apache.commons.io.IOUtils;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.migration.AbstractMigrationStep;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

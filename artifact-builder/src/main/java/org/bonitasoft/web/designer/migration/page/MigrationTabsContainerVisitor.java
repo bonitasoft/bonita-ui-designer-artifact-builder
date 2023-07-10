@@ -28,7 +28,7 @@ import org.bonitasoft.web.designer.model.page.Previewable;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
 import org.bonitasoft.web.designer.model.page.TabContainer;
 import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.model.widget.BondType;
+import org.bonitasoft.web.designer.model.widgets.BondType;
 import org.bonitasoft.web.designer.visitor.ElementVisitor;
 
 public class MigrationTabsContainerVisitor implements ElementVisitor<Void> {

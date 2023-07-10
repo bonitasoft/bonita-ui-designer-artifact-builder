@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
 import static org.bonitasoft.web.designer.controller.importer.ImportException.Type.UNEXPECTED_ZIP_STRUCTURE;
-import static org.bonitasoft.web.designer.controller.importer.exception.ImportExceptionMatcher.hasType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
@@ -34,59 +34,49 @@ import java.util.UUID;
 
 import org.bonitasoft.web.designer.ArtifactBuilder;
 import org.bonitasoft.web.designer.ArtifactBuilderFactory;
-import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.UiDesignerCore;
 import org.bonitasoft.web.designer.UiDesignerCoreFactory;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
-import org.bonitasoft.web.designer.controller.importer.dependencies.WidgetDependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.mocks.PageImportMock;
 import org.bonitasoft.web.designer.controller.importer.mocks.WidgetImportMock;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.JsonViewPersistence;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.service.DefaultPageService;
-import org.bonitasoft.web.designer.service.DefaultWidgetService;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ArtifactImporterTest {
 
     private static final String WIDGETS_FOLDER = "widgets";
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
-    @Rule
-    public TemporaryFolder tempDir = new TemporaryFolder();
-
-    @Mock(lenient = true)
+    @Mock
     private PageRepository pageRepository;
 
-    @Mock(lenient = true)
+    @Mock
     private DefaultPageService pageService;
 
-    @Mock(lenient = true)
-    private DefaultWidgetService widgetService;
-
-    @Mock(lenient = true)
+    @Mock
     private WidgetRepository widgetRepository;
 
     @Spy
@@ -100,29 +90,27 @@ public class ArtifactImporterTest {
 
     private Path pageUnzippedPath;
 
-    private Path widgetUnzippedPath;
-
     private WidgetImportMock wMocks;
 
     private PageImportMock pMocks;
 
     private ArtifactBuilder artifactBuilder;
 
-    @Before
-    public void setUp() throws Exception {
-        pageImportPath = Files.createTempDirectory(tempDir.toPath(), "pageImport");
-        widgetImportPath = Files.createTempDirectory(tempDir.toPath(), "widgetImport");
+    @BeforeEach
+    public void setUp(@TempDir Path tempDir) throws Exception {
+        pageImportPath = Files.createTempDirectory(tempDir, "pageImport");
+        widgetImportPath = Files.createTempDirectory(tempDir, "widgetImport");
 
         uiDesignerProperties = new UiDesignerProperties();
-        uiDesignerProperties.getWorkspace().getPages().setDir(Files.createTempDirectory(tempDir.toPath(), "pages"));
-        uiDesignerProperties.getWorkspace().getWidgets().setDir(Files.createTempDirectory(tempDir.toPath(), "widgets"));
+        uiDesignerProperties.getWorkspace().getPages().setDir(Files.createTempDirectory(tempDir, "pages"));
+        uiDesignerProperties.getWorkspace().getWidgets().setDir(Files.createTempDirectory(tempDir, "widgets"));
         uiDesignerProperties.getWorkspace().getFragments()
-                .setDir(Files.createTempDirectory(tempDir.toPath(), "fragments"));
+                .setDir(Files.createTempDirectory(tempDir, "fragments"));
 
         when(widgetRepository.getComponentName()).thenReturn("widget");
         when(widgetRepository.resolvePath(any())).thenAnswer(invocation -> {
             String widgetId = invocation.getArgument(0);
-            return tempDir.toPath().resolve(WIDGETS_FOLDER).resolve(widgetId);
+            return tempDir.resolve(WIDGETS_FOLDER).resolve(widgetId);
         });
 
         UiDesignerCore core = new UiDesignerCoreFactory(uiDesignerProperties, jsonHandler).create(
@@ -139,11 +127,11 @@ public class ArtifactImporterTest {
         Files.createDirectory(pageUnzippedPath);
         when(pageRepository.getComponentName()).thenReturn("page");
 
-        widgetUnzippedPath = widgetImportPath.resolve("resources");
+        Path widgetUnzippedPath = widgetImportPath.resolve("resources");
         Files.createDirectory(widgetUnzippedPath);
 
-        wMocks = new WidgetImportMock(pageUnzippedPath, widgetRepository, jsonHandler);
-        pMocks = new PageImportMock(pageUnzippedPath, pageRepository, jsonHandler);
+        wMocks = new WidgetImportMock(pageUnzippedPath, widgetRepository);
+        pMocks = new PageImportMock(pageRepository, jsonHandler);
     }
 
     @Test
@@ -264,33 +252,33 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_throw_import_exception_when_there_is_no_resource_folder_in_import_path() throws Exception {
-        Path newFolder = tempDir.newFolderPath("emptyFolder");
+    public void should_throw_import_exception_when_there_is_no_resource_folder_in_import_path(@TempDir Path tempDir)
+            throws Exception {
+        Path newFolder = Files.createDirectory(tempDir.resolve("emptyFolder"));
 
-        exception.expect(ImportException.class);
-        exception.expect(hasType(UNEXPECTED_ZIP_STRUCTURE));
-
-        final ImportReport report = artifactBuilder.importPage(newFolder, true);
+        ImportException exception = assertThrows(ImportException.class,
+                () -> artifactBuilder.importPage(newFolder, true));
+        assertThat(exception.getType()).isEqualTo(UNEXPECTED_ZIP_STRUCTURE);
     }
 
-    @Test(expected = ServerImportException.class)
+    @Test
     public void should_throw_server_import_exception_when_error_occurs_while_saving_files_in_repository()
             throws Exception {
         Page page = pMocks.mockPageToBeImported(aPage().withId("aPage"));
         when(pageRepository.updateLastUpdateAndSave(page)).thenThrow(RepositoryException.class);
 
-        artifactBuilder.importPage(pageImportPath, true);
+        assertThrows(ServerImportException.class, () -> artifactBuilder.importPage(pageImportPath, true));
     }
 
-    @Test(expected = ServerImportException.class)
+    @Test
     public void should_throw_import_exception_when_an_error_occurs_while_getting_widgets() throws Exception {
         Files.createDirectory(pageUnzippedPath.resolve(WIDGETS_FOLDER));
         wMocks.mockWidgetsAsAddedDependencies();
         pMocks.mockPageToBeImported(aPage().withId("aPage"));
         when(widgetRepository.loadAll(pageUnzippedPath.resolve(WIDGETS_FOLDER),
-                WidgetDependencyImporter.CUSTOM_WIDGET_FILTER)).thenThrow(IOException.class);
+                WidgetRepository.CUSTOM_WIDGET_FILTER)).thenThrow(IOException.class);
 
-        artifactBuilder.importPage(pageImportPath, true);
+        assertThrows(ServerImportException.class, () -> artifactBuilder.importPage(pageImportPath, true));
     }
 
     @Test

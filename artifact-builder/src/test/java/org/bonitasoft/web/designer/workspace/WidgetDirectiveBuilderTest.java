@@ -20,41 +20,35 @@ import static java.nio.file.Files.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.bonitasoft.web.designer.JsonHandlerFactory;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.PathListener;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
+import org.bonitasoft.web.designer.common.livebuild.PathListener;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedPersister;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WidgetDirectiveBuilderTest {
 
-    @Rule
-    public TemporaryFolder widgetRepositoryDirectory = new TemporaryFolder();
+    @TempDir
+    Path widgetRepositoryDirectory;
 
     @Mock
     Watcher watcher;
@@ -68,31 +62,22 @@ public class WidgetDirectiveBuilderTest {
 
     Widget pbButton;
 
-    HtmlSanitizer htmlSanitizer = new HtmlSanitizer();
-
     TemplateEngine htmlBuilder = new TemplateEngine("widgetDirectiveTemplate.hbs.js");
-
-    UiDesignerProperties uiDesignerProperties = new UiDesignerProperties("1.13.0", "2.0");
 
     JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        uiDesignerProperties.getWorkspaceUid().setLiveBuildEnabled(true);
-        widgetDirectiveBuilder = new WidgetDirectiveBuilder(uiDesignerProperties, watcher,
-                new WidgetFileBasedLoader(jsonHandler), htmlSanitizer);
-
+        widgetDirectiveBuilder = new WidgetDirectiveBuilder(watcher,
+                new WidgetFileBasedLoader(jsonHandler), true);
         WidgetFileBasedLoader widgetLoader = new WidgetFileBasedLoader(jsonHandler);
-        WorkspaceProperties workspaceProperties = new WorkspaceProperties();
-        workspaceProperties.getWidgets().setDir(Paths.get(widgetRepositoryDirectory.getRoot().getPath()));
         WidgetRepository repository = new WidgetRepository(
-                workspaceProperties,
-                new WorkspaceUidProperties(),
-                new WidgetFileBasedPersister(jsonHandler, validator, uiDesignerProperties),
+                widgetRepositoryDirectory,
+                widgetRepositoryDirectory,
+                new WidgetFileBasedPersister(jsonHandler, validator, "1.13.0", "2.0"),
                 widgetLoader,
                 validator,
-                mock(Watcher.class),
-                mock(UiDesignerProperties.class));
+                mock(Watcher.class));
 
         pbInput = aWidget().withId("pbInput").build();
         pbInput.setCustom(true);
@@ -107,7 +92,7 @@ public class WidgetDirectiveBuilderTest {
 
     @Test
     public void should_build_directives_of_a_given_directory() throws Exception {
-        widgetDirectiveBuilder.start(widgetRepositoryDirectory.getRoot().toPath());
+        widgetDirectiveBuilder.start(widgetRepositoryDirectory);
 
         assertThat(readDirective("pbInput")).isEqualTo(generateDirective(pbInput));
         assertThat(readDirective("pbButton")).isEqualTo(generateDirective(pbButton));
@@ -115,32 +100,30 @@ public class WidgetDirectiveBuilderTest {
 
     @Test
     public void should_only_build_directives_files() throws Exception {
-        //
-        widgetRepositoryDirectory.newFile("whatever.txt");
+        Files.createFile(widgetRepositoryDirectory.resolve("whatever.txt"));
 
-        widgetDirectiveBuilder.start(widgetRepositoryDirectory.getRoot().toPath());
+        widgetDirectiveBuilder.start(widgetRepositoryDirectory);
 
         //assert that we do not create a whatever.js file ?
-        assertThat(widgetRepositoryDirectory.getRoot().list()).containsOnly(".metadata", "pbButton", "whatever.txt",
+        assertThat(widgetRepositoryDirectory.toFile().list()).containsOnly(".metadata", "pbButton", "whatever.txt",
                 "pbInput");
     }
 
     @Test
     public void should_watch_given_directory_to_build_directives_on_change() throws Exception {
 
-        widgetDirectiveBuilder.start(widgetRepositoryDirectory.getRoot().toPath());
+        widgetDirectiveBuilder.start(widgetRepositoryDirectory);
 
-        verify(watcher).watch(eq(widgetRepositoryDirectory.getRoot().toPath()), any(PathListener.class));
+        verify(watcher).watch(eq(widgetRepositoryDirectory), any(PathListener.class));
     }
 
     @Test
     public void should_note_watch_given_directory_when_live_build_is_disabled() throws Exception {
-        uiDesignerProperties.getWorkspaceUid().setLiveBuildEnabled(false);
-        widgetDirectiveBuilder = new WidgetDirectiveBuilder(uiDesignerProperties, watcher,
-                new WidgetFileBasedLoader(jsonHandler), htmlSanitizer);
-        widgetDirectiveBuilder.start(widgetRepositoryDirectory.getRoot().toPath());
+        widgetDirectiveBuilder = new WidgetDirectiveBuilder(watcher,
+                new WidgetFileBasedLoader(jsonHandler), false);
+        widgetDirectiveBuilder.start(widgetRepositoryDirectory);
 
-        verify(watcher, never()).watch(eq(widgetRepositoryDirectory.getRoot().toPath()), any(PathListener.class));
+        verify(watcher, never()).watch(eq(widgetRepositoryDirectory), any(PathListener.class));
     }
 
     @Test
@@ -204,7 +187,7 @@ public class WidgetDirectiveBuilderTest {
      * @return resolved path
      */
     private Path resolve(String path) {
-        return widgetRepositoryDirectory.getRoot().toPath().resolve(path);
+        return widgetRepositoryDirectory.resolve(path);
     }
 
 }

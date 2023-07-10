@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.controller.export.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.aComponent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ConstantPropertyValuePredicateTest {
 

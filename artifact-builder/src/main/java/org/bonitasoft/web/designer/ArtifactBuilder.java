@@ -19,14 +19,14 @@ package org.bonitasoft.web.designer;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.controller.export.ExportException;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.rendering.GenerationException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.workspace.Workspace;
 
 public interface ArtifactBuilder {

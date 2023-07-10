@@ -19,8 +19,7 @@ package org.bonitasoft.web.designer.controller.export;
 import static java.nio.file.Paths.get;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_DIRECTORIES;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_DIRECTORIES;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -41,9 +40,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.bonitasoft.web.angularjs.export.IncludeChildDirectoryPredicate;
+import org.bonitasoft.web.designer.common.export.Zipper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.zeroturnaround.zip.ZipUtil;
 
 public class ZipperTest {
@@ -53,14 +54,14 @@ public class ZipperTest {
     private Path tmpDir;
     private URI dir;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         out = new ByteArrayOutputStream();
         zipper = new Zipper(out);
         dir = getClass().getResource("/aDirectory").toURI();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         zipper.close();
         out.close();
@@ -100,7 +101,7 @@ public class ZipperTest {
     @Test
     public void should_zip_a_directory() throws Exception {
 
-        zipper.addDirectoryToZip(get(dir), ALL_DIRECTORIES, ALL_FILES, "");
+        zipper.addDirectoryToZip(get(dir), ALL_DIRECTORIES, Zipper.ALL_FILES, "");
 
         Path dest = unzip(out);
         expectSameDirContent(dest, get(dir));
@@ -108,7 +109,7 @@ public class ZipperTest {
 
     @Test
     public void should_zip_a_directory_in_a_destination_folder_without_filter() throws Exception {
-        zipper.addDirectoryToZip(get(dir), ALL_DIRECTORIES, ALL_FILES, "destinationInZip");
+        zipper.addDirectoryToZip(get(dir), ALL_DIRECTORIES, Zipper.ALL_FILES, "destinationInZip");
 
         Path dest = unzip(out);
         expectSameDirContent(dest.resolve("destinationInZip"), get(dir));
@@ -117,7 +118,7 @@ public class ZipperTest {
     @Test
     public void should_zip_a_directory_in_a_destination_folder() throws Exception {
         zipper.addDirectoryToZip(get(dir), new IncludeChildDirectoryPredicate(get(dir), singleton("aSubDirectory")),
-                ALL_FILES, "destinationInZip");
+                Zipper.ALL_FILES, "destinationInZip");
 
         Path dest = unzip(out);
         expectSameDirContent(dest.resolve("destinationInZip"), get(dir));
@@ -126,7 +127,7 @@ public class ZipperTest {
     @Test
     public void should_zipentry_contains_paths_instead_of_file_separators() throws Exception {
         zipper.addDirectoryToZip(get(dir), new IncludeChildDirectoryPredicate(get(dir), singleton("aSubDirectory")),
-                ALL_FILES, "destinationInZip");
+                Zipper.ALL_FILES, "destinationInZip");
 
         Set<String> entries = zipEntries(out);
         assertThat(entries).contains("destinationInZip/aFile.txt");
@@ -147,7 +148,7 @@ public class ZipperTest {
     public void should_zip_a_directory_and_filter_out_unaccepted_subdirectories() throws Exception {
         String destinationInZip = "destinationInZip";
         zipper.addDirectoryToZip(get(dir), new IncludeChildDirectoryPredicate(get(dir), singleton("nonExisting")),
-                ALL_FILES, destinationInZip);
+                Zipper.ALL_FILES, destinationInZip);
 
         Path dest = unzip(out);
         assertThat(dest.resolve(destinationInZip).toFile().list()).containsExactly("aFile.txt");

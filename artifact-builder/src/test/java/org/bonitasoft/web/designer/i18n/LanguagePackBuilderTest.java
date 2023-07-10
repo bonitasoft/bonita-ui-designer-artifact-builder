@@ -32,62 +32,60 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.PathListener;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.angularjs.GeneratorProperties;
+import org.bonitasoft.web.designer.common.livebuild.PathListener;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JacksonJsonHandler;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LanguagePackBuilderTest {
 
     @Mock
     private Watcher watcher;
 
     private LanguagePackBuilder builder;
-    private WorkspaceUidProperties workspaceUidProperties;
+    private GeneratorProperties generatorProperties;
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    @TempDir
+    Path tempDir;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         newLanguagePackBuilder(true);
     }
 
     private void newLanguagePackBuilder(boolean liveBuildEnabled) {
-        workspaceUidProperties = new WorkspaceUidProperties();
-        workspaceUidProperties.setPath(folder.getRoot().toPath());
-        workspaceUidProperties.setLiveBuildEnabled(liveBuildEnabled);
+        generatorProperties = new GeneratorProperties(this.tempDir.toString(), "i18n");
+        generatorProperties.setLiveBuildEnabled(liveBuildEnabled);
         builder = new LanguagePackBuilder(watcher, new LanguagePackFactory(
-                new JacksonJsonHandler(new ObjectMapper())), workspaceUidProperties);
+                new JacksonJsonHandler(new ObjectMapper())), generatorProperties);
     }
 
     @Test
     public void should_build_all_language_pack_under_provided_directory() throws Exception {
-        File frFile = folder.newFile("fr.po");
-        folder.newFolder("appClassPath");
-        File enFile = folder.newFile("appClassPath/en.po");
-        write(frFile.toPath(), aSimplePoFile());
-        write(enFile.toPath(), aSimplePoFile());
+        Path frFile = Files.createFile(tempDir.resolve("fr.po"));
+        Path appClassPath = Files.createDirectory(tempDir.resolve("appClassPath"));
+        Path enFile = Files.createFile(appClassPath.resolve("en.po"));
+        write(frFile, aSimplePoFile());
+        write(enFile, aSimplePoFile());
 
-        builder.start(folder.getRoot().toPath());
-        assertThat(workspaceUidProperties.getTmpI18nPath().resolve("fr.json")).exists();
+        builder.start(tempDir);
+        assertThat(generatorProperties.getTmpI18nPath().resolve("fr.json")).exists();
         assertThat(resolveJson(frFile)).exists();
         assertThat(resolveJson(enFile)).exists();
     }
 
     @Test
     public void should_watch_directives_files() throws Exception {
-        Path path = workspaceUidProperties.getTmpI18nPath();
+        Path path = generatorProperties.getTmpI18nPath();
 
         builder.start(path);
 
@@ -97,7 +95,7 @@ public class LanguagePackBuilderTest {
     @Test
     public void should_not_watch_directives_files() throws Exception {
         newLanguagePackBuilder(false);
-        Path path = workspaceUidProperties.getTmpI18nPath();
+        Path path = generatorProperties.getTmpI18nPath();
 
         builder.start(path);
 
@@ -106,25 +104,25 @@ public class LanguagePackBuilderTest {
 
     @Test
     public void should_ignore_files_which_are_not_po_files() throws Exception {
-        File poFile = folder.newFile("fr.po");
-        folder.newFile("script.js");
-        write(poFile.toPath(), aSimplePoFile());
+        Path poFile = Files.createFile(tempDir.resolve("fr.po"));
+        Files.createFile(tempDir.resolve("script.js"));
+        write(poFile, aSimplePoFile());
 
-        builder.start(folder.getRoot().toPath());
+        builder.start(tempDir);
 
-        List<String> jsonFiles = Files.walk(workspaceUidProperties.getTmpI18nPath()).filter(Files::isRegularFile)
+        List<String> jsonFiles = Files.walk(generatorProperties.getTmpI18nPath()).filter(Files::isRegularFile)
                 .map(entry -> entry.getFileName().toString()).collect(Collectors.toList());
         assertThat(jsonFiles).containsOnly("fr.json");
     }
 
     @Test
     public void should_replace_a_previous_build_with_new_one() throws Exception {
-        File poFile = folder.newFile("file.po");
-        write(poFile.toPath(), aSimplePoFile());
+        Path poFile = Files.createFile(tempDir.resolve("file.po"));
+        write(poFile, aSimplePoFile());
 
-        builder.build(poFile.toPath());
+        builder.build(poFile);
 
-        assertThat(read(workspaceUidProperties.getTmpI18nPath().resolve("file.json").toFile()))
+        assertThat(read(generatorProperties.getTmpI18nPath().resolve("file.json").toFile()))
                 .isEqualTo("{\"francais\":{\"A page\":\"Une page\"}}");
     }
 
@@ -132,9 +130,10 @@ public class LanguagePackBuilderTest {
         return Files.readString(file.toPath());
     }
 
-    public File resolveJson(File poFile) throws IOException {
+    public File resolveJson(Path poFile) throws IOException {
         return new File(
-                workspaceUidProperties.getTmpI18nPath().resolve(poFile.getName().replace(".po", ".json")).toString());
+                generatorProperties.getTmpI18nPath().resolve(poFile.getFileName().toString().replace(".po", ".json"))
+                        .toString());
     }
 
     private byte[] aSimplePoFile() throws Exception {

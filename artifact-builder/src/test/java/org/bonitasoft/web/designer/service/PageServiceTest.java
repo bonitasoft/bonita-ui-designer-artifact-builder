@@ -39,45 +39,42 @@ import static org.mockito.Mockito.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.bonitasoft.web.designer.builder.AssetBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
-import org.bonitasoft.web.designer.controller.asset.MalformedJsonException;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.data.DataType;
 import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.designer.model.exception.NotFoundException;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.*;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.model.page.Component;
+import org.bonitasoft.web.designer.model.page.Element;
+import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.service.exception.IncompatibleException;
-import org.bonitasoft.web.designer.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import com.fasterxml.jackson.core.FakeJsonProcessingException;
-
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class PageServiceTest {
 
     private static final String CURRENT_MODEL_VERSION = "2.0";
@@ -110,7 +107,7 @@ public class PageServiceTest {
 
     private MigrationStatusReport defaultStatusReport;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         pageService = spy(new DefaultPageService(
                 pageRepository,
@@ -147,7 +144,6 @@ public class PageServiceTest {
     public void should_not_update_and_save_page_if_no_migration_done() {
         Page page = PageBuilder.aPage().withId("myPage").withDesignerVersion("2.0").build();
         when(pageRepository.get("myPage")).thenReturn(page);
-
         Page returnedPage = pageService.get("myPage");
 
         verify(pageMigrationApplyer, never()).migrate(page);
@@ -326,12 +322,12 @@ public class PageServiceTest {
 
     @Test
     public void should_save_a_page_with_fragment() throws Exception {
-
         Page pageToBeSaved = aPageWithFragmentElement();
         final String name = pageToBeSaved.getName();
         pageToBeSaved.setId(name);
 
-        when(pageRepository.get(name)).thenThrow(new NotFoundException());
+        when(pageRepository.get(name))
+                .thenThrow(new org.bonitasoft.web.designer.common.repository.exception.NotFoundException());
         when(pageRepository.getNextAvailableId(name)).thenReturn(name);
 
         // When
@@ -371,7 +367,6 @@ public class PageServiceTest {
                 .withAsset(aPageAsset())
                 .build();
         when(pageRepository.get("my-page")).thenReturn(pageToBeSaved);
-
         Page expectedPage = aPage().withId("my-page")
                 .withAsset(aPageAsset())
                 .build();
@@ -388,6 +383,8 @@ public class PageServiceTest {
         final String pageId = "my-page";
         Page expectedPage = aFilledPage(pageId);
         expectedPage.setStatus(new MigrationStatusReport(true, true));
+        doReturn(new MigrationStatusReport(false, false)).when(pageService).getStatus(any());
+
         when(pageRepository.get(pageId)).thenReturn(expectedPage);
 
         final Page savedPage = pageService.get(pageId);
@@ -452,7 +449,6 @@ public class PageServiceTest {
 
         Page pageToBeUpdated = aPage().withId(pageId).withName(name).build();
         when(pageRepository.get(pageId)).thenReturn(pageToBeUpdated);
-
         // When
         final Page page = pageService.rename(pageId, name);
 
@@ -498,7 +494,6 @@ public class PageServiceTest {
         when(pageRepository.get(pageId)).thenReturn(aPage().withId(pageId).withName(pageId).build());
         when(pageRepository.updateLastUpdateAndSave(any()))
                 .thenThrow(new RepositoryException("exception occurs", new Exception()));
-
         //When
         assertThatThrownBy(() -> pageService.rename(pageId, "hello")).isInstanceOf(RepositoryException.class);
     }
@@ -518,11 +513,6 @@ public class PageServiceTest {
         final Asset asset = pageService.saveOrUpdateAsset(pageId, JAVASCRIPT, fileName, fileContent);
 
         assertThat(asset).isEqualTo(expectedAsset);
-    }
-
-    private MalformedJsonException aMalformedJsonException(byte[] bytes, int errorLine, int errorColumn) {
-        return new MalformedJsonException(
-                new FakeJsonProcessingException("Error while checking json", bytes, errorLine, errorColumn));
     }
 
     @Test
@@ -576,7 +566,6 @@ public class PageServiceTest {
                 anAsset().withName("https://mycdn.com/myExternalJs.js").withScope(AssetScope.PAGE).withType(JAVASCRIPT)
                         .build());
         when(assetVisitor.visit(page)).thenReturn(assets);
-
         //When
         final Page pageAgain = pageService.getWithAsset(page.getId());
 
@@ -597,7 +586,6 @@ public class PageServiceTest {
     public void should_decrement_an_asset() throws Exception {
         Page page = mockPageOfId("my-page");
         Asset asset = anAsset().withId("UIID").withComponentId("my-page").withOrder(3).build();
-
         pageService.changeAssetOrder(page.getId(), asset.getId(), DECREMENT);
 
         verify(pageAssetService).changeAssetOrderInComponent(page, asset.getId(), DECREMENT);
@@ -617,8 +605,6 @@ public class PageServiceTest {
     @Test
     public void should_inactive_an_asset() throws Exception {
         Page page = mockPageOfId("my-page");
-        Asset asset = anAsset().withComponentId(page.getId()).withOrder(3).build();
-
         pageService.changeAssetStateInPreviewable(page.getId(), "UIID", false);
 
         verify(pageAssetService).changeAssetStateInPreviewable(page, "UIID", false);

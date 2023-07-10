@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.service;
 import java.util.List;
 import java.util.Set;
 
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.fragment.Fragment;

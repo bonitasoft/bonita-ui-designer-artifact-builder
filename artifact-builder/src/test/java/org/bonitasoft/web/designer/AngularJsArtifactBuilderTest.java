@@ -22,8 +22,10 @@ import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.UUID;
 
+import org.bonitasoft.web.designer.common.generator.rendering.IHtmlGenerator;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
 import org.bonitasoft.web.designer.controller.export.WidgetExporter;
@@ -32,26 +34,24 @@ import org.bonitasoft.web.designer.controller.importer.ImportStore;
 import org.bonitasoft.web.designer.controller.importer.PageImporter;
 import org.bonitasoft.web.designer.controller.importer.WidgetImporter;
 import org.bonitasoft.web.designer.model.ModelException;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.bonitasoft.web.designer.workspace.Workspace;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AngularJsArtifactBuilderTest {
 
-    @Rule
-    public TemporaryFolder tempDir = new TemporaryFolder();
+    @TempDir
+    public Path tempDir;
 
-    private AngularJsArtifactBuilder artifactBuilder;
+    private DefaultArtifactBuilder artifactBuilder;
 
     @Mock
     private PageService pageService;
@@ -60,10 +60,10 @@ public class AngularJsArtifactBuilderTest {
     @Mock
     private WidgetService widgetService;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
-        artifactBuilder = new AngularJsArtifactBuilder(
+        artifactBuilder = new DefaultArtifactBuilder(
                 // Workspace management
                 mock(Workspace.class),
                 widgetService,
@@ -73,7 +73,7 @@ public class AngularJsArtifactBuilderTest {
                 mock(PageExporter.class),
                 mock(FragmentExporter.class),
                 mock(WidgetExporter.class),
-                mock(HtmlGenerator.class),
+                mock(IHtmlGenerator.class),
                 // Import
                 new ImportStore(),
                 mock(PageImporter.class),

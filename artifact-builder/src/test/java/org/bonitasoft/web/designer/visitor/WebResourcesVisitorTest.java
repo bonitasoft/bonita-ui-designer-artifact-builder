@@ -30,6 +30,7 @@ import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContai
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 import static org.bonitasoft.web.designer.model.data.DataType.BUSINESSDATA;
 import static org.bonitasoft.web.designer.model.data.DataType.URL;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -39,6 +40,8 @@ import java.util.TreeSet;
 
 import org.bonitasoft.web.designer.builder.VariableBuilder;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.model.ParameterType;
 import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
@@ -46,18 +49,16 @@ import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.FragmentElement;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.WebResource;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.model.widgets.Widget;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WebResourcesVisitorTest {
 
     @Mock
@@ -71,9 +72,9 @@ public class WebResourcesVisitorTest {
     private Component buttonGet;
     private Component btnSubmitTask;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        when(widgetRepository.get(Mockito.any(String.class))).thenReturn(WidgetBuilder.aWidget().build());
+        lenient().when(widgetRepository.get(Mockito.any(String.class))).thenReturn(WidgetBuilder.aWidget().build());
         buttonGet = aComponent().withWidgetId("buttonGet")
                 .withPropertyValue("action", "constant", "GET")
                 .withPropertyValue("url", "constant", "../API/identity/user")

@@ -22,27 +22,24 @@ import static org.mockito.Mockito.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.bonitasoft.web.designer.builder.AssetBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AssetDependencyImporterTest {
 
     @Mock
@@ -51,19 +48,12 @@ public class AssetDependencyImporterTest {
     @InjectMocks
     AssetDependencyImporter<Page> pageAssetDependencyImporter;
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-    private Path zipBaseDir;
-
-    @Before
-    public void init() {
-        zipBaseDir = Paths.get(temporaryFolder.getRoot().getPath());
-    }
+    @TempDir
+    Path zipBaseDir;
 
     public void createDirectoryAsset(String assetType) throws IOException {
-        temporaryFolder.newFolder("assets");
-        temporaryFolder.newFolder("assets/", assetType);
+        Files.createDirectory(zipBaseDir.resolve("assets"));
+        Files.createDirectory(zipBaseDir.resolve("assets").resolve(assetType));
     }
 
     @Test
@@ -98,7 +88,7 @@ public class AssetDependencyImporterTest {
         byte[] content = "<style>.maclass1{}</style>".getBytes();
         Files.write(zipBaseDir.resolve("assets").resolve("css").resolve("style.css"), content);
 
-        pageAssetDependencyImporter.save(Arrays.asList(cssAsset), zipBaseDir);
+        pageAssetDependencyImporter.save(Collections.singletonList(cssAsset), zipBaseDir);
 
         verify(pageAssetRepository, times(1)).save(cssAsset, content);
     }
@@ -108,11 +98,11 @@ public class AssetDependencyImporterTest {
             throws Exception {
         Asset cssAsset = AssetBuilder.anAsset().withScope("widget").withComponentId("customWidget").withId("aa")
                 .withType(AssetType.CSS).withName("style.css").build();
-        temporaryFolder.newFolder("customWidget", "assets", "css");
+        Files.createDirectories(zipBaseDir.resolve("customWidget").resolve("assets").resolve("css"));
         byte[] content = "<style>.maclass1{}</style>".getBytes();
         Files.write(zipBaseDir.resolve("customWidget").resolve("assets").resolve("css").resolve("style.css"), content);
 
-        pageAssetDependencyImporter.save(Arrays.asList(cssAsset), zipBaseDir);
+        pageAssetDependencyImporter.save(Collections.singletonList(cssAsset), zipBaseDir);
 
         verify(pageAssetRepository, times(1)).save(cssAsset, content);
     }

@@ -18,17 +18,17 @@ package org.bonitasoft.web.designer;
 
 import java.util.List;
 
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
-import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;

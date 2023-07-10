@@ -25,21 +25,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.bonitasoft.web.designer.builder.PageBuilder;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.migration.MigrationStep;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PageMigrationApplyerTest {
 
     @Mock
@@ -84,9 +83,8 @@ public class PageMigrationApplyerTest {
                 .thenReturn(Optional.of(new MigrationStepReport(MigrationStatus.SUCCESS, "myPage")));
 
         migrationApplyer.migrate(page);
-
-        Assert.assertEquals(page.getPreviousArtifactVersion(), "2.0");
-        Assert.assertEquals(page.getArtifactVersion(), "2.1");
+        assertThat(page.getPreviousArtifactVersion()).isEqualTo("2.0");
+        assertThat(page.getArtifactVersion()).isEqualTo("2.1");
     }
 
     @Test
@@ -99,8 +97,8 @@ public class PageMigrationApplyerTest {
 
         migrationApplyer.migrate(page);
 
-        Assert.assertEquals(page.getPreviousArtifactVersion(), "2.0");
-        Assert.assertEquals(page.getArtifactVersion(), "2.0");
+        assertThat(page.getPreviousArtifactVersion()).isEqualTo("2.0");
+        assertThat(page.getArtifactVersion()).isEqualTo("2.0");
     }
 
     @Test
@@ -118,8 +116,9 @@ public class PageMigrationApplyerTest {
         Page migratedPage = (Page) result.getArtifact();
 
         verify(widgetService).migrateAllCustomWidgetUsedInPreviewable(migratedPage);
-        Assert.assertEquals(migratedPage.getPreviousArtifactVersion(), "1.0.0");
-        Assert.assertEquals(migratedPage.getArtifactVersion(), "2.0");
+
+        assertThat(migratedPage.getPreviousArtifactVersion()).isEqualTo("1.0.0");
+        assertThat(migratedPage.getArtifactVersion()).isEqualTo("2.0");
     }
 
     @Test
@@ -140,14 +139,15 @@ public class PageMigrationApplyerTest {
         MigrationResult result = migrationApplyer.migrate(page);
 
         Page migratedPage = (Page) result.getArtifact();
-        Assert.assertEquals(result.getFinalStatus(), MigrationStatus.WARNING);
-        Assert.assertEquals(result.getMigrationStepReportList().size(), 2);
-        Assert.assertEquals(result.getMigrationStepReportListFilterByFinalStatus().size(), 1);
-        Assert.assertEquals(((MigrationStepReport) result.getMigrationStepReportListFilterByFinalStatus().get(0))
-                .getMigrationStatus(), MigrationStatus.WARNING);
 
-        Assert.assertEquals(migratedPage.getPreviousArtifactVersion(), "1.0.1");
-        Assert.assertEquals(migratedPage.getArtifactVersion(), "2.0");
+        assertThat(result.getFinalStatus()).isEqualTo(MigrationStatus.WARNING);
+        assertThat(result.getMigrationStepReportList().size()).isEqualTo(2);
+        assertThat(result.getMigrationStepReportListFilterByFinalStatus().size()).isEqualTo(1);
+        assertThat(((MigrationStepReport) result.getMigrationStepReportListFilterByFinalStatus().get(0))
+                .getMigrationStatus()).isEqualTo(MigrationStatus.WARNING);
+
+        assertThat(migratedPage.getPreviousArtifactVersion()).isEqualTo("1.0.1");
+        assertThat(migratedPage.getArtifactVersion()).isEqualTo("2.0");
     }
 
     @Test
@@ -163,11 +163,11 @@ public class PageMigrationApplyerTest {
         MigrationResult result = migrationApplyer.migrate(page);
 
         Page migratedPage = (Page) result.getArtifact();
-        Assert.assertEquals(migratedPage.getPreviousArtifactVersion(), "1.0.1");
-        Assert.assertEquals(migratedPage.getArtifactVersion(), "2.0");
+        assertThat(migratedPage.getPreviousArtifactVersion()).isEqualTo("1.0.1");
+        assertThat(migratedPage.getArtifactVersion()).isEqualTo("2.0");
         MigrationStepReport report = (MigrationStepReport) result.getMigrationStepReportList().get(0);
-        Assert.assertEquals(report.getMigrationStatus(), MigrationStatus.ERROR);
-        Assert.assertEquals(report.getArtifactId(), "myPage");
+        assertThat(report.getMigrationStatus()).isEqualTo(MigrationStatus.ERROR);
+        assertThat(report.getArtifactId()).isEqualTo("myPage");
     }
 
     @Test
@@ -183,8 +183,8 @@ public class PageMigrationApplyerTest {
 
         verify(fragmentService).migrateAllFragmentUsed(page);
         verify(widgetService).migrateAllCustomWidgetUsedInPreviewable(page);
-        Assert.assertEquals(page.getPreviousArtifactVersion(), "1.0.0");
-        Assert.assertEquals(page.getArtifactVersion(), "2.0");
+        assertThat(page.getPreviousArtifactVersion()).isEqualTo("1.0.0");
+        assertThat(page.getArtifactVersion()).isEqualTo("2.0");
     }
 
     @Test
@@ -197,7 +197,7 @@ public class PageMigrationApplyerTest {
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
         MigrationStatusReport status = migrationApplyer.getMigrationStatusDependencies(page);
-        Assert.assertEquals(getMigrationStatusReport(true, true), status.toString());
+        assertThat(getMigrationStatusReport(true, true)).isEqualTo(status.toString());
     }
 
     @Test
@@ -210,7 +210,7 @@ public class PageMigrationApplyerTest {
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
         MigrationStatusReport status = migrationApplyer.getMigrationStatusDependencies(page);
-        Assert.assertEquals(getMigrationStatusReport(false, false), status.toString());
+        assertThat(getMigrationStatusReport(false, false)).isEqualTo(status.toString());
     }
 
     @Test
@@ -223,7 +223,7 @@ public class PageMigrationApplyerTest {
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
         MigrationStatusReport status = migrationApplyer.getMigrationStatusDependencies(page);
-        Assert.assertEquals(getMigrationStatusReport(true, false), status.toString());
+        assertThat(getMigrationStatusReport(true, false)).isEqualTo(status.toString());
     }
 
     private String getMigrationStatusReport(boolean compatible, boolean migration) {

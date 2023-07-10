@@ -29,10 +29,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
-import org.bonitasoft.web.designer.controller.importer.dependencies.WidgetDependencyImporter;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 
 public class WidgetImportMock {
 
@@ -41,13 +39,11 @@ public class WidgetImportMock {
     private final Path unzippedPath;
     private final WidgetRepository widgetRepository;
     private final List<Widget> widgets = new ArrayList<>();
-    private JsonHandler jsonHandlerMock;
 
-    public WidgetImportMock(Path unzippedPath, WidgetRepository widgetRepository, JsonHandler jsonHandlerMock)
+    public WidgetImportMock(Path unzippedPath, WidgetRepository widgetRepository)
             throws IOException {
         this.unzippedPath = unzippedPath;
         this.widgetRepository = widgetRepository;
-        this.jsonHandlerMock = jsonHandlerMock;
     }
 
     public List<Widget> mockWidgetsAsAddedDependencies() throws IOException {
@@ -62,7 +58,7 @@ public class WidgetImportMock {
         this.widgets.addAll(widgets);
         when(widgetRepository.getComponentName()).thenReturn("widget");
         when(widgetRepository.loadAll(unzippedPath.resolve(WIDGETS_FOLDER),
-                WidgetDependencyImporter.CUSTOM_WIDGET_FILTER)).thenReturn(this.widgets);
+                WidgetRepository.CUSTOM_WIDGET_FILTER)).thenReturn(this.widgets);
         return widgets;
     }
 
@@ -74,7 +70,7 @@ public class WidgetImportMock {
         this.widgets.addAll(widgets);
         when(widgetRepository.getComponentName()).thenReturn("widget");
         when(widgetRepository.loadAll(unzippedPath.resolve(WIDGETS_FOLDER),
-                WidgetDependencyImporter.CUSTOM_WIDGET_FILTER)).thenReturn(this.widgets);
+                WidgetRepository.CUSTOM_WIDGET_FILTER)).thenReturn(this.widgets);
         when(widgetRepository.exists("alreadyThereWidget")).thenReturn(true);
         when(widgetRepository.exists("anotherExistingWidget")).thenReturn(true);
         when(widgetRepository.get("alreadyThereWidget")).thenReturn(alreadyThereWidget);

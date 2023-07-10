@@ -35,14 +35,17 @@ import org.bonitasoft.web.designer.controller.importer.dependencies.WidgetDepend
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.model.widgets.Widget;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ImportReportTest {
 
     @Mock
@@ -52,7 +55,7 @@ public class ImportReportTest {
     @Mock
     private AssetDependencyImporter assetDependencyImporter;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         when(widgetDependencyImporter.getComponentName()).thenReturn("widget");
         when(fragmentDependencyImporter.getComponentName()).thenReturn("fragment");
@@ -107,16 +110,16 @@ public class ImportReportTest {
     }
 
     private Fragment mockExistsInRepository(Fragment fragment) {
-        when(fragmentDependencyImporter.exists(fragment)).thenReturn(true);
-        when(fragmentDependencyImporter.getOriginalElementFromRepository(fragment)).thenReturn(fragment);
-        return fragment;
-    }
+            when(fragmentDependencyImporter.exists(fragment)).thenReturn(true);
+            when(fragmentDependencyImporter.getOriginalElementFromRepository(fragment)).thenReturn(fragment);
+            return fragment;
+        }
 
     private Widget mockExistsInRepository(Widget widget) {
-        when(widgetDependencyImporter.exists(widget)).thenReturn(true);
-        when(widgetDependencyImporter.getOriginalElementFromRepository(widget)).thenReturn(widget);
-        return widget;
-    }
+            when(widgetDependencyImporter.exists(widget)).thenReturn(true);
+            when(widgetDependencyImporter.getOriginalElementFromRepository(widget)).thenReturn(widget);
+            return widget;
+        }
 
     @Test
     public void should_report_imported_element_when_it_is_a_fragment() throws Exception {

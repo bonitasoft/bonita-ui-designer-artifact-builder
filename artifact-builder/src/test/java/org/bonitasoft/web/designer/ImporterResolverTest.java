@@ -28,38 +28,27 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.UUID;
 
+import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
 import org.bonitasoft.web.designer.controller.export.WidgetExporter;
-import org.bonitasoft.web.designer.controller.importer.AbstractArtifactImporter;
-import org.bonitasoft.web.designer.controller.importer.FragmentImporter;
-import org.bonitasoft.web.designer.controller.importer.Import;
-import org.bonitasoft.web.designer.controller.importer.ImportException;
-import org.bonitasoft.web.designer.controller.importer.ImportStore;
-import org.bonitasoft.web.designer.controller.importer.PageImporter;
-import org.bonitasoft.web.designer.controller.importer.WidgetImporter;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
+import org.bonitasoft.web.designer.controller.importer.*;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.bonitasoft.web.designer.workspace.Workspace;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ImporterResolverTest {
 
-    @Rule
-    public TemporaryFolder tempDir = new TemporaryFolder();
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
+    @TempDir
+    Path tempDir;
 
     @Mock
     private ImportStore importStore;
@@ -73,12 +62,12 @@ public class ImporterResolverTest {
     @Mock
     private FragmentImporter fragmentImporter;
 
-    private AngularJsArtifactBuilder artifactBuilder;
+    private DefaultArtifactBuilder artifactBuilder;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
-        artifactBuilder = spy(new AngularJsArtifactBuilder(
+        artifactBuilder = spy(new DefaultArtifactBuilder(
                 mock(Workspace.class),
                 mock(WidgetService.class),
                 mock(FragmentService.class),
@@ -105,7 +94,7 @@ public class ImporterResolverTest {
     public void should_get_page_importer_from_artifact_type() throws Exception {
 
         // When
-        artifactBuilder.importPage(tempDir.toPath(), false);
+        artifactBuilder.importPage(tempDir, false);
 
         // Then
         verify(artifactBuilder).importFromPath(any(), eq(false), eq(pageImporter));
@@ -114,7 +103,7 @@ public class ImporterResolverTest {
     @Test
     public void should_get_widget_importer_from_artifact_type() throws Exception {
         // When
-        artifactBuilder.importWidget(tempDir.toPath(), false);
+        artifactBuilder.importWidget(tempDir, false);
         // Then
         verify(artifactBuilder).importFromPath(any(), eq(false), eq(widgetImporter));
     }
@@ -123,10 +112,10 @@ public class ImporterResolverTest {
     public void should_throw_NotFoundException_for_an_unknown_artifact_type() throws Exception {
         // Given
         when(widgetImporter.tryToImportAndGenerateReport(any(), eq(false))).thenThrow(new ImportException(PAGE_NOT_FOUND, "error"));
-        tempDir.newFolderPath("resources");
+        Files.createDirectory(tempDir.resolve("resources"));
         // When
         final Throwable throwable = catchThrowable(() ->
-                artifactBuilder.importWidget(tempDir.toPath(), false)
+                artifactBuilder.importWidget(tempDir, false)
         );
         // Then
         assertThat(throwable).isInstanceOf(ImportException.class);
@@ -136,24 +125,22 @@ public class ImporterResolverTest {
 
     @Test
     public void should_get_page_importer_from_path() throws Exception {
-        Path resources = tempDir.newFolderPath("resources");
+        Path resources = Files.createDirectory(tempDir.resolve("resources"));
         Files.createFile(resources.resolve("page.json"));
-        Path path = tempDir.toPath();
 
-        artifactBuilder.importArtifact(path, false);
+        artifactBuilder.importArtifact(tempDir, false);
 
-        verify(artifactBuilder).importFromPath(eq(path), eq(false), eq(pageImporter));
+        verify(artifactBuilder).importFromPath(eq(tempDir), eq(false), eq(pageImporter));
     }
 
     @Test
     public void should_get_widget_importer_from_path() throws Exception {
-        Path resources = tempDir.newFolderPath("resources");
+        Path resources = Files.createDirectory(tempDir.resolve("resources"));
         Files.createFile(resources.resolve("widget.json"));
-        Path path = tempDir.toPath();
 
-        artifactBuilder.importArtifact(path, false);
+        artifactBuilder.importArtifact(tempDir, false);
 
-        verify(artifactBuilder).importFromPath(eq(path), eq(false), eq(widgetImporter));
+        verify(artifactBuilder).importFromPath(eq(tempDir), eq(false), eq(widgetImporter));
     }
 
     @Test
@@ -165,20 +152,19 @@ public class ImporterResolverTest {
 
     @Test
     public void should_get_fragment_importer_from_path() throws Exception {
-        Path resources = tempDir.newFolderPath("resources");
+        Path resources = Files.createDirectory(tempDir.resolve("resources"));
         Files.createFile(resources.resolve("fragment.json"));
-        Path path = tempDir.toPath();
 
-        artifactBuilder.importArtifact(path, false);
+        artifactBuilder.importArtifact(tempDir, false);
 
-        verify(artifactBuilder).importFromPath(eq(path), eq(false), eq(fragmentImporter));
+        verify(artifactBuilder).importFromPath(eq(tempDir), eq(false), eq(fragmentImporter));
     }
 
     @Test
     public void should_get_ImportException_while_resources_folder_is_absent() throws Exception {
 
         // When
-        final Throwable throwable = catchThrowable(() -> artifactBuilder.importArtifact(tempDir.toPath(), false));
+        final Throwable throwable = catchThrowable(() -> artifactBuilder.importArtifact(tempDir, false));
 
         // Then
         assertThat(throwable).isInstanceOf(ImportException.class);
@@ -190,10 +176,10 @@ public class ImporterResolverTest {
     @Test
     public void should_get_ImportException_while_no_importer_found_from_path() throws Exception {
         // Given
-        tempDir.newFolderPath("resources");
+        Path resources = Files.createFile(tempDir.resolve("resources"));
 
         // When
-        final Throwable throwable = catchThrowable(() -> artifactBuilder.resolveArtifactType(tempDir.toPath()));
+        final Throwable throwable = catchThrowable(() -> artifactBuilder.resolveArtifactType(tempDir));
 
         // Then
         ImportException e = (ImportException) throwable;

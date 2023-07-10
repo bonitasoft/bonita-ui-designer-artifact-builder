@@ -21,6 +21,7 @@ import static java.lang.String.format;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bonitasoft.web.designer.common.migration.Version;
 import org.bonitasoft.web.designer.model.DesignerArtifact;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.slf4j.Logger;

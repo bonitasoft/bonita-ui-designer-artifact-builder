@@ -19,19 +19,20 @@ package org.bonitasoft.web.designer.controller.export;
 import static java.lang.String.format;
 import static org.apache.commons.io.IOUtils.copy;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.bonitasoft.web.designer.controller.export.steps.ExportStep.RESOURCES;
+import static org.bonitasoft.web.designer.common.export.ExportStep.RESOURCES;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.bonitasoft.web.designer.controller.export.steps.ExportStep;
+import org.bonitasoft.web.designer.common.export.ExportStep;
+import org.bonitasoft.web.designer.common.export.Zipper;
 import org.bonitasoft.web.designer.model.DesignerArtifact;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.JsonViewPersistence;
 import org.bonitasoft.web.designer.model.ModelException;
-import org.bonitasoft.web.designer.model.widget.Widget;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.service.ArtifactService;
 
 public abstract class Exporter<T extends DesignerArtifact> {

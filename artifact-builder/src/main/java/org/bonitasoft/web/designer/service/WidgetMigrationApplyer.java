@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.widget.Widget;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

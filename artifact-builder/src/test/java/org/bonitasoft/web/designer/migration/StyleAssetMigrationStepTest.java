@@ -26,21 +26,19 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
 import org.bonitasoft.web.designer.utils.FakePageRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StyleAssetMigrationStepTest {
 
     @Mock
@@ -48,17 +46,12 @@ public class StyleAssetMigrationStepTest {
 
     private final PageRepository pageRepository = new FakePageRepository();
 
-    @InjectMocks
     private StyleAssetMigrationStep step;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         AssetService<Page> pageAssetService = new AssetService<>(pageRepository, assetRepository, null);
-        var uiDesignerProperties = new UiDesignerPropertiesBuilder()
-                .workspacePath(Path.of("target/workspace/"))
-                .build();
-        uiDesignerProperties.getWorkspaceUid().setExtractPath(Path.of("src/test/resources"));
-        step = new StyleAssetMigrationStep(uiDesignerProperties, pageAssetService);
+        step = new StyleAssetMigrationStep(Path.of("src/test/resources"), pageAssetService);
     }
 
     private Asset expectedAsset(String name) {

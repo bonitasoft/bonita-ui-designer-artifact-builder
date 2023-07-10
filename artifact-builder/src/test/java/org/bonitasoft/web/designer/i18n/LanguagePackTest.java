@@ -19,56 +19,58 @@ package org.bonitasoft.web.designer.i18n;
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Files.write;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.bonitasoft.web.designer.ArtifactBuilderException;
 import org.bonitasoft.web.designer.model.JacksonJsonHandler;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LanguagePackTest {
 
-    @Rule
-    public TemporaryFolder directory = new TemporaryFolder();
-
     private LanguagePackFactory languagePackFactory;
 
-    @Before
+    @TempDir
+    Path tempDir;
+
+    @BeforeEach
     public void setUp() throws Exception {
         languagePackFactory = new LanguagePackFactory(new JacksonJsonHandler(new ObjectMapper()));
     }
 
     @Test
     public void should_convert_translation_into_json() throws Exception {
-        File poFile = directory.newFile();
-        write(poFile.toPath(), readResource("/i18n/simple.po"));
+        Path poFile = Files.createFile(tempDir.resolve("simple.po"));
+        write(poFile, readResource("/i18n/simple.po"));
 
-        assertThat(new String(languagePackFactory.create(poFile).toJson()))
+        assertThat(new String(languagePackFactory.create(poFile.toFile()).toJson()))
                 .isEqualTo("{\"francais\":{\"A page\":\"Une page\"}}");
     }
 
     @Test
     public void should_convert_plural_translations_into_json() throws Exception {
-        File poFile = directory.newFile();
-        write(poFile.toPath(), readResource("/i18n/plural.po"));
+        Path poFile = Files.createFile(tempDir.resolve("plural.po"));
+        write(poFile, readResource("/i18n/plural.po"));
 
-        assertThat(new String(languagePackFactory.create(poFile).toJson()))
+        assertThat(new String(languagePackFactory.create(poFile.toFile()).toJson()))
                 .isEqualTo("{\"francais\":{\"A page\":[\"Une page\",\"Des pages\"]}}");
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void should_throw_a_runtime_exception_if_the_po_file_does_not_contains_the_language() throws Exception {
-        File poFile = directory.newFile();
-        write(poFile.toPath(),
+        Path folder = Files.createDirectory(tempDir.resolve("i18n"));
+        Path poFile = Files.createFile(folder.resolve("plural.po"));
+        write(poFile,
                 new String(readResource("/i18n/simple.po")).replace("Language: francais", "").getBytes());
-
-        assertThat(new String(languagePackFactory.create(poFile).toJson()))
-                .isEqualTo("{\"francais\":{\"A page\":[\"Une page\",\"Des pages\"]}}");
+        assertThrows(ArtifactBuilderException.class,
+                () -> new String(languagePackFactory.create(poFile.toFile()).toJson()));
     }
 
     private byte[] readResource(String path) throws Exception {

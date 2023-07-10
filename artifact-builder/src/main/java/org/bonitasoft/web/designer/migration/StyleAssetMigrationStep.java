@@ -23,10 +23,10 @@ import static org.bonitasoft.web.designer.model.asset.AssetType.CSS;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.bonitasoft.web.designer.ArtifactBuilderException;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
@@ -39,11 +39,12 @@ public class StyleAssetMigrationStep extends AbstractMigrationStep<Page> {
     private static final Logger logger = LoggerFactory.getLogger(StyleAssetMigrationStep.class);
 
     private final AssetService<Page> assetService;
-    private final UiDesignerProperties uiDesignerProperties;
+    private final Path extractPath;
 
-    public StyleAssetMigrationStep(UiDesignerProperties uiDesignerProperties, AssetService<Page> assetService) {
+    public StyleAssetMigrationStep(Path extractPath, AssetService<Page> assetService) {
         this.assetService = assetService;
-        this.uiDesignerProperties = uiDesignerProperties;
+        //FIXME: this is a hack to get the default style.css file from the classpath
+        this.extractPath = extractPath;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class StyleAssetMigrationStep extends AbstractMigrationStep<Page> {
         var defaultStyleFile = "templates/page/assets/css/style.css";
         try {
             return Files
-                    .readAllBytes(uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve(defaultStyleFile));
+                    .readAllBytes(extractPath.resolve(defaultStyleFile));
         } catch (IOException e) {
             throw new ArtifactBuilderException("Missing " + defaultStyleFile + " from classpath", e);
         }

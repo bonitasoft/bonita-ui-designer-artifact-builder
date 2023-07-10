@@ -26,7 +26,7 @@ import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContai
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 
 import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.widget.BondType;
+import org.bonitasoft.web.designer.model.widgets.BondType;
 import org.junit.Test;
 
 public class FixBondsTypesVisitorTest {

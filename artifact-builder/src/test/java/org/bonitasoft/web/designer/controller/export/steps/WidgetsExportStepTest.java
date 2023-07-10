@@ -22,26 +22,28 @@ import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
 import static org.mockito.Mockito.*;
 
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bonitasoft.web.angularjs.export.Minifier;
+import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
+import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
+import org.bonitasoft.web.designer.common.export.Zipper;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.controller.export.Zipper;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.DirectiveFileGenerator;
-import org.bonitasoft.web.designer.rendering.Minifier;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.utils.rule.TemporaryWidgetRepository;
-import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WidgetsExportStepTest {
 
     @Mock
@@ -49,7 +51,6 @@ public class WidgetsExportStepTest {
 
     private final WorkspaceProperties workspaceProperties = new WorkspaceProperties();
 
-    @Rule
     public TemporaryWidgetRepository repository = new TemporaryWidgetRepository(workspaceProperties);
 
     private WidgetsExportStep step;
@@ -60,12 +61,20 @@ public class WidgetsExportStepTest {
     @Mock
     private DirectiveFileGenerator directiveFileGenerator;
 
-    @Before
+    @TempDir
+    Path tempDir;
+
+    @BeforeEach
     public void beforeEach() {
         step = new WidgetsExportStep(
-                workspaceProperties.getWidgets().getDir(),
+                tempDir,
                 new WidgetIdVisitor(fragmentRepository), directiveFileGenerator);
         zipper = spy(new Zipper(mock(OutputStream.class)));
+        try {
+            repository.init(tempDir);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

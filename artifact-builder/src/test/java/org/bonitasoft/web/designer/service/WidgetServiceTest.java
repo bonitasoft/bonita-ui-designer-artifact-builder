@@ -31,54 +31,48 @@ import static org.bonitasoft.web.designer.builder.PropertyBuilder.aProperty;
 import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.DECREMENT;
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.INCREMENT;
-import static org.bonitasoft.web.designer.model.widget.BondType.CONSTANT;
-import static org.bonitasoft.web.designer.model.widget.BondType.INTERPOLATION;
+import static org.bonitasoft.web.designer.model.widgets.BondType.CONSTANT;
+import static org.bonitasoft.web.designer.model.widgets.BondType.INTERPOLATION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.builder.PropertyBuilder;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.exception.InUseException;
+import org.bonitasoft.web.designer.common.repository.exception.NotAllowedException;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetType;
+import org.bonitasoft.web.designer.model.exception.NotFoundException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.repository.exception.InUseException;
-import org.bonitasoft.web.designer.repository.exception.NotAllowedException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.visitor.AssetVisitor;
-import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.designer.model.widgets.Property;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WidgetServiceTest {
 
     private static final String CURRENT_MODEL_VERSION = "2.0";
@@ -112,7 +106,7 @@ public class WidgetServiceTest {
 
     UiDesignerProperties uiDesignerProperties;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         assetVisitor = new AssetVisitor(widgetRepository, fragmentRepository);
 
@@ -130,7 +124,7 @@ public class WidgetServiceTest {
                 uiDesignerProperties,
                 widgetAssetService));
         migrationStatusReport = new MigrationStatusReport(true, false);
-        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
+        //        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
     }
 
     @Test
@@ -172,6 +166,7 @@ public class WidgetServiceTest {
         String widgetId = "input";
         Widget input = aWidget().withId(widgetId).build();
 
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
         when(widgetRepository.get(widgetId)).thenReturn(input);
         when(widgetService.migrate(input)).thenReturn(input);
 
@@ -187,6 +182,7 @@ public class WidgetServiceTest {
         Widget input = aWidget().withId(widgetId)
                 .assets(anAsset().withName("myScopeWidgetAsset").withType(AssetType.CSS)).build();
 
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
         when(widgetRepository.get(widgetId)).thenReturn(input);
         when(widgetService.migrate(input)).thenReturn(input);
 
@@ -447,6 +443,7 @@ public class WidgetServiceTest {
             assetToSave.setId(assetGeneratedId);
             return assetToSave;
         });
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
 
         Asset savedAsset = widgetService.saveOrUpdateAsset("my-widget", AssetType.JAVASCRIPT, "myfile.js", fileContent);
         assertThat(savedAsset.getId()).isEqualTo(assetGeneratedId);
@@ -470,6 +467,7 @@ public class WidgetServiceTest {
         Widget widget = aWidget().withId("my-widget").custom().build();
         Asset expectedAsset = anAsset().withId("assetId").active().withName("myfile.js").withOrder(2)
                 .withType(AssetType.JAVASCRIPT).build();
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
         when(widgetRepository.get("my-widget")).thenReturn(widget);
         when(widgetService.migrate(widget)).thenReturn(widget);
 
@@ -492,6 +490,7 @@ public class WidgetServiceTest {
         Asset asset = anAsset().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
         when(widgetAssetService.save(widget, asset)).thenThrow(IllegalArgumentException.class);
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
 
         assertThatThrownBy(() -> widgetService.saveAsset("my-widget", asset))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -501,6 +500,7 @@ public class WidgetServiceTest {
     public void should_delete_an_asset() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
 
         widgetService.deleteAsset("my-widget", "UIID");
 
@@ -511,6 +511,7 @@ public class WidgetServiceTest {
     public void should_increment_an_asset() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
 
         widgetService.changeAssetOrder("my-widget", "UIID", INCREMENT);
 
@@ -521,6 +522,7 @@ public class WidgetServiceTest {
     public void should_decrement_an_asset() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
+        doReturn(migrationStatusReport).when(widgetService).getStatus(any());
 
         widgetService.changeAssetOrder("my-widget", "UIID", DECREMENT);
 

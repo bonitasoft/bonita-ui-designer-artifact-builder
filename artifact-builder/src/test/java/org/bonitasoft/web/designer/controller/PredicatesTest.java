@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.controller;
 import static org.bonitasoft.web.designer.controller.Predicates.propertyEqualTo;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PredicatesTest {
 

@@ -19,65 +19,64 @@ package org.bonitasoft.web.designer.workspace;
 import static java.nio.file.Files.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.File;
+import java.nio.file.Path;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class CopyContentIfNotExistsVisitorTest {
 
-    @Rule
-    public TemporaryFolder directory = new TemporaryFolder();
+    @TempDir
+    Path directory;
 
-    File source;
+    Path source;
 
-    File destination;
+    Path destination;
 
     CopyContentIfNotExistsVisitor visitor;
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
-        source = directory.newFolder("source");
-        destination = directory.newFolder("destination");
-        visitor = new CopyContentIfNotExistsVisitor(source.toPath(), destination.toPath());
+        source = createDirectory(directory.resolve("source"));
+        destination = createDirectory(directory.resolve("destination"));
+        visitor = new CopyContentIfNotExistsVisitor(source, destination);
     }
 
     @Test
     public void should_create_given_directory() throws Exception {
 
-        visitor.preVisitDirectory(source.toPath().resolve("widgets"), null);
+        visitor.preVisitDirectory(source.resolve("widgets"), null);
 
-        assertThat(exists(destination.toPath().resolve("widgets"))).isTrue();
+        assertThat(exists(destination.resolve("widgets"))).isTrue();
     }
 
     @Test
     public void should_not_create_given_directory_if_it_already_exist() throws Exception {
-        createDirectories(destination.toPath().resolve("widgets"));
+        createDirectories(destination.resolve("widgets"));
 
-        visitor.preVisitDirectory(source.toPath().resolve("widgets"), null);
+        visitor.preVisitDirectory(source.resolve("widgets"), null);
 
-        assertThat(exists(destination.toPath().resolve("widgets"))).isTrue();
+        assertThat(exists(destination.resolve("widgets"))).isTrue();
     }
 
     @Test
     public void should_copy_given_file_from_source_directory() throws Exception {
-        write(source.toPath().resolve("pbButton.json"), "contents".getBytes());
+        write(source.resolve("pbButton.json"), "contents".getBytes());
 
-        visitor.visitFile(source.toPath().resolve("pbButton.json"), null);
+        visitor.visitFile(source.resolve("pbButton.json"), null);
 
-        assertThat(readAllBytes(destination.toPath().resolve("pbButton.json"))).isEqualTo("contents".getBytes());
+        assertThat(readAllBytes(destination.resolve("pbButton.json"))).isEqualTo("contents".getBytes());
     }
 
     @Test
     public void should_not_copy_given_file_from_source_directory_if_it_already_exist() throws Exception {
-        write(source.toPath().resolve("pbButton.json"), "contents from source".getBytes());
-        write(destination.toPath().resolve("pbButton.json"), "contents from destination".getBytes());
+        write(source.resolve("pbButton.json"), "contents from source".getBytes());
+        write(destination.resolve("pbButton.json"), "contents from destination".getBytes());
 
-        visitor.visitFile(source.toPath().resolve("pbButton.json"), null);
+        visitor.visitFile(source.resolve("pbButton.json"), null);
 
-        assertThat(readAllBytes(destination.toPath().resolve("pbButton.json")))
+        assertThat(readAllBytes(destination.resolve("pbButton.json")))
                 .isEqualTo("contents from destination".getBytes());
     }
 }

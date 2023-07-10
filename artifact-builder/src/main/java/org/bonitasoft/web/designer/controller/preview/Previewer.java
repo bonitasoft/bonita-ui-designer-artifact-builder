@@ -16,9 +16,9 @@
  */
 package org.bonitasoft.web.designer.controller.preview;
 
+import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.model.Identifiable;
 import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

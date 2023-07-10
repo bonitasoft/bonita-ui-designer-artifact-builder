@@ -31,54 +31,46 @@ import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.*;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.assertj.core.api.Condition;
-import org.bonitasoft.web.designer.builder.ComponentBuilder;
-import org.bonitasoft.web.designer.builder.ContainerBuilder;
-import org.bonitasoft.web.designer.builder.PageBuilder;
-import org.bonitasoft.web.designer.builder.TabContainerBuilder;
-import org.bonitasoft.web.designer.builder.TabsContainerBuilder;
+import org.bonitasoft.web.designer.builder.*;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.exception.InUseException;
+import org.bonitasoft.web.designer.common.repository.exception.NotAllowedException;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
+import org.bonitasoft.web.designer.model.exception.NotFoundException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.Form;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.repository.exception.InUseException;
-import org.bonitasoft.web.designer.repository.exception.NotAllowedException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.visitor.*;
+import org.bonitasoft.web.designer.model.page.*;
+import org.bonitasoft.web.designer.visitor.FragmentChangeVisitor;
+import org.bonitasoft.web.designer.visitor.PageHasValidationErrorVisitor;
+import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class FragmentServiceTest {
 
     @Mock
@@ -99,23 +91,20 @@ public class FragmentServiceTest {
     @Mock
     private AssetVisitor assetVisitor;
 
-    private FragmentChangeVisitor fragmentChangeVisitor;
-    private PageHasValidationErrorVisitor pageHasValidationErrorVisitor;
-
     @InjectMocks
     private DefaultFragmentService fragmentService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        fragmentChangeVisitor = new FragmentChangeVisitor();
-        pageHasValidationErrorVisitor = new PageHasValidationErrorVisitor();
+        FragmentChangeVisitor fragmentChangeVisitor = new FragmentChangeVisitor();
+        PageHasValidationErrorVisitor pageHasValidationErrorVisitor = new PageHasValidationErrorVisitor();
         fragmentService = new DefaultFragmentService(fragmentRepository, pageRepository, fragmentMigrationApplyer,
                 fragmentIdVisitor, fragmentChangeVisitor, pageHasValidationErrorVisitor, assetVisitor,
                 new UiDesignerProperties("1.13.1", "2.0"),
                 new WebResourcesVisitor(fragmentRepository, widgetRepository));
 
-        when(fragmentRepository.getComponentName()).thenReturn("fragment");
-        when(pageRepository.getComponentName()).thenReturn("page");
+        lenient().when(fragmentRepository.getComponentName()).thenReturn("fragment");
+        lenient().when(pageRepository.getComponentName()).thenReturn("page");
         lenient().when(fragmentRepository.updateLastUpdateAndSave(any())).thenAnswer((Answer<Fragment>) call -> {
             Fragment fragmentArg = call.getArgument(0);
             fragmentArg.setLastUpdate(Instant.now());
@@ -1083,6 +1072,7 @@ public class FragmentServiceTest {
     }
 
     @Test
+    @MockitoSettings(strictness = Strictness.WARN)
     public void should_update_to_true_parent_page_of_parent_fragment_when_validation_error_status_changes()
             throws Exception {
 

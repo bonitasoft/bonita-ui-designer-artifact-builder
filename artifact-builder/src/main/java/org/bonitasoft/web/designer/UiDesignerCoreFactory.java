@@ -16,18 +16,29 @@
  */
 package org.bonitasoft.web.designer;
 
-import static org.bonitasoft.web.designer.migration.Version.INITIAL_MODEL_VERSION;
+import static org.bonitasoft.web.designer.common.migration.Version.INITIAL_MODEL_VERSION;
 
 import java.util.List;
 
 import javax.validation.Validation;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.bonitasoft.web.designer.common.livebuild.ObserverFactory;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
-import org.bonitasoft.web.designer.livebuild.ObserverFactory;
-import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.migration.AddModelVersionMigrationStep;
 import org.bonitasoft.web.designer.migration.AddWebResourcesForWidget;
 import org.bonitasoft.web.designer.migration.AssetExternalMigrationStep;
@@ -55,16 +66,8 @@ import org.bonitasoft.web.designer.migration.page.UIBootstrapAssetMigrationStep;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.AssetRepository;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.JsonFileBasedLoader;
-import org.bonitasoft.web.designer.repository.JsonFileBasedPersister;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedPersister;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
 import org.bonitasoft.web.designer.service.BondsTypesFixer;
 import org.bonitasoft.web.designer.service.DefaultFragmentService;
 import org.bonitasoft.web.designer.service.DefaultPageService;
@@ -72,14 +75,11 @@ import org.bonitasoft.web.designer.service.DefaultWidgetService;
 import org.bonitasoft.web.designer.service.FragmentMigrationApplyer;
 import org.bonitasoft.web.designer.service.PageMigrationApplyer;
 import org.bonitasoft.web.designer.service.WidgetMigrationApplyer;
-import org.bonitasoft.web.designer.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.bonitasoft.web.designer.visitor.FragmentChangeVisitor;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.visitor.PageHasValidationErrorVisitor;
 import org.bonitasoft.web.designer.visitor.VisitorFactory;
 import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
-import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -170,7 +170,10 @@ public class UiDesignerCoreFactory {
                 new Migration<>("1.0.3",
                         new BondMigrationStep<>(componentVisitor, widgetRepository, new VisitorFactory())),
                 new Migration<>("1.2.9", new AssetExternalMigrationStep<>()),
-                new Migration<>("1.5.7", new StyleAssetMigrationStep(uiDesignerProperties, pageAssetService)),
+                new Migration<>("1.5.7",
+                        new StyleAssetMigrationStep(
+                                uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve("angularjs"),
+                                pageAssetService)),
                 new Migration<>("1.5.10",
                         new UIBootstrapAssetMigrationStep(pageAssetService, componentVisitor, widgetRepository)),
                 new Migration<>("1.7.4", new TextWidgetInterpretHTMLMigrationStep<>(componentVisitor)),
@@ -325,9 +328,10 @@ public class UiDesignerCoreFactory {
      */
     public PageRepository createPageRepository(Watcher watcher) {
         return new PageRepository(
-                uiDesignerProperties.getWorkspace(),
-                uiDesignerProperties.getWorkspaceUid(),
-                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties),
+                uiDesignerProperties.getWorkspace().getPages().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
+                        this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Page.class),
                 beanValidator, watcher);
     }
@@ -340,9 +344,10 @@ public class UiDesignerCoreFactory {
      */
     public FragmentRepository createFragmentRepository(Watcher watcher) {
         return new FragmentRepository(
-                uiDesignerProperties.getWorkspace(),
-                uiDesignerProperties.getWorkspaceUid(),
-                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties),
+                uiDesignerProperties.getWorkspace().getFragments().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
+                        this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Fragment.class),
                 beanValidator, watcher);
     }
@@ -365,11 +370,12 @@ public class UiDesignerCoreFactory {
      */
     public WidgetRepository createWidgetRepository(Watcher watcher) {
         return new WidgetRepository(
-                uiDesignerProperties.getWorkspace(),
-                uiDesignerProperties.getWorkspaceUid(),
-                new WidgetFileBasedPersister(jsonHandler, beanValidator, this.uiDesignerProperties),
+                uiDesignerProperties.getWorkspace().getWidgets().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                new WidgetFileBasedPersister(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
+                        this.uiDesignerProperties.getModelVersion()),
                 new WidgetFileBasedLoader(jsonHandler),
-                beanValidator, watcher, uiDesignerProperties);
+                beanValidator, watcher);
     }
 
 }

@@ -19,14 +19,14 @@ package org.bonitasoft.web.designer.controller.export.properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVariable;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BonitaResourceTransformerTest {
 
     private BonitaResourceTransformer transformer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         transformer = new BonitaResourceTransformer("(\\w*)/(\\w*)");
     }

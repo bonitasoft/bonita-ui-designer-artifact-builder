@@ -26,7 +26,7 @@ import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Element;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
 import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.widget.BondType;
+import org.bonitasoft.web.designer.model.widgets.BondType;
 import org.bonitasoft.web.designer.visitor.AnyLocalContainerVisitor;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.slf4j.Logger;

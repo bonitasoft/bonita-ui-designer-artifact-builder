@@ -21,7 +21,7 @@ import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AssetIdMigrationStepTest {
 

@@ -19,12 +19,12 @@ package org.bonitasoft.web.designer.workspace;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class ResourcesCopierTest {
 
@@ -33,14 +33,14 @@ public class ResourcesCopierTest {
 
     private Path targetFolder;
 
-    @Rule
-    public TemporaryFolder folderManager = new TemporaryFolder();
+    @TempDir
+    public Path folderManager;
 
     private ResourcesCopier resourcesCopier = new ResourcesCopier();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
-        targetFolder = folderManager.newFolder(TARGET_FOLDER).toPath();
+        targetFolder = Files.createDirectory(folderManager.resolve(TARGET_FOLDER));
     }
 
     @Test
