@@ -9,13 +9,8 @@
   <artifactId>ui-designer-backend-migrationReport</artifactId>
   <name>Bonita UI Designer Migration Report</name>
   <description>This module is the backend component for the migration report model of the UI Designer.</description>
-  <scm>
-    <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
-  </scm>
   <properties>
-    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -50,13 +45,6 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
           <execution>
@@ -65,10 +53,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

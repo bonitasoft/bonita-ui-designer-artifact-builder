@@ -9,13 +9,8 @@
   <artifactId>ui-designer-artifact-builder</artifactId>
   <name>Bonita UI Designer Artifact Builder</name>
   <description>This module is the backend component use to build UID artifacts.</description>
-  <scm>
-    <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
-  </scm>
   <properties>
-    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -32,7 +27,6 @@
     <dependency>
       <groupId>org.bonitasoft.web</groupId>
       <artifactId>ui-designer-backend-migrationReport</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -184,13 +178,6 @@
     </resources>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <executions>
@@ -293,10 +280,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
