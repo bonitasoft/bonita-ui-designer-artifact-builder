@@ -10,18 +10,10 @@
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Dependencies</name>
   <description>This module is the Bill of Material of the UI Designer Artifact Builder</description>
-  <scm>
-    <connection>scm:git:git@github.com:bonitasoft/bonita-ui-designer-artifact-builder.git</connection>
-    <developerConnection>scm:git:git@github.com:bonitasoft/bonita-ui-designer-artifact-builder.git</developerConnection>
-    <tag>HEAD</tag>
-    <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
-  </scm>
   <properties>
     <spring-boot.version>2.7.13</spring-boot.version>
     <handlebar.version>4.3.1</handlebar.version>
-    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -112,17 +104,6 @@
             <dependencyManagement>interpolate</dependencyManagement>
           </pomElements>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
