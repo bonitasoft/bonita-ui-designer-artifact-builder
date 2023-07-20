@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.TabContainer;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.TabContainer;
 
 public class TabContainerBuilder extends ElementBuilder<TabContainer> {
 

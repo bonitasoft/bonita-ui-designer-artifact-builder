@@ -16,14 +16,16 @@
  */
 package org.bonitasoft.web.designer;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-import org.bonitasoft.web.angularjs.generator.AngularJsGenerator;
-import org.bonitasoft.web.angularjs.generator.rendering.DirectiveFileGenerator;
-import org.bonitasoft.web.angularjs.generator.workspace.FragmentDirectiveBuilder;
-import org.bonitasoft.web.angularjs.generator.workspace.WidgetDirectiveBuilder;
+import lombok.RequiredArgsConstructor;
+import org.bonitasoft.web.angularjs.AngularJsGenerator;
+import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
+import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
+import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
+import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.export.ExportStep;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
@@ -44,16 +46,17 @@ import org.bonitasoft.web.designer.i18n.I18nInitializer;
 import org.bonitasoft.web.designer.i18n.LanguagePackBuilder;
 import org.bonitasoft.web.designer.i18n.LanguagePackFactory;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
-import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.designer.rendering.IHtmlGenerator;
 import org.bonitasoft.web.designer.workspace.HtmlSanitizer;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;
 import org.bonitasoft.web.designer.workspace.Workspace;
 
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Julien Mege
@@ -81,7 +84,8 @@ public class ArtifactBuilderFactory {
         var fragmentIdVisitor = new FragmentIdVisitor(core.getFragmentRepository());
         var widgetIdVisitor = new WidgetIdVisitor(core.getFragmentRepository());
 
-        var directiveFileGenerator = new DirectiveFileGenerator(uiDesignerProperties.getWorkspace(),
+        var directiveFileGenerator = new DirectiveFileGenerator(
+                uiDesignerProperties.getWorkspace().getWidgets().getDir(),
                 core.getWidgetRepository(), widgetIdVisitor);
 
         //Page
@@ -89,16 +93,19 @@ public class ArtifactBuilderFactory {
                 this.jsonHandler,
                 fragmentIdVisitor,
                 directiveFileGenerator,
-                uiDesignerProperties,
                 widgetIdVisitor,
                 core.getPageRepository(),
                 core.getWidgetRepository(),
                 core.getWidgetAssetRepository(),
                 core.getPageAssetRepository(),
-                core.getFragmentRepository());
+                core.getFragmentRepository(),
+                uiDesignerProperties.getWorkspace().getWidgets().getDir());
 
         var commonExportStep = new ExportStep[] {
                 new PagePropertiesExportStep(new PagePropertiesBuilder(uiDesignerProperties, core.getPageService())),
+                new AssetExportStep(core.getPageAssetRepository()),
+                new FragmentsExportStep<Page>(fragmentIdVisitor,
+                        uiDesignerProperties.getWorkspace().getFragments().getDir())
         };
         var pageExportSteps = Stream
                 .concat(Arrays.stream(commonExportStep), Arrays.stream(angularJsGenerator.getPageExportStep()))
@@ -164,8 +171,13 @@ public class ArtifactBuilderFactory {
 
         // Init workspace now
         var htmlSanitizer = new HtmlSanitizer();
-        var widgetDirectiveBuilder = new WidgetDirectiveBuilder(uiDesignerProperties, core.getWatcher(),
+
+
+
+        var widgetDirectiveBuilder = new WidgetDirectiveBuilder(uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled(), core.getWatcher(),
                 new WidgetFileBasedLoader(jsonHandler), htmlSanitizer);
+
+
         var fragmentDirectiveBuilder = new FragmentDirectiveBuilder(core.getWatcher(), jsonHandler,
                 angularJsGenerator.getHtmlBuilderVisitor(),
                 htmlSanitizer, uiDesignerProperties.getWorkspaceUid());
@@ -175,6 +187,8 @@ public class ArtifactBuilderFactory {
                 uiDesignerProperties,
                 core.getWidgetRepository(),
                 core.getPageRepository(),
+                //TODO: Here we want a mechanism to call angularJsGenerator.construct() at workspace.initilization
+                // It's the generator responsability to start with right behavior
                 widgetDirectiveBuilder, fragmentDirectiveBuilder,
                 core.getWidgetAssetDependencyImporter(),
                 resourcesCopier,
@@ -204,7 +218,7 @@ public class ArtifactBuilderFactory {
                 pageExporter,
                 fragmentExporter,
                 widgetExporter,
-                angularJsGenerator.getHtmlGenerator(),
+                (IHtmlGenerator) angularJsGenerator.getHtmlGenerator(),
                 // Import
                 new ImportStore(),
                 pageImporter,

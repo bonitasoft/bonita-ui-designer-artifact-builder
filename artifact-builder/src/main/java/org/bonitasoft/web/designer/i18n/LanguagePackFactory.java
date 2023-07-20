@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -17,8 +17,7 @@
 package org.bonitasoft.web.designer.i18n;
 
 import java.io.File;
-
-import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.dao.JsonHandler;
 
 import lombok.RequiredArgsConstructor;
 

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Optional;
 
-import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -28,14 +28,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.dependencies.FragmentDependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.dependencies.WidgetDependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

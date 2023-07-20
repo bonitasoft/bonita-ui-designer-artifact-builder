@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,12 @@ package org.bonitasoft.web.designer.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 
 public class FakePageRepository extends PageRepository {
 

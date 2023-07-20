@@ -16,9 +16,9 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import org.bonitasoft.web.designer.model.widget.BondType;
-import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.model.widget.PropertyType;
+import org.bonitasoft.web.dao.model.widgets.BondType;
+import org.bonitasoft.web.dao.model.widgets.Property;
+import org.bonitasoft.web.dao.model.widgets.PropertyType;
 
 public class PropertyBuilder {
 

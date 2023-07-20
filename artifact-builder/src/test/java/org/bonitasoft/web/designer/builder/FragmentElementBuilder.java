@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.builder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bonitasoft.web.designer.model.page.FragmentElement;
+import org.bonitasoft.web.dao.model.page.FragmentElement;
 
 /**
  * @author Colin Puy

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.tuple;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 
-import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.junit.Test;
 
 public class AssetExternalMigrationStepTest {

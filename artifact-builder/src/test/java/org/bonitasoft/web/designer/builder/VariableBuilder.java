@@ -16,10 +16,10 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import static org.bonitasoft.web.designer.model.data.DataType.*;
+import static org.bonitasoft.web.dao.model.data.DataType.*;
 
-import org.bonitasoft.web.designer.model.data.DataType;
-import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.dao.model.data.DataType;
+import org.bonitasoft.web.dao.model.data.Variable;
 
 public class VariableBuilder {
 

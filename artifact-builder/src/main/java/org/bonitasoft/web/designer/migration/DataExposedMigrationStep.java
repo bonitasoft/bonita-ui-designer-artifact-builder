@@ -18,9 +18,9 @@ package org.bonitasoft.web.designer.migration;
 
 import java.util.Optional;
 
-import org.bonitasoft.web.designer.model.data.DataType;
-import org.bonitasoft.web.designer.model.data.Variable;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.data.DataType;
+import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

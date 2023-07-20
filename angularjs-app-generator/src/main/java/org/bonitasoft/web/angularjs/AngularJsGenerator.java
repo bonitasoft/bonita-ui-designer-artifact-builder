@@ -16,47 +16,52 @@
  */
 package org.bonitasoft.web.angularjs;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 
+import org.bonitasoft.web.angularjs.export.HtmlExportStep;
+import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
 import org.bonitasoft.web.angularjs.localization.LocalizationFactory;
 import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.angularjs.rendering.DirectivesCollector;
 import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
-import org.bonitasoft.web.designer.Generator;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.angularjs.visitor.*;
+import org.bonitasoft.web.dao.CommonGenerator;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.export.ExportStep;
+import org.bonitasoft.web.dao.export.AssetExportStep;
+import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.dao.repository.AssetRepository;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.dao.visitor.*;
 
-public class AngularJsGenerator implements Generator {
 
-    private final FragmentIdVisitor fragmentIdVisitor;
-    private final UiDesignerProperties uiDesignerProperties;
+public class AngularJsGenerator extends CommonGenerator {
+
+    private final GeneratorProperties generatorProperties;
     private final DirectiveFileGenerator directiveFileGenerator;
     private final HtmlGenerator htmlGenerator;
     private final HtmlBuilderVisitor htmlBuilderVisitor;
     private final WidgetIdVisitor widgetIdVisitor;
-    private final AssetRepository<Page> pageAssetRepository;
+    private final Path widgetUserRepoPath;
 
     public AngularJsGenerator(JsonHandler jsonHandler,
             FragmentIdVisitor fragmentIdVisitor,
             DirectiveFileGenerator directiveFileGenerator,
-            UiDesignerProperties uiDesignerProperties,
             WidgetIdVisitor widgetIdVisitor,
             PageRepository pageRepository,
             WidgetRepository widgetRepository,
             AssetRepository<Widget> widgetAssetRepository,
             AssetRepository<Page> pageAssetRepository,
-            FragmentRepository fragmentRepository) {
-        this.fragmentIdVisitor = fragmentIdVisitor;
-        this.uiDesignerProperties = uiDesignerProperties;
+            FragmentRepository fragmentRepository,
+                              Path widgetUserRepoPath) {
         this.widgetIdVisitor = widgetIdVisitor;
         this.directiveFileGenerator = directiveFileGenerator;
-        this.pageAssetRepository = pageAssetRepository;
+        this.widgetUserRepoPath = widgetUserRepoPath;
 
         List<PageFactory> pageFactories = List.of(
                 new LocalizationFactory(pageRepository),
@@ -64,39 +69,48 @@ public class AngularJsGenerator implements Generator {
                 new PropertyValuesVisitor(fragmentRepository),
                 new VariableModelVisitor(fragmentRepository));
 
-        this.htmlBuilderVisitor = new HtmlBuilderVisitor(
-                new AssetVisitor(widgetRepository, fragmentRepository),
-                pageFactories,
-                new RequiredModulesVisitor(widgetRepository, fragmentRepository),
-                new DirectivesCollector(jsonHandler, uiDesignerProperties.getWorkspaceUid(),
-                        directiveFileGenerator,
-                        fragmentIdVisitor,
-                        fragmentRepository),
-                pageAssetRepository,
-                widgetAssetRepository,
+        this.generatorProperties = new GeneratorProperties("workspace-uid", "i18n");;
+        this.htmlBuilderVisitor = new HtmlBuilderVisitor(fragmentRepository);
+        var directivesCollector = new DirectivesCollector(jsonHandler,
+                generatorProperties.getTmpPagesRepositoryPath(),
+                generatorProperties.getTmpFragmentsRepositoryPath(),
+                directiveFileGenerator,
+                fragmentIdVisitor,
                 fragmentRepository);
+        var requiredModulesVisitor= new RequiredModulesVisitor(widgetRepository, fragmentRepository);
+        var assetVisitor = new AssetVisitor(widgetRepository, fragmentRepository);
 
-        this.htmlGenerator = new HtmlGenerator(this.htmlBuilderVisitor);
+        this.htmlGenerator = new HtmlGenerator(
+                this.htmlBuilderVisitor,
+                directivesCollector,requiredModulesVisitor,
+                assetVisitor,
+                widgetAssetRepository,
+                pageAssetRepository,
+                pageFactories);
     }
 
-    @Override
+
     public ExportStep[] getPageExportStep() {
+//        var commonSteps = super.getPageExportStep();
+//        var pageExportSteps = Stream
+//                .concat(Arrays.stream(commonSteps), Arrays.stream(angularJsGenerator.getPageExportStep()))
+//                .toArray(ExportStep[]::new);
         return new ExportStep[] {
-                new HtmlExportStep(htmlGenerator, uiDesignerProperties.getWorkspaceUid()),
-                new WidgetsExportStep<Page>(uiDesignerProperties.getWorkspace().getWidgets().getDir(), widgetIdVisitor,
-                        this.directiveFileGenerator),
-                new AssetExportStep(pageAssetRepository),
-                new FragmentsExportStep<Page>(fragmentIdVisitor,
-                        uiDesignerProperties.getWorkspace().getFragments().getDir())
+                new HtmlExportStep(htmlGenerator, this.generatorProperties.getExportBackendResourcesPath()),
+                new WidgetsExportStep<Page>(widgetUserRepoPath, widgetIdVisitor,
+                        this.directiveFileGenerator)
         };
     }
 
-    @Override
+
+    public GeneratorProperties getGeneratorProperties(){
+        return this.generatorProperties;
+    }
+
     public HtmlBuilderVisitor getHtmlBuilderVisitor() {
         return this.htmlBuilderVisitor;
     }
 
-    @Override
     public HtmlGenerator getHtmlGenerator() {
         return this.htmlGenerator;
     }

@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,21 @@
 package org.bonitasoft.web.designer.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.bonitasoft.web.dao.model.asset.AssetType.CSS;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.designer.model.asset.AssetType.CSS;
 import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 import org.apache.commons.io.IOUtils;
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
-import org.bonitasoft.web.designer.model.asset.Asset;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.AssetRepository;
+import org.bonitasoft.web.dao.repository.PageRepository;
 import org.bonitasoft.web.designer.utils.FakePageRepository;
 import org.junit.Before;
 import org.junit.Test;

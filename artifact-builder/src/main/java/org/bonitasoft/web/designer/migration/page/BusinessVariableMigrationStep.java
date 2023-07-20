@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.bonitasoft.web.dao.model.data.DataType;
+import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.dao.model.page.AbstractPage;
 import org.bonitasoft.web.designer.migration.AbstractMigrationStep;
-import org.bonitasoft.web.designer.model.data.DataType;
-import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.AbstractPage;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

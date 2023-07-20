@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -19,6 +19,8 @@ package org.bonitasoft.web.designer.visitor;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.bonitasoft.web.dao.model.data.DataType.BUSINESSDATA;
+import static org.bonitasoft.web.dao.model.data.DataType.URL;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.aComponent;
 import static org.bonitasoft.web.designer.builder.ContainerBuilder.aContainer;
 import static org.bonitasoft.web.designer.builder.FormContainerBuilder.aFormContainer;
@@ -28,8 +30,6 @@ import static org.bonitasoft.web.designer.builder.ModalContainerBuilder.aModalCo
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
-import static org.bonitasoft.web.designer.model.data.DataType.BUSINESSDATA;
-import static org.bonitasoft.web.designer.model.data.DataType.URL;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -37,18 +37,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.FragmentElement;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.page.WebResource;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.builder.VariableBuilder;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
 import org.bonitasoft.web.designer.model.ParameterType;
-import org.bonitasoft.web.designer.model.data.Variable;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.page.WebResource;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

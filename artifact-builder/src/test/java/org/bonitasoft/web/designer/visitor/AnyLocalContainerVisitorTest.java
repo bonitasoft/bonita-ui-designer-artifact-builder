@@ -25,12 +25,12 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.FormContainer;
+import org.bonitasoft.web.dao.model.page.ModalContainer;
+import org.bonitasoft.web.dao.model.page.TabContainer;
+import org.bonitasoft.web.dao.model.page.TabsContainer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

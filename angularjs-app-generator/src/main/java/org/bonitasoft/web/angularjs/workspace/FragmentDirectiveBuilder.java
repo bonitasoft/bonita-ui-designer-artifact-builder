@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 package org.bonitasoft.web.angularjs.workspace;
 
 import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Files.write;
 import static java.nio.file.Paths.get;
 
 import java.io.IOException;
@@ -25,11 +26,11 @@ import java.nio.file.Path;
 
 import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
 import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
+import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.livebuild.AbstractLiveFileBuilder;
 import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.designer.workspace.HtmlSanitizer;
 
 public class FragmentDirectiveBuilder extends AbstractLiveFileBuilder {

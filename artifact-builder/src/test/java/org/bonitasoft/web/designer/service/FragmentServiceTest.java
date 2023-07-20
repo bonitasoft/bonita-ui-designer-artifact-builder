@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -38,35 +38,37 @@ import java.util.Map;
 import java.util.Set;
 
 import org.assertj.core.api.Condition;
+import org.bonitasoft.web.dao.model.MigrationStatusReport;
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.asset.AssetScope;
+import org.bonitasoft.web.dao.model.asset.AssetType;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.Form;
+import org.bonitasoft.web.dao.model.page.FormContainer;
+import org.bonitasoft.web.dao.model.page.FragmentElement;
+import org.bonitasoft.web.dao.model.page.ModalContainer;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.page.TabsContainer;
+import org.bonitasoft.web.dao.visitor.AssetVisitor;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.builder.ComponentBuilder;
 import org.bonitasoft.web.designer.builder.ContainerBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.builder.TabContainerBuilder;
 import org.bonitasoft.web.designer.builder.TabsContainerBuilder;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
-import org.bonitasoft.web.designer.model.asset.Asset;
-import org.bonitasoft.web.designer.model.asset.AssetScope;
-import org.bonitasoft.web.designer.model.asset.AssetType;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.Form;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.repository.exception.InUseException;
-import org.bonitasoft.web.designer.repository.exception.NotAllowedException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.exception.InUseException;
+import org.bonitasoft.web.dao.repository.exception.NotAllowedException;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.visitor.*;
 import org.junit.Assert;
 import org.junit.Before;

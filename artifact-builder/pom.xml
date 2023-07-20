@@ -31,6 +31,11 @@
   <dependencies>
     <dependency>
       <groupId>org.bonitasoft.web</groupId>
+      <artifactId>dao</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bonitasoft.web</groupId>
       <artifactId>angularjs-app-generator</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -152,7 +157,7 @@
     </dependency>
   </dependencies>
   <build>
-  <plugins>
+    <plugins>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>

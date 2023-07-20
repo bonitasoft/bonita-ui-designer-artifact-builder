@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -31,16 +31,16 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.angularjs.generator.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.angularjs.generator.rendering.DirectivesCollector;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.builder.FragmentBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

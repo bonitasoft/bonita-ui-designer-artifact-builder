@@ -21,11 +21,11 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 
 import java.util.Arrays;
 
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.AbstractPage;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.builder.FragmentBuilder;
 import org.bonitasoft.web.designer.builder.VariableBuilder;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.AbstractPage;
-import org.bonitasoft.web.designer.model.page.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

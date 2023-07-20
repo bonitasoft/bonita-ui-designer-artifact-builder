@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 package org.bonitasoft.web.angularjs.workspace;
 
 import static java.lang.String.valueOf;
+import static java.nio.file.Files.write;
 import static java.nio.file.Paths.get;
 
 import java.io.IOException;
@@ -36,9 +37,9 @@ public class WidgetDirectiveBuilder extends AbstractLiveFileBuilder {
     private final HtmlSanitizer htmlSanitizer;
     private final TemplateEngine htmlBuilder = new TemplateEngine("widgetDirectiveTemplate.hbs.js");
 
-    public WidgetDirectiveBuilder(UiDesignerProperties uiDesignerProperties, Watcher watcher,
+    public WidgetDirectiveBuilder(boolean isLiveBuildEnabled, Watcher watcher,
             WidgetFileBasedLoader widgetLoader, HtmlSanitizer htmlSanitizer) {
-        super(watcher, uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
+        super(watcher, isLiveBuildEnabled);
         this.widgetLoader = widgetLoader;
         this.htmlSanitizer = htmlSanitizer;
     }

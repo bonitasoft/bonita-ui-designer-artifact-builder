@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,10 @@
  */
 package org.bonitasoft.web.designer.controller.importer;
 
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.PageRepository;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.repository.PageRepository;
 import org.bonitasoft.web.designer.service.PageService;
 
 public class PageImporter extends AbstractArtifactImporter<Page> {

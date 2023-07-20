@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -32,6 +32,9 @@ import org.apache.commons.io.FileUtils;
 import org.bonitasoft.web.angularjs.generator.rendering.WidgetFileHelper;
 import org.bonitasoft.web.angularjs.generator.workspace.FragmentDirectiveBuilder;
 import org.bonitasoft.web.angularjs.generator.workspace.WidgetDirectiveBuilder;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
 import org.bonitasoft.web.designer.config.DesignerInitializerException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
@@ -39,12 +42,9 @@ import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
 import org.bonitasoft.web.designer.migration.Version;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileSystemUtils;

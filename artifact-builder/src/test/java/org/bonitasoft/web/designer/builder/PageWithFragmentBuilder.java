@@ -22,9 +22,9 @@ import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVaria
 
 import java.util.Map;
 
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.FragmentElement;
+import org.bonitasoft.web.dao.model.page.Page;
 
 public class PageWithFragmentBuilder {
 

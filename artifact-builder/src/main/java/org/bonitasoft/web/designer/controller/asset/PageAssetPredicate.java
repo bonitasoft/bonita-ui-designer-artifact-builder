@@ -20,7 +20,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.function.Predicate;
 
-import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.dao.model.asset.Asset;
 
 /**
  * Predicate that return only page assets (i.e. not widget assets)

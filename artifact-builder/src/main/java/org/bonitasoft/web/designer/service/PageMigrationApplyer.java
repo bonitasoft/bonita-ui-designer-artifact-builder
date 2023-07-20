@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
+import org.bonitasoft.web.dao.model.MigrationStatusReport;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.Page;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,16 @@ package org.bonitasoft.web.designer.controller.export.steps;
 
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_DIRECTORIES;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.dao.export.Zipper.ALL_DIRECTORIES;
+import static org.bonitasoft.web.dao.export.Zipper.ALL_FILES;
 import static org.mockito.Mockito.*;
 
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.controller.export.Zipper;
-import org.bonitasoft.web.designer.model.asset.AssetType;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
+import org.bonitasoft.web.dao.model.asset.AssetType;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.export.Zipper;
+import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

@@ -20,9 +20,9 @@ import java.time.Instant;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bonitasoft.web.designer.model.DesignerArtifact;
-import org.bonitasoft.web.designer.model.JsonViewMetadata;
-import org.bonitasoft.web.designer.model.JsonViewPersistence;
+import org.bonitasoft.web.dao.model.DesignerArtifact;
+import org.bonitasoft.web.dao.model.JsonViewMetadata;
+import org.bonitasoft.web.dao.model.JsonViewPersistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

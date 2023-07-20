@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -25,11 +25,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
 
+import org.bonitasoft.web.dao.model.JsonViewPersistence;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.JsonViewPersistence;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.PageRepository;
 import org.mockito.stubbing.Answer;
 
 public class PageImportMock {

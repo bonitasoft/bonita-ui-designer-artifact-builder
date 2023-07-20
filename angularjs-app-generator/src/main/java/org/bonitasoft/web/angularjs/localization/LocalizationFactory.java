@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,20 @@
  */
 package org.bonitasoft.web.angularjs.localization;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
-import org.bonitasoft.web.designer.model.Assetable;
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.visitor.PageFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.dao.model.Assetable;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.page.Previewable;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.visitor.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class LocalizationFactory implements PageFactory {
 

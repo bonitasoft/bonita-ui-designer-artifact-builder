@@ -19,9 +19,9 @@ package org.bonitasoft.web.designer.service;
 import java.util.List;
 import java.util.Set;
 
-import org.bonitasoft.web.designer.model.asset.Asset;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.page.WebResource;
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.page.WebResource;
 
 public interface PageService extends AssetableArtifactService<Page> {
 

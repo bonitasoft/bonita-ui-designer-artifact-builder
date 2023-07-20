@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bonitasoft.web.dao.model.JsonViewPersistence;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.controller.asset.MalformedJsonException;
 import org.junit.Test;

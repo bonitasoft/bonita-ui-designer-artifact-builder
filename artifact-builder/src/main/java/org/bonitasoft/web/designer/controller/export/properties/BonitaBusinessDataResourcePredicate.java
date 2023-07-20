@@ -16,11 +16,11 @@
  */
 package org.bonitasoft.web.designer.controller.export.properties;
 
-import static org.bonitasoft.web.designer.model.data.DataType.BUSINESSDATA;
+import static org.bonitasoft.web.dao.model.data.DataType.BUSINESSDATA;
 
 import java.util.function.Predicate;
 
-import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.dao.model.data.Variable;
 
 import lombok.RequiredArgsConstructor;
 

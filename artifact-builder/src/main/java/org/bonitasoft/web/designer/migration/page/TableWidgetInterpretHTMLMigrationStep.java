@@ -18,12 +18,12 @@ package org.bonitasoft.web.designer.migration.page;
 
 import java.util.Optional;
 
+import org.bonitasoft.web.dao.model.page.AbstractPage;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.widgets.BondType;
 import org.bonitasoft.web.designer.migration.AbstractMigrationStep;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.AbstractPage;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.model.widget.BondType;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 
 public class TableWidgetInterpretHTMLMigrationStep<T extends AbstractPage> extends AbstractMigrationStep<T> {

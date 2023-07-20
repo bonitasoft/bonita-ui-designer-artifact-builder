@@ -18,18 +18,18 @@ package org.bonitasoft.web.designer.migration.page;
 
 import java.util.Collection;
 
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.model.widget.BondType;
-import org.bonitasoft.web.designer.visitor.ElementVisitor;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.FormContainer;
+import org.bonitasoft.web.dao.model.page.FragmentElement;
+import org.bonitasoft.web.dao.model.page.ModalContainer;
+import org.bonitasoft.web.dao.model.page.Previewable;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.page.TabContainer;
+import org.bonitasoft.web.dao.model.page.TabsContainer;
+import org.bonitasoft.web.dao.model.widgets.BondType;
+import org.bonitasoft.web.dao.visitor.ElementVisitor;
 
 public class MigrationTabsContainerVisitor implements ElementVisitor<Void> {
 

@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.migration.page;
 
-import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.model.widget.Property;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.widgets.Property;
 
 interface BondMigrationStrategy {
 

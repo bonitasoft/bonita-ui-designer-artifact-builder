@@ -25,8 +25,8 @@ import static org.bonitasoft.web.designer.builder.PropertyBuilder.aProperty;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.widget.BondType;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.widgets.BondType;
 import org.junit.Test;
 
 public class FixBondsTypesVisitorTest {

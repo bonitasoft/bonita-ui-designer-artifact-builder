@@ -21,7 +21,7 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 
 import java.util.UUID;
 
-import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

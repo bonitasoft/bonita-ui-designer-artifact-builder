@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,15 +16,16 @@
  */
 package org.bonitasoft.web.designer.controller.export.steps;
 
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.dao.export.Zipper.ALL_FILES;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.controller.export.IncludeChildDirectoryPredicate;
-import org.bonitasoft.web.designer.controller.export.Zipper;
-import org.bonitasoft.web.designer.model.page.AbstractPage;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.dao.export.ExportStep;
+import org.bonitasoft.web.dao.model.page.AbstractPage;
+import org.bonitasoft.web.angularjs.export.IncludeChildDirectoryPredicate;
+import org.bonitasoft.web.dao.export.Zipper;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 
 public class FragmentsExportStep<T extends AbstractPage> implements ExportStep<T> {
 

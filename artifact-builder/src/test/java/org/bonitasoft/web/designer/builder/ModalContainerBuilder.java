@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.ModalContainer;
 
 public class ModalContainerBuilder extends ElementBuilder<ModalContainer> {
 

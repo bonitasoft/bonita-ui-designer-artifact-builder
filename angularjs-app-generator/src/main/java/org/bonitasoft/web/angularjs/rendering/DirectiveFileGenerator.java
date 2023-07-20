@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -22,12 +22,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.rendering.FilesConcatenator;
-import org.bonitasoft.web.designer.rendering.Minifier;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.dao.model.page.Previewable;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.angularjs.export.Minifier;
 
 /**
  * @author Benjamin Parisel
@@ -38,9 +36,10 @@ public class DirectiveFileGenerator {
     private final WidgetRepository widgetRepository;
     private final WidgetIdVisitor widgetIdVisitor;
 
-    public DirectiveFileGenerator(WorkspaceProperties workspaceProperties, WidgetRepository widgetRepository,
-            WidgetIdVisitor widgetIdVisitor) {
-        this.widgetPath = workspaceProperties.getWidgets().getDir();
+    public DirectiveFileGenerator(Path widgetPath,
+              WidgetRepository widgetRepository,
+              WidgetIdVisitor widgetIdVisitor) {
+        this.widgetPath = widgetPath;
         this.widgetRepository = widgetRepository;
         this.widgetIdVisitor = widgetIdVisitor;
     }

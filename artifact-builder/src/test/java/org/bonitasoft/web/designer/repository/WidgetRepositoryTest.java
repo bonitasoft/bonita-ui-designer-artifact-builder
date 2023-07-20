@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -38,18 +38,22 @@ import java.util.Set;
 
 import javax.validation.Validation;
 
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.model.widgets.Property;
+import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.dao.repository.BeanValidator;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedPersister;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.livebuild.PathListener;
 import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.exception.ConstraintValidationException;
-import org.bonitasoft.web.designer.repository.exception.NotAllowedException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.dao.repository.exception.ConstraintValidationException;
+import org.bonitasoft.web.dao.repository.exception.NotAllowedException;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -111,8 +115,7 @@ public class WidgetRepositoryTest {
                 widgetPersister,
                 widgetLoader,
                 validator,
-                watcher,
-                uiDesignerProperties);
+                watcher);
     }
 
     @Test

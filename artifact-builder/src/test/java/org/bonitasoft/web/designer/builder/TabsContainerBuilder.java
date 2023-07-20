@@ -18,8 +18,8 @@ package org.bonitasoft.web.designer.builder;
 
 import java.util.ArrayList;
 
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
+import org.bonitasoft.web.dao.model.page.TabContainer;
+import org.bonitasoft.web.dao.model.page.TabsContainer;
 
 public class TabsContainerBuilder extends ElementBuilder<TabsContainer> {
 

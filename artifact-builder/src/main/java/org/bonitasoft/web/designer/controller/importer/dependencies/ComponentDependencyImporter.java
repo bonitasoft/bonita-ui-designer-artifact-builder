@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.controller.importer.dependencies;
 
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.repository.Repository;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.repository.Repository;
 
 public abstract class ComponentDependencyImporter<T extends Identifiable> implements DependencyImporter<T> {
 

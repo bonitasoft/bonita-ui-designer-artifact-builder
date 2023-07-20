@@ -18,9 +18,9 @@ package org.bonitasoft.web.designer.migration;
 
 import java.util.Optional;
 
-import org.bonitasoft.web.designer.model.Assetable;
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.dao.model.Assetable;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

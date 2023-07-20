@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.designer.model.DesignerArtifact;
-import org.bonitasoft.web.designer.repository.RefreshingRepository;
-import org.bonitasoft.web.designer.repository.Repository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.dao.model.DesignerArtifact;
+import org.bonitasoft.web.dao.repository.RefreshingRepository;
+import org.bonitasoft.web.dao.repository.Repository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 
 public class LiveRepositoryUpdate<A extends DesignerArtifact> implements Comparable<LiveRepositoryUpdate<A>> {
 

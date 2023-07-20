@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 package org.bonitasoft.web.designer.migration.page;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.bonitasoft.web.dao.model.widgets.BondType.*;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.aComponent;
 import static org.bonitasoft.web.designer.builder.ContainerBuilder.aContainer;
 import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
@@ -24,17 +25,16 @@ import static org.bonitasoft.web.designer.builder.FragmentElementBuilder.aFragme
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.PropertyBuilder.aProperty;
 import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
-import static org.bonitasoft.web.designer.model.widget.BondType.*;
 import static org.mockito.Mockito.when;
 
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.widgets.Property;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.bonitasoft.web.designer.visitor.VisitorFactory;
 import org.junit.Before;

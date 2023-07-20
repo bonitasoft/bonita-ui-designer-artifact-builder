@@ -20,16 +20,16 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.READ_DATE_TI
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS;
 
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.FormContainer;
+import org.bonitasoft.web.dao.model.page.FragmentElement;
+import org.bonitasoft.web.dao.model.page.ModalContainer;
+import org.bonitasoft.web.dao.model.page.TabContainer;
+import org.bonitasoft.web.dao.model.page.TabsContainer;
 import org.bonitasoft.web.designer.migration.JacksonDeserializationProblemHandler;
 import org.bonitasoft.web.designer.model.JacksonJsonHandler;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.MapperFeature;

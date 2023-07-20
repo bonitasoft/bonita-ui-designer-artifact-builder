@@ -17,11 +17,11 @@
 package org.bonitasoft.web.designer.controller.export.properties;
 
 import static java.lang.String.valueOf;
-import static org.bonitasoft.web.designer.model.data.DataType.URL;
+import static org.bonitasoft.web.dao.model.data.DataType.URL;
 
 import java.util.function.Predicate;
 
-import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.dao.model.data.Variable;
 
 public class BonitaVariableResourcePredicate implements Predicate<Variable> {
 

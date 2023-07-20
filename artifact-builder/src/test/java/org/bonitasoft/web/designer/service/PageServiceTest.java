@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@ import static java.nio.file.Files.readAllLines;
 import static java.util.Arrays.asList;
 import static java.util.Collections.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.bonitasoft.web.dao.model.asset.AssetScope.PAGE;
+import static org.bonitasoft.web.dao.model.asset.AssetType.JAVASCRIPT;
+import static org.bonitasoft.web.dao.model.data.DataType.URL;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aFilledPage;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.PageWithFragmentBuilder.aPageWithFragmentElement;
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.DECREMENT;
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.INCREMENT;
-import static org.bonitasoft.web.designer.model.asset.AssetScope.PAGE;
-import static org.bonitasoft.web.designer.model.asset.AssetType.JAVASCRIPT;
-import static org.bonitasoft.web.designer.model.data.DataType.URL;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -46,28 +46,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bonitasoft.web.dao.model.MigrationStatusReport;
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.asset.AssetScope;
+import org.bonitasoft.web.dao.model.asset.AssetType;
+import org.bonitasoft.web.dao.model.data.DataType;
+import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.Element;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.builder.AssetBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.asset.MalformedJsonException;
-import org.bonitasoft.web.designer.model.asset.Asset;
-import org.bonitasoft.web.designer.model.asset.AssetScope;
-import org.bonitasoft.web.designer.model.asset.AssetType;
-import org.bonitasoft.web.designer.model.data.DataType;
-import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.*;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.service.exception.IncompatibleException;
-import org.bonitasoft.web.designer.visitor.AssetVisitor;
+import org.bonitasoft.web.dao.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
 import org.junit.Before;
 import org.junit.Test;

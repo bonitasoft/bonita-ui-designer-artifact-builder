@@ -27,8 +27,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
-import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.controller.export.ExportException;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
@@ -41,10 +42,7 @@ import org.bonitasoft.web.designer.controller.importer.PageImporter;
 import org.bonitasoft.web.designer.controller.importer.WidgetImporter;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
 import org.bonitasoft.web.designer.model.ModelException;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.rendering.IHtmlGenerator;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;
@@ -67,7 +65,7 @@ public class AngularJsArtifactBuilder implements ArtifactBuilder {
     private final FragmentExporter fragmentExporter;
     private final WidgetExporter widgetExporter;
     //TODO: Replace Specific
-    private final HtmlGenerator htmlGenerator;
+    private final IHtmlGenerator htmlGenerator;
     private final ImportStore importStore;
     private final PageImporter pageImporter;
     private final FragmentImporter fragmentImporter;
@@ -116,12 +114,12 @@ public class AngularJsArtifactBuilder implements ArtifactBuilder {
     }
 
     @Override
-    public String buildHtml(Page page, String context) throws GenerationException, NotFoundException {
+    public String buildHtml(Page page, String context) throws RuntimeException {
         return htmlGenerator.generateHtml(page, context);
     }
 
     @Override
-    public String buildHtml(Fragment fragment, String context) throws GenerationException, NotFoundException {
+    public String buildHtml(Fragment fragment, String context) throws RuntimeException {
         return htmlGenerator.generateHtml(fragment, context);
     }
 

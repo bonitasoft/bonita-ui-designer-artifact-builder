@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.designer.controller.asset.MalformedJsonException;
 
 import com.fasterxml.jackson.annotation.JsonInclude;

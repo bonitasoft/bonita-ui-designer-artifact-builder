@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 
+import org.bonitasoft.web.angularjs.export.Minifier;
 import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -18,8 +18,8 @@ package org.bonitasoft.web.designer.migration;
 
 import java.io.IOException;
 
-import org.bonitasoft.web.designer.model.asset.Asset;
-import org.bonitasoft.web.designer.model.widget.Property;
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.widgets.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

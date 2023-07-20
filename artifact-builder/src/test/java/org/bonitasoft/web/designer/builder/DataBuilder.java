@@ -16,10 +16,10 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import static org.bonitasoft.web.designer.model.data.DataType.*;
+import static org.bonitasoft.web.dao.model.data.DataType.*;
 
-import org.bonitasoft.web.designer.model.data.Data;
-import org.bonitasoft.web.designer.model.data.DataType;
+import org.bonitasoft.web.dao.model.data.Data;
+import org.bonitasoft.web.dao.model.data.DataType;
 
 public class DataBuilder {
 

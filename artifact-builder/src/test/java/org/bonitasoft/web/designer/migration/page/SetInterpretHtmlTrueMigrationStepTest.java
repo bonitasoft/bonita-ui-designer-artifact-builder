@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -24,13 +24,13 @@ import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
 
 import java.util.Map;
 
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.AbstractPage;
+import org.bonitasoft.web.dao.model.page.Element;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
 import org.bonitasoft.web.designer.builder.RowBuilder;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.AbstractPage;
-import org.bonitasoft.web.designer.model.page.Element;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.junit.Before;
 import org.junit.Test;

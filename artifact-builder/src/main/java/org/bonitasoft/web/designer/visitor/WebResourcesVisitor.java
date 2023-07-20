@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -30,25 +30,26 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.Container;
+import org.bonitasoft.web.dao.model.page.FormContainer;
+import org.bonitasoft.web.dao.model.page.FragmentElement;
+import org.bonitasoft.web.dao.model.page.ModalContainer;
+import org.bonitasoft.web.dao.model.page.Previewable;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.page.TabContainer;
+import org.bonitasoft.web.dao.model.page.TabsContainer;
+import org.bonitasoft.web.dao.model.page.WebResource;
+import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.dao.visitor.ElementVisitor;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaBusinessDataResourcePredicate;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaResourceTransformer;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaVariableResourcePredicate;
 import org.bonitasoft.web.designer.controller.export.properties.ResourceURLFunction;
 import org.bonitasoft.web.designer.model.ParameterType;
-import org.bonitasoft.web.designer.model.data.Variable;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.model.page.WebResource;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 
 import lombok.RequiredArgsConstructor;
 

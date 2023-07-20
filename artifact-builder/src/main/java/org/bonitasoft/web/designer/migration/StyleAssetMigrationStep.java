@@ -19,18 +19,18 @@ package org.bonitasoft.web.designer.migration;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.bonitasoft.web.designer.model.asset.AssetType.CSS;
+import static org.bonitasoft.web.dao.model.asset.AssetType.CSS;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Optional;
 
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
-import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

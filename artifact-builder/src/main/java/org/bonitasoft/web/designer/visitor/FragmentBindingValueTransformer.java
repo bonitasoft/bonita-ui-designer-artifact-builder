@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.visitor;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.bonitasoft.web.designer.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
 
 public class FragmentBindingValueTransformer implements Function<Map.Entry<String, String>, PropertyValue> {
 

@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
-import org.bonitasoft.web.designer.model.page.WebResource;
-import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.model.widget.Widget;
+import org.bonitasoft.web.dao.model.MigrationStatusReport;
+import org.bonitasoft.web.dao.model.page.WebResource;
+import org.bonitasoft.web.dao.model.widgets.Property;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 
 public class WidgetBuilder {
 

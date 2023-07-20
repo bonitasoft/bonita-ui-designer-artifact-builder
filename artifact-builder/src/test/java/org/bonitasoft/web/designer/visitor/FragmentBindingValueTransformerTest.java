@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
-import org.bonitasoft.web.designer.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
 import org.junit.Test;
 
 public class FragmentBindingValueTransformerTest {

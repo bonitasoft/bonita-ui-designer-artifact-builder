@@ -23,8 +23,8 @@ import static org.mockito.Mockito.when;
 
 import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
 import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 import org.junit.runner.RunWith;

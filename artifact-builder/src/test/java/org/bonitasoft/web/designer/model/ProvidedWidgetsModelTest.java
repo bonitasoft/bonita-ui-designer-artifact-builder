@@ -28,8 +28,8 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
-import org.bonitasoft.web.designer.model.widget.Widget;
 import org.junit.Test;
 
 /**

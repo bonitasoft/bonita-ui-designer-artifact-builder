@@ -18,7 +18,7 @@ package org.bonitasoft.web.designer.migration;
 
 import java.util.Optional;
 
-import org.bonitasoft.web.designer.model.DesignerArtifact;
+import org.bonitasoft.web.dao.model.DesignerArtifact;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 
 public class AddModelVersionMigrationStep<A extends DesignerArtifact> extends AbstractMigrationStep<A> {

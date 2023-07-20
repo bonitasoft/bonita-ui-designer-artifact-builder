@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -20,14 +20,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.page.*;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.visitor.ElementVisitor;
 
 import lombok.RequiredArgsConstructor;
-
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.page.*;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.dao.visitor.ElementVisitor;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
 @RequiredArgsConstructor
 public class RequiredModulesVisitor implements ElementVisitor<Set<String>> {
 

@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,17 @@
  */
 package org.bonitasoft.web.designer.controller.importer;
 
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.designer.service.WidgetService;
 
 public class WidgetImporter extends AbstractArtifactImporter<Widget> {
 
     public WidgetImporter(JsonHandler jsonHandler, WidgetService widgetService, WidgetRepository widgetRepository,
-            DependencyImporter... dependencyImporters) {
+                          DependencyImporter... dependencyImporters) {
         super(jsonHandler, widgetService, widgetRepository, dependencyImporters);
     }
 

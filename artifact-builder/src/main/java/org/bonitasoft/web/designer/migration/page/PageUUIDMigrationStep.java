@@ -20,9 +20,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.migration.AbstractMigrationStep;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

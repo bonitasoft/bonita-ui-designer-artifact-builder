@@ -18,15 +18,15 @@ package org.bonitasoft.web.designer.controller.export.properties;
 
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.bonitasoft.web.designer.model.data.DataType.URL;
+import static org.bonitasoft.web.dao.model.data.DataType.URL;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import java.util.*;
 
+import org.bonitasoft.web.dao.model.data.Data;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.model.data.Data;
-import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.service.DefaultPageService;
 import org.junit.Before;
 import org.junit.Test;

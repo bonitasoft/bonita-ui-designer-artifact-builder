@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@ import static org.mockito.Mockito.mock;
 
 import java.nio.file.Path;
 
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.builder.FragmentBuilder;
@@ -29,11 +30,10 @@ import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.JsonFileBasedLoader;
-import org.bonitasoft.web.designer.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.dao.repository.BeanValidator;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.JsonFileBasedLoader;
+import org.bonitasoft.web.dao.repository.JsonFileBasedPersister;
 
 public class TemporaryFragmentRepository extends TemporaryFolder {
 

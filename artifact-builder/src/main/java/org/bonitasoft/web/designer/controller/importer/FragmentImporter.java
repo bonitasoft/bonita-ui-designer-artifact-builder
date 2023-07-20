@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,10 @@
  */
 package org.bonitasoft.web.designer.controller.importer;
 
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.designer.service.FragmentService;
 
 public class FragmentImporter extends AbstractArtifactImporter<Fragment> {

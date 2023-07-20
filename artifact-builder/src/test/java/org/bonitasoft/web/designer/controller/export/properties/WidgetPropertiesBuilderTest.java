@@ -18,8 +18,8 @@ package org.bonitasoft.web.designer.controller.export.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.model.widget.Widget;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

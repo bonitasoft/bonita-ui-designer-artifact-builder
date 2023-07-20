@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -24,11 +24,14 @@ import java.nio.charset.StandardCharsets;
 
 import javax.validation.Validation;
 
+import org.bonitasoft.web.dao.model.JsonViewPersistence;
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.asset.AssetScope;
+import org.bonitasoft.web.dao.model.asset.AssetType;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.JsonViewPersistence;
-import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.exception.ConstraintValidationException;
+import org.bonitasoft.web.dao.repository.BeanValidator;
+import org.bonitasoft.web.dao.repository.exception.ConstraintValidationException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

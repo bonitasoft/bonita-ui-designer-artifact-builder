@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Locale;
 
+import org.bonitasoft.web.dao.model.widgets.PropertyType;
 import org.junit.Test;
 
 public class PropertyTypeTest {

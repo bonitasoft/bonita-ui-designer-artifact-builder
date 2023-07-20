@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import java.io.File;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.junit.Rule;
 import org.junit.Test;

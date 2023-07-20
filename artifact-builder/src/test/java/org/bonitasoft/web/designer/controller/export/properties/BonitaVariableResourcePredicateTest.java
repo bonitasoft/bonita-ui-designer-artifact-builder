@@ -17,9 +17,9 @@
 package org.bonitasoft.web.designer.controller.export.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.bonitasoft.web.designer.model.data.DataType.*;
+import static org.bonitasoft.web.dao.model.data.DataType.*;
 
-import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.dao.model.data.Variable;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -24,14 +24,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.bonitasoft.web.dao.model.MigrationStatusReport;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.builder.PageBuilder;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.migration.MigrationStep;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.Page;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

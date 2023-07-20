@@ -16,7 +16,7 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import org.bonitasoft.web.designer.model.page.Component;
+import org.bonitasoft.web.dao.model.page.Component;
 
 public class ComponentBuilder extends ElementBuilder<Component> {
 

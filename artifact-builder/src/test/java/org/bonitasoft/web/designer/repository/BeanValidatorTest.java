@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,8 @@ import static org.bonitasoft.web.designer.repository.BeanValidatorTest.TestBean.
 import javax.validation.Validation;
 import javax.validation.constraints.NotNull;
 
-import org.bonitasoft.web.designer.repository.exception.ConstraintValidationException;
+import org.bonitasoft.web.dao.repository.BeanValidator;
+import org.bonitasoft.web.dao.repository.exception.ConstraintValidationException;
 import org.junit.Test;
 
 public class BeanValidatorTest {

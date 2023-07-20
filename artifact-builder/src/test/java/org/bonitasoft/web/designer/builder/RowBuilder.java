@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bonitasoft.web.designer.model.page.Element;
+import org.bonitasoft.web.dao.model.page.Element;
 
 public class RowBuilder {
 

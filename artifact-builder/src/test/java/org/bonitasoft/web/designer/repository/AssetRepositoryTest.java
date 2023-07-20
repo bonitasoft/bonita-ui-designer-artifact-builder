@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.aFilledAsset;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.designer.repository.AssetRepository.COMPONENT_ID_REQUIRED;
+import static org.bonitasoft.web.dao.repository.AssetRepository.COMPONENT_ID_REQUIRED;
 import static org.mockito.Mockito.*;
 
 import java.nio.file.Files;
@@ -33,12 +33,15 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.bonitasoft.web.designer.model.asset.Asset;
-import org.bonitasoft.web.designer.model.asset.AssetType;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.exception.ConstraintValidationException;
-import org.bonitasoft.web.designer.repository.exception.NotAllowedException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.asset.AssetType;
+import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.repository.AssetRepository;
+import org.bonitasoft.web.dao.repository.BeanValidator;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.exception.ConstraintValidationException;
+import org.bonitasoft.web.dao.repository.exception.NotAllowedException;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.junit.Before;
 import org.junit.Rule;

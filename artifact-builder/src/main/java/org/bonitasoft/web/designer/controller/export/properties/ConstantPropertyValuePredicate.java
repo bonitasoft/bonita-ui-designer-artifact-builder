@@ -18,8 +18,8 @@ package org.bonitasoft.web.designer.controller.export.properties;
 
 import java.util.function.Predicate;
 
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.PropertyValue;
+import org.bonitasoft.web.dao.model.page.Component;
+import org.bonitasoft.web.dao.model.page.PropertyValue;
 
 public class ConstantPropertyValuePredicate implements Predicate<Component> {
 

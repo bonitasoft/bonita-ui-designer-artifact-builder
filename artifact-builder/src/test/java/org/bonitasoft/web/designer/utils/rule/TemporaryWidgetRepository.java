@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@ import static org.mockito.Mockito.mock;
 
 import java.nio.file.Path;
 
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
@@ -28,11 +29,10 @@ import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.JsonFileBasedPersister;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.BeanValidator;
+import org.bonitasoft.web.dao.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 
 public class TemporaryWidgetRepository extends TemporaryFolder {
 

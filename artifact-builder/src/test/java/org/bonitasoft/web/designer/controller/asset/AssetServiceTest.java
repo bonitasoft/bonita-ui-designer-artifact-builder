@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -18,13 +18,13 @@ package org.bonitasoft.web.designer.controller.asset;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.bonitasoft.web.dao.model.asset.AssetType.CSS;
+import static org.bonitasoft.web.dao.model.asset.AssetType.JAVASCRIPT;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aFilledPage;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.DECREMENT;
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.INCREMENT;
-import static org.bonitasoft.web.designer.model.asset.AssetType.CSS;
-import static org.bonitasoft.web.designer.model.asset.AssetType.JAVASCRIPT;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -33,12 +33,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
-import org.bonitasoft.web.designer.model.asset.Asset;
-import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.Repository;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.dao.repository.AssetRepository;
+import org.bonitasoft.web.dao.repository.Repository;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

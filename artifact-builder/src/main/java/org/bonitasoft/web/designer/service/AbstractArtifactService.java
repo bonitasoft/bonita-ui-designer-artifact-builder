@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,11 +16,11 @@
  */
 package org.bonitasoft.web.designer.service;
 
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.migration.Version;
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.repository.Repository;
+import org.bonitasoft.web.dao.repository.Repository;
 
 public abstract class AbstractArtifactService<R extends Repository<T>, T extends Identifiable>
         implements ArtifactService<T> {

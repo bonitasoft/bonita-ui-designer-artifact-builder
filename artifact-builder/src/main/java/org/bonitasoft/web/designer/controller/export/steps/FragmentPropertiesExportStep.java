@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -18,9 +18,10 @@ package org.bonitasoft.web.designer.controller.export.steps;
 
 import java.io.IOException;
 
-import org.bonitasoft.web.designer.controller.export.Zipper;
+import org.bonitasoft.web.dao.export.ExportStep;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
+import org.bonitasoft.web.dao.export.Zipper;
 import org.bonitasoft.web.designer.controller.export.properties.FragmentPropertiesBuilder;
-import org.bonitasoft.web.designer.model.fragment.Fragment;
 
 public class FragmentPropertiesExportStep implements ExportStep<Fragment> {
 

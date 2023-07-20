@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,23 +16,22 @@
  */
 package org.bonitasoft.web.angularjs.visitor;
 
-import static java.util.Collections.singletonMap;
+import lombok.RequiredArgsConstructor;
+import org.bonitasoft.web.angularjs.rendering.GenerationException;
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.page.*;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import org.bonitasoft.web.dao.visitor.ElementVisitor;
+import org.bonitasoft.web.dao.visitor.PageFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
-import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.page.*;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.visitor.ElementVisitor;
-import org.bonitasoft.web.designer.visitor.PageFactory;
-
-import lombok.RequiredArgsConstructor;
+import static java.util.Collections.singletonMap;
 
 /**
  * An element visitor which traverses the tree of elements recursively to collect property values in a page

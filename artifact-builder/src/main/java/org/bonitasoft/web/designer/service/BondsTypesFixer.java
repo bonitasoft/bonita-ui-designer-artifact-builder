@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -18,10 +18,10 @@ package org.bonitasoft.web.designer.service;
 
 import java.util.List;
 
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.model.widget.Property;
-import org.bonitasoft.web.designer.repository.Repository;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.page.Previewable;
+import org.bonitasoft.web.dao.model.widgets.Property;
+import org.bonitasoft.web.dao.repository.Repository;
 import org.bonitasoft.web.designer.visitor.FixBondsTypesVisitor;
 
 public class BondsTypesFixer<T extends Identifiable & Previewable> {

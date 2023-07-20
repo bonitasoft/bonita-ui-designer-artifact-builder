@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.designer.controller.importer.report.Dependencies;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.model.Identifiable;
 
 public class ImportReportBuilder {
 
