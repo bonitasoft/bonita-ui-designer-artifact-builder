@@ -34,7 +34,7 @@ import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Previewable;
 import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.visitor.ElementVisitor;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ public class DirectivesCollector {
     private final JsonHandler jsonHandler;
 
     private final FragmentRepository fragmentRepository;
-    private final ElementVisitor<Set<String>> fragmentIdVisitor;
+    private final FragmentIdVisitor fragmentIdVisitor;
     private final Path tmpFragmentsRepositoryPath;
     private final Path tmpPagesRepositoryPath;
     private final DirectiveFileGenerator directiveFileGenerator;
@@ -59,7 +59,7 @@ public class DirectivesCollector {
             Path tmpPagesRepositoryPath,
             Path tmpFragmentsRepositoryPath,
             DirectiveFileGenerator directiveFileGenerator,
-            ElementVisitor<Set<String>> fragmentIdVisitor,
+            FragmentIdVisitor fragmentIdVisitor,
             FragmentRepository fragmentRepository) {
         this.jsonHandler = jsonHandler;
         this.tmpPagesRepositoryPath = tmpPagesRepositoryPath;
