@@ -42,7 +42,7 @@ import org.bonitasoft.web.dao.repository.PageRepository;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.dao.repository.exception.ConstraintValidationException;

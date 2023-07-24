@@ -18,6 +18,7 @@ package org.bonitasoft.web.designer.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.bonitasoft.web.dao.migration.Version;
 import org.junit.Test;
 
 public class VersionTest {

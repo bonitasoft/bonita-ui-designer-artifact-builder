@@ -31,13 +31,14 @@ import java.nio.file.Paths;
 
 import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
 import org.bonitasoft.web.angularjs.generator.workspace.WidgetDirectiveBuilder;
+import org.bonitasoft.web.angularjs.workspace.HtmlSanitizer;
 import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.PathListener;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.dao.livebuild.PathListener;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.dao.repository.BeanValidator;
 import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;

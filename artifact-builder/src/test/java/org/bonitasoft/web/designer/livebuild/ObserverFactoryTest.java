@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.bonitasoft.web.dao.livebuild.ObserverFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

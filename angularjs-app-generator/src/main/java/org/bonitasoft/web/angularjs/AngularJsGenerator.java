@@ -16,10 +16,6 @@
  */
 package org.bonitasoft.web.angularjs;
 
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Set;
-
 import org.bonitasoft.web.angularjs.export.HtmlExportStep;
 import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
 import org.bonitasoft.web.angularjs.localization.LocalizationFactory;
@@ -29,15 +25,20 @@ import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
 import org.bonitasoft.web.angularjs.visitor.*;
 import org.bonitasoft.web.dao.CommonGenerator;
 import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.export.ExportStep;
-import org.bonitasoft.web.dao.export.AssetExportStep;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.dao.repository.PageRepository;
 import org.bonitasoft.web.dao.repository.WidgetRepository;
-import org.bonitasoft.web.dao.visitor.*;
+import org.bonitasoft.web.dao.visitor.AssetVisitor;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.dao.visitor.PageFactory;
+import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
+
+import java.nio.file.Path;
+import java.util.List;
 
 
 public class AngularJsGenerator extends CommonGenerator {

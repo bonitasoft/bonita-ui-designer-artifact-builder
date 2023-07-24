@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.service;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.migration.Version;
+import org.bonitasoft.web.dao.migration.Version;
 import org.bonitasoft.web.dao.repository.Repository;
 
 public abstract class AbstractArtifactService<R extends Repository<T>, T extends Identifiable>

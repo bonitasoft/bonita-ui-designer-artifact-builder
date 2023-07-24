@@ -64,7 +64,6 @@ public class AngularJsArtifactBuilder implements ArtifactBuilder {
     private final PageExporter pageExporter;
     private final FragmentExporter fragmentExporter;
     private final WidgetExporter widgetExporter;
-    //TODO: Replace Specific
     private final IHtmlGenerator htmlGenerator;
     private final ImportStore importStore;
     private final PageImporter pageImporter;

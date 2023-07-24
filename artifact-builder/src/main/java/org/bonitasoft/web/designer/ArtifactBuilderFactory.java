@@ -50,7 +50,6 @@ import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
 import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.rendering.IHtmlGenerator;
-import org.bonitasoft.web.designer.workspace.HtmlSanitizer;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;
 import org.bonitasoft.web.designer.workspace.Workspace;
 
@@ -170,17 +169,13 @@ public class ArtifactBuilderFactory {
                 pageDependencyImporters);
 
         // Init workspace now
-        var htmlSanitizer = new HtmlSanitizer();
 
-
-
-        var widgetDirectiveBuilder = new WidgetDirectiveBuilder(uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled(), core.getWatcher(),
-                new WidgetFileBasedLoader(jsonHandler), htmlSanitizer);
+        var widgetDirectiveBuilder = new WidgetDirectiveBuilder(core.getWatcher(),
+                new WidgetFileBasedLoader(jsonHandler), uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
 
 
         var fragmentDirectiveBuilder = new FragmentDirectiveBuilder(core.getWatcher(), jsonHandler,
-                angularJsGenerator.getHtmlBuilderVisitor(),
-                htmlSanitizer, uiDesignerProperties.getWorkspaceUid());
+                angularJsGenerator.getHtmlBuilderVisitor(), uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
 
         var resourcesCopier = new ResourcesCopier();
         var workspace = new Workspace(

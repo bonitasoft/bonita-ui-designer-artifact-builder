@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.PathListener;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.dao.livebuild.PathListener;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JacksonJsonHandler;
 import org.junit.Before;
 import org.junit.Rule;

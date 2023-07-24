@@ -16,7 +16,7 @@
  */
 package org.bonitasoft.web.designer;
 
-import static org.bonitasoft.web.designer.migration.Version.INITIAL_MODEL_VERSION;
+import static org.bonitasoft.web.dao.migration.Version.INITIAL_MODEL_VERSION;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
-import org.bonitasoft.web.designer.livebuild.ObserverFactory;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.dao.livebuild.ObserverFactory;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.migration.AddModelVersionMigrationStep;
 import org.bonitasoft.web.designer.migration.AddWebResourcesForWidget;
 import org.bonitasoft.web.designer.migration.AssetExternalMigrationStep;
@@ -325,9 +325,9 @@ public class UiDesignerCoreFactory {
      */
     public PageRepository createPageRepository(Watcher watcher) {
         return new PageRepository(
-                uiDesignerProperties.getWorkspace(),
-                uiDesignerProperties.getWorkspaceUid(),
-                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties),
+                uiDesignerProperties.getWorkspace().getPages().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(), this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Page.class),
                 beanValidator, watcher);
     }
@@ -340,9 +340,9 @@ public class UiDesignerCoreFactory {
      */
     public FragmentRepository createFragmentRepository(Watcher watcher) {
         return new FragmentRepository(
-                uiDesignerProperties.getWorkspace(),
-                uiDesignerProperties.getWorkspaceUid(),
-                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties),
+                uiDesignerProperties.getWorkspace().getFragments().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(), this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Fragment.class),
                 beanValidator, watcher);
     }
@@ -365,9 +365,9 @@ public class UiDesignerCoreFactory {
      */
     public WidgetRepository createWidgetRepository(Watcher watcher) {
         return new WidgetRepository(
-                uiDesignerProperties.getWorkspace(),
-                uiDesignerProperties.getWorkspaceUid(),
-                new WidgetFileBasedPersister(jsonHandler, beanValidator, this.uiDesignerProperties),
+                uiDesignerProperties.getWorkspace().getWidgets().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                new WidgetFileBasedPersister(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(), this.uiDesignerProperties.getModelVersion()),
                 new WidgetFileBasedLoader(jsonHandler),
                 beanValidator, watcher);
     }

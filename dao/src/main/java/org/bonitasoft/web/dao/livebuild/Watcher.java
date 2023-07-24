@@ -14,28 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.rendering;
+package org.bonitasoft.web.dao.livebuild;
+
+import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.apache.commons.io.monitor.FileAlterationObserver;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
-import com.github.jknack.handlebars.Helper;
-import com.github.jknack.handlebars.Options;
+public class Watcher {
 
-public class IfEqualHelper implements Helper<Object> {
+    private final ObserverFactory observerFactory;
+    private final FileAlterationMonitor monitor;
 
-    /**
-     * A singleton instance of this helper.
-     */
-    public static final Helper<Object> INSTANCE = new IfEqualHelper();
+    public Watcher(ObserverFactory observerFactory, FileAlterationMonitor monitor) {
+        this.observerFactory = observerFactory;
+        this.monitor = monitor;
+    }
 
-    @Override
-    public CharSequence apply(final Object context, final Options options)
-            throws IOException {
-        if (options.hash.get("value").equals(context.toString())) {
-            return options.fn();
-        } else {
-            return options.inverse();
-        }
+    public void watch(Path path, final PathListener listener) throws IOException {
+        FileAlterationObserver observer = observerFactory.create(path, listener);
+        monitor.addObserver(observer);
     }
 
 }

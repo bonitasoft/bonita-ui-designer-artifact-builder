@@ -14,27 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.livebuild;
+package org.bonitasoft.web.dao.livebuild;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
-import org.apache.commons.io.monitor.FileAlterationMonitor;
-import org.apache.commons.io.monitor.FileAlterationObserver;
+public interface PathListener {
 
-public class Watcher {
-
-    private final ObserverFactory observerFactory;
-    private final FileAlterationMonitor monitor;
-
-    public Watcher(ObserverFactory observerFactory, FileAlterationMonitor monitor) {
-        this.observerFactory = observerFactory;
-        this.monitor = monitor;
-    }
-
-    public void watch(Path path, final PathListener listener) throws IOException {
-        FileAlterationObserver observer = observerFactory.create(path, listener);
-        monitor.addObserver(observer);
-    }
+    void onChange(Path path) throws Exception;
 
 }

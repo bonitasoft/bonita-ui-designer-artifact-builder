@@ -17,14 +17,13 @@
 package org.bonitasoft.web.dao.repository;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.model.WidgetContainerRepository;
 import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.designer.model.WidgetContainerRepository;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,14 +35,14 @@ public class PageRepository extends AbstractRepository<Page>
     private static final Logger logger = LoggerFactory.getLogger(PageRepository.class);
 
     public PageRepository(
-            WorkspaceProperties workspaceProperties,
-            WorkspaceUidProperties workspaceUidProperties,
+            Path pagesPath,
+            Path templateResourcesPath,
             JsonFileBasedPersister<Page> persister,
             JsonFileBasedLoader<Page> loader,
             BeanValidator validator,
             Watcher watcher) {
-        super(workspaceProperties.getPages().getDir(), persister, loader, validator, watcher,
-                workspaceUidProperties.getTemplateResourcesPath());
+        super(pagesPath, persister, loader, validator, watcher,
+                templateResourcesPath);
     }
 
     @Override

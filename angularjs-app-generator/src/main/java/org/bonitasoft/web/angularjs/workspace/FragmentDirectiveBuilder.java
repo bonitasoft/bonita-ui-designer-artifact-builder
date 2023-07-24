@@ -16,22 +16,20 @@
  */
 package org.bonitasoft.web.angularjs.workspace;
 
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Files.write;
-import static java.nio.file.Paths.get;
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.angularjs.visitor.HtmlBuilderVisitor;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
-import org.bonitasoft.web.angularjs.generator.visitor.HtmlBuilderVisitor;
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.AbstractLiveFileBuilder;
-import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.dao.model.fragment.Fragment;
-import org.bonitasoft.web.designer.workspace.HtmlSanitizer;
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Files.write;
+import static java.nio.file.Paths.get;
 
 public class FragmentDirectiveBuilder extends AbstractLiveFileBuilder {
 
@@ -41,14 +39,13 @@ public class FragmentDirectiveBuilder extends AbstractLiveFileBuilder {
     private final TemplateEngine htmlBuilder = new TemplateEngine("fragmentDirectiveTemplate.hbs.js");
 
     public FragmentDirectiveBuilder(Watcher watcher,
-            JsonHandler jsonHandler,
-            HtmlBuilderVisitor htmlBuilderVisitor,
-            HtmlSanitizer htmlSanitizer,
-            WorkspaceUidProperties workspaceUidProperties) {
-        super(watcher, workspaceUidProperties.isLiveBuildEnabled());
+                                    JsonHandler jsonHandler,
+                                    HtmlBuilderVisitor htmlBuilderVisitor,
+                                    Boolean isLiveBuildEnabled) {
+        super(watcher, isLiveBuildEnabled);
         this.jsonHandler = jsonHandler;
         this.htmlBuilderVisitor = htmlBuilderVisitor;
-        this.htmlSanitizer = htmlSanitizer;
+        this.htmlSanitizer = new HtmlSanitizer();
     }
 
     /**

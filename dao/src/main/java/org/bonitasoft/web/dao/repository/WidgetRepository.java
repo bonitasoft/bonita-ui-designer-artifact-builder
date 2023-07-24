@@ -20,18 +20,16 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.dao.model.widgets.Property;
 import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.dao.repository.exception.NotAllowedException;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.dao.repository.exception.InUseException;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 
@@ -41,14 +39,14 @@ public class WidgetRepository extends AbstractRepository<Widget> {
     public static final String ANGULARJS_STANDARD_PREFIX = "pb";
 
     public WidgetRepository(
-            WorkspaceProperties workspaceProperties,
-            WorkspaceUidProperties workspaceUidProperties,
+            Path widgetsPath,
+            Path templateResourcesPath,
             JsonFileBasedPersister<Widget> fileBasedRepository,
             JsonFileBasedLoader<Widget> widgetLoader,
             BeanValidator validator,
             Watcher watcher) {
-        super(workspaceProperties.getWidgets().getDir(), fileBasedRepository, widgetLoader, validator, watcher,
-                workspaceUidProperties.getTemplateResourcesPath());
+        super(widgetsPath, fileBasedRepository, widgetLoader, validator, watcher,
+                templateResourcesPath);
     }
 
     @Override

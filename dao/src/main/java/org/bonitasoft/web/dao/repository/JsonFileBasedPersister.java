@@ -16,10 +16,17 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import static java.lang.String.format;
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Files.write;
-import static org.apache.commons.io.FileUtils.forceMkdir;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.migration.Version;
+import org.bonitasoft.web.dao.model.HasUUID;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.model.JsonViewMetadata;
+import org.bonitasoft.web.dao.model.JsonViewPersistence;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -27,19 +34,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.model.HasUUID;
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.model.JsonViewMetadata;
-import org.bonitasoft.web.dao.model.JsonViewPersistence;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.migration.Version;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
+import static java.lang.String.format;
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Files.write;
 
 /**
  * This Persister is used to manage the persistence logic for a component. Each of them are serialized in a json file
@@ -50,13 +47,15 @@ public class JsonFileBasedPersister<T extends Identifiable> {
     protected static final Logger logger = LoggerFactory.getLogger(JsonFileBasedPersister.class);
     protected JsonHandler jsonHandler;
     protected BeanValidator validator;
-    protected UiDesignerProperties uiDesignerProperties;
+    protected String version;
+    protected String modelVersion;
 
     public JsonFileBasedPersister(JsonHandler jsonHandler, BeanValidator validator,
-            UiDesignerProperties uiDesignerProperties) {
+            String version, String modelVersion) {
         this.jsonHandler = jsonHandler;
         this.validator = validator;
-        this.uiDesignerProperties = uiDesignerProperties;
+        this.version = version;
+        this.modelVersion = modelVersion;
     }
 
     /**
@@ -65,7 +64,7 @@ public class JsonFileBasedPersister<T extends Identifiable> {
      * @throws IOException
      */
     public void save(Path directory, T content) throws IOException {
-        var versionToSet = uiDesignerProperties.getVersion();
+        var versionToSet = this.version;
         // Split version before '_' to avoid patch tagged version compatible
         if (versionToSet != null) {
             var currentVersion = versionToSet.split("_");
@@ -75,7 +74,7 @@ public class JsonFileBasedPersister<T extends Identifiable> {
         content.setDesignerVersionIfEmpty(versionToSet);
         var artifactVersion = content.getArtifactVersion();
         if (artifactVersion == null || Version.isSupportingModelVersion(artifactVersion)) {
-            content.setModelVersionIfEmpty(uiDesignerProperties.getModelVersion());
+            content.setModelVersionIfEmpty(this.modelVersion);
         }
         validator.validate(content);
         try {

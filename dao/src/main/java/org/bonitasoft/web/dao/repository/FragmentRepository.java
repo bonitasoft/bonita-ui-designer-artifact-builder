@@ -16,30 +16,29 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import static java.util.stream.Collectors.toList;
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.model.WidgetContainerRepository;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bonitasoft.web.dao.model.fragment.Fragment;
-import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.designer.model.WidgetContainerRepository;
+import static java.util.stream.Collectors.toList;
 
 public class FragmentRepository extends AbstractRepository<Fragment> implements WidgetContainerRepository<Fragment> {
 
     public FragmentRepository(
-            WorkspaceProperties workspaceProperties,
-            WorkspaceUidProperties workspaceUidProperties,
+            Path fragmentsPath,
+            Path templateResourcesPath,
             JsonFileBasedPersister<Fragment> persister,
             JsonFileBasedLoader<Fragment> loader,
             BeanValidator validator,
             Watcher watcher) {
-        super(workspaceProperties.getFragments().getDir(), persister, loader, validator, watcher,
-                workspaceUidProperties.getTemplateResourcesPath());
+        super(fragmentsPath, persister, loader, validator, watcher,
+                templateResourcesPath);
     }
 
     @Override

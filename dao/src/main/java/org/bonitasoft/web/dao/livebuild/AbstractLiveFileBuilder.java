@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.livebuild;
+package org.bonitasoft.web.dao.livebuild;
 
-import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.Files.walkFileTree;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -25,7 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.Files.walkFileTree;
 
 public abstract class AbstractLiveFileBuilder {
 

@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.AbstractLiveFileBuilder;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 
 public class LanguagePackBuilder extends AbstractLiveFileBuilder {
 

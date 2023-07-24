@@ -16,27 +16,23 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import static java.lang.String.format;
-import static java.nio.file.Files.createDirectories;
-import static java.nio.file.Files.walkFileTree;
-import static org.apache.commons.io.FileUtils.copyDirectory;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bonitasoft.web.dao.livebuild.PathListener;
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.livebuild.PathListener;
-import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import static java.lang.String.format;
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.walkFileTree;
 
 /**
  * File based repository

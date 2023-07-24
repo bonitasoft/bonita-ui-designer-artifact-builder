@@ -14,12 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.livebuild;
+package org.bonitasoft.web.dao.generator.rendering;
 
-import java.nio.file.Path;
+import java.io.IOException;
 
-public interface PathListener {
+import com.github.jknack.handlebars.Helper;
+import com.github.jknack.handlebars.Options;
 
-    void onChange(Path path) throws Exception;
+public class IfEqualHelper implements Helper<Object> {
+
+    /**
+     * A singleton instance of this helper.
+     */
+    public static final Helper<Object> INSTANCE = new IfEqualHelper();
+
+    @Override
+    public CharSequence apply(final Object context, final Options options)
+            throws IOException {
+        if (options.hash.get("value").equals(context.toString())) {
+            return options.fn();
+        } else {
+            return options.inverse();
+        }
+    }
 
 }

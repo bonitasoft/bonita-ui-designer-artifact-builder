@@ -16,21 +16,20 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import static java.nio.file.Files.write;
+import org.apache.commons.lang3.StringUtils;
+import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.migration.Version;
+import org.bonitasoft.web.dao.model.HasUUID;
+import org.bonitasoft.web.dao.model.JsonViewPersistence;
+import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.model.HasUUID;
-import org.bonitasoft.web.dao.model.JsonViewPersistence;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.migration.Version;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.nio.file.Files.write;
 
 /**
  * This Persister is used to manage the persistence logic for a widget. Each of them are serialized in a json file
@@ -40,8 +39,8 @@ public class WidgetFileBasedPersister extends JsonFileBasedPersister<Widget> {
     protected static final Logger logger = LoggerFactory.getLogger(WidgetFileBasedPersister.class);
 
     public WidgetFileBasedPersister(JsonHandler jsonHandler, BeanValidator validator,
-            UiDesignerProperties uiDesignerProperties) {
-        super(jsonHandler, validator, uiDesignerProperties);
+                                    String version, String modelVersion) {
+        super(jsonHandler, validator, version, modelVersion);
     }
 
     /**
@@ -51,7 +50,7 @@ public class WidgetFileBasedPersister extends JsonFileBasedPersister<Widget> {
      */
     @Override
     public void save(Path directory, Widget content) throws IOException {
-        var versionToSet = this.uiDesignerProperties.getVersion();
+        var versionToSet = this.version;
         // Split version before '_' to avoid patch tagged version compatible
         String[] currentVersion;
         if (versionToSet != null) {
@@ -61,7 +60,7 @@ public class WidgetFileBasedPersister extends JsonFileBasedPersister<Widget> {
         content.setDesignerVersionIfEmpty(versionToSet);
         var artifactVersion = content.getArtifactVersion();
         if (artifactVersion == null || Version.isSupportingModelVersion(artifactVersion)) {
-            content.setModelVersionIfEmpty(this.uiDesignerProperties.getModelVersion());
+            content.setModelVersionIfEmpty(this.modelVersion);
         }
         validator.validate(content);
 

@@ -25,6 +25,8 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.bonitasoft.web.dao.livebuild.ObserverFactory;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.junit.AfterClass;
 import org.junit.Before;

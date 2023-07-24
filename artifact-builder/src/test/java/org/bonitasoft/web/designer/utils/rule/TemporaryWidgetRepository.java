@@ -27,7 +27,7 @@ import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.dao.repository.BeanValidator;
 import org.bonitasoft.web.dao.repository.JsonFileBasedPersister;

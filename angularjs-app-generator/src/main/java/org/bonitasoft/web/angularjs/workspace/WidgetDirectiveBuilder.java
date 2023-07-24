@@ -16,20 +16,18 @@
  */
 package org.bonitasoft.web.angularjs.workspace;
 
-import static java.lang.String.valueOf;
-import static java.nio.file.Files.write;
-import static java.nio.file.Paths.get;
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.angularjs.generator.rendering.TemplateEngine;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.livebuild.AbstractLiveFileBuilder;
-import org.bonitasoft.web.designer.livebuild.Watcher;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.workspace.HtmlSanitizer;
+import static java.lang.String.valueOf;
+import static java.nio.file.Files.write;
+import static java.nio.file.Paths.get;
 
 public class WidgetDirectiveBuilder extends AbstractLiveFileBuilder {
 
@@ -37,11 +35,11 @@ public class WidgetDirectiveBuilder extends AbstractLiveFileBuilder {
     private final HtmlSanitizer htmlSanitizer;
     private final TemplateEngine htmlBuilder = new TemplateEngine("widgetDirectiveTemplate.hbs.js");
 
-    public WidgetDirectiveBuilder(boolean isLiveBuildEnabled, Watcher watcher,
-            WidgetFileBasedLoader widgetLoader, HtmlSanitizer htmlSanitizer) {
+    public WidgetDirectiveBuilder(Watcher watcher,
+            WidgetFileBasedLoader widgetLoader, boolean isLiveBuildEnabled) {
         super(watcher, isLiveBuildEnabled);
         this.widgetLoader = widgetLoader;
-        this.htmlSanitizer = htmlSanitizer;
+        this.htmlSanitizer = new HtmlSanitizer();
     }
 
     /**

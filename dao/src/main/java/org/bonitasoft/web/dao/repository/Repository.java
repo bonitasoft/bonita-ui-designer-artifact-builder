@@ -23,10 +23,10 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+import org.bonitasoft.web.dao.livebuild.PathListener;
 import org.bonitasoft.web.dao.model.HasUUID;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.livebuild.PathListener;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 
 public interface Repository<T extends Identifiable> {
