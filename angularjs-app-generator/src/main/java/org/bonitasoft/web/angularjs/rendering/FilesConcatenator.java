@@ -16,6 +16,8 @@
  */
 package org.bonitasoft.web.angularjs.rendering;
 
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;

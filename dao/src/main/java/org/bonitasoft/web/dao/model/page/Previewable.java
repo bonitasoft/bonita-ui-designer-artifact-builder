@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bonitasoft.web.dao.model.NotFoundException;
 import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 
 /**
  * Interface of model elements that can be previewed

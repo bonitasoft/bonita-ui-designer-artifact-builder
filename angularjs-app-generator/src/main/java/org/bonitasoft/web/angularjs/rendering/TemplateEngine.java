@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.designer.rendering.IfEqualHelper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.angularjs.generator.rendering.GenerationException;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;

@@ -31,6 +31,7 @@ import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.asset.AssetType;
 import org.bonitasoft.web.dao.model.data.Data;
 import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.dao.visitor.ElementVisitor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

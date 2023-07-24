@@ -17,7 +17,7 @@
 package org.bonitasoft.web.angularjs.visitor;
 
 import lombok.RequiredArgsConstructor;
-import org.bonitasoft.web.angularjs.rendering.GenerationException;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
 import org.bonitasoft.web.dao.model.page.*;
 import org.bonitasoft.web.dao.repository.FragmentRepository;

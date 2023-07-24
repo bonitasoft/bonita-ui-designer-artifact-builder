@@ -32,6 +32,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Previewable;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.dao.visitor.ElementVisitor;
 import org.slf4j.Logger;

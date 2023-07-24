@@ -17,7 +17,7 @@
 package org.bonitasoft.web.angularjs.export;
 
 import inconspicuous.jsmin.JSMin;
-import org.bonitasoft.web.angularjs.rendering.GenerationException;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 
 
 import java.io.ByteArrayInputStream;

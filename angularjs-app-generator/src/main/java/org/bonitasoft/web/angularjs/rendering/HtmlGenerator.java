@@ -24,11 +24,11 @@ import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.asset.AssetScope;
 import org.bonitasoft.web.dao.model.asset.AssetType;
-import org.bonitasoft.web.dao.model.page.Element;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.page.Previewable;
 
 import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.visitor.AssetVisitor;
