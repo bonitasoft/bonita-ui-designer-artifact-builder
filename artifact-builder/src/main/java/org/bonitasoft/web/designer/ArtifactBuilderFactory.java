@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,10 @@
  */
 package org.bonitasoft.web.designer;
 
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.bonitasoft.web.angularjs.AngularJsGenerator;
 import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
 import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
@@ -26,6 +29,9 @@ import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.export.ExportStep;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
@@ -46,16 +52,11 @@ import org.bonitasoft.web.designer.i18n.I18nInitializer;
 import org.bonitasoft.web.designer.i18n.LanguagePackBuilder;
 import org.bonitasoft.web.designer.i18n.LanguagePackFactory;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
-import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.rendering.IHtmlGenerator;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;
 import org.bonitasoft.web.designer.workspace.Workspace;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Julien Mege
@@ -173,9 +174,9 @@ public class ArtifactBuilderFactory {
         var widgetDirectiveBuilder = new WidgetDirectiveBuilder(core.getWatcher(),
                 new WidgetFileBasedLoader(jsonHandler), uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
 
-
         var fragmentDirectiveBuilder = new FragmentDirectiveBuilder(core.getWatcher(), jsonHandler,
-                angularJsGenerator.getHtmlBuilderVisitor(), uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
+                angularJsGenerator.getHtmlBuilderVisitor(),
+                uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
 
         var resourcesCopier = new ResourcesCopier();
         var workspace = new Workspace(

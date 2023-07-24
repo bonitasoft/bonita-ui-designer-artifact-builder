@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@ import java.util.Set;
 import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.dao.model.widgets.Property;
 import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.exception.NotAllowedException;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.repository.exception.InUseException;
+import org.bonitasoft.web.dao.repository.exception.NotAllowedException;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 
 public class WidgetRepository extends AbstractRepository<Widget> {
 

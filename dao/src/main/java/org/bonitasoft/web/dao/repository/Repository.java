@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,8 @@ import java.util.Map;
 import org.bonitasoft.web.dao.livebuild.PathListener;
 import org.bonitasoft.web.dao.model.HasUUID;
 import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 
 public interface Repository<T extends Identifiable> {
 

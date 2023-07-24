@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -17,8 +17,8 @@
 package org.bonitasoft.web.designer.controller.export;
 
 import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.dao.export.ExportStep;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.service.WidgetService;
 
 public class WidgetExporter extends Exporter<Widget> {

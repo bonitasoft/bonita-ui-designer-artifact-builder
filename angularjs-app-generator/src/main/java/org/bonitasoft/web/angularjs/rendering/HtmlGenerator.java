@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,19 +16,26 @@
  */
 package org.bonitasoft.web.angularjs.rendering;
 
+import static java.util.stream.Collectors.toList;
+import static org.bonitasoft.web.dao.model.asset.Asset.getComparatorByComponentId;
+import static org.bonitasoft.web.dao.model.asset.Asset.getComparatorByOrder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bonitasoft.web.angularjs.visitor.HtmlBuilderVisitor;
 import org.bonitasoft.web.angularjs.visitor.RequiredModulesVisitor;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.asset.AssetScope;
 import org.bonitasoft.web.dao.model.asset.AssetType;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.page.Previewable;
-
 import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.visitor.AssetVisitor;
@@ -37,16 +44,6 @@ import org.jsoup.parser.ParseSettings;
 import org.jsoup.parser.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
-import static org.bonitasoft.web.dao.model.asset.Asset.getComparatorByComponentId;
-import static org.bonitasoft.web.dao.model.asset.Asset.getComparatorByOrder;
 
 public class HtmlGenerator {
 
@@ -61,9 +58,10 @@ public class HtmlGenerator {
     private final List<PageFactory> pageFactories;
 
     public HtmlGenerator(HtmlBuilderVisitor htmlBuilderVisitor,
-                         DirectivesCollector directivesCollector,
-                         RequiredModulesVisitor requiredModulesVisitor,
-                         AssetVisitor assetVisitor, AssetRepository<Widget> widgetAssetRepository, AssetRepository<Page> pageAssetRepository, List<PageFactory> pageFactories) {
+            DirectivesCollector directivesCollector,
+            RequiredModulesVisitor requiredModulesVisitor,
+            AssetVisitor assetVisitor, AssetRepository<Widget> widgetAssetRepository,
+            AssetRepository<Page> pageAssetRepository, List<PageFactory> pageFactories) {
         this.htmlBuilderVisitor = htmlBuilderVisitor;
         this.directivesCollector = directivesCollector;
         this.requiredModulesVisitor = requiredModulesVisitor;
@@ -98,7 +96,8 @@ public class HtmlGenerator {
         var sortedAssets = getSortedAssets(previewable);
         var template = new TemplateEngine("page.hbs.html")
                 .with("resourceContext", resourceContext == null ? "" : resourceContext)
-                .with("directives", this.directivesCollector.buildUniqueDirectivesFiles(previewable, previewable.getId()))
+                .with("directives",
+                        this.directivesCollector.buildUniqueDirectivesFiles(previewable, previewable.getId()))
                 .with("rowsHtml", htmlBuilderVisitor.build(previewable.getRows()))
                 .with("jsAsset", getAssetHtmlSrcList(previewable.getId(), AssetType.JAVASCRIPT, sortedAssets))
                 .with("cssAsset", getAssetHtmlSrcList(previewable.getId(), AssetType.CSS, sortedAssets))
@@ -111,8 +110,6 @@ public class HtmlGenerator {
         }
         return template.build(previewable);
     }
-
-
 
     /**
      * Return the list of the previewable assets sorted with only active assets
@@ -158,7 +155,6 @@ public class HtmlGenerator {
             return UUID.randomUUID().toString();
         }
     }
-
 
     private String format(String html) {
         Parser parser = Parser.htmlParser();

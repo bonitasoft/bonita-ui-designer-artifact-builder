@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@ import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.export.Zipper;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.designer.controller.export.properties.FragmentPropertiesBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;

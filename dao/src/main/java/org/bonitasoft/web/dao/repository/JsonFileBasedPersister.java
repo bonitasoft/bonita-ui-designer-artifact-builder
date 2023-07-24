@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,16 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
+import static java.lang.String.format;
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Files.write;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bonitasoft.web.dao.JsonHandler;
@@ -28,15 +37,7 @@ import org.bonitasoft.web.dao.model.JsonViewPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.lang.String.format;
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Files.write;
+import com.fasterxml.jackson.core.JsonGenerationException;
 
 /**
  * This Persister is used to manage the persistence logic for a component. Each of them are serialized in a json file

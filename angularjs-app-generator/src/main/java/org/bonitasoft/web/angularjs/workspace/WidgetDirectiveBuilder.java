@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,18 +16,18 @@
  */
 package org.bonitasoft.web.angularjs.workspace;
 
-import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
-import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
-import org.bonitasoft.web.dao.livebuild.Watcher;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
+import static java.lang.String.valueOf;
+import static java.nio.file.Files.write;
+import static java.nio.file.Paths.get;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import static java.lang.String.valueOf;
-import static java.nio.file.Files.write;
-import static java.nio.file.Paths.get;
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
 
 public class WidgetDirectiveBuilder extends AbstractLiveFileBuilder {
 

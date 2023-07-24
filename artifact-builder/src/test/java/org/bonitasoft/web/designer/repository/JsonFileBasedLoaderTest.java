@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -32,11 +32,11 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.bonitasoft.web.dao.repository.JsonFileBasedLoader;
-import org.bonitasoft.web.designer.JsonHandlerFactory;
-import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.dao.repository.exception.JsonReadException;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.JsonHandlerFactory;
+import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.junit.Before;
 import org.junit.Rule;

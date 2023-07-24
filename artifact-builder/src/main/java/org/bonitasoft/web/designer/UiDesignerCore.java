@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -18,17 +18,17 @@ package org.bonitasoft.web.designer;
 
 import java.util.List;
 
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.designer.controller.asset.AssetService;
-import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
-import org.bonitasoft.web.dao.livebuild.Watcher;
-import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.dao.repository.PageRepository;
 import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.designer.controller.asset.AssetService;
+import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
+import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;

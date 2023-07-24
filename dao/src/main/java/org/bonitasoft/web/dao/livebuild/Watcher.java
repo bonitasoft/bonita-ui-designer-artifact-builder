@@ -16,11 +16,11 @@
  */
 package org.bonitasoft.web.dao.livebuild;
 
-import org.apache.commons.io.monitor.FileAlterationMonitor;
-import org.apache.commons.io.monitor.FileAlterationObserver;
-
 import java.io.IOException;
 import java.nio.file.Path;
+
+import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.apache.commons.io.monitor.FileAlterationObserver;
 
 public class Watcher {
 

@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,7 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import org.bonitasoft.web.dao.livebuild.Watcher;
-import org.bonitasoft.web.dao.model.WidgetContainerRepository;
-import org.bonitasoft.web.dao.model.fragment.Fragment;
+import static java.util.stream.Collectors.toList;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -26,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.model.WidgetContainerRepository;
+import org.bonitasoft.web.dao.model.fragment.Fragment;
 
 public class FragmentRepository extends AbstractRepository<Fragment> implements WidgetContainerRepository<Fragment> {
 

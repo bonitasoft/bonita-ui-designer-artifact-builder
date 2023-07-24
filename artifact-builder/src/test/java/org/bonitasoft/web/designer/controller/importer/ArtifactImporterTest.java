@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -32,10 +32,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.dao.model.JsonViewPersistence;
 import org.bonitasoft.web.dao.model.MigrationStatusReport;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.dao.repository.AssetRepository;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.ArtifactBuilder;
 import org.bonitasoft.web.designer.ArtifactBuilderFactory;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
@@ -46,13 +52,7 @@ import org.bonitasoft.web.designer.controller.importer.dependencies.WidgetDepend
 import org.bonitasoft.web.designer.controller.importer.mocks.PageImportMock;
 import org.bonitasoft.web.designer.controller.importer.mocks.WidgetImportMock;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.dao.repository.AssetRepository;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.repository.PageRepository;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.service.DefaultPageService;
 import org.bonitasoft.web.designer.service.DefaultWidgetService;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;

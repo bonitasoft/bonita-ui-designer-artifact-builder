@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,10 @@ import org.bonitasoft.web.dao.model.Assetable;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.asset.AssetType;
+import org.bonitasoft.web.dao.repository.Repository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.asset.AssetService.OrderType;
-import org.bonitasoft.web.dao.repository.Repository;
 
 public abstract class AbstractAssetableArtifactService<R extends Repository<T>, T extends Identifiable & Assetable>
         extends AbstractArtifactService<R, T> implements AssetableArtifactService<T> {

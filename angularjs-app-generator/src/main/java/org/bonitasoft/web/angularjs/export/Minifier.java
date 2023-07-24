@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,13 @@
  */
 package org.bonitasoft.web.angularjs.export;
 
-import inconspicuous.jsmin.JSMin;
-import org.bonitasoft.web.dao.generator.rendering.GenerationException;
-
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
+
+import inconspicuous.jsmin.JSMin;
 
 public final class Minifier {
 

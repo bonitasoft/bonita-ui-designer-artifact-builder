@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -29,9 +29,9 @@ import org.bonitasoft.web.dao.model.page.ModalContainer;
 import org.bonitasoft.web.dao.model.page.Previewable;
 import org.bonitasoft.web.dao.model.page.TabContainer;
 import org.bonitasoft.web.dao.model.page.TabsContainer;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.dao.visitor.ElementVisitor;
 import org.bonitasoft.web.designer.StreamUtils;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
 
 import lombok.RequiredArgsConstructor;
 

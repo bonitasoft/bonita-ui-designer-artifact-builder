@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -38,8 +38,8 @@ import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.JsonViewPersistence;
 import org.bonitasoft.web.dao.repository.exception.JsonReadException;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

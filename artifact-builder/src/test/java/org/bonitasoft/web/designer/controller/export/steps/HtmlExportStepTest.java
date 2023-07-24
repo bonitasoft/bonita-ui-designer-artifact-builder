@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -17,9 +17,9 @@
 package org.bonitasoft.web.designer.controller.export.steps;
 
 import static java.nio.file.Paths.get;
-import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.dao.export.Zipper.ALL_DIRECTORIES;
 import static org.bonitasoft.web.dao.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,9 +29,9 @@ import java.nio.file.Paths;
 
 import org.bonitasoft.web.angularjs.export.HtmlExportStep;
 import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
+import org.bonitasoft.web.dao.export.Zipper;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.dao.export.Zipper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

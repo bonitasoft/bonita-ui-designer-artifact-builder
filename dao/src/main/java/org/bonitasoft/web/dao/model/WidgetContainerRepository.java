@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@ package org.bonitasoft.web.dao.model;
 import java.util.List;
 import java.util.Map;
 
-import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.repository.Repository;
 
 public interface WidgetContainerRepository<T extends Identifiable> extends Repository<T> {

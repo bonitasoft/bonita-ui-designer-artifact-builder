@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -35,10 +35,10 @@ import java.util.List;
 
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.bonitasoft.web.dao.repository.Repository;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,22 @@
  */
 package org.bonitasoft.web.angularjs.visitor;
 
-import lombok.RequiredArgsConstructor;
-import org.bonitasoft.web.dao.generator.rendering.GenerationException;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+import static org.bonitasoft.web.dao.model.widgets.Widget.spinalCase;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.model.page.*;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.visitor.ElementVisitor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
-import static org.bonitasoft.web.dao.model.widgets.Widget.spinalCase;
+import lombok.RequiredArgsConstructor;
 
 /**
  * An element visitor which traverses the tree of elements recursively to collect html parts of a page

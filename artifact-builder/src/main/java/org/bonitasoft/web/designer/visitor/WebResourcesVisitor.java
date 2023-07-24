@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -42,14 +42,14 @@ import org.bonitasoft.web.dao.model.page.TabContainer;
 import org.bonitasoft.web.dao.model.page.TabsContainer;
 import org.bonitasoft.web.dao.model.page.WebResource;
 import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.dao.visitor.ElementVisitor;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaBusinessDataResourcePredicate;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaResourceTransformer;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaVariableResourcePredicate;
 import org.bonitasoft.web.designer.controller.export.properties.ResourceURLFunction;
 import org.bonitasoft.web.designer.model.ParameterType;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
 
 import lombok.RequiredArgsConstructor;
 

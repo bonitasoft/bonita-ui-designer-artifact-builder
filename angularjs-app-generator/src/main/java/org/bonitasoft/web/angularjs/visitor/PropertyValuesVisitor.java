@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,14 @@
  */
 package org.bonitasoft.web.angularjs.visitor;
 
-import lombok.RequiredArgsConstructor;
-import org.bonitasoft.web.dao.generator.rendering.GenerationException;
+import static java.util.Collections.singletonMap;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.page.*;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
@@ -27,11 +32,7 @@ import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.visitor.ElementVisitor;
 import org.bonitasoft.web.dao.visitor.PageFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Collections.singletonMap;
+import lombok.RequiredArgsConstructor;
 
 /**
  * An element visitor which traverses the tree of elements recursively to collect property values in a page

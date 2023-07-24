@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,9 @@
  */
 package org.bonitasoft.web.designer.controller.export;
 
-import org.bonitasoft.web.dao.export.Zipper;
-
 import java.io.File;
+
+import org.bonitasoft.web.dao.export.Zipper;
 
 public class ExcludeDescriptorFilePredicate implements Zipper.FilePredicate {
 

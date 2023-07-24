@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +16,12 @@
  */
 package org.bonitasoft.web.dao.repository;
 
+import static java.nio.file.Files.write;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.migration.Version;
@@ -25,12 +31,6 @@ import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-
-import static java.nio.file.Files.write;
-
 /**
  * This Persister is used to manage the persistence logic for a widget. Each of them are serialized in a json file
  */
@@ -39,7 +39,7 @@ public class WidgetFileBasedPersister extends JsonFileBasedPersister<Widget> {
     protected static final Logger logger = LoggerFactory.getLogger(WidgetFileBasedPersister.class);
 
     public WidgetFileBasedPersister(JsonHandler jsonHandler, BeanValidator validator,
-                                    String version, String modelVersion) {
+            String version, String modelVersion) {
         super(jsonHandler, validator, version, modelVersion);
     }
 

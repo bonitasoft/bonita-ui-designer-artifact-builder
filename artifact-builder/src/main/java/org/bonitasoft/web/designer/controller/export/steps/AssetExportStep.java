@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -22,9 +22,9 @@ import static org.bonitasoft.web.dao.export.Zipper.ALL_FILES;
 import java.io.IOException;
 
 import org.bonitasoft.web.dao.export.ExportStep;
+import org.bonitasoft.web.dao.export.Zipper;
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.dao.export.Zipper;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 
 public class AssetExportStep implements ExportStep<Page> {

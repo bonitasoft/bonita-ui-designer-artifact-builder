@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -34,6 +34,12 @@ import org.bonitasoft.web.dao.model.MigrationStatusReport;
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.*;
+import org.bonitasoft.web.dao.repository.AbstractRepository;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.Repository;
+import org.bonitasoft.web.dao.repository.exception.InUseException;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.dao.visitor.AssetVisitor;
 import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
@@ -43,12 +49,6 @@ import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.dao.repository.AbstractRepository;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.repository.PageRepository;
-import org.bonitasoft.web.dao.repository.Repository;
-import org.bonitasoft.web.dao.repository.exception.InUseException;
-import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.visitor.*;
 
 public class DefaultFragmentService extends AbstractArtifactService<FragmentRepository, Fragment>

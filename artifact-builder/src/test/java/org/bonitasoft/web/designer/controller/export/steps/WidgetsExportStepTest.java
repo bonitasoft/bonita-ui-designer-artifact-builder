@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -26,15 +26,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bonitasoft.web.angularjs.export.Minifier;
 import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
 import org.bonitasoft.web.angularjs.generator.rendering.DirectiveFileGenerator;
-import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.dao.export.Zipper;
-import org.bonitasoft.web.angularjs.export.Minifier;
+import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.designer.utils.rule.TemporaryWidgetRepository;
 import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.designer.config.WorkspaceProperties;
+import org.bonitasoft.web.designer.utils.rule.TemporaryWidgetRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

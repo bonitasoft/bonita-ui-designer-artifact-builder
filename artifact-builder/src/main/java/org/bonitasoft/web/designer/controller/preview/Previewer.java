@@ -16,7 +16,7 @@
  */
 package org.bonitasoft.web.designer.controller.preview;
 
-import org.bonitasoft.web.angularjs.generator.rendering.HtmlGenerator;
+import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.page.Previewable;
 

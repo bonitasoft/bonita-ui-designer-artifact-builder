@@ -16,6 +16,13 @@
  */
 package org.bonitasoft.web.angularjs.rendering;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
+import org.bonitasoft.web.dao.generator.rendering.IfEqualHelper;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.github.jknack.handlebars.Context;
@@ -23,12 +30,6 @@ import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Jackson2Helper;
 import com.github.jknack.handlebars.helper.StringHelpers;
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
-import org.bonitasoft.web.dao.generator.rendering.GenerationException;
-import org.bonitasoft.web.dao.generator.rendering.IfEqualHelper;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TemplateEngine {
 

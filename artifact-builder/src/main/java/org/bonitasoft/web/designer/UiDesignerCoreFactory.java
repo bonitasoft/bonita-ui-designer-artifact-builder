@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -24,14 +24,26 @@ import javax.validation.Validation;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.livebuild.ObserverFactory;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.dao.repository.AssetRepository;
+import org.bonitasoft.web.dao.repository.BeanValidator;
+import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.dao.repository.JsonFileBasedLoader;
+import org.bonitasoft.web.dao.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.dao.repository.WidgetFileBasedPersister;
+import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.dao.visitor.AssetVisitor;
+import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
-import org.bonitasoft.web.dao.livebuild.ObserverFactory;
-import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.designer.migration.AddModelVersionMigrationStep;
 import org.bonitasoft.web.designer.migration.AddWebResourcesForWidget;
 import org.bonitasoft.web.designer.migration.AssetExternalMigrationStep;
@@ -56,15 +68,6 @@ import org.bonitasoft.web.designer.migration.page.TableWidgetStylesMigrationStep
 import org.bonitasoft.web.designer.migration.page.TextWidgetInterpretHTMLMigrationStep;
 import org.bonitasoft.web.designer.migration.page.TextWidgetLabelMigrationStep;
 import org.bonitasoft.web.designer.migration.page.UIBootstrapAssetMigrationStep;
-import org.bonitasoft.web.dao.repository.AssetRepository;
-import org.bonitasoft.web.dao.repository.BeanValidator;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.repository.JsonFileBasedLoader;
-import org.bonitasoft.web.dao.repository.JsonFileBasedPersister;
-import org.bonitasoft.web.dao.repository.PageRepository;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedPersister;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.designer.service.BondsTypesFixer;
 import org.bonitasoft.web.designer.service.DefaultFragmentService;
 import org.bonitasoft.web.designer.service.DefaultPageService;
@@ -72,14 +75,11 @@ import org.bonitasoft.web.designer.service.DefaultWidgetService;
 import org.bonitasoft.web.designer.service.FragmentMigrationApplyer;
 import org.bonitasoft.web.designer.service.PageMigrationApplyer;
 import org.bonitasoft.web.designer.service.WidgetMigrationApplyer;
-import org.bonitasoft.web.dao.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.bonitasoft.web.designer.visitor.FragmentChangeVisitor;
-import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.visitor.PageHasValidationErrorVisitor;
 import org.bonitasoft.web.designer.visitor.VisitorFactory;
 import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
-import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -327,7 +327,8 @@ public class UiDesignerCoreFactory {
         return new PageRepository(
                 uiDesignerProperties.getWorkspace().getPages().getDir(),
                 uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
-                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(), this.uiDesignerProperties.getModelVersion()),
+                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
+                        this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Page.class),
                 beanValidator, watcher);
     }
@@ -342,7 +343,8 @@ public class UiDesignerCoreFactory {
         return new FragmentRepository(
                 uiDesignerProperties.getWorkspace().getFragments().getDir(),
                 uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
-                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(), this.uiDesignerProperties.getModelVersion()),
+                new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
+                        this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Fragment.class),
                 beanValidator, watcher);
     }
@@ -367,7 +369,8 @@ public class UiDesignerCoreFactory {
         return new WidgetRepository(
                 uiDesignerProperties.getWorkspace().getWidgets().getDir(),
                 uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
-                new WidgetFileBasedPersister(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(), this.uiDesignerProperties.getModelVersion()),
+                new WidgetFileBasedPersister(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
+                        this.uiDesignerProperties.getModelVersion()),
                 new WidgetFileBasedLoader(jsonHandler),
                 beanValidator, watcher);
     }

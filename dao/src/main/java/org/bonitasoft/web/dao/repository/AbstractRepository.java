@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,9 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.dao.livebuild.PathListener;
-import org.bonitasoft.web.dao.livebuild.Watcher;
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.repository.exception.NotFoundException;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import static java.lang.String.format;
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.walkFileTree;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -30,9 +26,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.String.format;
-import static java.nio.file.Files.createDirectories;
-import static java.nio.file.Files.walkFileTree;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bonitasoft.web.dao.livebuild.PathListener;
+import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
+import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 
 /**
  * File based repository

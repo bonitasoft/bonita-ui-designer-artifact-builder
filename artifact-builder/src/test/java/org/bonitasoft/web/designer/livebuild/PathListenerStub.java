@@ -16,11 +16,11 @@
  */
 package org.bonitasoft.web.designer.livebuild;
 
-import org.bonitasoft.web.dao.livebuild.PathListener;
-
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.bonitasoft.web.dao.livebuild.PathListener;
 
 public class PathListenerStub implements PathListener {
 

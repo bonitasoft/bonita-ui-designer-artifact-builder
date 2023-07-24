@@ -1,5 +1,5 @@
-/**
- * Copyright (C) 2023 BonitaSoft S.A.
+/** 
+ * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +16,20 @@
  */
 package org.bonitasoft.web.angularjs;
 
+import java.nio.file.Path;
+import java.util.List;
+
 import org.bonitasoft.web.angularjs.export.HtmlExportStep;
 import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
 import org.bonitasoft.web.angularjs.localization.LocalizationFactory;
 import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.angularjs.rendering.DirectivesCollector;
 import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
-import org.bonitasoft.web.angularjs.visitor.*;
+import org.bonitasoft.web.angularjs.visitor.HtmlBuilderVisitor;
+import org.bonitasoft.web.angularjs.visitor.ModelPropertiesVisitor;
+import org.bonitasoft.web.angularjs.visitor.PropertyValuesVisitor;
+import org.bonitasoft.web.angularjs.visitor.RequiredModulesVisitor;
+import org.bonitasoft.web.angularjs.visitor.VariableModelVisitor;
 import org.bonitasoft.web.dao.CommonGenerator;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.export.ExportStep;
@@ -36,10 +43,6 @@ import org.bonitasoft.web.dao.visitor.AssetVisitor;
 import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.dao.visitor.PageFactory;
 import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
-
-import java.nio.file.Path;
-import java.util.List;
-
 
 public class AngularJsGenerator extends CommonGenerator {
 
@@ -59,7 +62,7 @@ public class AngularJsGenerator extends CommonGenerator {
             AssetRepository<Widget> widgetAssetRepository,
             AssetRepository<Page> pageAssetRepository,
             FragmentRepository fragmentRepository,
-                              Path widgetUserRepoPath) {
+            Path widgetUserRepoPath) {
         this.widgetIdVisitor = widgetIdVisitor;
         this.directiveFileGenerator = directiveFileGenerator;
         this.widgetUserRepoPath = widgetUserRepoPath;
@@ -78,24 +81,23 @@ public class AngularJsGenerator extends CommonGenerator {
                 directiveFileGenerator,
                 fragmentIdVisitor,
                 fragmentRepository);
-        var requiredModulesVisitor= new RequiredModulesVisitor(widgetRepository, fragmentRepository);
+        var requiredModulesVisitor = new RequiredModulesVisitor(widgetRepository, fragmentRepository);
         var assetVisitor = new AssetVisitor(widgetRepository, fragmentRepository);
 
         this.htmlGenerator = new HtmlGenerator(
                 this.htmlBuilderVisitor,
-                directivesCollector,requiredModulesVisitor,
+                directivesCollector, requiredModulesVisitor,
                 assetVisitor,
                 widgetAssetRepository,
                 pageAssetRepository,
                 pageFactories);
     }
 
-
     public ExportStep[] getPageExportStep() {
-//        var commonSteps = super.getPageExportStep();
-//        var pageExportSteps = Stream
-//                .concat(Arrays.stream(commonSteps), Arrays.stream(angularJsGenerator.getPageExportStep()))
-//                .toArray(ExportStep[]::new);
+        //        var commonSteps = super.getPageExportStep();
+        //        var pageExportSteps = Stream
+        //                .concat(Arrays.stream(commonSteps), Arrays.stream(angularJsGenerator.getPageExportStep()))
+        //                .toArray(ExportStep[]::new);
         return new ExportStep[] {
                 new HtmlExportStep(htmlGenerator, this.generatorProperties.getExportBackendResourcesPath()),
                 new WidgetsExportStep<Page>(widgetUserRepoPath, widgetIdVisitor,
@@ -103,8 +105,7 @@ public class AngularJsGenerator extends CommonGenerator {
         };
     }
 
-
-    public GeneratorProperties getGeneratorProperties(){
+    public GeneratorProperties getGeneratorProperties() {
         return this.generatorProperties;
     }
 

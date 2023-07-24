@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,15 @@
  */
 package org.bonitasoft.web.angularjs.visitor;
 
-import lombok.RequiredArgsConstructor;
-import org.bonitasoft.web.dao.generator.rendering.GenerationException;
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.dao.generator.rendering.GenerationException;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.*;
@@ -26,14 +32,10 @@ import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.bonitasoft.web.dao.visitor.ElementVisitor;
+import org.bonitasoft.web.dao.visitor.FragmentBindingValueTransformer;
 import org.bonitasoft.web.dao.visitor.PageFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
-import static java.util.Collections.emptyMap;
-import static java.util.stream.Collectors.toMap;
+import lombok.RequiredArgsConstructor;
 
 /**
  * An element visitor which traverses the tree of elements recursively to collect all the data used in a page

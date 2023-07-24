@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -24,18 +24,18 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import lombok.RequiredArgsConstructor;
 import org.bonitasoft.web.angularjs.rendering.HtmlGenerator;
 import org.bonitasoft.web.dao.export.ExportStep;
-import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.export.Zipper;
+import org.bonitasoft.web.dao.model.page.Page;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class HtmlExportStep implements ExportStep<Page> {
 
     private final HtmlGenerator generator;
     private final Path exportBackendResources;
-
 
     @Override
     public void execute(Zipper zipper, Page page) throws IOException {

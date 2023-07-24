@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,11 @@ import static org.bonitasoft.web.dao.export.Zipper.ALL_DIRECTORIES;
 import java.io.IOException;
 
 import org.bonitasoft.web.dao.export.ExportStep;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.designer.controller.export.ExcludeDescriptorFilePredicate;
 import org.bonitasoft.web.dao.export.Zipper;
-import org.bonitasoft.web.designer.controller.export.properties.WidgetPropertiesBuilder;
+import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.designer.controller.export.ExcludeDescriptorFilePredicate;
+import org.bonitasoft.web.designer.controller.export.properties.WidgetPropertiesBuilder;
 
 import lombok.RequiredArgsConstructor;
 

@@ -36,11 +36,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bonitasoft.web.dao.model.*;
 import org.bonitasoft.web.dao.model.asset.Asset;
+import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 
 @JsonPropertyOrder({ "id", "name", "type", "custom", "modelVersion", "previousArtifactVersion", "lastUpdate",
         "description", "template", "controller", "properties", "assets", "requiredModules", "webResources" })

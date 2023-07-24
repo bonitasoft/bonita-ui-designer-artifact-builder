@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,20 @@
  */
 package org.bonitasoft.web.angularjs.workspace;
 
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Files.write;
+import static java.nio.file.Paths.get;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+
 import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
 import org.bonitasoft.web.angularjs.visitor.HtmlBuilderVisitor;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
 import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Files.write;
-import static java.nio.file.Paths.get;
 
 public class FragmentDirectiveBuilder extends AbstractLiveFileBuilder {
 
@@ -39,9 +39,9 @@ public class FragmentDirectiveBuilder extends AbstractLiveFileBuilder {
     private final TemplateEngine htmlBuilder = new TemplateEngine("fragmentDirectiveTemplate.hbs.js");
 
     public FragmentDirectiveBuilder(Watcher watcher,
-                                    JsonHandler jsonHandler,
-                                    HtmlBuilderVisitor htmlBuilderVisitor,
-                                    Boolean isLiveBuildEnabled) {
+            JsonHandler jsonHandler,
+            HtmlBuilderVisitor htmlBuilderVisitor,
+            Boolean isLiveBuildEnabled) {
         super(watcher, isLiveBuildEnabled);
         this.jsonHandler = jsonHandler;
         this.htmlBuilderVisitor = htmlBuilderVisitor;

@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,18 +16,18 @@
  */
 package org.bonitasoft.web.angularjs.export;
 
+import static org.bonitasoft.web.dao.export.Zipper.ALL_FILES;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.dao.export.ExportStep;
 import org.bonitasoft.web.dao.export.Zipper;
 import org.bonitasoft.web.dao.model.page.AbstractPage;
 import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
-
-import static org.bonitasoft.web.dao.export.Zipper.ALL_FILES;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
 
 public class WidgetsExportStep<T extends AbstractPage> implements ExportStep<T> {
 

@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -27,11 +27,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.export.ExportStep;
 import org.bonitasoft.web.dao.export.Zipper;
 import org.bonitasoft.web.dao.model.DesignerArtifact;
 import org.bonitasoft.web.dao.model.JsonViewPersistence;
 import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.export.ExportStep;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.service.ArtifactService;
 

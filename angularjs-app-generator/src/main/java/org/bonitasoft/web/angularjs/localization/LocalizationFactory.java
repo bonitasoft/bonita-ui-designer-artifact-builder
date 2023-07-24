@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,8 +16,9 @@
  */
 package org.bonitasoft.web.angularjs.localization;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
 import org.bonitasoft.web.dao.model.Assetable;
 import org.bonitasoft.web.dao.model.Identifiable;
@@ -28,8 +29,8 @@ import org.bonitasoft.web.dao.visitor.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class LocalizationFactory implements PageFactory {
 

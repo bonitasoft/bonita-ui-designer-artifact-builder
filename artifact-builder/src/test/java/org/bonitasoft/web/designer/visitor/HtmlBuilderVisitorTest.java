@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -58,15 +58,15 @@ import org.bonitasoft.web.dao.model.page.FormContainer;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.page.TabContainer;
 import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.visitor.AssetVisitor;
-import org.bonitasoft.web.dao.visitor.PageFactory;
-import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
-import org.bonitasoft.web.designer.builder.ModalContainerBuilder;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.bonitasoft.web.dao.repository.FragmentRepository;
 import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.dao.repository.exception.NotFoundException;
 import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import org.bonitasoft.web.dao.visitor.AssetVisitor;
+import org.bonitasoft.web.dao.visitor.PageFactory;
+import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.designer.builder.ModalContainerBuilder;
 import org.bonitasoft.web.designer.utils.assertions.CustomAssertions;
 import org.bonitasoft.web.designer.utils.rule.TestResource;
 import org.jsoup.Jsoup;

@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,10 @@ import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Files.write;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.bonitasoft.web.dao.repository.AssetRepository.COMPONENT_ID_REQUIRED;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.aFilledAsset;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.dao.repository.AssetRepository.COMPONENT_ID_REQUIRED;
 import static org.mockito.Mockito.*;
 
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
-
 import org.fedorahosted.tennera.jgettext.Message;
 import org.fedorahosted.tennera.jgettext.PoParser;
 

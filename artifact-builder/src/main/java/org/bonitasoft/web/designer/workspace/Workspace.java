@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,24 @@
  */
 package org.bonitasoft.web.designer.workspace;
 
-import lombok.extern.slf4j.Slf4j;
+import static java.nio.file.Files.createDirectories;
+import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.commons.io.FileUtils;
 import org.bonitasoft.web.angularjs.rendering.WidgetFileHelper;
 import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
 import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
 import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.dao.migration.Version;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.dao.repository.PageRepository;
@@ -33,22 +45,11 @@ import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
-import org.bonitasoft.web.dao.migration.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileSystemUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.nio.file.Files.createDirectories;
-import static java.util.Arrays.stream;
-import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Workspace {

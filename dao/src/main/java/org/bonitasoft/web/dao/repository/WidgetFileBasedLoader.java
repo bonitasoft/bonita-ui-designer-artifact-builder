@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,16 @@
  */
 package org.bonitasoft.web.dao.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static java.lang.String.format;
+import static java.nio.file.Files.readAllBytes;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.model.JsonViewPersistence;
 import org.bonitasoft.web.dao.model.widgets.Widget;
@@ -26,16 +35,7 @@ import org.bonitasoft.web.dao.repository.exception.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.String.format;
-import static java.nio.file.Files.readAllBytes;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * This Persister is used to manage the persistence logic for a widget. Each of them are serialized in a json file

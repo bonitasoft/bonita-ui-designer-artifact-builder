@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@ package org.bonitasoft.web.angularjs.export;
 import java.nio.file.Path;
 import java.util.Set;
 
-import lombok.Getter;
 import org.bonitasoft.web.dao.export.Zipper;
+
+import lombok.Getter;
 
 @Getter
 public class IncludeChildDirectoryPredicate implements Zipper.PathPredicate {

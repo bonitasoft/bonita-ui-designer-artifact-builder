@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@ import java.nio.file.Path;
 import org.apache.commons.io.IOUtils;
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
-import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.dao.repository.AssetRepository;
 import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
+import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.utils.FakePageRepository;
 import org.junit.Before;
 import org.junit.Test;
