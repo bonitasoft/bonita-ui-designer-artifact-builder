@@ -14,36 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.builder;
+package org.bonitasoft.web.designer.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bonitasoft.web.dao.model.page.Element;
+import org.bonitasoft.web.dao.model.Identifiable;
 
-public class RowBuilder {
+/**
+ * Use in RestControllerTest
+ */
+public class ListUtil {
 
-    private List<Element> elements = new ArrayList<>();
-
-    public static RowBuilder aRow() {
-        return new RowBuilder();
-    }
-
-    public RowBuilder with(ElementBuilder<?>... elements) {
-        for (ElementBuilder<?> element : elements) {
-            this.elements.add(element.build());
+    /**
+     * Convert Json in object
+     */
+    public static List<Identifiable> asList(Identifiable... identifiables) {
+        List<Identifiable> ids = new ArrayList<>();
+        for (Identifiable id : identifiables) {
+            ids.add(id);
         }
-        return this;
+        return ids;
     }
 
-    public RowBuilder with(Element... elements) {
-        for (Element element : elements) {
-            this.elements.add(element);
-        }
-        return this;
-    }
-
-    public List<Element> build() {
-        return elements;
-    }
 }

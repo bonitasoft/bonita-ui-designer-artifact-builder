@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.bonitasoft.web.dao.generator.rendering.IHtmlGenerator;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
@@ -42,7 +43,6 @@ import org.bonitasoft.web.designer.controller.importer.PageImporter;
 import org.bonitasoft.web.designer.controller.importer.WidgetImporter;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
 import org.bonitasoft.web.designer.model.ModelException;
-import org.bonitasoft.web.designer.rendering.IHtmlGenerator;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;

@@ -14,36 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.builder;
+package org.bonitasoft.web.designer.utils.rule;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import org.bonitasoft.web.dao.model.page.Element;
+public class TemporaryFolder extends org.junit.rules.TemporaryFolder {
 
-public class RowBuilder {
-
-    private List<Element> elements = new ArrayList<>();
-
-    public static RowBuilder aRow() {
-        return new RowBuilder();
+    public Path toPath() {
+        return Paths.get(this.getRoot().getPath());
     }
 
-    public RowBuilder with(ElementBuilder<?>... elements) {
-        for (ElementBuilder<?> element : elements) {
-            this.elements.add(element.build());
-        }
-        return this;
+    /**
+     * Returns a new fresh folder with the given name under the temporary
+     * folder.
+     */
+    public Path newFolderPath(String... folder) throws IOException {
+        return Paths.get(newFolder(folder).getPath());
     }
 
-    public RowBuilder with(Element... elements) {
-        for (Element element : elements) {
-            this.elements.add(element);
-        }
-        return this;
-    }
-
-    public List<Element> build() {
-        return elements;
+    /**
+     * Returns a new fresh file with the given name under the temporary
+     * folder.
+     */
+    public Path newFilePath(String file) throws IOException {
+        return Paths.get(newFile(file).getPath());
     }
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.rendering;
+package org.bonitasoft.web.dao.generator.rendering;
 
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.page.Previewable;

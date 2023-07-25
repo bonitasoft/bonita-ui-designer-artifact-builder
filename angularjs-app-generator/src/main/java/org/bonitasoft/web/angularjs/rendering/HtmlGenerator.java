@@ -29,6 +29,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.bonitasoft.web.angularjs.visitor.HtmlBuilderVisitor;
 import org.bonitasoft.web.angularjs.visitor.RequiredModulesVisitor;
 import org.bonitasoft.web.dao.generator.rendering.GenerationException;
+import org.bonitasoft.web.dao.generator.rendering.IHtmlGenerator;
 import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.dao.model.asset.Asset;
 import org.bonitasoft.web.dao.model.asset.AssetScope;
@@ -45,7 +46,7 @@ import org.jsoup.parser.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HtmlGenerator {
+public class HtmlGenerator implements IHtmlGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(HtmlBuilderVisitor.class);
     private final DirectivesCollector directivesCollector;

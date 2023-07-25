@@ -33,6 +33,7 @@ import org.bonitasoft.web.angularjs.visitor.VariableModelVisitor;
 import org.bonitasoft.web.dao.CommonGenerator;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.export.ExportStep;
+import org.bonitasoft.web.dao.generator.rendering.IHtmlGenerator;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.dao.repository.AssetRepository;
@@ -113,7 +114,7 @@ public class AngularJsGenerator extends CommonGenerator {
         return this.htmlBuilderVisitor;
     }
 
-    public HtmlGenerator getHtmlGenerator() {
+    public IHtmlGenerator getHtmlGenerator() {
         return this.htmlGenerator;
     }
 }

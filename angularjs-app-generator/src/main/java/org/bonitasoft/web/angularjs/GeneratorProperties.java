@@ -24,24 +24,18 @@ import java.nio.file.Path;
 public class GeneratorProperties {
 
     public static final String EXTRACT_BACKEND_RESOURCES = "META-INF/resources";
+    private final Path path;
 
-    private String workspaceName;
     private final String i18NResourcesName;
 
     public GeneratorProperties(String workspaceName, String i18nResourcesName) {
-        this.workspaceName = workspaceName;
         this.i18NResourcesName = i18nResourcesName;
+        this.path = Path.of(System.getProperty("java.io.tmpdir")).resolve(workspaceName);
     }
 
     public static final String FRAGMENTS = "fragments";
     public static final String TEMPLATES_RESOURCES = "templates";
     private static final String PAGES_DEFAULT_DIRECTORY = "pages";
-
-    private boolean liveBuildEnabled = true;
-
-    private Path path = Path.of(System.getProperty("java.io.tmpdir")).resolve(this.workspaceName);
-
-    private Path extractPath = getPath().resolve("extract");
 
     public Path getTmpFragmentsRepositoryPath() {
         return getPath().resolve(FRAGMENTS);
@@ -64,14 +58,14 @@ public class GeneratorProperties {
     }
 
     public Path getPath() {
-        return path;
+        return this.path;
     }
 
     public Path getExtractPath() {
-        return extractPath;
+        return getPath().resolve("extract");
     }
 
     public boolean isLiveBuildEnabled() {
-        return liveBuildEnabled;
+        return true;
     }
 }

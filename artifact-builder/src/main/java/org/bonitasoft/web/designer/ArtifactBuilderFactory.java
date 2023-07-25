@@ -52,7 +52,6 @@ import org.bonitasoft.web.designer.i18n.I18nInitializer;
 import org.bonitasoft.web.designer.i18n.LanguagePackBuilder;
 import org.bonitasoft.web.designer.i18n.LanguagePackFactory;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
-import org.bonitasoft.web.designer.rendering.IHtmlGenerator;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;
 import org.bonitasoft.web.designer.workspace.Workspace;
 
@@ -214,7 +213,7 @@ public class ArtifactBuilderFactory {
                 pageExporter,
                 fragmentExporter,
                 widgetExporter,
-                (IHtmlGenerator) angularJsGenerator.getHtmlGenerator(),
+                angularJsGenerator.getHtmlGenerator(),
                 // Import
                 new ImportStore(),
                 pageImporter,
