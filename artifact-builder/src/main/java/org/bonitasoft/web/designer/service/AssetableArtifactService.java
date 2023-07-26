@@ -19,11 +19,11 @@ package org.bonitasoft.web.designer.service;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.dao.model.Assetable;
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.asset.AssetType;
 import org.bonitasoft.web.designer.controller.asset.AssetService.OrderType;
+import org.bonitasoft.web.designer.model.Assetable;
+import org.bonitasoft.web.designer.model.Identifiable;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.asset.AssetType;
 
 public interface AssetableArtifactService<T extends Identifiable & Assetable> extends ArtifactService<T> {
 

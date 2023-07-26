@@ -21,8 +21,8 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bonitasoft.web.dao.model.page.Container;
-import org.bonitasoft.web.dao.model.page.Element;
+import org.bonitasoft.web.designer.model.page.Container;
+import org.bonitasoft.web.designer.model.page.Element;
 
 public class ContainerBuilder extends ElementBuilder<Container> {
 

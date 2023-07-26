@@ -28,15 +28,15 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.bonitasoft.web.dao.model.Assetable;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.asset.AssetType;
-import org.bonitasoft.web.dao.model.page.Previewable;
-import org.bonitasoft.web.dao.repository.AssetRepository;
-import org.bonitasoft.web.dao.repository.Repository;
-import org.bonitasoft.web.dao.repository.exception.NotFoundException;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.Repository;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
+import org.bonitasoft.web.designer.model.Assetable;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.asset.AssetType;
+import org.bonitasoft.web.designer.model.page.Previewable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

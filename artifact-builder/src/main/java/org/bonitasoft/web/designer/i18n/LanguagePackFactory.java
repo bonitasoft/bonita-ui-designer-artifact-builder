@@ -18,7 +18,7 @@ package org.bonitasoft.web.designer.i18n;
 
 import java.io.File;
 
-import org.bonitasoft.web.dao.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandler;
 
 import lombok.RequiredArgsConstructor;
 

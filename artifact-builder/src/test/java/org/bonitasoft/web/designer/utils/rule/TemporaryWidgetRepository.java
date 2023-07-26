@@ -21,18 +21,18 @@ import static org.mockito.Mockito.mock;
 
 import java.nio.file.Path;
 
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.livebuild.Watcher;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.BeanValidator;
-import org.bonitasoft.web.dao.repository.JsonFileBasedPersister;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
 import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.BeanValidator;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
+import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 
 public class TemporaryWidgetRepository extends TemporaryFolder {
 

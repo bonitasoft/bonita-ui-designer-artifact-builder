@@ -23,11 +23,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.controller.importer.ImportException;
+import org.bonitasoft.web.designer.model.Identifiable;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 
 import lombok.extern.slf4j.Slf4j;
 

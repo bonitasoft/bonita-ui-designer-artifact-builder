@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.bonitasoft.web.angularjs.GeneratorProperties;
-import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
-import org.bonitasoft.web.dao.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.livebuild.AbstractLiveFileBuilder;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
 
 public class LanguagePackBuilder extends AbstractLiveFileBuilder {
 

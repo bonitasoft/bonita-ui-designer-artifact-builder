@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
+import org.bonitasoft.web.designer.model.JsonHandler;
 import org.fedorahosted.tennera.jgettext.Message;
 import org.fedorahosted.tennera.jgettext.PoParser;
 

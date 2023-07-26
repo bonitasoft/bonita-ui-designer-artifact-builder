@@ -18,7 +18,7 @@ package org.bonitasoft.web.designer.controller.export.properties;
 
 import java.util.function.Function;
 
-import org.bonitasoft.web.dao.model.data.Variable;
+import org.bonitasoft.web.designer.model.data.Variable;
 
 public class BonitaResourceTransformer implements Function<Variable, String> {
 

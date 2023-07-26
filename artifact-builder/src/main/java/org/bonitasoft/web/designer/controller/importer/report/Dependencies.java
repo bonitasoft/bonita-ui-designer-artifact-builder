@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bonitasoft.web.dao.model.Identifiable;
 import org.bonitasoft.web.designer.controller.importer.dependencies.ComponentDependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
+import org.bonitasoft.web.designer.model.Identifiable;
 
 public class Dependencies {
 

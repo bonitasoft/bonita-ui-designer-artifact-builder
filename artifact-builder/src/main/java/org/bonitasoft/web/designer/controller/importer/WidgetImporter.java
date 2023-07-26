@@ -16,10 +16,10 @@
  */
 package org.bonitasoft.web.designer.controller.importer;
 
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
+import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.service.WidgetService;
 
 public class WidgetImporter extends AbstractArtifactImporter<Widget> {

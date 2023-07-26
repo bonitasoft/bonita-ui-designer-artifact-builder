@@ -22,9 +22,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.model.fragment.Fragment;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.model.Identifiable;
+import org.bonitasoft.web.designer.model.fragment.Fragment;
 
 public class FragmentDependencyImporter extends ComponentDependencyImporter<Fragment> {
 

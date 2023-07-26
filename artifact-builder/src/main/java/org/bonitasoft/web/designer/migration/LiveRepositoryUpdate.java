@@ -28,10 +28,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.dao.model.DesignerArtifact;
-import org.bonitasoft.web.dao.repository.RefreshingRepository;
-import org.bonitasoft.web.dao.repository.Repository;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.RefreshingRepository;
+import org.bonitasoft.web.designer.common.repository.Repository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.model.DesignerArtifact;
 
 public class LiveRepositoryUpdate<A extends DesignerArtifact> implements Comparable<LiveRepositoryUpdate<A>> {
 

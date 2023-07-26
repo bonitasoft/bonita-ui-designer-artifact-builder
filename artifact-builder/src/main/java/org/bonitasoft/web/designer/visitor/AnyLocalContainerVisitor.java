@@ -23,17 +23,16 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.bonitasoft.web.dao.model.page.Component;
-import org.bonitasoft.web.dao.model.page.Container;
-import org.bonitasoft.web.dao.model.page.Element;
-import org.bonitasoft.web.dao.model.page.FormContainer;
-import org.bonitasoft.web.dao.model.page.FragmentElement;
-import org.bonitasoft.web.dao.model.page.ModalContainer;
-import org.bonitasoft.web.dao.model.page.Previewable;
-import org.bonitasoft.web.dao.model.page.TabContainer;
-import org.bonitasoft.web.dao.model.page.TabsContainer;
-import org.bonitasoft.web.dao.visitor.ElementVisitor;
 import org.bonitasoft.web.designer.StreamUtils;
+import org.bonitasoft.web.designer.model.page.Component;
+import org.bonitasoft.web.designer.model.page.Container;
+import org.bonitasoft.web.designer.model.page.Element;
+import org.bonitasoft.web.designer.model.page.FormContainer;
+import org.bonitasoft.web.designer.model.page.FragmentElement;
+import org.bonitasoft.web.designer.model.page.ModalContainer;
+import org.bonitasoft.web.designer.model.page.Previewable;
+import org.bonitasoft.web.designer.model.page.TabContainer;
+import org.bonitasoft.web.designer.model.page.TabsContainer;
 
 /**
  * A visitor

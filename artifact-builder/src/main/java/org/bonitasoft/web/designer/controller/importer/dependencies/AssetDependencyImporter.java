@@ -25,14 +25,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bonitasoft.web.dao.model.Assetable;
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.asset.AssetScope;
-import org.bonitasoft.web.dao.model.asset.AssetType;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.AssetRepository;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.model.Assetable;
+import org.bonitasoft.web.designer.model.Identifiable;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.asset.AssetScope;
+import org.bonitasoft.web.designer.model.asset.AssetType;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 
 public class AssetDependencyImporter<T extends Identifiable & Assetable> implements DependencyImporter<Asset> {
 

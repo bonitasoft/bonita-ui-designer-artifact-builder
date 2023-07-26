@@ -16,10 +16,10 @@
  */
 package org.bonitasoft.web.designer.controller.importer;
 
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.dao.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
+import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.service.PageService;
 
 public class PageImporter extends AbstractArtifactImporter<Page> {

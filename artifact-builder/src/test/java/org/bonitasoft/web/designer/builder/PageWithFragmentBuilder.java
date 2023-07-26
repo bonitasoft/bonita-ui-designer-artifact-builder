@@ -16,15 +16,11 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import static org.bonitasoft.web.designer.builder.ContainerBuilder.aContainer;
-import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVariable;
-
 import java.util.Map;
 
-import org.bonitasoft.web.dao.model.page.Container;
-import org.bonitasoft.web.dao.model.page.FragmentElement;
-import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.designer.model.page.Container;
+import org.bonitasoft.web.designer.model.page.FragmentElement;
+import org.bonitasoft.web.designer.model.page.Page;
 
 public class PageWithFragmentBuilder {
 
@@ -35,13 +31,13 @@ public class PageWithFragmentBuilder {
         FragmentElement fragment = new FragmentElement();
         fragment.setId("a-fragment");
         fragment.setDimension(Map.of("md", 8));
-        Container fragmentContainer = aContainer().with(fragment).build();
+        Container fragmentContainer = ContainerBuilder.aContainer().with(fragment).build();
 
-        return aPage()
+        return PageBuilder.aPage()
                 .withId("UUID")
                 .withName("myPage")
                 .with(fragmentContainer)
-                .withVariable("aVariable", aConstantVariable().value("a value"))
+                .withVariable("aVariable", VariableBuilder.aConstantVariable().value("a value"))
                 .build();
     }
 }

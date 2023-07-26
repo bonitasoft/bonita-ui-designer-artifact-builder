@@ -18,8 +18,8 @@ package org.bonitasoft.web.designer.migration;
 
 import java.util.Optional;
 
-import org.bonitasoft.web.dao.model.widgets.Widget;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 
 import lombok.extern.slf4j.Slf4j;
 

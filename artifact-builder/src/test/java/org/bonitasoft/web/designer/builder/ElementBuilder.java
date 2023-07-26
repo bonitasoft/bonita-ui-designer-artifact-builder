@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import org.bonitasoft.web.dao.model.page.Element;
-import org.bonitasoft.web.dao.model.page.PropertyValue;
+import org.bonitasoft.web.designer.model.page.Element;
+import org.bonitasoft.web.designer.model.page.PropertyValue;
 
 public abstract class ElementBuilder<E extends Element> {
 

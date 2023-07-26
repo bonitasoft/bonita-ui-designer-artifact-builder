@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
+import org.bonitasoft.web.designer.model.page.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

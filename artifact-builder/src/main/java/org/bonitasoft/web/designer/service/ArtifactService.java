@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.service;
 
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.Identifiable;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 
 public interface ArtifactService<T extends Identifiable> {

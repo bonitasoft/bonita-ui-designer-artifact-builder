@@ -16,10 +16,10 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import static org.bonitasoft.web.dao.model.data.DataType.*;
+import static org.bonitasoft.web.designer.model.data.DataType.*;
 
-import org.bonitasoft.web.dao.model.data.Data;
-import org.bonitasoft.web.dao.model.data.DataType;
+import org.bonitasoft.web.designer.model.data.Data;
+import org.bonitasoft.web.designer.model.data.DataType;
 
 public class DataBuilder {
 
@@ -44,7 +44,7 @@ public class DataBuilder {
     }
 
     public static DataBuilder aUrlParameterData() {
-        return new DataBuilder(DataType.URLPARAMETER);
+        return new DataBuilder(URLPARAMETER);
     }
 
     public static DataBuilder anExpressionData() {

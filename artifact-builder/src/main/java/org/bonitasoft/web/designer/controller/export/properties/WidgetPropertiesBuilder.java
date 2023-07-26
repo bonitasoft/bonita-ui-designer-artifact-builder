@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.bonitasoft.web.dao.generator.rendering.GenerationException;
-import org.bonitasoft.web.dao.model.widgets.Widget;
+import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 
 public class WidgetPropertiesBuilder {
 

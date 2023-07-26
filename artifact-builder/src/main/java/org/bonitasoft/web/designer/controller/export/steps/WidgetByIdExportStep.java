@@ -17,16 +17,16 @@
 package org.bonitasoft.web.designer.controller.export.steps;
 
 import static java.lang.String.format;
-import static org.bonitasoft.web.dao.export.Zipper.ALL_DIRECTORIES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_DIRECTORIES;
 
 import java.io.IOException;
 
-import org.bonitasoft.web.dao.export.ExportStep;
-import org.bonitasoft.web.dao.export.Zipper;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.export.ExportStep;
+import org.bonitasoft.web.designer.common.export.Zipper;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.controller.export.ExcludeDescriptorFilePredicate;
 import org.bonitasoft.web.designer.controller.export.properties.WidgetPropertiesBuilder;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 
 import lombok.RequiredArgsConstructor;
 

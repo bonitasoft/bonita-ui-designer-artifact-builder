@@ -16,31 +16,27 @@
  */
 package org.bonitasoft.web.designer;
 
-import static org.bonitasoft.web.dao.migration.Version.INITIAL_MODEL_VERSION;
+import static org.bonitasoft.web.designer.common.migration.Version.INITIAL_MODEL_VERSION;
 
 import java.util.List;
 
 import javax.validation.Validation;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.livebuild.ObserverFactory;
-import org.bonitasoft.web.dao.livebuild.Watcher;
-import org.bonitasoft.web.dao.model.fragment.Fragment;
-import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.AssetRepository;
-import org.bonitasoft.web.dao.repository.BeanValidator;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.repository.JsonFileBasedLoader;
-import org.bonitasoft.web.dao.repository.JsonFileBasedPersister;
-import org.bonitasoft.web.dao.repository.PageRepository;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedPersister;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
-import org.bonitasoft.web.dao.visitor.AssetVisitor;
-import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
-import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
+import org.bonitasoft.web.designer.common.livebuild.ObserverFactory;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.BeanValidator;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
@@ -68,6 +64,10 @@ import org.bonitasoft.web.designer.migration.page.TableWidgetStylesMigrationStep
 import org.bonitasoft.web.designer.migration.page.TextWidgetInterpretHTMLMigrationStep;
 import org.bonitasoft.web.designer.migration.page.TextWidgetLabelMigrationStep;
 import org.bonitasoft.web.designer.migration.page.UIBootstrapAssetMigrationStep;
+import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.fragment.Fragment;
+import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.designer.model.widgets.Widget;
 import org.bonitasoft.web.designer.service.BondsTypesFixer;
 import org.bonitasoft.web.designer.service.DefaultFragmentService;
 import org.bonitasoft.web.designer.service.DefaultPageService;

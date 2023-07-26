@@ -17,12 +17,6 @@
 package org.bonitasoft.web.designer.builder;
 
 import static java.util.Arrays.asList;
-import static org.bonitasoft.web.designer.builder.ComponentBuilder.aParagraph;
-import static org.bonitasoft.web.designer.builder.ComponentBuilder.anInput;
-import static org.bonitasoft.web.designer.builder.ContainerBuilder.aContainer;
-import static org.bonitasoft.web.designer.builder.FragmentElementBuilder.aFragmentElement;
-import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
-import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,15 +26,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bonitasoft.web.dao.model.MigrationStatusReport;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.data.Variable;
-import org.bonitasoft.web.dao.model.fragment.Fragment;
-import org.bonitasoft.web.dao.model.page.Container;
-import org.bonitasoft.web.dao.model.page.Element;
-import org.bonitasoft.web.dao.model.page.FragmentElement;
-import org.bonitasoft.web.dao.model.page.TabContainer;
-import org.bonitasoft.web.dao.model.page.TabsContainer;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.designer.model.fragment.Fragment;
+import org.bonitasoft.web.designer.model.page.Container;
+import org.bonitasoft.web.designer.model.page.Element;
+import org.bonitasoft.web.designer.model.page.FragmentElement;
+import org.bonitasoft.web.designer.model.page.TabContainer;
+import org.bonitasoft.web.designer.model.page.TabsContainer;
 
 public class FragmentBuilder {
 
@@ -98,7 +92,7 @@ public class FragmentBuilder {
     }
 
     public FragmentBuilder with(Fragment fragment) {
-        return with(aFragmentElement().withFragmentId(fragment.getId()));
+        return with(FragmentElementBuilder.aFragmentElement().withFragmentId(fragment.getId()));
     }
 
     public FragmentBuilder withName(String name) {
@@ -187,13 +181,14 @@ public class FragmentBuilder {
     }
 
     public static Fragment aFilledFragment(String id) throws Exception {
-        RowBuilder row = aRow().with(
-                aParagraph().withPropertyValue("content", "hello <br/> world")
+        RowBuilder row = RowBuilder.aRow().with(
+                ComponentBuilder.aParagraph().withPropertyValue("content", "hello <br/> world")
                         .withDimensions(ResponsiveDimension.md(6)),
-                anInput().withPropertyValue("required", false).withPropertyValue("placeholder", "enter you're name")
+                ComponentBuilder.anInput().withPropertyValue("required", false)
+                        .withPropertyValue("placeholder", "enter you're name")
                         .withDimensions(ResponsiveDimension.md(6)));
 
-        Container containerWithTwoRows = aContainer().with(row, row).build();
+        Container containerWithTwoRows = ContainerBuilder.aContainer().with(row, row).build();
 
         TabContainer tabContainer = new TabContainer();
         tabContainer.setContainer(containerWithTwoRows);
@@ -207,11 +202,11 @@ public class FragmentBuilder {
         FragmentElement fragment = new FragmentElement();
         fragment.setId("a-fragment");
         fragment.setDimension(Map.of("md", 8));
-        Container fragmentContainer = aContainer().with(fragment).build();
+        Container fragmentContainer = ContainerBuilder.aContainer().with(fragment).build();
 
         return aFragment().withId(id).with(tabsContainer, containerWithTwoRows, fragmentContainer)
-                .withVariable("aVariable", aConstantVariable().value("a value"))
-                .withVariable("anotherVariable", aConstantVariable().value("4"))
+                .withVariable("aVariable", VariableBuilder.aConstantVariable().value("a value"))
+                .withVariable("anotherVariable", VariableBuilder.aConstantVariable().value("4"))
                 .build();
     }
 }

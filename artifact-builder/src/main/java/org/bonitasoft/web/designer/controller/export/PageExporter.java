@@ -16,9 +16,9 @@
  */
 package org.bonitasoft.web.designer.controller.export;
 
-import org.bonitasoft.web.dao.JsonHandler;
-import org.bonitasoft.web.dao.export.ExportStep;
-import org.bonitasoft.web.dao.model.page.Page;
+import org.bonitasoft.web.designer.common.export.ExportStep;
+import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.service.PageService;
 
 public class PageExporter extends Exporter<Page> {

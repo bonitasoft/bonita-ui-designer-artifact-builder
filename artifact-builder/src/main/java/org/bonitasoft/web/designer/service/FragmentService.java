@@ -19,14 +19,14 @@ package org.bonitasoft.web.designer.service;
 import java.util.List;
 import java.util.Set;
 
-import org.bonitasoft.web.dao.model.MigrationStatusReport;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.fragment.Fragment;
-import org.bonitasoft.web.dao.model.page.Previewable;
-import org.bonitasoft.web.dao.model.page.WebResource;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
+import org.bonitasoft.web.designer.model.page.Previewable;
+import org.bonitasoft.web.designer.model.page.WebResource;
 
 public interface FragmentService extends ArtifactService<Fragment> {
 

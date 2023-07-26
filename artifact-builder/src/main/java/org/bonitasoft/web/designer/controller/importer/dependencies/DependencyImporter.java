@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.designer.model.Identifiable;
 
 public interface DependencyImporter<T> {
 

@@ -18,9 +18,9 @@ package org.bonitasoft.web.designer.migration.page;
 
 import static java.lang.String.format;
 
-import org.bonitasoft.web.dao.model.page.PropertyValue;
-import org.bonitasoft.web.dao.model.widgets.BondType;
-import org.bonitasoft.web.dao.model.widgets.Property;
+import org.bonitasoft.web.designer.model.page.PropertyValue;
+import org.bonitasoft.web.designer.model.widgets.BondType;
+import org.bonitasoft.web.designer.model.widgets.Property;
 
 public class InterpolationBondMigrationStrategy implements BondMigrationStrategy {
 

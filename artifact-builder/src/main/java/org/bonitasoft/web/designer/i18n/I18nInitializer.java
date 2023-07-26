@@ -18,7 +18,7 @@ package org.bonitasoft.web.designer.i18n;
 
 import java.io.IOException;
 
-import org.bonitasoft.web.dao.IGeneratorProperties;
+import org.bonitasoft.web.designer.common.IGeneratorProperties;
 import org.bonitasoft.web.designer.config.DesignerInitializerException;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;
 

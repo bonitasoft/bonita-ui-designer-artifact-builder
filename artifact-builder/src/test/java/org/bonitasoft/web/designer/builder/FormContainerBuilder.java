@@ -16,9 +16,9 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import org.bonitasoft.web.dao.model.page.Container;
-import org.bonitasoft.web.dao.model.page.FormContainer;
-import org.bonitasoft.web.dao.model.page.PropertyValue;
+import org.bonitasoft.web.designer.model.page.Container;
+import org.bonitasoft.web.designer.model.page.FormContainer;
+import org.bonitasoft.web.designer.model.page.PropertyValue;
 
 public class FormContainerBuilder extends ElementBuilder<FormContainer> {
 

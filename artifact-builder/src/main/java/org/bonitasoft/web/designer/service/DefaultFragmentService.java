@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.service;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.*;
-import static org.bonitasoft.web.dao.repository.exception.NotAllowedException.checkNotAllowed;
+import static org.bonitasoft.web.designer.common.repository.exception.NotAllowedException.checkNotAllowed;
 import static org.springframework.util.StringUtils.hasText;
 
 import java.util.ArrayList;
@@ -29,26 +29,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bonitasoft.web.dao.model.Identifiable;
-import org.bonitasoft.web.dao.model.MigrationStatusReport;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.fragment.Fragment;
-import org.bonitasoft.web.dao.model.page.*;
-import org.bonitasoft.web.dao.repository.AbstractRepository;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.repository.PageRepository;
-import org.bonitasoft.web.dao.repository.Repository;
-import org.bonitasoft.web.dao.repository.exception.InUseException;
-import org.bonitasoft.web.dao.repository.exception.NotFoundException;
-import org.bonitasoft.web.dao.visitor.AssetVisitor;
-import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
+import org.bonitasoft.web.designer.common.repository.AbstractRepository;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.Repository;
+import org.bonitasoft.web.designer.common.repository.exception.InUseException;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.Predicates;
 import org.bonitasoft.web.designer.controller.asset.PageAssetPredicate;
+import org.bonitasoft.web.designer.model.Identifiable;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
+import org.bonitasoft.web.designer.model.page.*;
 import org.bonitasoft.web.designer.visitor.*;
 
 public class DefaultFragmentService extends AbstractArtifactService<FragmentRepository, Fragment>

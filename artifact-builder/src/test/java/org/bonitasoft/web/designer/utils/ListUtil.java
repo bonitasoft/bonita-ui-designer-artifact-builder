@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bonitasoft.web.dao.model.Identifiable;
+import org.bonitasoft.web.designer.model.Identifiable;
 
 /**
  * Use in RestControllerTest

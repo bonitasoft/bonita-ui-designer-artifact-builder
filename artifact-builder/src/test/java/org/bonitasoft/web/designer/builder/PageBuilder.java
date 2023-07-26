@@ -21,9 +21,7 @@ import static java.util.Arrays.stream;
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.aParagraph;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.anInput;
-import static org.bonitasoft.web.designer.builder.ContainerBuilder.aContainer;
 import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
-import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,17 +33,17 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bonitasoft.web.dao.model.MigrationStatusReport;
-import org.bonitasoft.web.dao.model.asset.Asset;
-import org.bonitasoft.web.dao.model.asset.AssetScope;
-import org.bonitasoft.web.dao.model.data.Data;
-import org.bonitasoft.web.dao.model.data.Variable;
-import org.bonitasoft.web.dao.model.page.Container;
-import org.bonitasoft.web.dao.model.page.Element;
-import org.bonitasoft.web.dao.model.page.FormContainer;
-import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.dao.model.page.TabContainer;
-import org.bonitasoft.web.dao.model.page.TabsContainer;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.asset.Asset;
+import org.bonitasoft.web.designer.model.asset.AssetScope;
+import org.bonitasoft.web.designer.model.data.Data;
+import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.designer.model.page.Container;
+import org.bonitasoft.web.designer.model.page.Element;
+import org.bonitasoft.web.designer.model.page.FormContainer;
+import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.designer.model.page.TabContainer;
+import org.bonitasoft.web.designer.model.page.TabsContainer;
 
 public class PageBuilder {
 
@@ -80,7 +78,7 @@ public class PageBuilder {
                 anInput().withDescription("A mandatory name input").withPropertyValue("required", false)
                         .withPropertyValue("placeholder", "enter you're name").withDimension(6));
 
-        Container containerWithTwoRows = aContainer().with(row, row).build();
+        Container containerWithTwoRows = ContainerBuilder.aContainer().with(row, row).build();
 
         TabContainer tabContainer = new TabContainer();
         tabContainer.setContainer(containerWithTwoRows);
@@ -92,13 +90,13 @@ public class PageBuilder {
         tabsContainer.setTabList(asList(tabContainer, tabContainer2));
 
         FormContainer formContainer = new FormContainer();
-        formContainer.setContainer(aContainer()
+        formContainer.setContainer(ContainerBuilder.aContainer()
                 .with(aParagraph().withPropertyValue("content", "hello <br/> world").withDimension(6)).build());
 
         return aPage().withId(id).with(tabsContainer, containerWithTwoRows, formContainer)
                 .withAsset(anAsset().withName("asset.js").withScope(AssetScope.PAGE).build())
-                .withVariable("aVariable", aConstantVariable().value("a value"))
-                .withVariable("anotherVariable", aConstantVariable().value("4"))
+                .withVariable("aVariable", VariableBuilder.aConstantVariable().value("a value"))
+                .withVariable("anotherVariable", VariableBuilder.aConstantVariable().value("4"))
                 .build();
     }
 

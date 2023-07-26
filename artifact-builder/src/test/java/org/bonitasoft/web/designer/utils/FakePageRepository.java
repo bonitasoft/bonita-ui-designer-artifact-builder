@@ -19,12 +19,12 @@ package org.bonitasoft.web.designer.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.dao.repository.PageRepository;
-import org.bonitasoft.web.dao.repository.exception.NotFoundException;
-import org.bonitasoft.web.dao.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
+import org.bonitasoft.web.designer.model.page.Page;
 
 public class FakePageRepository extends PageRepository {
 
