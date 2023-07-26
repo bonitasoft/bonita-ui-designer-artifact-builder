@@ -20,16 +20,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.bonitasoft.web.angularjs.AngularJsGenerator;
+import org.bonitasoft.web.angularjs.AngularJsGeneratorStrategy;
 import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
 import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
-import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
-import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.export.ExportStep;
 import org.bonitasoft.web.dao.model.fragment.Fragment;
 import org.bonitasoft.web.dao.model.page.Page;
-import org.bonitasoft.web.dao.repository.WidgetFileBasedLoader;
 import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
@@ -71,6 +68,10 @@ public class ArtifactBuilderFactory {
         this.uiDesignerProperties = uiDesignerProperties;
         this.jsonHandler = new JsonHandlerFactory().create();
         this.core = new UiDesignerCoreFactory(this.uiDesignerProperties, this.jsonHandler).create();
+
+        //FIXME: problem here
+        // repository use this.uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath()
+        // However, GeneratorProperties is used and instantiated to override getTemplateResourcesPath()
     }
 
     /**
@@ -83,13 +84,18 @@ public class ArtifactBuilderFactory {
         var fragmentIdVisitor = new FragmentIdVisitor(core.getFragmentRepository());
         var widgetIdVisitor = new WidgetIdVisitor(core.getFragmentRepository());
 
+        /**
+         * Start Specific generation
+         */
         var directiveFileGenerator = new DirectiveFileGenerator(
                 uiDesignerProperties.getWorkspace().getWidgets().getDir(),
                 core.getWidgetRepository(), widgetIdVisitor);
 
-        //Page
-        var angularJsGenerator = new AngularJsGenerator(
+        // In the future, we can will be able to instantiate different generator strategy depending on the configuration
+
+        var generatorStrategy = new AngularJsGeneratorStrategy(
                 this.jsonHandler,
+                core.getWatcher(),
                 fragmentIdVisitor,
                 directiveFileGenerator,
                 widgetIdVisitor,
@@ -99,6 +105,9 @@ public class ArtifactBuilderFactory {
                 core.getPageAssetRepository(),
                 core.getFragmentRepository(),
                 uiDesignerProperties.getWorkspace().getWidgets().getDir());
+        /**
+         * END Specific generation
+         */
 
         var commonExportStep = new ExportStep[] {
                 new PagePropertiesExportStep(new PagePropertiesBuilder(uiDesignerProperties, core.getPageService())),
@@ -107,7 +116,7 @@ public class ArtifactBuilderFactory {
                         uiDesignerProperties.getWorkspace().getFragments().getDir())
         };
         var pageExportSteps = Stream
-                .concat(Arrays.stream(commonExportStep), Arrays.stream(angularJsGenerator.getPageExportStep()))
+                .concat(Arrays.stream(commonExportStep), Arrays.stream(generatorStrategy.getPageExportStep()))
                 .toArray(ExportStep[]::new);
 
         //Fragment
@@ -124,7 +133,7 @@ public class ArtifactBuilderFactory {
                 new WidgetByIdExportStep(core.getWidgetRepository(), new WidgetPropertiesBuilder(uiDesignerProperties))
         };
 
-        // == Builder
+        // == Export
         var widgetExporter = new WidgetExporter(jsonHandler, core.getWidgetService(), widgetExportSteps);
         var fragmentExporter = new FragmentExporter(jsonHandler, core.getFragmentService(), fragmentExportSteps);
         var pageExporter = new PageExporter(jsonHandler, core.getPageService(), pageExportSteps);
@@ -169,22 +178,12 @@ public class ArtifactBuilderFactory {
                 pageDependencyImporters);
 
         // Init workspace now
-
-        var widgetDirectiveBuilder = new WidgetDirectiveBuilder(core.getWatcher(),
-                new WidgetFileBasedLoader(jsonHandler), uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
-
-        var fragmentDirectiveBuilder = new FragmentDirectiveBuilder(core.getWatcher(), jsonHandler,
-                angularJsGenerator.getHtmlBuilderVisitor(),
-                uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
-
         var resourcesCopier = new ResourcesCopier();
         var workspace = new Workspace(
                 uiDesignerProperties,
                 core.getWidgetRepository(),
                 core.getPageRepository(),
-                //TODO: Here we want a mechanism to call angularJsGenerator.construct() at workspace.initilization
-                // It's the generator responsability to start with right behavior
-                widgetDirectiveBuilder, fragmentDirectiveBuilder,
+                generatorStrategy,
                 core.getWidgetAssetDependencyImporter(),
                 resourcesCopier,
                 List.of(
@@ -194,16 +193,17 @@ public class ArtifactBuilderFactory {
                 jsonHandler);
         workspace.initialize();
 
+        //TODO: Do we want to put the 18n management generator package ?
         var i18nInitializer = new I18nInitializer(
                 new LanguagePackBuilder(
                         core.getWatcher(),
                         new LanguagePackFactory(jsonHandler),
-                        uiDesignerProperties.getWorkspaceUid()),
+                        generatorStrategy.getGeneratorProperties()),
                 resourcesCopier,
-                uiDesignerProperties.getWorkspaceUid());
+                generatorStrategy.getGeneratorProperties());
         i18nInitializer.initialize();
 
-        return new AngularJsArtifactBuilder(
+        return new DefaultArtifactBuilder(
                 // Workspace management
                 workspace,
                 core.getWidgetService(),
@@ -213,7 +213,7 @@ public class ArtifactBuilderFactory {
                 pageExporter,
                 fragmentExporter,
                 widgetExporter,
-                angularJsGenerator.getHtmlGenerator(),
+                generatorStrategy.getHtmlGenerator(),
                 // Import
                 new ImportStore(),
                 pageImporter,

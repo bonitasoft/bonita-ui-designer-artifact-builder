@@ -30,22 +30,23 @@ import org.bonitasoft.web.angularjs.visitor.ModelPropertiesVisitor;
 import org.bonitasoft.web.angularjs.visitor.PropertyValuesVisitor;
 import org.bonitasoft.web.angularjs.visitor.RequiredModulesVisitor;
 import org.bonitasoft.web.angularjs.visitor.VariableModelVisitor;
-import org.bonitasoft.web.dao.CommonGenerator;
+import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
+import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
+import org.bonitasoft.web.dao.CommonGeneratorStrategy;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.export.ExportStep;
 import org.bonitasoft.web.dao.generator.rendering.IHtmlGenerator;
+import org.bonitasoft.web.dao.livebuild.AbstractLiveFileBuilder;
+import org.bonitasoft.web.dao.livebuild.Watcher;
 import org.bonitasoft.web.dao.model.page.Page;
 import org.bonitasoft.web.dao.model.widgets.Widget;
-import org.bonitasoft.web.dao.repository.AssetRepository;
-import org.bonitasoft.web.dao.repository.FragmentRepository;
-import org.bonitasoft.web.dao.repository.PageRepository;
-import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.dao.repository.*;
 import org.bonitasoft.web.dao.visitor.AssetVisitor;
 import org.bonitasoft.web.dao.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.dao.visitor.PageFactory;
 import org.bonitasoft.web.dao.visitor.WidgetIdVisitor;
 
-public class AngularJsGenerator extends CommonGenerator {
+public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
 
     private final GeneratorProperties generatorProperties;
     private final DirectiveFileGenerator directiveFileGenerator;
@@ -53,8 +54,11 @@ public class AngularJsGenerator extends CommonGenerator {
     private final HtmlBuilderVisitor htmlBuilderVisitor;
     private final WidgetIdVisitor widgetIdVisitor;
     private final Path widgetUserRepoPath;
+    private final FragmentDirectiveBuilder fragmentDirectiveBuilder;
+    private final WidgetDirectiveBuilder widgetFileBuilder;
 
-    public AngularJsGenerator(JsonHandler jsonHandler,
+    public AngularJsGeneratorStrategy(JsonHandler jsonHandler,
+            Watcher watcher,
             FragmentIdVisitor fragmentIdVisitor,
             DirectiveFileGenerator directiveFileGenerator,
             WidgetIdVisitor widgetIdVisitor,
@@ -74,7 +78,7 @@ public class AngularJsGenerator extends CommonGenerator {
                 new PropertyValuesVisitor(fragmentRepository),
                 new VariableModelVisitor(fragmentRepository));
 
-        this.generatorProperties = new GeneratorProperties("workspace-uid", "i18n");;
+        this.generatorProperties = new GeneratorProperties("workspace-uid", "i18n");
         this.htmlBuilderVisitor = new HtmlBuilderVisitor(fragmentRepository);
         var directivesCollector = new DirectivesCollector(jsonHandler,
                 generatorProperties.getTmpPagesRepositoryPath(),
@@ -92,6 +96,12 @@ public class AngularJsGenerator extends CommonGenerator {
                 widgetAssetRepository,
                 pageAssetRepository,
                 pageFactories);
+        this.fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler,
+                this.getHtmlBuilderVisitor(),
+                this.generatorProperties.isLiveBuildEnabled());
+
+        this.widgetFileBuilder = new WidgetDirectiveBuilder(watcher,
+                new WidgetFileBasedLoader(jsonHandler), this.generatorProperties.isLiveBuildEnabled());
     }
 
     public ExportStep[] getPageExportStep() {
@@ -106,8 +116,19 @@ public class AngularJsGenerator extends CommonGenerator {
         };
     }
 
+    @Override
     public GeneratorProperties getGeneratorProperties() {
         return this.generatorProperties;
+    }
+
+    @Override
+    public AbstractLiveFileBuilder widgetFileBuilder() {
+        return widgetFileBuilder;
+    }
+
+    @Override
+    public AbstractLiveFileBuilder fragmentDirectiveBuilder() {
+        return fragmentDirectiveBuilder;
     }
 
     public HtmlBuilderVisitor getHtmlBuilderVisitor() {

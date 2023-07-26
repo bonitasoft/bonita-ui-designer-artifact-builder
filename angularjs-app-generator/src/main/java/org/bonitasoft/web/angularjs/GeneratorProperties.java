@@ -21,7 +21,9 @@ import static java.nio.file.Files.createDirectories;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class GeneratorProperties {
+import org.bonitasoft.web.dao.IGeneratorProperties;
+
+public class GeneratorProperties implements IGeneratorProperties {
 
     public static final String EXTRACT_BACKEND_RESOURCES = "META-INF/resources";
     private final Path path;
@@ -37,10 +39,12 @@ public class GeneratorProperties {
     public static final String TEMPLATES_RESOURCES = "templates";
     private static final String PAGES_DEFAULT_DIRECTORY = "pages";
 
+    @Override
     public Path getTmpFragmentsRepositoryPath() {
         return getPath().resolve(FRAGMENTS);
     }
 
+    @Override
     public Path getTmpPagesRepositoryPath() {
         return getPath().resolve(PAGES_DEFAULT_DIRECTORY);
     }
@@ -49,20 +53,23 @@ public class GeneratorProperties {
         return createDirectories(getPath().resolve(this.i18NResourcesName));
     }
 
+    @Override
     public Path getExportBackendResourcesPath() {
         return getExtractPath().resolve(EXTRACT_BACKEND_RESOURCES).resolve("runtime");
     }
 
+    @Override
     public Path getTemplateResourcesPath() {
         return getExtractPath().resolve(TEMPLATES_RESOURCES);
     }
 
-    public Path getPath() {
+    private Path getPath() {
         return this.path;
     }
 
+    @Override
     public Path getExtractPath() {
-        return getPath().resolve("extract");
+        return getPath().resolve("extract").resolve("angularjs");
     }
 
     public boolean isLiveBuildEnabled() {

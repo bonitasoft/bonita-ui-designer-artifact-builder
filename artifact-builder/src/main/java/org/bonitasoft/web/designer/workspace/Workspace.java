@@ -30,8 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.io.FileUtils;
 import org.bonitasoft.web.angularjs.rendering.WidgetFileHelper;
-import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
-import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
+import org.bonitasoft.web.dao.GeneratorStrategy;
 import org.bonitasoft.web.dao.JsonHandler;
 import org.bonitasoft.web.dao.migration.Version;
 import org.bonitasoft.web.dao.model.page.Page;
@@ -66,11 +65,8 @@ public class Workspace {
 
     private final PageRepository pageRepository;
 
+    private final GeneratorStrategy generatorStrategy;
     private final ResourcesCopier resourcesCopier;
-
-    private final WidgetDirectiveBuilder widgetDirectiveBuilder;
-
-    private final FragmentDirectiveBuilder fragmentDirectiveBuilder;
 
     private final AssetDependencyImporter<Widget> widgetAssetDependencyImporter;
 
@@ -84,18 +80,17 @@ public class Workspace {
 
     public Workspace(UiDesignerProperties uiDesignerProperties, WidgetRepository widgetRepository,
             PageRepository pageRepository,
-            WidgetDirectiveBuilder widgetDirectiveBuilder, FragmentDirectiveBuilder fragmentDirectiveBuilder,
+            GeneratorStrategy generatorStrategy,
             AssetDependencyImporter<Widget> widgetAssetDependencyImporter, ResourcesCopier resourcesCopier,
             List<LiveRepositoryUpdate> migrations,
             JsonHandler jsonHandler) {
         this.widgetRepository = widgetRepository;
         this.pageRepository = pageRepository;
+        this.generatorStrategy = generatorStrategy;
         this.resourcesCopier = resourcesCopier;
-        this.widgetDirectiveBuilder = widgetDirectiveBuilder;
-        this.fragmentDirectiveBuilder = fragmentDirectiveBuilder;
         this.widgetAssetDependencyImporter = widgetAssetDependencyImporter;
         this.uiDesignerProperties = uiDesignerProperties;
-        this.extractPath = uiDesignerProperties.getWorkspaceUid().getExtractPath();
+        this.extractPath = generatorStrategy.getGeneratorProperties().getExtractPath();
         this.migrations = migrations;
         this.jsonHandler = jsonHandler;
     }
@@ -260,7 +255,7 @@ public class Workspace {
             }
         }
 
-        widgetDirectiveBuilder.start(uiDesignerProperties.getWorkspace().getWidgets().getDir());
+        generatorStrategy.widgetFileBuilder().start(uiDesignerProperties.getWorkspace().getWidgets().getDir());
     }
 
     private void createWidget(Path widgetRepositorySourcePath, Widget widget) throws IOException {
@@ -323,7 +318,7 @@ public class Workspace {
     private void ensureFragmentRepositoryPresent() throws IOException {
         var fragmentsPath = uiDesignerProperties.getWorkspace().getFragments().getDir();
         createDirectories(fragmentsPath);
-        fragmentDirectiveBuilder.start(fragmentsPath);
+        generatorStrategy.fragmentDirectiveBuilder().start(fragmentsPath);
     }
 
     private boolean isFragmentDescriptorExist(Path fragWorkspace, String fragment) {

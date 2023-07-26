@@ -52,7 +52,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class AngularJsArtifactBuilder implements ArtifactBuilder {
+public class DefaultArtifactBuilder implements ArtifactBuilder {
 
     public static final List<String> supportedArtifactTypes = List.of("page", "fragment", "widget");
 
