@@ -33,6 +33,7 @@ import org.bonitasoft.web.designer.common.livebuild.Watcher;
 import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.model.Identifiable;
+import org.bonitasoft.web.designer.repository.BeanValidator;
 
 /**
  * File based repository

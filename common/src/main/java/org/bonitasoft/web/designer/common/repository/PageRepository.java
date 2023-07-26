@@ -24,6 +24,7 @@ import java.util.Map;
 import org.bonitasoft.web.designer.common.livebuild.Watcher;
 import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.model.page.Page;
+import org.bonitasoft.web.designer.repository.BeanValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

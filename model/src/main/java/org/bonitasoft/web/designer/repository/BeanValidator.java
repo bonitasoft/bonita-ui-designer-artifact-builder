@@ -14,31 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.utils.rule;
+package org.bonitasoft.web.designer.repository;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Set;
 
-public class TemporaryFolder extends org.junit.rules.TemporaryFolder {
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
-    public Path toPath() {
-        return Paths.get(this.getRoot().getPath());
+import org.bonitasoft.web.designer.model.exception.ConstraintValidationException;
+
+/**
+ * @author Colin Puy
+ */
+public class BeanValidator {
+
+    private final Validator validator;
+
+    public BeanValidator(Validator validator) {
+        this.validator = validator;
     }
 
     /**
-     * Returns a new fresh folder with the given name under the temporary
-     * folder.
+     * @throws ConstraintValidationException if violations exists
      */
-    public Path newFolderPath(String... folder) throws IOException {
-        return Paths.get(newFolder(folder).getPath());
-    }
-
-    /**
-     * Returns a new fresh file with the given name under the temporary
-     * folder.
-     */
-    public Path newFilePath(String file) throws IOException {
-        return Paths.get(newFile(file).getPath());
+    public void validate(Object o) {
+        Set<ConstraintViolation<Object>> violations = validator.validate(o);
+        if (!violations.isEmpty()) {
+            throw new ConstraintValidationException(violations);
+        }
     }
 }

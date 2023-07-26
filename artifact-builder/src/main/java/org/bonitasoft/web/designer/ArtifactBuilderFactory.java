@@ -47,6 +47,7 @@ import org.bonitasoft.web.designer.i18n.LanguagePackBuilder;
 import org.bonitasoft.web.designer.i18n.LanguagePackFactory;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;

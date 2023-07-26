@@ -14,25 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.common.repository.exception;
+package org.bonitasoft.web.designer.rule;
 
-import static org.apache.commons.lang3.StringUtils.chop;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import java.util.Set;
+public class TemporaryFolder extends org.junit.rules.TemporaryFolder {
 
-import javax.validation.ConstraintViolation;
-
-public class ConstraintValidationException extends RuntimeException {
-
-    public ConstraintValidationException(Set<ConstraintViolation<Object>> violations) {
-        super(buildMessage(violations));
+    public Path toPath() {
+        return Paths.get(this.getRoot().getPath());
     }
 
-    private static String buildMessage(Set<ConstraintViolation<Object>> violations) {
-        var message = new StringBuilder();
-        for (ConstraintViolation<Object> constraintViolation : violations) {
-            message.append(constraintViolation.getMessage()).append(",");
-        }
-        return chop(message.toString());
+    /**
+     * Returns a new fresh folder with the given name under the temporary
+     * folder.
+     */
+    public Path newFolderPath(String... folder) throws IOException {
+        return Paths.get(newFolder(folder).getPath());
+    }
+
+    /**
+     * Returns a new fresh file with the given name under the temporary
+     * folder.
+     */
+    public Path newFilePath(String file) throws IOException {
+        return Paths.get(newFile(file).getPath());
     }
 }

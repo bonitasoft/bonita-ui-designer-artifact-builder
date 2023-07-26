@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Path;
 
-import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
 import org.junit.Test;
@@ -33,9 +32,9 @@ public class UiDesignerPropertiesBuilderTest {
                 .workspacePath(Path.of("some/place/"))
                 .build();
 
-        Assertions.assertThat(properties.getVersion()).isEqualTo(Version.VERSION);
-        Assertions.assertThat(properties.getEdition()).isEqualTo(Version.EDITION);
-        Assertions.assertThat(properties.getModelVersion()).isEqualTo(Version.MODEL_VERSION);
+        assertThat(properties.getVersion()).isEqualTo(Version.VERSION);
+        assertThat(properties.getEdition()).isEqualTo(Version.EDITION);
+        assertThat(properties.getModelVersion()).isEqualTo(Version.MODEL_VERSION);
     }
 
     @Test
@@ -46,8 +45,8 @@ public class UiDesignerPropertiesBuilderTest {
                 .workspacePath(workspacePath)
                 .build();
 
-        Assertions.assertThat(properties.getWorkspace().getPath()).isEqualTo(workspacePath);
-        Assertions.assertThat(properties.getWorkspaceUid()).isNotNull();
+        assertThat(properties.getWorkspace().getPath()).isEqualTo(workspacePath);
+        assertThat(properties.getWorkspaceUid()).isNotNull();
     }
 
     @Test
@@ -65,8 +64,8 @@ public class UiDesignerPropertiesBuilderTest {
                 .widgetsFolderName(widgetFolder)
                 .build();
 
-        Assertions.assertThat(properties.getWorkspace().getPath()).isEqualTo(workspacePath);
-        Assertions.assertThat(properties.getWorkspace().getPages().getDir())
+        assertThat(properties.getWorkspace().getPath()).isEqualTo(workspacePath);
+        assertThat(properties.getWorkspace().getPages().getDir())
                 .isEqualTo(properties.getWorkspace().getPath().resolve(pageFolder));
     }
 }

@@ -125,6 +125,14 @@
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
     </dependency>
+    <!--  Test dependencies  -->
+    <dependency>
+      <groupId>org.bonitasoft.web</groupId>
+      <artifactId>ui-designer-artifact-builder-model</artifactId>
+      <version>${project.version}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

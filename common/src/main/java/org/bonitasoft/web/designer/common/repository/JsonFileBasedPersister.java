@@ -30,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bonitasoft.web.designer.common.migration.Version;
 import org.bonitasoft.web.designer.model.*;
+import org.bonitasoft.web.designer.repository.BeanValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

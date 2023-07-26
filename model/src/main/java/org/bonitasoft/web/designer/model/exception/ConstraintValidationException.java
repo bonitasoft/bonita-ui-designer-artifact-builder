@@ -14,25 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.controller.asset;
+package org.bonitasoft.web.designer.model.exception;
 
-import java.util.Map;
+import static org.apache.commons.lang3.StringUtils.chop;
 
-import com.fasterxml.jackson.core.JsonLocation;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Set;
 
-public class MalformedJsonException extends RuntimeException {
+import javax.validation.ConstraintViolation;
 
-    private final JsonLocation location;
+public class ConstraintValidationException extends RuntimeException {
 
-    public MalformedJsonException(JsonProcessingException cause) {
-        super(cause);
-        this.location = cause.getLocation();
+    public ConstraintValidationException(Set<ConstraintViolation<Object>> violations) {
+        super(buildMessage(violations));
     }
 
-    public Map<String, Integer> getLocationInfos() {
-        return Map.of(
-                "column", location.getColumnNr(),
-                "line", location.getLineNr());
+    private static String buildMessage(Set<ConstraintViolation<Object>> violations) {
+        var message = new StringBuilder();
+        for (ConstraintViolation<Object> constraintViolation : violations) {
+            message.append(constraintViolation.getMessage()).append(",");
+        }
+        return chop(message.toString());
     }
 }

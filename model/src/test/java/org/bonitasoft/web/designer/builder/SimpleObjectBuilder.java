@@ -16,7 +16,7 @@
  */
 package org.bonitasoft.web.designer.builder;
 
-import org.bonitasoft.web.designer.repository.SimpleDesignerArtifact;
+import org.bonitasoft.web.designer.SimpleDesignerArtifact;
 
 public class SimpleObjectBuilder {
 

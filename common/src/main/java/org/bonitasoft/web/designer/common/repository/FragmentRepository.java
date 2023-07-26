@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.bonitasoft.web.designer.common.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
+import org.bonitasoft.web.designer.repository.BeanValidator;
 
 public class FragmentRepository extends AbstractRepository<Fragment> implements WidgetContainerRepository<Fragment> {
 

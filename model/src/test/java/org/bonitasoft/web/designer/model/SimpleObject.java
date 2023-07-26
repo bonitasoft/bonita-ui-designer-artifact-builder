@@ -14,33 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.repository;
+package org.bonitasoft.web.designer.model;
 
 import java.time.Instant;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bonitasoft.web.designer.model.DesignerArtifact;
-import org.bonitasoft.web.designer.model.JsonViewMetadata;
-import org.bonitasoft.web.designer.model.JsonViewPersistence;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
-@JsonIgnoreProperties({ "type" })
-public final class SimpleDesignerArtifact extends DesignerArtifact {
+@JsonIgnoreProperties(value = { "password" }, allowSetters = true)
+public final class SimpleObject {
 
     private String id;
     private String name;
     private int number;
-    private SimpleDesignerArtifact another;
-    private String metadata;
+    private SimpleObject another;
+    private String password;
 
-    public SimpleDesignerArtifact() {
+    public SimpleObject() {
     }
 
-    public SimpleDesignerArtifact(String id, String name, int number) {
+    public SimpleObject(String id, String name, int number) {
         this.id = id;
         this.name = name;
         this.number = number;
@@ -64,32 +60,18 @@ public final class SimpleDesignerArtifact extends DesignerArtifact {
         this.number = number;
     }
 
-    public SimpleDesignerArtifact getAnother() {
+    public SimpleObject getAnother() {
         return another;
     }
 
-    public void setAnother(SimpleDesignerArtifact another) {
+    public void setAnother(SimpleObject another) {
         this.another = another;
-    }
-
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
-    }
-
-    @JsonView(JsonViewMetadata.class)
-    public String getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("type")
-    public String getType() {
-        return "simple";
     }
 
     @Override
     public boolean equals(final Object obj) {
-        if (obj instanceof SimpleDesignerArtifact) {
-            final SimpleDesignerArtifact other = (SimpleDesignerArtifact) obj;
+        if (obj instanceof SimpleObject) {
+            final SimpleObject other = (SimpleObject) obj;
             return new EqualsBuilder()
                     .append(name, other.name)
                     .append(number, other.number)
@@ -107,14 +89,19 @@ public final class SimpleDesignerArtifact extends DesignerArtifact {
                 .toHashCode();
     }
 
-    @Override
     public String getId() {
         return id;
     }
 
-    @Override
     public void setLastUpdate(Instant lastUpdate) {
 
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

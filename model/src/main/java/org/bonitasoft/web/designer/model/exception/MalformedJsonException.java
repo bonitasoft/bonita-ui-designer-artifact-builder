@@ -14,27 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.utils;
+package org.bonitasoft.web.designer.model.exception;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
-import org.bonitasoft.web.designer.model.Identifiable;
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-/**
- * Use in RestControllerTest
- */
-public class ListUtil {
+public class MalformedJsonException extends RuntimeException {
 
-    /**
-     * Convert Json in object
-     */
-    public static List<Identifiable> asList(Identifiable... identifiables) {
-        List<Identifiable> ids = new ArrayList<>();
-        for (Identifiable id : identifiables) {
-            ids.add(id);
-        }
-        return ids;
+    private final JsonLocation location;
+
+    public MalformedJsonException(JsonProcessingException cause) {
+        super(cause);
+        this.location = cause.getLocation();
     }
 
+    public Map<String, Integer> getLocationInfos() {
+        return Map.of(
+                "column", location.getColumnNr(),
+                "line", location.getLineNr());
+    }
 }

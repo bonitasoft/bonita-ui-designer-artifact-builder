@@ -43,6 +43,7 @@ import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.widgets.Widget;
+import org.bonitasoft.web.designer.repository.BeanValidator;
 
 /**
  * This Persister is used to attach assets to a component. Each of them are serialized in the same directory

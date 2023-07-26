@@ -28,6 +28,7 @@ import org.bonitasoft.web.designer.model.HasUUID;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.JsonViewPersistence;
 import org.bonitasoft.web.designer.model.widgets.Widget;
+import org.bonitasoft.web.designer.repository.BeanValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -32,6 +32,7 @@ import org.bonitasoft.web.designer.common.repository.exception.NotFoundException
 import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.model.widgets.Property;
 import org.bonitasoft.web.designer.model.widgets.Widget;
+import org.bonitasoft.web.designer.repository.BeanValidator;
 
 public class WidgetRepository extends AbstractRepository<Widget> {
 

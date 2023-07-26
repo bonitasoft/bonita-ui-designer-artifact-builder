@@ -14,15 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer;
+package org.bonitasoft.web.designer.model;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS;
-
-import org.bonitasoft.web.designer.migration.JacksonDeserializationProblemHandler;
-import org.bonitasoft.web.designer.model.JacksonJsonHandler;
-import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Container;
 import org.bonitasoft.web.designer.model.page.FormContainer;
@@ -32,8 +25,10 @@ import org.bonitasoft.web.designer.model.page.TabContainer;
 import org.bonitasoft.web.designer.model.page.TabsContainer;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -50,9 +45,9 @@ public class JsonHandlerFactory {
         var objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        objectMapper.enable(WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.disable(WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
-        objectMapper.disable(READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
+        objectMapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
+        objectMapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
 
         //By default all properties without explicit view definition are included in serialization.
         //To use JsonView we have to change this parameter

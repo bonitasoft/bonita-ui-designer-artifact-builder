@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.*;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
