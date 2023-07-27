@@ -41,7 +41,7 @@
     </dependency>
     <dependency>
       <groupId>org.bonitasoft.web</groupId>
-      <artifactId>angularjs-app-generator</artifactId>
+      <artifactId>ui-designer-artifact-builder-generator-angularjs</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

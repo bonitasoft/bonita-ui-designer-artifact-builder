@@ -6,7 +6,7 @@
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>angularjs-app-generator</artifactId>
+  <artifactId>ui-designer-artifact-builder-generator-angularjs</artifactId>
   <name>Bonita UI Designer AngularJs Generator</name>
   <description>This module is a generator on AngularJS for Artifact Builder</description>
   <properties>
