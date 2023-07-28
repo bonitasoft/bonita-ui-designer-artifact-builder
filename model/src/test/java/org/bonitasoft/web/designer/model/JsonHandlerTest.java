@@ -24,12 +24,12 @@ import java.util.Map;
 
 import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.designer.model.exception.MalformedJsonException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 public class JsonHandlerTest {
 
-    private JsonHandler jsonHandler = new JsonHandlerFactory().create();
+    private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     @Test
     public void should_deserialize_json() throws Exception {

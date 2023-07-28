@@ -29,7 +29,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.designer.model.widgets.Widget;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * For each json provided widgets, we test that it is deserializable in Widget model

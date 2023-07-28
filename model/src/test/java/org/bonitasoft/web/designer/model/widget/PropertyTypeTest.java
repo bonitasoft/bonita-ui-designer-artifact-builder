@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.designer.model.widgets.PropertyType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PropertyTypeTest {
 

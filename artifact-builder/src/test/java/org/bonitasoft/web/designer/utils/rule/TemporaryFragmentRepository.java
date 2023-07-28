@@ -34,26 +34,20 @@ import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.rule.TemporaryFolder;
 
-public class TemporaryFragmentRepository extends TemporaryFolder {
+public class TemporaryFragmentRepository {
 
     private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     private FragmentRepository repository;
 
     private final WorkspaceProperties workspaceProperties;
+    private Path tempPath;
 
-    public TemporaryFragmentRepository(WorkspaceProperties workspaceProperties) {
-        this.workspaceProperties = workspaceProperties;
-    }
-
-    @Override
-    protected void before() throws Throwable {
-        super.before();
-
+    public void init(Path tempDir) {
+        tempPath = tempDir;
         var uiDesignerProperties = new UiDesignerProperties("1.13.0", Version.MODEL_VERSION);
-        workspaceProperties.getFragments().setDir(this.toPath());
+        workspaceProperties.getFragments().setDir(tempPath);
         uiDesignerProperties.setWorkspace(workspaceProperties);
 
         BeanValidator validator = mock(BeanValidator.class);
@@ -70,16 +64,20 @@ public class TemporaryFragmentRepository extends TemporaryFolder {
 
     }
 
+    public TemporaryFragmentRepository(WorkspaceProperties workspaceProperties) {
+        this.workspaceProperties = workspaceProperties;
+    }
+
     public FragmentRepository toRepository() {
         return repository;
     }
 
     public Path resolveFragmentJson(String id) {
-        return this.toPath().resolve(format("%s/%s.json", id, id));
+        return this.tempPath.resolve(format("%s/%s.json", id, id));
     }
 
     public Path resolveFragmentMetadata(String id) {
-        return this.toPath().resolve(format("%s/%s.metadata.json", id, id));
+        return this.tempPath.resolve(format("%s/%s.metadata.json", id, id));
     }
 
     public Fragment addFragment(FragmentBuilder fragmentBuilder) {

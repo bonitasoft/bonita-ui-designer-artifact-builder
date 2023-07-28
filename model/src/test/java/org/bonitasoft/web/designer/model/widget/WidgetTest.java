@@ -20,6 +20,7 @@ import static org.apache.commons.io.IOUtils.toByteArray;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,21 +36,13 @@ import org.bonitasoft.web.designer.model.JsonViewPersistence;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widgets.Widget;
-import org.bonitasoft.web.designer.rule.TemporaryFolder;
-import org.bonitasoft.web.designer.rule.TestResource;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 public class WidgetTest {
 
-    @Rule
-    public TestResource testResource = new TestResource(this.getClass());
-
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-    private JsonHandler jsonHandler = new JsonHandlerFactory().create();
+    private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     @Test
     public void jsonview_light_should_only_manage_id_name_hasValidationError_and_light_page() throws Exception {
@@ -204,14 +197,14 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_prepare_widget_before_deserialize() throws Exception {
+    public void should_prepare_widget_before_deserialize(@TempDir Path tempDir) throws Exception {
         Widget widget = new Widget();
         widget.setId("widgetToDeserialize");
         widget.setController("@widgetToDeserialize.ctrl.js");
         widget.setTemplate("@widgetToDeserialize.tpl.html");
 
-        temporaryFolder.newFolder("aWidget");
-        var widgetPath = temporaryFolder.getRoot().toPath().resolve("aWidget");
+        Files.createDirectory(tempDir.resolve("aWidget"));
+        var widgetPath = tempDir.resolve("aWidget");
 
         byte[] ctrlContent = "function widgetToSerializeCtrl() { function comparator(initialValue, item) { return angular.equals(initialValue, ctrl.getValue(item));}}"
                 .getBytes();
@@ -227,14 +220,14 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_prepare_widget_before_deserialize_when_field_not_referred_to_files() throws Exception {
+    public void should_prepare_widget_before_deserialize_when_field_not_referred_to_files(@TempDir Path tempDir)
+            throws Exception {
         Widget widget = new Widget();
         widget.setId("aWidget");
         widget.setController("function widgetCtrl(){}");
         widget.setTemplate("<div>my Template</div>");
 
-        var path = temporaryFolder.newFolder("aWidget");
-        widget.prepareWidgetToDeserialize(temporaryFolder.getRoot().toPath().resolve("aWidget"));
+        widget.prepareWidgetToDeserialize(tempDir.resolve("aWidget"));
 
         assertThat(widget.getController()).isEqualTo("function widgetCtrl(){}");
         assertThat(widget.getTemplate()).isEqualTo("<div>my Template</div>");

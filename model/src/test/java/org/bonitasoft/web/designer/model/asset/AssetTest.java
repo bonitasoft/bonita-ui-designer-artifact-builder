@@ -16,7 +16,11 @@
  */
 package org.bonitasoft.web.designer.model.asset;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 import javax.validation.Validation;
 
@@ -27,26 +31,23 @@ import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.JsonViewPersistence;
 import org.bonitasoft.web.designer.model.exception.ConstraintValidationException;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
-@RunWith(JUnitParamsRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AssetTest {
 
     private Asset asset;
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
     private BeanValidator beanValidator;
     private JsonHandler jsonHandler;
 
-    @Before
+    @BeforeEach
     public void init() {
         jsonHandler = new JsonHandlerFactory().create();
         beanValidator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
@@ -57,35 +58,28 @@ public class AssetTest {
     /**
      * AssetNames injected in the test {@link #should_be_valid_when_name_is_valid(String)}. A name can be a filename or an URL
      */
-    protected Object[] validNames() {
-        return JUnitParamsRunner.$(
-                JUnitParamsRunner.$("test.js"),
-                //Minified files
-                JUnitParamsRunner.$("jquery-1.11.3.min.js"),
-                //Snapshot verison
-                JUnitParamsRunner.$("jquery-1.11.3.min-SNAPSHOT.js"),
-                //Space
-                JUnitParamsRunner.$("copy jquery.js"),
-                //Parenthesis
-                JUnitParamsRunner.$("jquery(1).js"),
-                //underscore
-                JUnitParamsRunner.$("myimage_test.jpg"),
-                //Extension in uppercase
-                JUnitParamsRunner.$("myimage_test.PNG"),
-                //URL
-                JUnitParamsRunner.$("https://code.jquery.com/jquery-2.1.4.min.js"),
-                //URL in https
-                JUnitParamsRunner.$("http://code.jquery.com/jquery-2.1.4.min.js"),
-                //URL with extension in uppercase
-                JUnitParamsRunner.$("https://code.jquery.com/jquery-2.1.4.min.JS"),
-                //URL with space
-                JUnitParamsRunner.$("https://code.jquery.com/jquery version 2.1.4.min.js"),
-                //encoded URL
-                JUnitParamsRunner.$("http://code.jquery.com/jquery%20%402.1.4.min.js"),
-                //Special character
-                JUnitParamsRunner.$("myé&name.js.js"),
-                //Local asset with name starting by http
-                JUnitParamsRunner.$("http_test.js"));
+    static Stream<Arguments> validNames() {
+        return java.util.stream.Stream.of(
+                org.junit.jupiter.params.provider.Arguments.of("test.js"),
+                org.junit.jupiter.params.provider.Arguments.of("jquery-1.11.3.min.js"),
+                org.junit.jupiter.params.provider.Arguments.of("jquery-1.11.3.min-SNAPSHOT.js"),
+                org.junit.jupiter.params.provider.Arguments.of("copy jquery.js"),
+                org.junit.jupiter.params.provider.Arguments.of("jquery(1).js"),
+                org.junit.jupiter.params.provider.Arguments.of("myimage_test.jpg"),
+                org.junit.jupiter.params.provider.Arguments.of("https://code.jquery.com/jquery-2.1.4.min.js"),
+                org.junit.jupiter.params.provider.Arguments.of("http://code.jquery.com/jquery-2.1.4.min.js"),
+                org.junit.jupiter.params.provider.Arguments.of("https://code.jquery.com/jquery-2.1.4.min.JS"),
+                org.junit.jupiter.params.provider.Arguments.of("http://code.jquery.com/jquery%20%402.1.4.min.js"),
+                org.junit.jupiter.params.provider.Arguments.of("myé&name.js.js"),
+                org.junit.jupiter.params.provider.Arguments.of("http_test.js"),
+                org.junit.jupiter.params.provider.Arguments.of("http_test.js"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("validNames")
+    public void should_be_valid_when_name_is_valid(String name) {
+        asset.setName(name);
+        beanValidator.validate(asset);
     }
 
     /**
@@ -95,37 +89,28 @@ public class AssetTest {
      * <li>Second value is the expected error message</li>
      * </ul>
      */
-    protected Object[] invalidNames() {
-        String errorMessage = "Asset name should be a filename containing only alphanumeric characters and no space or an external URL";
-        return JUnitParamsRunner.$(
+    static Stream<Arguments> invalidNames() {
+        return java.util.stream.Stream.of(
                 //Not null
-                JUnitParamsRunner.$(null, "Asset name should not be blank"));
+                org.junit.jupiter.params.provider.Arguments.of(null, "Asset name should not be blank"));
     }
 
-    @Test
-    @Parameters(method = "validNames")
-    public void should_be_valid_when_name_is_valid(String name) {
-        asset.setName(name);
-        beanValidator.validate(asset);
-    }
-
-    @Test
-    @Parameters(method = "invalidNames")
+    @ParameterizedTest
+    @MethodSource("invalidNames")
     public void should_be_invalid_when_name_is_invalid(String name, String expectedErrorMessage) {
-        exception.expect(ConstraintValidationException.class);
-        exception.expectMessage(expectedErrorMessage);
         asset.setName(name);
-
-        beanValidator.validate(asset);
+        final ConstraintValidationException exception = assertThrows(ConstraintValidationException.class,
+                () -> beanValidator.validate(asset));
+        assertThat(exception.getMessage()).isEqualTo(expectedErrorMessage);
     }
 
     @Test
     public void should_be_invalid_when_type_null() {
-        exception.expect(ConstraintValidationException.class);
-        exception.expectMessage("Asset type may not be null");
         asset.setType(null);
 
-        beanValidator.validate(asset);
+        final ConstraintValidationException exception = assertThrows(ConstraintValidationException.class,
+                () -> beanValidator.validate(asset));
+        assertThat(exception.getMessage()).isEqualTo("Asset type may not be null");
     }
 
     @Test

@@ -22,7 +22,7 @@ import java.nio.file.Path;
 
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UiDesignerPropertiesBuilderTest {
 

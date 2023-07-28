@@ -16,7 +16,7 @@
  */
 package org.bonitasoft.web.designer.model.page;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.validation.Validation;
 
@@ -29,8 +29,8 @@ import org.bonitasoft.web.designer.model.*;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.exception.ConstraintValidationException;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 public class PageTest {
@@ -38,7 +38,7 @@ public class PageTest {
     private BeanValidator beanValidator;
     private JsonHandler jsonHandler;
 
-    @Before
+    @BeforeEach
     public void init() {
         jsonHandler = new JsonHandlerFactory().create();
         beanValidator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
@@ -131,18 +131,18 @@ public class PageTest {
         Assertions.assertThat(component.getDescription()).isNotNull().isNotEmpty();
     }
 
-    @Test(expected = ConstraintValidationException.class)
+    @Test
     public void should_not_have_a_name_containing_space() throws Exception {
         Page page = PageBuilder.aPage().withName("the name").build();
 
-        beanValidator.validate(page);
+        assertThrows(ConstraintValidationException.class, () -> beanValidator.validate(page));
     }
 
-    @Test(expected = ConstraintValidationException.class)
+    @Test
     public void should_not_have_a_name_containing_special_characters() throws Exception {
         Page page = PageBuilder.aPage().withName("the-name").build();
 
-        beanValidator.validate(page);
+        assertThrows(ConstraintValidationException.class, () -> beanValidator.validate(page));
     }
 
     @Test
