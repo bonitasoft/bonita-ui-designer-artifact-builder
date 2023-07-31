@@ -20,6 +20,7 @@ import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 import static org.apache.commons.lang3.text.WordUtils.capitalize;
 
+import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class WidgetRepository extends AbstractRepository<Widget> {
 
     public static final String ANGULARJS_CUSTOM_PREFIX = "custom";
     public static final String ANGULARJS_STANDARD_PREFIX = "pb";
+    public static final DirectoryStream.Filter<Path> CUSTOM_WIDGET_FILTER = path -> !path.getFileName().toString()
+            .startsWith(ANGULARJS_STANDARD_PREFIX);
 
     public WidgetRepository(
             Path widgetsPath,

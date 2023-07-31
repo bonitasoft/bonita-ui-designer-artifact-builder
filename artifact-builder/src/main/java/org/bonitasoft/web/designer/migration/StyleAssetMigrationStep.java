@@ -44,7 +44,7 @@ public class StyleAssetMigrationStep extends AbstractMigrationStep<Page> {
     public StyleAssetMigrationStep(Path extractPath, AssetService<Page> assetService) {
         this.assetService = assetService;
         //FIXME: this is a hack to get the default style.css file from the classpath
-        this.extractPath = extractPath.resolve("angularjs");
+        this.extractPath = extractPath;
     }
 
     @Override

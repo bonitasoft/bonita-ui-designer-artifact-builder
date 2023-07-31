@@ -43,7 +43,6 @@ import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.importer.dependencies.WidgetDependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.mocks.PageImportMock;
 import org.bonitasoft.web.designer.controller.importer.mocks.WidgetImportMock;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
@@ -61,20 +60,23 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ArtifactImporterTest {
 
     private static final String WIDGETS_FOLDER = "widgets";
 
-    @Mock(lenient = true)
+    @Mock
     private PageRepository pageRepository;
 
-    @Mock(lenient = true)
+    @Mock
     private DefaultPageService pageService;
 
-    @Mock(lenient = true)
+    @Mock
     private WidgetRepository widgetRepository;
 
     @Spy
@@ -274,7 +276,7 @@ public class ArtifactImporterTest {
         wMocks.mockWidgetsAsAddedDependencies();
         pMocks.mockPageToBeImported(aPage().withId("aPage"));
         when(widgetRepository.loadAll(pageUnzippedPath.resolve(WIDGETS_FOLDER),
-                WidgetDependencyImporter.CUSTOM_WIDGET_FILTER)).thenThrow(IOException.class);
+                WidgetRepository.CUSTOM_WIDGET_FILTER)).thenThrow(IOException.class);
 
         assertThrows(ServerImportException.class, () -> artifactBuilder.importPage(pageImportPath, true));
     }

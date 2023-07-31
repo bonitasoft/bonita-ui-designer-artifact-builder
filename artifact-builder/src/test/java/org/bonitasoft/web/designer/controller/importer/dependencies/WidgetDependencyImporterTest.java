@@ -26,7 +26,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.dao.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -71,6 +71,6 @@ public class WidgetDependencyImporterTest {
         ArgumentCaptor<DirectoryStream.Filter<Path>> captor = ArgumentCaptor.forClass(DirectoryStream.Filter.class);
 
         verify(widgetRepository).loadAll(eq(widgetsFolder), captor.capture());
-        assertThat(captor.getValue()).isEqualTo(WidgetDependencyImporter.CUSTOM_WIDGET_FILTER);
+        assertThat(captor.getValue()).isEqualTo(WidgetRepository.CUSTOM_WIDGET_FILTER);
     }
 }

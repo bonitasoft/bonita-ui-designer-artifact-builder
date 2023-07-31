@@ -14,31 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.utils.rule;
+package org.bonitasoft.web.designer.visitor;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class TemporaryFolder extends org.junit.rules.TemporaryFolder {
+import java.util.Map;
 
-    public Path toPath() {
-        return Paths.get(this.getRoot().getPath());
-    }
+import org.bonitasoft.web.designer.common.visitor.FragmentBindingValueTransformer;
+import org.bonitasoft.web.designer.model.page.PropertyValue;
+import org.junit.Test;
 
-    /**
-     * Returns a new fresh folder with the given name under the temporary
-     * folder.
-     */
-    public Path newFolderPath(String... folder) throws IOException {
-        return Paths.get(newFolder(folder).getPath());
-    }
+public class FragmentBindingValueTransformerTest {
 
-    /**
-     * Returns a new fresh file with the given name under the temporary
-     * folder.
-     */
-    public Path newFilePath(String file) throws IOException {
-        return Paths.get(newFile(file).getPath());
+    @Test
+    public void should_create_a_property_value_of_type_data() throws Exception {
+        FragmentBindingValueTransformer transformer = new FragmentBindingValueTransformer();
+
+        PropertyValue propertyValue = transformer.apply(Map.entry("name", "value"));
+
+        assertThat(propertyValue.getType()).isEqualTo("variable");
+        assertThat(propertyValue.getValue()).isEqualTo("value");
     }
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bonitasoft.web.designer.model.data.Variable;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.model.exception.NotFoundException;
 
 /**
  * Interface of model elements that can be previewed

@@ -23,10 +23,17 @@ import java.nio.file.Path;
 
 import org.bonitasoft.web.designer.common.IGeneratorProperties;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class GeneratorProperties implements IGeneratorProperties {
 
     public static final String EXTRACT_BACKEND_RESOURCES = "META-INF/resources";
     private final Path path;
+
+    @Getter
+    @Setter
+    private boolean isLiveBuildEnabled = true;
 
     private final String i18NResourcesName;
 
@@ -72,7 +79,4 @@ public class GeneratorProperties implements IGeneratorProperties {
         return getPath().resolve("extract").resolve("angularjs");
     }
 
-    public boolean isLiveBuildEnabled() {
-        return true;
-    }
 }

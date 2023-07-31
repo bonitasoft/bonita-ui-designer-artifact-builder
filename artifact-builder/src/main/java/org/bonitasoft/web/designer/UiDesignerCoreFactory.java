@@ -171,7 +171,8 @@ public class UiDesignerCoreFactory {
                         new BondMigrationStep<>(componentVisitor, widgetRepository, new VisitorFactory())),
                 new Migration<>("1.2.9", new AssetExternalMigrationStep<>()),
                 new Migration<>("1.5.7",
-                        new StyleAssetMigrationStep(uiDesignerProperties.getWorkspaceUid().getExtractPath(),
+                        new StyleAssetMigrationStep(
+                                uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve("angularjs"),
                                 pageAssetService)),
                 new Migration<>("1.5.10",
                         new UIBootstrapAssetMigrationStep(pageAssetService, componentVisitor, widgetRepository)),

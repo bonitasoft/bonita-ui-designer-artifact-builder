@@ -14,14 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.repository.exception;
+package org.bonitasoft.web.designer.common.livebuild;
 
-public class NotFoundException extends RuntimeException {
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
-    public NotFoundException(String message) {
-        super(message);
+public class PathListenerStub implements PathListener {
+
+    final Set<Path> changed = new HashSet<>();
+
+    @Override
+    public void onChange(Path path) throws Exception {
+        changed.add(path);
     }
 
-    public NotFoundException() {
+    public Set<Path> getChanged() {
+        return changed;
     }
 }

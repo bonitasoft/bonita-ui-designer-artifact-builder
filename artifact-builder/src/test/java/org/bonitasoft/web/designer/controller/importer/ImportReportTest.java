@@ -1,4 +1,4 @@
-/**
+/** 
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -41,8 +41,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ImportReportTest {
 
     @Mock
@@ -107,16 +110,16 @@ public class ImportReportTest {
     }
 
     private Fragment mockExistsInRepository(Fragment fragment) {
-        when(fragmentDependencyImporter.exists(fragment)).thenReturn(true);
-        when(fragmentDependencyImporter.getOriginalElementFromRepository(fragment)).thenReturn(fragment);
-        return fragment;
-    }
+            when(fragmentDependencyImporter.exists(fragment)).thenReturn(true);
+            when(fragmentDependencyImporter.getOriginalElementFromRepository(fragment)).thenReturn(fragment);
+            return fragment;
+        }
 
     private Widget mockExistsInRepository(Widget widget) {
-        when(widgetDependencyImporter.exists(widget)).thenReturn(true);
-        when(widgetDependencyImporter.getOriginalElementFromRepository(widget)).thenReturn(widget);
-        return widget;
-    }
+            when(widgetDependencyImporter.exists(widget)).thenReturn(true);
+            when(widgetDependencyImporter.getOriginalElementFromRepository(widget)).thenReturn(widget);
+            return widget;
+        }
 
     @Test
     public void should_report_imported_element_when_it_is_a_fragment() throws Exception {

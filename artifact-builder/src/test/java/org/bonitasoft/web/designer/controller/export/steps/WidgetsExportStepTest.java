@@ -67,7 +67,7 @@ public class WidgetsExportStepTest {
     @BeforeEach
     public void beforeEach() {
         step = new WidgetsExportStep(
-                workspaceProperties.getWidgets().getDir(),
+                tempDir,
                 new WidgetIdVisitor(fragmentRepository), directiveFileGenerator);
         zipper = spy(new Zipper(mock(OutputStream.class)));
         try {

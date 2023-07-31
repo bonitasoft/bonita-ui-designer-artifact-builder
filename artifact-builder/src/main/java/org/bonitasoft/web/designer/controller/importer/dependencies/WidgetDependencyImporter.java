@@ -17,7 +17,6 @@
 package org.bonitasoft.web.designer.controller.importer.dependencies;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,9 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WidgetDependencyImporter extends ComponentDependencyImporter<Widget> {
 
-    public static final DirectoryStream.Filter<Path> CUSTOM_WIDGET_FILTER = path -> !path.getFileName().toString()
-            .startsWith(WidgetRepository.ANGULARJS_STANDARD_PREFIX);
-
     private final WidgetRepository widgetRepository;
 
     private final AssetDependencyImporter<Widget> widgetAssetDependencyImporter;
@@ -52,7 +48,7 @@ public class WidgetDependencyImporter extends ComponentDependencyImporter<Widget
     public List<Widget> load(Identifiable parent, Path resources) throws IOException {
         var widgetsPath = resources.resolve("widgets");
         if (Files.exists(widgetsPath)) {
-            return widgetRepository.loadAll(widgetsPath, CUSTOM_WIDGET_FILTER);
+            return widgetRepository.loadAll(widgetsPath, WidgetRepository.CUSTOM_WIDGET_FILTER);
         }
         return new ArrayList<>();
     }
