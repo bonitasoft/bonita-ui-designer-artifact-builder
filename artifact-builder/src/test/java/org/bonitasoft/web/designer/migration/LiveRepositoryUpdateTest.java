@@ -167,6 +167,6 @@ public class LiveRepositoryUpdateTest {
         Path descriptor = Files.createFile(pageJson.resolve("pageJson.json"));
         write(descriptor, format("{ \"id\": \"pageJson\", \"modelVersion\": \"%s\" }", version).getBytes());
 
-        return loader.load(descriptor.getParent().resolve(pageJson.getFileName()));
+        return loader.load(descriptor);
     }
 }

@@ -26,6 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.bonitasoft.web.angularjs.GeneratorProperties;
+import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
+import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
 import org.bonitasoft.web.designer.common.GeneratorStrategy;
 import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.common.repository.WidgetRepository;
@@ -56,13 +59,18 @@ public class WorkspaceInitializerTest {
     @Mock
     private LiveRepositoryUpdate<Page> pageRepositoryLiveUpdate;
 
-    @Mock
+    @Mock(strictness = Mock.Strictness.LENIENT)
     private LiveRepositoryUpdate<Widget> widgetRepositoryLiveUpdate;
+    @Mock(strictness = Mock.Strictness.LENIENT)
+    WidgetRepository widgetRepository;
 
     private Workspace workspace;
 
-    @Mock
+    @Mock(strictness = Mock.Strictness.LENIENT)
     private GeneratorStrategy generatorStrategy;
+
+    @Mock(strictness = Mock.Strictness.LENIENT)
+    private GeneratorProperties generatorProperties;
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -71,11 +79,15 @@ public class WorkspaceInitializerTest {
 
         UiDesignerProperties uiDesignerProperties = newUiDesignerProperties();
 
-        WidgetRepository widgetRepository = mock(WidgetRepository.class);
         when(widgetRepository.resolvePath(anyString())).thenAnswer(invocation -> {
             String id = invocation.getArgument(0);
             return uiDesignerProperties.getWorkspace().getWidgets().getDir().resolve(id);
         });
+
+        when(generatorStrategy.getGeneratorProperties()).thenReturn(generatorProperties);
+        when(generatorStrategy.widgetFileBuilder()).thenReturn(mock(WidgetDirectiveBuilder.class));
+        when(generatorStrategy.fragmentDirectiveBuilder()).thenReturn(mock(FragmentDirectiveBuilder.class));
+        when(generatorProperties.getExtractPath()).thenReturn(extractPath);
         PageRepository pageRepository = mock(PageRepository.class);
         AssetDependencyImporter<Widget> widgetAssetDependencyImporter = mock(AssetDependencyImporter.class);
 
