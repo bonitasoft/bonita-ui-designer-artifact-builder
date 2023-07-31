@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ public class Dependencies {
     public static Dependencies from(Map<DependencyImporter, List<?>> dependenciesAsList) {
         var dependencies = new Dependencies();
         for (Map.Entry<DependencyImporter, List<?>> entry : dependenciesAsList.entrySet()) {
+            //FIXME: entry.getKey() is null
             DependencyImporter<?> dependencyImporter = entry.getKey();
             if (dependencyImporter instanceof ComponentDependencyImporter<?>) {
                 dependencies.add((List<Identifiable>) entry.getValue(),

@@ -1,4 +1,4 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
@@ -249,7 +249,6 @@ public class AssetServiceTest {
     public void should_increment_asset_order_in_component() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
-        when(repository.get("page-id")).thenReturn(page);
 
         assets[1].setComponentId("page-id");
         Asset assetReturned = assetService.changeAssetOrderInComponent(page, "asset2", INCREMENT);
