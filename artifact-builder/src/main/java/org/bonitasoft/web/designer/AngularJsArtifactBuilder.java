@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.export.ExportException;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
@@ -51,6 +52,7 @@ import org.bonitasoft.web.designer.service.WidgetService;
 import org.bonitasoft.web.designer.workspace.Workspace;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -186,6 +188,36 @@ public class AngularJsArtifactBuilder implements ArtifactBuilder {
     @Override
     public void cancelImport(String uuid) {
         importStore.remove(uuid);
+    }
+
+    @Override
+    public MigrationStatusReport getPageStatus(@NonNull String id) {
+        return pageService.get(id).getStatus();
+    }
+
+    @Override
+    public MigrationStatusReport getPageStatus(@NonNull Page page) {
+        return pageService.getStatus(page);
+    }
+
+    @Override
+    public MigrationStatusReport getFragmentStatus(@NonNull String id) {
+        return fragmentService.get(id).getStatus();
+    }
+
+    @Override
+    public MigrationStatusReport getFragmentStatus(@NonNull Fragment fragment) {
+        return fragmentService.getStatus(fragment);
+    }
+
+    @Override
+    public MigrationStatusReport getWidgetStatus(@NonNull String id) {
+        return widgetService.get(id).getStatus();
+    }
+
+    @Override
+    public MigrationStatusReport getWidgetStatus(@NonNull Widget widget) {
+        return widgetService.getStatus(widget);
     }
 
     protected ImportReport importFromPath(Path path, boolean ignoreConflicts, AbstractArtifactImporter<?> importer) {

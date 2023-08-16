@@ -16,6 +16,7 @@
  */
 package org.bonitasoft.web.designer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.*;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
 import org.bonitasoft.web.designer.controller.export.WidgetExporter;
@@ -119,4 +121,98 @@ public class AngularJsArtifactBuilderTest {
         // Then
         verify(widgetService).get(id);
     }
+
+    @Test
+    public void get_page_status_should_call_page_service() {
+        // Given
+        var status = new MigrationStatusReport();
+        var page = aPage().build();
+        when(pageService.getStatus(page)).thenReturn(status);
+
+        // When
+        var result = artifactBuilder.getPageStatus(page);
+
+        // Then
+        verify(pageService).getStatus(page);
+        assertThat(result).isEqualTo(status);
+    }
+
+    @Test
+    public void get_page_status_by_id_should_call_page_service() {
+        // Given
+        var id = UUID.randomUUID().toString();
+        var status = new MigrationStatusReport();
+        var page = aPage().withId(id).withMigrationStatusReport(status).build();
+        when(pageService.get(id)).thenReturn(page);
+
+        // When
+        var result = artifactBuilder.getPageStatus(id);
+
+        // Then
+        verify(pageService).get(id);
+        assertThat(result).isEqualTo(status);
+    }
+
+    @Test
+    public void get_fragment_status_should_call_fragment_service() {
+        // Given
+        var status = new MigrationStatusReport();
+        var fragment = aFragment().build();
+        when(fragmentService.getStatus(fragment)).thenReturn(status);
+
+        // When
+        var result = artifactBuilder.getFragmentStatus(fragment);
+
+        // Then
+        verify(fragmentService).getStatus(fragment);
+        assertThat(result).isEqualTo(status);
+    }
+
+    @Test
+    public void get_fragment_status_by_id_should_call_fragment_service() {
+        // Given
+        var id = UUID.randomUUID().toString();
+        var status = new MigrationStatusReport();
+        var fragment = aFragment().withId(id).withMigrationStatusReport(status).build();
+        when(fragmentService.get(id)).thenReturn(fragment);
+
+        // When
+        var result = artifactBuilder.getFragmentStatus(id);
+
+        // Then
+        verify(fragmentService).get(id);
+        assertThat(result).isEqualTo(status);
+    }
+
+    @Test
+    public void get_widget_status_should_call_widget_service() {
+        // Given
+        var status = new MigrationStatusReport();
+        var widget = aWidget().build();
+        when(widgetService.getStatus(widget)).thenReturn(status);
+
+        // When
+        var result = artifactBuilder.getWidgetStatus(widget);
+
+        // Then
+        verify(widgetService).getStatus(widget);
+        assertThat(result).isEqualTo(status);
+    }
+
+    @Test
+    public void get_widget_status_by_id_should_call_widget_service() {
+        // Given
+        var id = UUID.randomUUID().toString();
+        var status = new MigrationStatusReport();
+        var widget = aWidget().withId(id).withMigrationStatusReport(status).build();
+        when(widgetService.get(id)).thenReturn(widget);
+
+        // When
+        var result = artifactBuilder.getWidgetStatus(id);
+
+        // Then
+        verify(widgetService).get(id);
+        assertThat(result).isEqualTo(status);
+    }
+
 }

@@ -19,6 +19,9 @@ package org.bonitasoft.web.designer;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javax.validation.constraints.NotNull;
+
+import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.export.ExportException;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
 import org.bonitasoft.web.designer.model.ModelException;
@@ -73,4 +76,16 @@ public interface ArtifactBuilder {
     ImportReport replayImportIgnoringConflicts(String uuid);
 
     void cancelImport(String uuid);
+
+    MigrationStatusReport getPageStatus(@NotNull String id);
+
+    MigrationStatusReport getPageStatus(@NotNull Page page);
+
+    MigrationStatusReport getFragmentStatus(@NotNull String id);
+
+    MigrationStatusReport getFragmentStatus(@NotNull Fragment fragment);
+
+    MigrationStatusReport getWidgetStatus(@NotNull String id);
+
+    MigrationStatusReport getWidgetStatus(@NotNull Widget widget);
 }
