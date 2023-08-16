@@ -48,7 +48,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AngularJsArtifactImporterTest {
+public class DefaultArtifactImporterTest {
 
     @TempDir
     public Path tempDir;
