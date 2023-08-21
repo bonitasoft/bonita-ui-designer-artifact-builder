@@ -197,7 +197,7 @@ class JsonFileBasedLoaderTest {
     void should_not_fail_when_searching_object_by_id_and_repo_contains_an_hidden_file() throws Exception {
         createDirectories(temporaryFolder.resolve("jsonrepository"));
         createDirectories(temporaryFolder.resolve(".DS_Store"));
-        
+
         assertDoesNotThrow(() -> loader.findByObjectId(repoDirectory, "object"));
     }
 

@@ -333,7 +333,7 @@ class PageRepositoryTest {
     void should_throw_RepositoryException_when_error_occurs_while_refresh_a_page() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
         Path pagePath = pageDir.resolve(expectedPage.getId());
-        doThrow(new IOException()).when(persister).save(pagePath,expectedPage);
+        doThrow(new IOException()).when(persister).save(pagePath, expectedPage);
 
         assertThrows(RepositoryException.class, () -> repository.updateLastUpdateAndSave(expectedPage));
     }

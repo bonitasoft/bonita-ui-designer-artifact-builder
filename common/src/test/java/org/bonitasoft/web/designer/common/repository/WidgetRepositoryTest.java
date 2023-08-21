@@ -227,7 +227,7 @@ class WidgetRepositoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"héllo", "hello world", " "})
+    @ValueSource(strings = { "héllo", "hello world", " " })
     void should_not_allow_to_save_a_widget_with_name_containing_non_alphanumeric_chars(String widgetName) {
         Widget widget = aWidget().withName(widgetName).build();
 
@@ -281,7 +281,6 @@ class WidgetRepositoryTest {
 
         assertThrows(NotAllowedException.class, () -> widgetRepository.delete("pbLabel"));
     }
-
 
     @Test
     void should_create_a_widget_and_set_his_id() throws Exception {
@@ -351,7 +350,7 @@ class WidgetRepositoryTest {
         Widget expectedWidget = addToRepository(aWidget().custom().build());
         var id = expectedWidget.getId();
         var property = new Property();
-        
+
         assertThrows(NotFoundException.class,
                 () -> widgetRepository.updateProperty(id, "notExistingProperty", property));
     }
@@ -378,7 +377,7 @@ class WidgetRepositoryTest {
     @Test
     void should_fail_when_trying_to_delete_an_unknown_property() throws Exception {
         var id = addToRepository(aWidget().build()).getId();
-        
+
         assertThrows(NotFoundException.class,
                 () -> widgetRepository.deleteProperty(id, "unknownPrameter"));
     }

@@ -211,7 +211,7 @@ class FragmentRepositoryTest {
 
     @Test
     void should_not_thrown_NPE_on_save_all_fragment_when_list_null() {
-       assertDoesNotThrow(() -> repository.saveAll(null));
+        assertDoesNotThrow(() -> repository.saveAll(null));
     }
 
     @Test
@@ -236,7 +236,7 @@ class FragmentRepositoryTest {
         Mockito.doThrow(new IOException()).when(loader).findByObjectId(temporaryFolder,
                 expectedFragment.getId());
         var id = expectedFragment.getId();
-       
+
         assertThrows(RepositoryException.class, () -> repository.findByObjectId(id));
     }
 

@@ -107,7 +107,7 @@ class AssetRepositoryTest {
     @Test
     void should_throw_NullPointerException_when_deleting_asset_componentId_null() throws Exception {
         Asset asset = new Asset();
-        
+
         assertThrows(NullPointerException.class, () -> assetRepository.delete(asset));
     }
 
