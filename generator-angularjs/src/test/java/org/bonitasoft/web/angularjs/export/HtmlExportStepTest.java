@@ -17,6 +17,7 @@
 package org.bonitasoft.web.angularjs.export;
 
 import static java.nio.file.Paths.get;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -26,16 +27,16 @@ import org.bonitasoft.web.angularjs.rendering.DefaultHtmlGenerator;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.common.export.Zipper;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class HtmlExportStepTest {
+@ExtendWith(MockitoExtension.class)
+class HtmlExportStepTest {
 
     @Mock
     private DefaultHtmlGenerator htmlGenerator;
@@ -45,15 +46,16 @@ public class HtmlExportStepTest {
     @Mock
     private Zipper zipper;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         Path exportBackendResources = Paths.get("src/test/resources/");
         step = new HtmlExportStep(htmlGenerator, exportBackendResources);
-        Mockito.when(htmlGenerator.generateHtml(ArgumentMatchers.any(Page.class))).thenReturn("");
     }
 
     @Test
-    public void should_export_webapp_generator_folder() throws Exception {
+    void should_export_webapp_generator_folder() throws Exception {
+        when(htmlGenerator.generateHtml(ArgumentMatchers.any(Page.class))).thenReturn("");
+        
         step.execute(zipper, PageBuilder.aPage().build());
 
         Mockito.verify(zipper).addDirectoryToZip(get(new File("src/test/resources/").toURI()), Zipper.ALL_DIRECTORIES,
@@ -62,8 +64,8 @@ public class HtmlExportStepTest {
     }
 
     @Test
-    public void should_export_generated_html() throws Exception {
-        Mockito.when(htmlGenerator.generateHtml(ArgumentMatchers.any(Page.class))).thenReturn("foobar");
+    void should_export_generated_html() throws Exception {
+        when(htmlGenerator.generateHtml(ArgumentMatchers.any(Page.class))).thenReturn("foobar");
 
         step.execute(zipper, PageBuilder.aPage().build());
 

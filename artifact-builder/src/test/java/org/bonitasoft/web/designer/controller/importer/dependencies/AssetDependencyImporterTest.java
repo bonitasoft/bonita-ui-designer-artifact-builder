@@ -40,7 +40,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AssetDependencyImporterTest {
+class AssetDependencyImporterTest {
 
     @Mock
     AssetRepository<Page> pageAssetRepository;
@@ -51,19 +51,19 @@ public class AssetDependencyImporterTest {
     @TempDir
     Path zipBaseDir;
 
-    public void createDirectoryAsset(String assetType) throws IOException {
+    void createDirectoryAsset(String assetType) throws IOException {
         Files.createDirectory(zipBaseDir.resolve("assets"));
         Files.createDirectory(zipBaseDir.resolve("assets").resolve(assetType));
     }
 
     @Test
-    public void should_not_thrown_exception_when_page_has_no_asset() throws Exception {
+    void should_not_thrown_exception_when_page_has_no_asset() throws Exception {
         List<Asset> assets = pageAssetDependencyImporter.load(PageBuilder.aPage().build(), zipBaseDir);
         assertThat(assets).isEmpty();
     }
 
     @Test
-    public void should_load_assets() throws Exception {
+    void should_load_assets() throws Exception {
         Page page = PageBuilder.aPage().build();
         createDirectoryAsset("css");
         Files.write(zipBaseDir.resolve("assets").resolve("css").resolve("myfile.css"),
@@ -81,7 +81,7 @@ public class AssetDependencyImporterTest {
     }
 
     @Test
-    public void should_save_assets_from_zip_with_assets_folder_at_root() throws Exception {
+    void should_save_assets_from_zip_with_assets_folder_at_root() throws Exception {
         Asset cssAsset = AssetBuilder.anAsset().withScope("widget").withComponentId("widgetId").withId("aa")
                 .withType(AssetType.CSS).withName("style.css").build();
         createDirectoryAsset("css");
@@ -94,7 +94,7 @@ public class AssetDependencyImporterTest {
     }
 
     @Test
-    public void should_save_assets_from_zip_with_assets_folder_contains_in_folder_with_widgetId_as_name()
+    void should_save_assets_from_zip_with_assets_folder_contains_in_folder_with_widgetId_as_name()
             throws Exception {
         Asset cssAsset = AssetBuilder.anAsset().withScope("widget").withComponentId("customWidget").withId("aa")
                 .withType(AssetType.CSS).withName("style.css").build();

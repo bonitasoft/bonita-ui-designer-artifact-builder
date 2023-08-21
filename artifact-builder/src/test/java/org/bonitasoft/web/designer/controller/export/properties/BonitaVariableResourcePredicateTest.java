@@ -23,19 +23,19 @@ import org.bonitasoft.web.designer.model.data.Variable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BonitaVariableResourcePredicateTest {
+class BonitaVariableResourcePredicateTest {
 
     private Variable variable;
     private BonitaVariableResourcePredicate predicate;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         variable = new Variable(URL, "");
         predicate = new BonitaVariableResourcePredicate("matches");
     }
 
     @Test
-    public void should_return_true_if_match_regex() throws Exception {
+    void should_return_true_if_match_regex() throws Exception {
         variable.setType(URL);
         variable.setDisplayValue("matches");
 
@@ -43,7 +43,7 @@ public class BonitaVariableResourcePredicateTest {
     }
 
     @Test
-    public void should_not_accept_url_not_accessing_bonita_api() throws Exception {
+    void should_not_accept_url_not_accessing_bonita_api() throws Exception {
         variable.setType(URL);
         variable.setDisplayValue("do not match");
 
@@ -51,7 +51,7 @@ public class BonitaVariableResourcePredicateTest {
     }
 
     @Test
-    public void should_not_accept_a_constant_data() throws Exception {
+    void should_not_accept_a_constant_data() throws Exception {
         variable.setType(CONSTANT);
         variable.setDisplayValue("matches");
 
@@ -59,7 +59,7 @@ public class BonitaVariableResourcePredicateTest {
     }
 
     @Test
-    public void should_not_accept_an_expression_data() throws Exception {
+    void should_not_accept_an_expression_data() throws Exception {
         variable.setType(EXPRESSION);
         variable.setDisplayValue("matches");
 
@@ -67,7 +67,7 @@ public class BonitaVariableResourcePredicateTest {
     }
 
     @Test
-    public void should_not_accept_a_JSON_data() throws Exception {
+    void should_not_accept_a_JSON_data() throws Exception {
         variable.setType(JSON);
         variable.setDisplayValue("matches");
 

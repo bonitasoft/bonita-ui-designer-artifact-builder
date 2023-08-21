@@ -44,7 +44,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetsExportStepTest {
+class WidgetsExportStepTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -65,7 +65,7 @@ public class WidgetsExportStepTest {
     Path tempDir;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         step = new WidgetsExportStep(
                 tempDir,
                 new WidgetIdVisitor(fragmentRepository), directiveFileGenerator);
@@ -78,7 +78,7 @@ public class WidgetsExportStepTest {
     }
 
     @Test
-    public void should_add_page_widgets_to_zip() throws Exception {
+    void should_add_page_widgets_to_zip() throws Exception {
         repository.addWidget(aWidget().withId("widget1"));
         repository.addWidget(aWidget().withId("widget2"));
         Page page = aPage().with(
@@ -101,7 +101,7 @@ public class WidgetsExportStepTest {
     }
 
     @Test
-    public void should_not_add_widget_metadata_to_zip() throws Exception {
+    void should_not_add_widget_metadata_to_zip() throws Exception {
         repository.addWidget(aWidget().withId("widget"));
         Page page = aPage().with(aComponent("widget")).build();
         String content = "content";

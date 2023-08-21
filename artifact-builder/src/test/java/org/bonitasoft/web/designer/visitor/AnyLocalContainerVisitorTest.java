@@ -33,7 +33,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AnyLocalContainerVisitorTest {
+class AnyLocalContainerVisitorTest {
 
     @InjectMocks
     private AnyLocalContainerVisitor anyLocalContainerVisitor;
@@ -41,17 +41,17 @@ public class AnyLocalContainerVisitorTest {
     private Component component;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         component = aComponent().build();
     }
 
     @Test
-    public void should_not_collect_components() throws Exception {
+    void should_not_collect_components() throws Exception {
         assertThat(anyLocalContainerVisitor.visit(component)).isEmpty();
     }
 
     @Test
-    public void should_collect_containers() throws Exception {
+    void should_collect_containers() throws Exception {
         Container container = aContainer()
                 .with(component)
                 .build();
@@ -60,7 +60,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_tabs_containers_and_content() throws Exception {
+    void should_collect_tabs_containers_and_content() throws Exception {
         Container container = aContainer().build();
         TabContainer tab = aTabContainer()
                 .with(container).build();
@@ -72,7 +72,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_form_containers_and_content() throws Exception {
+    void should_collect_form_containers_and_content() throws Exception {
         Container container = aContainer().build();
         FormContainer formContainer = aFormContainer().with(container).build();
 
@@ -80,7 +80,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_container_within_previewable() throws Exception {
+    void should_collect_container_within_previewable() throws Exception {
         Container container = aContainer().build();
 
         assertThat(anyLocalContainerVisitor.visit(aPage()
@@ -89,7 +89,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_modalContainer() throws Exception {
+    void should_collect_modalContainer() throws Exception {
         Container container = aContainer().with(component).build();
         ModalContainer modalContainer = aModalContainer()
                 .with(container)

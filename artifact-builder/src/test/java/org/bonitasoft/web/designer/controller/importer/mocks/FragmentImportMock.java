@@ -30,7 +30,7 @@ import org.bonitasoft.web.designer.common.repository.FragmentRepository;
 import org.bonitasoft.web.designer.common.repository.JsonFileBasedLoader;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 
-public class FragmentImportMock {
+class FragmentImportMock {
 
     private static final String FRAGMENTS_FOLDER = "fragments";
 

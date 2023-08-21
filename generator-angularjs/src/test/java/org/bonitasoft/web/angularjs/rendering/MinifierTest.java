@@ -28,10 +28,10 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Benjamin Parisel
  */
-public class MinifierTest {
+class MinifierTest {
 
     @Test
-    public void should_minify_input() throws IOException {
+    void should_minify_input() throws IOException {
         String content = "function PbInputCtrl($scope, $log, widgetNameFactory) {\n" + "\n'use strict';\n" +
                 "\n  this.name = widgetNameFactory.getName('pbInput');\n" +
                 "\n  if (!$scope.properties.isBound('value')) {\n" +
@@ -48,7 +48,7 @@ public class MinifierTest {
     }
 
     @Test
-    public void should_throw_exeption_when_content_have_bad_unterminated_comment() throws IOException {
+    void should_throw_exeption_when_content_have_bad_unterminated_comment() throws IOException {
         String badCommentTemplate = "/** dffsf /";
         String content = badCommentTemplate + "content";
 
@@ -56,7 +56,7 @@ public class MinifierTest {
     }
 
     @Test
-    public void should_throw_exeption_when_content_have_bad_unterminated_string() throws IOException {
+    void should_throw_exeption_when_content_have_bad_unterminated_string() throws IOException {
         String unterminatedString = "'use strict\n";
         String content = "function PbInputCtrl($scope, $log, widgetNameFactory) { \n" + unterminatedString;
 

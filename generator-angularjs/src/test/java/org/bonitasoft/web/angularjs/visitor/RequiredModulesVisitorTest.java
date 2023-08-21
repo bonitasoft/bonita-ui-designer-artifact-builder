@@ -48,7 +48,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class RequiredModulesVisitorTest {
+class RequiredModulesVisitorTest {
 
     @Mock
     private WidgetRepository widgetRepository;
@@ -60,7 +60,7 @@ public class RequiredModulesVisitorTest {
     private RequiredModulesVisitor requiredModulesVisitor;
 
     @Test
-    public void should_return_empty_set_when_no_extra_modules_are_needed() throws Exception {
+    void should_return_empty_set_when_no_extra_modules_are_needed() throws Exception {
         Component component = mockComponentFor(aWidget());
         Page page = aPage().with(component).build();
 
@@ -70,7 +70,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets() throws Exception {
+    void should_return_list_of_module_needed_by_widgets() throws Exception {
         Component component = mockComponentFor(aWidget().modules("aModule", "anotherModule"));
 
         Set<String> modules = requiredModulesVisitor.visit(component);
@@ -79,7 +79,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_container() throws Exception {
+    void should_return_list_of_module_needed_by_widgets_in_container() throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
         when(widgetRepository.get("pbContainer")).thenReturn(aWidget().build());
@@ -90,7 +90,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_container_who_has_a_required_module()
+    void should_return_list_of_module_needed_by_widgets_in_container_who_has_a_required_module()
             throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
@@ -102,7 +102,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_formcontainer() throws Exception {
+    void should_return_list_of_module_needed_by_widgets_in_formcontainer() throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
         when(widgetRepository.get("pbFormContainer")).thenReturn(aWidget().build());
@@ -115,7 +115,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_tabscontainer() throws Exception {
+    void should_return_list_of_module_needed_by_widgets_in_tabscontainer() throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
         when(widgetRepository.get("pbTabsContainer")).thenReturn(aWidget().build());
@@ -129,7 +129,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_tabscontainer_who_has_a_required_module()
+    void should_return_list_of_module_needed_by_widgets_in_tabscontainer_who_has_a_required_module()
             throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
@@ -144,7 +144,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_modal_container() throws Exception {
+    void should_return_list_of_module_needed_by_widgets_in_modal_container() throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
         when(widgetRepository.get("pbModalContainer")).thenReturn(aWidget().build());
@@ -157,7 +157,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_modal_container_who_has_a_required_module()
+    void should_return_list_of_module_needed_by_widgets_in_modal_container_who_has_a_required_module()
             throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
@@ -171,7 +171,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_previewable() throws Exception {
+    void should_return_list_of_module_needed_by_widgets_in_previewable() throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
 
@@ -182,7 +182,7 @@ public class RequiredModulesVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_fragment() throws Exception {
+    void should_return_list_of_module_needed_by_widgets_in_fragment() throws Exception {
         Component component1 = mockComponentFor(aWidget().modules("component1Module", "component1OtherModule"));
         Component component2 = mockComponentFor(aWidget().modules("component2Module", "component2OtherModule"));
         FragmentElement fragmentElement = aFragmentElement().withFragmentId("my-fragment").build();

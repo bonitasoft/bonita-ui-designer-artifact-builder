@@ -47,7 +47,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetExporterTest {
+class WidgetExporterTest {
 
     @Mock
     private WidgetService widgetService;
@@ -62,7 +62,7 @@ public class WidgetExporterTest {
     Path repositoryFolder;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         artifactStream = new ByteArrayOutputStream();
         exporter = new WidgetExporter(jsonHandler, widgetService, mock(ExportStep.class));
     }
@@ -82,19 +82,19 @@ public class WidgetExporterTest {
     }
 
     @Test
-    public void should_throw_exception_when_id_is_null() throws Exception {
+    void should_throw_exception_when_id_is_null() throws Exception {
 
         assertThrows(IllegalArgumentException.class, () -> exporter.handleFileExport(null, artifactStream));
     }
 
     @Test
-    public void should_throw_exception_when_id_is_blank() throws Exception {
+    void should_throw_exception_when_id_is_blank() throws Exception {
 
         assertThrows(IllegalArgumentException.class, () -> exporter.handleFileExport(" ", artifactStream));
     }
 
     @Test
-    public void should_throw_exception_when_artefact_to_export_is_not_found() throws Exception {
+    void should_throw_exception_when_artefact_to_export_is_not_found() throws Exception {
         NotFoundException cause = new NotFoundException("Widget not found");
         when(widgetService.get("unknown-id")).thenThrow(cause);
 
@@ -107,7 +107,7 @@ public class WidgetExporterTest {
     }
 
     @Test
-    public void should_export_template_and_controller_file_reference() throws Exception {
+    void should_export_template_and_controller_file_reference() throws Exception {
         Widget widget = create(WidgetBuilder.aWidget().withId("aWidget").custom().controller("function widgetCtrl(){}")
                 .template("<p>A widget label</p>").build());
         exporter.handleFileExport(widget.getId(), artifactStream);
@@ -118,7 +118,7 @@ public class WidgetExporterTest {
     }
 
     @Test
-    public void should_export_a_widget_without_template_and_controller() throws Exception {
+    void should_export_a_widget_without_template_and_controller() throws Exception {
         Widget widget = create(WidgetBuilder.aWidget().withId("aWidget").custom().build());
         widget.setTemplate(null);
         exporter.handleFileExport(widget.getId(), artifactStream);

@@ -31,7 +31,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class MigrationTest {
+class MigrationTest {
 
     @Mock
     MigrationStep<Page> migrationStep;
@@ -41,12 +41,12 @@ public class MigrationTest {
     Page page = aPage().withId("123").build();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         migration = new Migration<>("1.0.1", migrationStep);
     }
 
     @Test
-    public void should_migrate_a_page_with_a_version_lower_than_migration() throws Exception {
+    void should_migrate_a_page_with_a_version_lower_than_migration() throws Exception {
         Mockito.when(migrationStep.migrate(Mockito.any(Page.class))).thenReturn(Optional.empty());
         page.setDesignerVersion("1.0.0");
 
@@ -56,7 +56,7 @@ public class MigrationTest {
     }
 
     @Test
-    public void should_not_migrate_a_page_with_a_version_greater_than_migration() throws Exception {
+    void should_not_migrate_a_page_with_a_version_greater_than_migration() throws Exception {
 
         page.setDesignerVersion("1.0.2");
 
@@ -66,7 +66,7 @@ public class MigrationTest {
     }
 
     @Test
-    public void should_not_migrate_a_page_with_a_version_equal_to_migration() throws Exception {
+    void should_not_migrate_a_page_with_a_version_equal_to_migration() throws Exception {
         page.setDesignerVersion("1.0.1");
 
         migration.migrate(page);

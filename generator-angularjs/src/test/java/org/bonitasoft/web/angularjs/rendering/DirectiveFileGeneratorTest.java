@@ -44,7 +44,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DirectiveFileGeneratorTest {
+class DirectiveFileGeneratorTest {
 
     private DirectiveFileGenerator generator;
 
@@ -58,12 +58,12 @@ public class DirectiveFileGeneratorTest {
     Path temporaryFolder;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         generator = new DirectiveFileGenerator(temporaryFolder, widgetRepository, widgetIdVisitor);
     }
 
     @Test
-    public void should_list_all_widgets_except_container_used_in_page() throws Exception {
+    void should_list_all_widgets_except_container_used_in_page() throws Exception {
         Page page = aPage().with(aContainer().build()).build();
         mockWidgetIdVisitorAndWidgetRepository(page, "pbLabel", "paragraph", "pbContainer");
 
@@ -77,7 +77,7 @@ public class DirectiveFileGeneratorTest {
     }
 
     @Test
-    public void should_get_file_name_of_concatenation_widgets_directives_file_who_was_use_in_page() throws Exception {
+    void should_get_file_name_of_concatenation_widgets_directives_file_who_was_use_in_page() throws Exception {
         Page page = aPage().build();
         initWidgetsFileWhoUsedInPage(page);
         mockWidgetIdVisitorAndWidgetRepository(page, "pbLabel", "paragraph");
@@ -89,7 +89,7 @@ public class DirectiveFileGeneratorTest {
     }
 
     @Test
-    public void should_concatenate_and_minify_widgets_directives_file_who_was_use_in_page() throws Exception {
+    void should_concatenate_and_minify_widgets_directives_file_who_was_use_in_page() throws Exception {
         Page page = aPage().build();
         initFilesForConcatAndMinify(page);
         mockWidgetIdVisitorAndWidgetRepository(page, "pbLabel", "paragraph");

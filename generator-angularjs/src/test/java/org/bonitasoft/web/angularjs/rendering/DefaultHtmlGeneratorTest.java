@@ -29,7 +29,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bonitasoft.web.angularjs.utils.rule.TestResource;
@@ -58,7 +62,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultHtmlGeneratorTest {
+class DefaultHtmlGeneratorTest {
 
     private static final byte[] assetsContent = new byte[0];
 
@@ -95,8 +99,6 @@ public class DefaultHtmlGeneratorTest {
     @Mock
     private WidgetIdVisitor widgetIdVisitor;
 
-    private HtmlBuilderVisitor visitor;
-
     private String assetSHA1;
 
     @Mock
@@ -106,7 +108,7 @@ public class DefaultHtmlGeneratorTest {
     private DefaultHtmlGenerator generator;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         htmlBuilderVisitor = new HtmlBuilderVisitor(fragmentRepository);
         generator = new DefaultHtmlGenerator(
                 htmlBuilderVisitor,
@@ -122,7 +124,7 @@ public class DefaultHtmlGeneratorTest {
         assetSHA1 = DigestUtils.sha1Hex(assetsContent);
     }
     //    @Test
-    //    public void should_generate_an_html_with_the_list_of_widgets() throws Exception {
+    //    void should_generate_an_html_with_the_list_of_widgets() throws Exception {
     //        Page page = aPage().withId("page-id").build();
     //        when(directivesCollector.buildUniqueDirectivesFiles(page, page.getId()))
     //                .thenReturn(Arrays.asList("assets/widgets.js"));
@@ -136,7 +138,7 @@ public class DefaultHtmlGeneratorTest {
     //    }
 
     //    @Test
-    //    public void should_generate_formatted_html_with_given_widgets() throws Exception {
+    //    void should_generate_formatted_html_with_given_widgets() throws Exception {
     //        Page page = aPage().build();
     //        when(generator.build(page, "mycontext/")).thenReturn("foobar");
     //
@@ -146,7 +148,7 @@ public class DefaultHtmlGeneratorTest {
     //    }
 
     //    @Test
-    //    public void should_generate_formatted_html_with_no_context() throws Exception {
+    //    void should_generate_formatted_html_with_no_context() throws Exception {
     //        Page page = aPage().build();
     //        //        when(generator.build(page, "")).thenReturn("foobar");
     //
@@ -156,7 +158,7 @@ public class DefaultHtmlGeneratorTest {
     //    }
     //
     //    @Test
-    //    public void should_generate_formatted_html_for_fragment_with_given_widgets() throws Exception {
+    //    void should_generate_formatted_html_for_fragment_with_given_widgets() throws Exception {
     //        Fragment fragment = aFragment().build();
     //        when(generator.build(fragment, "mycontext/")).thenReturn("foobar");
     //
@@ -166,7 +168,7 @@ public class DefaultHtmlGeneratorTest {
     //    }
 
     @Test
-    public void should_build_a_container_fluid_for_a_previewable() throws Exception {
+    void should_build_a_container_fluid_for_a_previewable() throws Exception {
         Page page = aPage().build();
         when(pageFactory.generate(page)).thenReturn("var foo = \"bar\";");
 
@@ -174,7 +176,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_generate_html_for_a_page() throws Exception {
+    void should_generate_html_for_a_page() throws Exception {
         Asset assetLocal = anAsset().withOrder(1)
                 .withName("bonita.vendors.js").withExternal(false)
                 .build();
@@ -205,7 +207,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_generate_html_for_a_page_with_a_custom_display_name_put_in_title_tag() throws Exception {
+    void should_generate_html_for_a_page_with_a_custom_display_name_put_in_title_tag() throws Exception {
         Page page = aPage().withId("page-id")
                 .withDisplayName("This is a beautiful title for this page")
                 .build();
@@ -218,7 +220,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_add_extra_modules_when_widgets_needs_them() throws Exception {
+    void should_add_extra_modules_when_widgets_needs_them() throws Exception {
         Page page = aPage().build();
         when(requiredModulesVisitor.visit(page)).thenReturn(Set.of("needed.module"));
 
@@ -229,7 +231,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_not_add_extra_modules_when_no_widgets_needs_them() throws Exception {
+    void should_not_add_extra_modules_when_no_widgets_needs_them() throws Exception {
         Page page = aPage().build();
         when(requiredModulesVisitor.visit(page)).thenReturn(Collections.<String> emptySet());
 
@@ -240,7 +242,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_add_asset_import_in_header() throws Exception {
+    void should_add_asset_import_in_header() throws Exception {
         Page page = aPage().build();
         when(pageAssetRepository.readAllBytes(anyString(), any(Asset.class))).thenReturn(assetsContent);
         when(widgetAssetRepository.readAllBytes(any(Asset.class))).thenReturn(assetsContent);
@@ -263,7 +265,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_add_active_and_ordered_asset_import_in_header() throws Exception {
+    void should_add_active_and_ordered_asset_import_in_header() throws Exception {
         Page page = aPage().build();
         when(pageAssetRepository.readAllBytes(anyString(), any(Asset.class))).thenReturn(assetsContent);
         when(widgetAssetRepository.readAllBytes(any(Asset.class))).thenReturn(assetsContent);
@@ -297,7 +299,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_import_asset_only_once_for_each_widget() throws Exception {
+    void should_import_asset_only_once_for_each_widget() throws Exception {
         Page page = aPage().build();
 
         var assets = new HashSet<Asset>();
@@ -329,7 +331,7 @@ public class DefaultHtmlGeneratorTest {
     }
 
     @Test
-    public void should_import_asset_only_once_globally() throws Exception {
+    void should_import_asset_only_once_globally() throws Exception {
         Page page = aPage().build();
 
         var assets = new HashSet<Asset>();

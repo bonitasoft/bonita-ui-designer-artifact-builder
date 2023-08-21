@@ -42,7 +42,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WorkspaceTest {
+class WorkspaceTest {
 
     private static final String CURRENT_MODEL_VERSION = "2.0";
 
@@ -56,7 +56,7 @@ public class WorkspaceTest {
     private WorkspaceProperties workspaceProperties;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
 
         uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setModelVersion(CURRENT_MODEL_VERSION);
@@ -95,7 +95,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_ensure_that_folders_page_and_widgets_are_created() throws Exception {
+    void should_ensure_that_folders_page_and_widgets_are_created() throws Exception {
 
         workspace.initialize();
 
@@ -107,7 +107,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_not_throw_exception_when_a_folder_exist_before_init() throws Exception {
+    void should_not_throw_exception_when_a_folder_exist_before_init() throws Exception {
         //Folder creation
         if (!Files.exists(temporaryFolder.resolve("pages"))) {
             createDirectory(temporaryFolder.resolve("pages"));
@@ -125,7 +125,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_copy_widget_to_widget_repository_folder() throws Exception {
+    void should_copy_widget_to_widget_repository_folder() throws Exception {
 
         workspace.initialize();
 
@@ -136,7 +136,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_not_copy_widget_file_if_it_is_already_in_widget_repository_with_same_version() throws Exception {
+    void should_not_copy_widget_file_if_it_is_already_in_widget_repository_with_same_version() throws Exception {
         String existingWidgetContent = "{\"id\":\"pbLabel\", \"template\": \"<div>Hello</div>\", \"designerVersion\": \""
                 + CURRENT_MODEL_VERSION + "\"}";
         createWidget("pbLabel", existingWidgetContent);
@@ -148,7 +148,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_copy_widget_file_if_it_is_already_in_widget_repository_folder_with_a_former_version()
+    void should_copy_widget_file_if_it_is_already_in_widget_repository_folder_with_a_former_version()
             throws Exception {
         String existingWidgetContent = this.getClass()
                 .getResourceAsStream("/workspace/widgets/pbWidgetToOverride/pbWidgetToOverride.json").readAllBytes()
@@ -162,7 +162,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_delete_page_reference_when_page_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
+    void should_delete_page_reference_when_page_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
             throws Exception {
         //Folder creation
         createDirectories(temporaryFolder.resolve("pages").resolve("myPageToRemove").resolve("js"));
@@ -175,7 +175,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_delete_only_js_folder_for_page_artifact_when_page_exist() throws Exception {
+    void should_delete_only_js_folder_for_page_artifact_when_page_exist() throws Exception {
         //Folder creation
         createDirectories(temporaryFolder.resolve("pages").resolve("myPage").resolve("js"));
         createFile(temporaryFolder.resolve("pages").resolve("myPage/myPage.json"));
@@ -187,7 +187,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_keep_file_with_a_reference_on_workspace_when_cleanup_is_called() throws Exception {
+    void should_keep_file_with_a_reference_on_workspace_when_cleanup_is_called() throws Exception {
         //Folder creation
         createDirectories(temporaryFolder.resolve("pages").resolve(".metadata"));
         createDirectories(temporaryFolder.resolve("pages").resolve("myPage"));
@@ -208,7 +208,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_ensure_that_folders_page_widgets_fragments_are_created() throws Exception {
+    void should_ensure_that_folders_page_widgets_fragments_are_created() throws Exception {
 
         workspace.initialize();
 
@@ -219,7 +219,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_not_throw_exception_when_a_folder_exist_before_init_with_fragment() throws Exception {
+    void should_not_throw_exception_when_a_folder_exist_before_init_with_fragment() throws Exception {
         //Folder creation
         if (!Files.exists(temporaryFolder.resolve("fragments"))) {
             createDirectories(temporaryFolder.resolve("fragments"));
@@ -232,7 +232,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_not_copy_widget_file_if_it_is_already_in_widget_repository_folder() throws Exception {
+    void should_not_copy_widget_file_if_it_is_already_in_widget_repository_folder() throws Exception {
         //We create the widget files
         String existingWidget = "{\"id\":\"pbLabel\", \"template\": \"<div>Hello</div>\", \"designerVersion\": \""
                 + CURRENT_MODEL_VERSION + "\"}";
@@ -246,7 +246,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_delete_fragment_reference_when_fragment_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
+    void should_delete_fragment_reference_when_fragment_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
             throws Exception {
         //Folder creation
         createDirectories(temporaryFolder.resolve("fragments/myFragment"));
@@ -258,7 +258,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_delete_only_js_file_for_fragment_artifact_when_fragment_descriptor_exist() throws Exception {
+    void should_delete_only_js_file_for_fragment_artifact_when_fragment_descriptor_exist() throws Exception {
         //Folder creation
         createDirectories(temporaryFolder.resolve("fragments/myFragment"));
         createDirectories(temporaryFolder.resolve("fragments/.metadata"));
@@ -290,7 +290,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_initialize_workspace() throws Exception {
+    void should_initialize_workspace() throws Exception {
 
         //When
         workspace.initialize();
@@ -300,7 +300,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_refresh_index_file_in_metadata_folder_when_initialize_is_called() throws Exception {
+    void should_refresh_index_file_in_metadata_folder_when_initialize_is_called() throws Exception {
         //Folder creation
         createDirectories(temporaryFolder.resolve("pages/myPage"));
         createDirectories(temporaryFolder.resolve("pages/.metadata"));

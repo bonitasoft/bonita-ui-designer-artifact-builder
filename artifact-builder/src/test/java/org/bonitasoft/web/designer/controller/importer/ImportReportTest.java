@@ -46,7 +46,7 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class ImportReportTest {
+class ImportReportTest {
 
     @Mock
     private WidgetDependencyImporter widgetDependencyImporter;
@@ -56,7 +56,7 @@ public class ImportReportTest {
     private AssetDependencyImporter assetDependencyImporter;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         when(widgetDependencyImporter.getComponentName()).thenReturn("widget");
         when(fragmentDependencyImporter.getComponentName()).thenReturn("fragment");
     }
@@ -68,7 +68,7 @@ public class ImportReportTest {
     }
 
     @Test
-    public void should_report_imported_element_when_it_is_a_page() throws Exception {
+    void should_report_imported_element_when_it_is_a_page() throws Exception {
         Page importedPage = aPage().build();
 
         ImportReport report = ImportReport.from(importedPage, new HashMap());
@@ -77,7 +77,7 @@ public class ImportReportTest {
     }
 
     @Test
-    public void should_report_imported_element_when_it_is_a_widget() throws Exception {
+    void should_report_imported_element_when_it_is_a_widget() throws Exception {
         Widget importedWidget = aWidget().build();
 
         ImportReport report = ImportReport.from(importedWidget, new HashMap());
@@ -86,7 +86,7 @@ public class ImportReportTest {
     }
 
     @Test
-    public void should_include_added_and_overriden_widget_in_imported_dependencies() throws Exception {
+    void should_include_added_and_overriden_widget_in_imported_dependencies() throws Exception {
         Widget existingWidget = existing(aWidget().withId("existing").build());
         Widget newWidget = aWidget().withId("newOne").build();
         Map<DependencyImporter, List<?>> dependencies = new HashMap<>();
@@ -99,7 +99,7 @@ public class ImportReportTest {
     }
 
     @Test
-    public void should_not_include_assets_in_imported_dependencies() throws Exception {
+    void should_not_include_assets_in_imported_dependencies() throws Exception {
         Map<DependencyImporter, List<?>> dependencies = new HashMap<>();
         dependencies.put(assetDependencyImporter, asList(anAsset().build()));
 
@@ -122,7 +122,7 @@ public class ImportReportTest {
         }
 
     @Test
-    public void should_report_imported_element_when_it_is_a_fragment() throws Exception {
+    void should_report_imported_element_when_it_is_a_fragment() throws Exception {
         Fragment importedFragment = aFragment().build();
 
         ImportReport report = ImportReport.from(importedFragment, new HashMap());
@@ -131,7 +131,7 @@ public class ImportReportTest {
     }
 
     @Test
-    public void should_include_added_and_overwritten_widget_in_imported_dependencies() throws Exception {
+    void should_include_added_and_overwritten_widget_in_imported_dependencies() throws Exception {
         Widget newWidget = aWidget().withId("newOne").build();
         Widget existingWidget = mockExistsInRepository(aWidget().withId("existing").build());
         Map<DependencyImporter, List<?>> dependencies = new HashMap<>();
@@ -144,7 +144,7 @@ public class ImportReportTest {
     }
 
     @Test
-    public void should_include_added_and_overwritten_fragments_in_imported_dependencies() throws Exception {
+    void should_include_added_and_overwritten_fragments_in_imported_dependencies() throws Exception {
         Fragment newFragment = aFragment().withId("newOne").build();
         Fragment existingFragment = mockExistsInRepository(aFragment().withId("existing").build());
         Map<DependencyImporter, List<?>> dependencies = new HashMap<>();

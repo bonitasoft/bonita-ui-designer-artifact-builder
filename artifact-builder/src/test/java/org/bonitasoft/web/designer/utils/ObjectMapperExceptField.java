@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
  *
  * @author Colin Puy
  */
-public class ObjectMapperExceptField extends ObjectMapper {
+class ObjectMapperExceptField extends ObjectMapper {
 
     public ObjectMapperExceptField(Class<?> targetClass, String property) {
         super();

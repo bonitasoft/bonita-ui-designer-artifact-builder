@@ -23,10 +23,10 @@ import java.util.Locale;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class PropertyTypeTest {
+class PropertyTypeTest {
 
     @Test
-    public void should_use_english_language_to_convert_to_uppercase_when_reading_JSON() throws Exception {
+    void should_use_english_language_to_convert_to_uppercase_when_reading_JSON() throws Exception {
         Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(new Locale("tr"));
@@ -40,7 +40,7 @@ public class PropertyTypeTest {
     }
 
     @Test
-    public void should_use_english_language_to_convert_to_lowercase_when_generating_JSON() throws Exception {
+    void should_use_english_language_to_convert_to_lowercase_when_generating_JSON() throws Exception {
         Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(new Locale("tr"));

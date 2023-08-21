@@ -33,7 +33,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class LanguagePackTest {
+class LanguagePackTest {
 
     private LanguagePackFactory languagePackFactory;
 
@@ -41,12 +41,12 @@ public class LanguagePackTest {
     Path tempDir;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         languagePackFactory = new LanguagePackFactory(new JacksonJsonHandler(new ObjectMapper()));
     }
 
     @Test
-    public void should_convert_translation_into_json() throws Exception {
+    void should_convert_translation_into_json() throws Exception {
         Path poFile = Files.createFile(tempDir.resolve("simple.po"));
         write(poFile, readResource("/i18n/simple.po"));
 
@@ -55,7 +55,7 @@ public class LanguagePackTest {
     }
 
     @Test
-    public void should_convert_plural_translations_into_json() throws Exception {
+    void should_convert_plural_translations_into_json() throws Exception {
         Path poFile = Files.createFile(tempDir.resolve("plural.po"));
         write(poFile, readResource("/i18n/plural.po"));
 
@@ -64,7 +64,7 @@ public class LanguagePackTest {
     }
 
     @Test
-    public void should_throw_a_runtime_exception_if_the_po_file_does_not_contains_the_language() throws Exception {
+    void should_throw_a_runtime_exception_if_the_po_file_does_not_contains_the_language() throws Exception {
         Path folder = Files.createDirectory(tempDir.resolve("i18n"));
         Path poFile = Files.createFile(folder.resolve("plural.po"));
         write(poFile,

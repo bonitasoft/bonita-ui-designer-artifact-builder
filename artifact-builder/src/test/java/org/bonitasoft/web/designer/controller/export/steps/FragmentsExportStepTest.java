@@ -41,7 +41,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FragmentsExportStepTest {
+class FragmentsExportStepTest {
 
     private final WorkspaceProperties workspaceProperties = new WorkspaceProperties();
 
@@ -58,7 +58,7 @@ public class FragmentsExportStepTest {
     Path tempPath;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         repositoryFactory.init(tempPath);
 
         fragmentRepository = repositoryFactory.toRepository();
@@ -69,7 +69,7 @@ public class FragmentsExportStepTest {
     }
 
     @Test
-    public void should_add_fragments_to_zip() throws Exception {
+    void should_add_fragments_to_zip() throws Exception {
         Fragment fragment = aFragment().withId("fragment").build();
         fragmentRepository.save(fragment);
 
@@ -91,7 +91,7 @@ public class FragmentsExportStepTest {
     }
 
     @Test
-    public void should_not_add_fragment_metadata_to_zip() throws Exception {
+    void should_not_add_fragment_metadata_to_zip() throws Exception {
         Fragment fragment = aFragment().withId("fragment").build();
         fragmentRepository.save(fragment);
 

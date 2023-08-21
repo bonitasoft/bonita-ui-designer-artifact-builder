@@ -47,7 +47,7 @@ public final class SimpleObject {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -56,7 +56,7 @@ public final class SimpleObject {
         return number;
     }
 
-    public void setNumber(int number) {
+    void setNumber(int number) {
         this.number = number;
     }
 
@@ -64,7 +64,7 @@ public final class SimpleObject {
         return another;
     }
 
-    public void setAnother(SimpleObject another) {
+    void setAnother(SimpleObject another) {
         this.another = another;
     }
 
@@ -93,7 +93,7 @@ public final class SimpleObject {
         return id;
     }
 
-    public void setLastUpdate(Instant lastUpdate) {
+    void setLastUpdate(Instant lastUpdate) {
 
     }
 
@@ -101,7 +101,7 @@ public final class SimpleObject {
         return password;
     }
 
-    public void setPassword(String password) {
+    void setPassword(String password) {
         this.password = password;
     }
 }

@@ -50,7 +50,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PropertyValuesVisitorTest {
+class PropertyValuesVisitorTest {
 
     @Rule
     public TestResource testResource = new TestResource(this.getClass());
@@ -64,14 +64,14 @@ public class PropertyValuesVisitorTest {
     private PropertyValue propertyValue;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         propertyValue = new PropertyValue();
         propertyValue.setType("bar");
         propertyValue.setValue("baz");
     }
 
     @Test
-    public void should_associate_component_paramFeter_values_with_its_id() throws Exception {
+    void should_associate_component_paramFeter_values_with_its_id() throws Exception {
         assertThat(propertyValuesVisitor.visit(aComponent()
                 .withReference("component-id")
                 .withPropertyValue("foo", "bar", "baz")
@@ -79,7 +79,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_container_property_values_with_its_id() throws Exception {
+    void should_associate_container_property_values_with_its_id() throws Exception {
         assertThat(propertyValuesVisitor.visit(aContainer()
                 .withReference("container-id")
                 .withPropertyValue("foo", "bar", "baz")
@@ -87,7 +87,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_component_property_values_contained_in_a_container_with_its_id() throws Exception {
+    void should_associate_component_property_values_contained_in_a_container_with_its_id() throws Exception {
         assertThat(propertyValuesVisitor.visit(aContainer()
                 .with(aComponent().withReference("component-id").withPropertyValue("foo", "bar", "baz"))
                 .withReference("container-id")
@@ -97,7 +97,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_component_parameter_values_contained_in_a_formcontainer_with_its_id()
+    void should_associate_component_parameter_values_contained_in_a_formcontainer_with_its_id()
             throws Exception {
         assertThat(propertyValuesVisitor.visit(
                 aFormContainer()
@@ -114,7 +114,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_formcontainer_parameter_values_with_its_id() throws Exception {
+    void should_associate_formcontainer_parameter_values_with_its_id() throws Exception {
         assertThat(propertyValuesVisitor.visit(aFormContainer()
                 .with(aContainer().withReference("container-id").build())
                 .withReference("formcontainer-id")
@@ -125,7 +125,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_tabs_container_property_values_with_its_id() throws Exception {
+    void should_associate_tabs_container_property_values_with_its_id() throws Exception {
         assertThat(propertyValuesVisitor.visit(aTabsContainer()
                 .withReference("tabs-container-id")
                 .withPropertyValue("foo", "bar", "baz")
@@ -133,7 +133,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_component_property_values_contained_in_a_tab_with_its_id() throws Exception {
+    void should_associate_component_property_values_contained_in_a_tab_with_its_id() throws Exception {
         assertThat(propertyValuesVisitor.visit(aTabsContainer()
                 .with(aTabContainer().with(aContainer()
                         .with(aComponent().withReference("component-id").withPropertyValue("foo", "bar", "baz"))
@@ -147,7 +147,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_component_property_values_contained_in_a_previewable_with_its_id() throws Exception {
+    void should_associate_component_property_values_contained_in_a_previewable_with_its_id() throws Exception {
         assertThat(propertyValuesVisitor.visit(aPage()
                 .with(aComponent()
                         .withReference("component-id")
@@ -157,7 +157,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_generate_a_service_containing_parameter_values() throws Exception {
+    void should_generate_a_service_containing_parameter_values() throws Exception {
         Component component = aComponent().withPropertyValue("foo", "bar", "baz").withReference("component-ref")
                 .build();
         Page page = aPage().with(component).build();
@@ -168,7 +168,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_component_property_values_contained_in_a_modal_container_with_its_id()
+    void should_associate_component_property_values_contained_in_a_modal_container_with_its_id()
             throws Exception {
         assertThat(propertyValuesVisitor.visit(aModalContainer()
                 .with(aContainer()
@@ -181,7 +181,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_fragment_property_values_with_its_id() throws Exception {
+    void should_associate_fragment_property_values_with_its_id() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment().build());
 
         assertThat(propertyValuesVisitor.visit(aFragmentElement()
@@ -193,7 +193,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_associate_component_property_values_contained_in_a_fragment_with_its_id(){
+    void should_associate_component_property_values_contained_in_a_fragment_with_its_id(){
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .with(aRow().with(aComponent()
                         .withReference("component-id")
@@ -209,7 +209,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_throw_a_generation_error_when_fragment_is_not_found() {
+    void should_throw_a_generation_error_when_fragment_is_not_found() {
         when(fragmentRepository.get("fragment-id")).thenThrow(new NotFoundException(""));
 
         assertThrows(GenerationException.class, () -> propertyValuesVisitor.visit(aFragmentElement()
@@ -217,7 +217,7 @@ public class PropertyValuesVisitorTest {
     }
 
     @Test
-    public void should_throw_a_generation_error_when_there_is_a_repository_error_while_looking_for_a_fragment() {
+    void should_throw_a_generation_error_when_there_is_a_repository_error_while_looking_for_a_fragment() {
         when(fragmentRepository.get("fragment-id")).thenThrow(new RepositoryException("", new RuntimeException()));
 
         assertThrows(GenerationException.class, () -> propertyValuesVisitor.visit(aFragmentElement()

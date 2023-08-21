@@ -40,7 +40,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AssetTest {
+class AssetTest {
 
     private Asset asset;
 
@@ -48,7 +48,7 @@ public class AssetTest {
     private JsonHandler jsonHandler;
 
     @BeforeEach
-    public void init() {
+    void init() {
         jsonHandler = new JsonHandlerFactory().create();
         beanValidator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
         asset = AssetBuilder.anAsset().withScope(AssetScope.PAGE).build();
@@ -77,7 +77,7 @@ public class AssetTest {
 
     @ParameterizedTest
     @MethodSource("validNames")
-    public void should_be_valid_when_name_is_valid(String name) {
+    void should_be_valid_when_name_is_valid(String name) {
         asset.setName(name);
         beanValidator.validate(asset);
     }
@@ -97,7 +97,7 @@ public class AssetTest {
 
     @ParameterizedTest
     @MethodSource("invalidNames")
-    public void should_be_invalid_when_name_is_invalid(String name, String expectedErrorMessage) {
+    void should_be_invalid_when_name_is_invalid(String name, String expectedErrorMessage) {
         asset.setName(name);
         final ConstraintValidationException exception = assertThrows(ConstraintValidationException.class,
                 () -> beanValidator.validate(asset));
@@ -105,7 +105,7 @@ public class AssetTest {
     }
 
     @Test
-    public void should_be_invalid_when_type_null() {
+    void should_be_invalid_when_type_null() {
         asset.setType(null);
 
         final ConstraintValidationException exception = assertThrows(ConstraintValidationException.class,
@@ -114,7 +114,7 @@ public class AssetTest {
     }
 
     @Test
-    public void json_view_asset_should_persist_all_the_properties() throws Exception {
+    void json_view_asset_should_persist_all_the_properties() throws Exception {
 
         Asset fileJsAsset = new Asset()
                 .setId("UIID")
@@ -133,7 +133,7 @@ public class AssetTest {
     }
 
     @Test
-    public void json_view_persistence_should_persist_a_subset_of_properties() throws Exception {
+    void json_view_persistence_should_persist_a_subset_of_properties() throws Exception {
 
         Asset fileJsAsset = new Asset()
                 .setId("UIID")

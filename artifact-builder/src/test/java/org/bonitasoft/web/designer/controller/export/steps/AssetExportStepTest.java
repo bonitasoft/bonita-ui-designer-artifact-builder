@@ -36,7 +36,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AssetExportStepTest {
+class AssetExportStepTest {
 
     @Mock
     private AssetRepository<Page> pageAssetRepository;
@@ -51,7 +51,7 @@ public class AssetExportStepTest {
     private AssetExportStep assetExportStep;
 
     @Test
-    public void should_call_zipper_when_page_has_no_asset() throws Exception {
+    void should_call_zipper_when_page_has_no_asset() throws Exception {
 
         assetExportStep.execute(zipper, aPage().build());
 
@@ -59,7 +59,7 @@ public class AssetExportStepTest {
     }
 
     @Test
-    public void should_export_asset_when_page_has_asset() throws Exception {
+    void should_export_asset_when_page_has_asset() throws Exception {
         when(pageAssetRepository.findAssetPath("pageId", "myfile.css", AssetType.CSS)).thenReturn(assetPath);
         Page page = aPage().withId("pageId").withAsset(
                 anAsset().withName("myfile.css").withType(AssetType.CSS)).build();
@@ -70,7 +70,7 @@ public class AssetExportStepTest {
     }
 
     @Test
-    public void should_not_export_external_assets() throws Exception {
+    void should_not_export_external_assets() throws Exception {
         Page page = aPage().withAsset(
                 anAsset().withName("http://external.asset").withExternal(true)).build();
 

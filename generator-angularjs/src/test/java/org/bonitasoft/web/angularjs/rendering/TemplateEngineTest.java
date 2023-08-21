@@ -25,17 +25,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class TemplateEngineTest {
+class TemplateEngineTest {
 
     @Test
-    public void should_load_template_from_classpath() throws GenerationException {
+    void should_load_template_from_classpath() throws GenerationException {
         TemplateEngine template = new TemplateEngine("template.html");
 
         assertThat(template.build(singletonMap("variable", "foobar"))).isEqualTo("<div>foobar</div>");
     }
 
     @Test
-    public void should_allow_using_json_in_templates() throws GenerationException {
+    void should_allow_using_json_in_templates() throws GenerationException {
         TemplateEngine template = new TemplateEngine("json-template.html");
         Bar bar = new Bar();
         bar.setVariable("qux");
@@ -44,7 +44,7 @@ public class TemplateEngineTest {
     }
 
     @Test
-    public void should_allow_using_object_properties_in_templates() throws GenerationException {
+    void should_allow_using_object_properties_in_templates() throws GenerationException {
         TemplateEngine template = new TemplateEngine("template.html");
         Bar bar = new Bar();
         bar.setVariable("baz");
@@ -53,7 +53,7 @@ public class TemplateEngineTest {
     }
 
     @Test
-    public void should_let_add_extra_variable_to_the_template_context() throws GenerationException {
+    void should_let_add_extra_variable_to_the_template_context() throws GenerationException {
         TemplateEngine template = new TemplateEngine("template.html");
 
         assertThat(template.with("variable", "bazqux").build(null))
@@ -61,14 +61,14 @@ public class TemplateEngineTest {
     }
 
     @Test
-    public void should_displayData_when_ifequal_value_is_true() throws GenerationException {
+    void should_displayData_when_ifequal_value_is_true() throws GenerationException {
         TemplateEngine template = new TemplateEngine("ifequal-template.html");
 
         assertThat(template.with("variable", "JAVASCRIPT").build(null)).isEqualTo("JAVASCRIPT");
     }
 
     @Test
-    public void should_not_displayData_when_ifequal_value_is_false() throws GenerationException {
+    void should_not_displayData_when_ifequal_value_is_false() throws GenerationException {
         TemplateEngine template = new TemplateEngine("ifequal-template.html");
 
         assertThat(template.with("variable", "PAJAVASCRIPT").build(null)).isEmpty();
@@ -78,7 +78,7 @@ public class TemplateEngineTest {
 
         private String variable;
 
-        public void setVariable(String variable) {
+        void setVariable(String variable) {
             this.variable = variable;
         }
 

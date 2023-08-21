@@ -45,7 +45,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ImporterResolverTest {
+class ImporterResolverTest {
 
     @TempDir
     Path tempDir;
@@ -65,7 +65,7 @@ public class ImporterResolverTest {
     private DefaultArtifactBuilder artifactBuilder;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
 
         artifactBuilder = spy(new DefaultArtifactBuilder(
                 mock(Workspace.class),
@@ -91,7 +91,7 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_get_page_importer_from_artifact_type() throws Exception {
+    void should_get_page_importer_from_artifact_type() throws Exception {
 
         // When
         artifactBuilder.importPage(tempDir, false);
@@ -101,7 +101,7 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_get_widget_importer_from_artifact_type() throws Exception {
+    void should_get_widget_importer_from_artifact_type() throws Exception {
         // When
         artifactBuilder.importWidget(tempDir, false);
         // Then
@@ -109,7 +109,7 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_for_an_unknown_artifact_type() throws Exception {
+    void should_throw_NotFoundException_for_an_unknown_artifact_type() throws Exception {
         // Given
         when(widgetImporter.tryToImportAndGenerateReport(any(), eq(false))).thenThrow(new ImportException(PAGE_NOT_FOUND, "error"));
         Files.createDirectory(tempDir.resolve("resources"));
@@ -124,7 +124,7 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_get_page_importer_from_path() throws Exception {
+    void should_get_page_importer_from_path() throws Exception {
         Path resources = Files.createDirectory(tempDir.resolve("resources"));
         Files.createFile(resources.resolve("page.json"));
 
@@ -134,7 +134,7 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_get_widget_importer_from_path() throws Exception {
+    void should_get_widget_importer_from_path() throws Exception {
         Path resources = Files.createDirectory(tempDir.resolve("resources"));
         Files.createFile(resources.resolve("widget.json"));
 
@@ -144,14 +144,14 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_get_fragment_importer_from_artifact_type() throws Exception {
+    void should_get_fragment_importer_from_artifact_type() throws Exception {
         artifactBuilder.importFragment(any(), eq(false));
 
         verify(artifactBuilder).importFromPath(any(), eq(false), eq(fragmentImporter));
     }
 
     @Test
-    public void should_get_fragment_importer_from_path() throws Exception {
+    void should_get_fragment_importer_from_path() throws Exception {
         Path resources = Files.createDirectory(tempDir.resolve("resources"));
         Files.createFile(resources.resolve("fragment.json"));
 
@@ -161,7 +161,7 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_get_ImportException_while_resources_folder_is_absent() throws Exception {
+    void should_get_ImportException_while_resources_folder_is_absent() throws Exception {
 
         // When
         final Throwable throwable = catchThrowable(() -> artifactBuilder.importArtifact(tempDir, false));
@@ -174,7 +174,7 @@ public class ImporterResolverTest {
     }
 
     @Test
-    public void should_get_ImportException_while_no_importer_found_from_path() throws Exception {
+    void should_get_ImportException_while_no_importer_found_from_path() throws Exception {
         // Given
         Path resources = Files.createFile(tempDir.resolve("resources"));
 

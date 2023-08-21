@@ -35,7 +35,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PagePropertiesBuilderTest {
+class PagePropertiesBuilderTest {
 
     private static final String DESIGNER_VERSION = "1.12.1";
 
@@ -47,7 +47,7 @@ public class PagePropertiesBuilderTest {
     private DefaultPageService pageService;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         page = new Page();
         page.setName("myPage");
         UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
@@ -60,7 +60,7 @@ public class PagePropertiesBuilderTest {
     }
 
     @Test
-    public void should_build_a_well_formed_page_property_file() throws Exception {
+    void should_build_a_well_formed_page_property_file() throws Exception {
         page.setId("aPageId");
         page.setName("aPageName");
         page.setDescription("a page description with special characters &'\"é");
@@ -77,7 +77,7 @@ public class PagePropertiesBuilderTest {
     }
 
     @Test
-    public void should_build_a_page_property_file_when_description_and_displayName_are_not_updated() throws Exception {
+    void should_build_a_page_property_file_when_description_and_displayName_are_not_updated() throws Exception {
         page.setId("aPageId");
         page.setName("aPageName");
         page.setDesignerVersion("1.12.1");
@@ -93,7 +93,7 @@ public class PagePropertiesBuilderTest {
     }
 
     @Test
-    public void should_build_a_page_property_file_with_designerVersion() throws Exception {
+    void should_build_a_page_property_file_with_designerVersion() throws Exception {
         page.setDesignerVersion("1.12.1");
 
         String properties = new String(pagePropertiesBuilder.build(page));
@@ -101,7 +101,7 @@ public class PagePropertiesBuilderTest {
     }
 
     @Test
-    public void should_add_bonita_resource_found_in_page_data() throws Exception {
+    void should_add_bonita_resource_found_in_page_data() throws Exception {
         page.setData(singletonMap("foo", anApiData("/bonita/API/living/application-menu")));
         when(pageService.getResources(page)).thenReturn(Arrays.asList("GET|living/application-menu"));
         String properties = new String(pagePropertiesBuilder.build(page));
@@ -110,7 +110,7 @@ public class PagePropertiesBuilderTest {
     }
 
     @Test
-    public void should_add_relative_bonita_resource_found_in_page_data() throws Exception {
+    void should_add_relative_bonita_resource_found_in_page_data() throws Exception {
         var dataMap = new TreeMap<String, Data>();
         dataMap.put("foo", anApiData("../API/bpm/userTask?filter=mine"));
         dataMap.put("bar", anApiData("../API/identity/user/1"));
@@ -129,7 +129,7 @@ public class PagePropertiesBuilderTest {
     }
 
     @Test
-    public void should_not_add_a_resource_which_is_not_a_bonita_resource() throws Exception {
+    void should_not_add_a_resource_which_is_not_a_bonita_resource() throws Exception {
         page.setData(singletonMap("foo", anApiData("../API/path/to/wathever/resource")));
         when(pageService.getResources(page)).thenReturn(Arrays.asList(""));
 
@@ -139,7 +139,7 @@ public class PagePropertiesBuilderTest {
     }
 
     @Test
-    public void should_add_contentType() throws Exception {
+    void should_add_contentType() throws Exception {
         page.setType("layout");
         when(pageService.getResources(page)).thenReturn(Arrays.asList(""));
 

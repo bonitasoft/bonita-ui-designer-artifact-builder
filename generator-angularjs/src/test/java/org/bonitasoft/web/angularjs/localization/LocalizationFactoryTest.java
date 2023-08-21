@@ -39,7 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class LocalizationFactoryTest {
+class LocalizationFactoryTest {
 
     @Mock
     PageRepository pageRepository;
@@ -55,7 +55,7 @@ public class LocalizationFactoryTest {
     Path temporaryFolder;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         Path pageFolder = Files.createDirectory(temporaryFolder.resolve("page"));
         Files.createDirectory(temporaryFolder.resolve("assets"));
         Files.createDirectory(temporaryFolder.resolve("json"));
@@ -65,7 +65,7 @@ public class LocalizationFactoryTest {
     }
 
     @Test
-    public void should_create_a_factory_which_contains_localizations() throws Exception {
+    void should_create_a_factory_which_contains_localizations() throws Exception {
         writeByteArrayToFile(localizationFile, localizationFileContent.getBytes());
 
         assertThat(localizationFactory.generate(page))
@@ -73,7 +73,7 @@ public class LocalizationFactoryTest {
     }
 
     @Test
-    public void should_create_an_empty_factory_whenever_localization_file_is_not_valid_json() throws Exception {
+    void should_create_an_empty_factory_whenever_localization_file_is_not_valid_json() throws Exception {
         writeByteArrayToFile(localizationFile, "invalid json".getBytes());
 
         assertThat(localizationFactory.generate(page))
@@ -81,7 +81,7 @@ public class LocalizationFactoryTest {
     }
 
     @Test
-    public void should_create_an_empty_factory_whenever_localization_file_does_not_exist() throws Exception {
+    void should_create_an_empty_factory_whenever_localization_file_does_not_exist() throws Exception {
         deleteQuietly(localizationFile);
 
         assertThat(localizationFactory.generate(page))
@@ -89,7 +89,7 @@ public class LocalizationFactoryTest {
     }
 
     @Test
-    public void should_create_an_empty_string_for_fragments() throws Exception {
+    void should_create_an_empty_string_for_fragments() throws Exception {
         assertThat(localizationFactory.generate(aFragment().build()))
                 .isEqualTo("angular.module('bonitasoft.ui.services').factory('localizationFactory', function() {"
                         + System.lineSeparator() +

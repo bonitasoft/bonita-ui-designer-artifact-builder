@@ -42,7 +42,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class WorkspaceMigrationTest {
+class WorkspaceMigrationTest {
 
     private static final String HIGHER_MIGRATION_VERSION = Version.MODEL_VERSION;
 
@@ -80,7 +80,7 @@ public class WorkspaceMigrationTest {
     }
 
     @Test
-    public void should_migrate_a_page() {
+    void should_migrate_a_page() {
         // When
         workspace.migrateWorkspace();
 
@@ -94,7 +94,7 @@ public class WorkspaceMigrationTest {
     }
 
     @Test
-    public void should_migrate_a_page_property_values() {
+    void should_migrate_a_page_property_values() {
         // When
         workspace.migrateWorkspace();
 
@@ -108,7 +108,7 @@ public class WorkspaceMigrationTest {
     }
 
     @Test
-    public void should_migrate_a_page_adding_text_widget_interpret_HTML_property_value() {
+    void should_migrate_a_page_adding_text_widget_interpret_HTML_property_value() {
         // When
         workspace.migrateWorkspace();
 
@@ -126,7 +126,7 @@ public class WorkspaceMigrationTest {
     }
 
     @Test
-    public void should_migrate_a_custom_widget() throws IOException {
+    void should_migrate_a_custom_widget() throws IOException {
         // When
         workspace.migrateWorkspace();
 
@@ -140,7 +140,7 @@ public class WorkspaceMigrationTest {
     }
 
     @Test
-    public void should_migrate_a_page_adding_uiBootstrap() {
+    void should_migrate_a_page_adding_uiBootstrap() {
         // When
         workspace.migrateWorkspace();
 
@@ -152,7 +152,7 @@ public class WorkspaceMigrationTest {
     }
 
     @Test
-    public void should_migrate_a_page_not_adding_uiBootstrap_when_already_a_page_asset() {
+    void should_migrate_a_page_not_adding_uiBootstrap_when_already_a_page_asset() {
         // When
         workspace.migrateWorkspace();
 
@@ -167,7 +167,7 @@ public class WorkspaceMigrationTest {
     }
 
     @Test
-    public void should_migrate_a_page_not_adding_uiBootstrap_when_already_a_widget_asset() {
+    void should_migrate_a_page_not_adding_uiBootstrap_when_already_a_widget_asset() {
         // When
         workspace.migrateWorkspace();
 

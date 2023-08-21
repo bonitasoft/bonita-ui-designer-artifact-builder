@@ -32,7 +32,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ImportStoreTest {
+class ImportStoreTest {
 
     @Mock
     private AbstractArtifactImporter artifactImporter;
@@ -40,12 +40,12 @@ public class ImportStoreTest {
     private ImportStore importStore;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         importStore = new ImportStore();
     }
 
     @Test
-    public void should_store_import() throws Exception {
+    void should_store_import() throws Exception {
         Path importPath = Paths.get("import/path");
 
         Import storedImport = importStore.store(artifactImporter, importPath);
@@ -56,7 +56,7 @@ public class ImportStoreTest {
     }
 
     @Test
-    public void should_get_a_stored_import() throws Exception {
+    void should_get_a_stored_import() throws Exception {
         Import expectedImport = importStore.store(artifactImporter, Paths.get("import/path"));
 
         Import fetchedImport = importStore.get(expectedImport.getUUID());
@@ -65,12 +65,12 @@ public class ImportStoreTest {
     }
 
     @Test
-    public void should_throw_not_found_exception_while_getting_an_unknown_import() throws Exception {
+    void should_throw_not_found_exception_while_getting_an_unknown_import() throws Exception {
         assertThrows(NotFoundException.class, () -> importStore.get("unknown-import"));
     }
 
     @Test
-    public void should_remove_a_stored_import() throws Exception {
+    void should_remove_a_stored_import() throws Exception {
         Import addedReport = importStore.store(artifactImporter, Paths.get("import/path"));
 
         importStore.remove(addedReport.getUUID());
@@ -79,7 +79,7 @@ public class ImportStoreTest {
     }
 
     @Test
-    public void should_delete_folder_while_removing_a_stored_import(@TempDir Path temporaryFolder) throws Exception {
+    void should_delete_folder_while_removing_a_stored_import(@TempDir Path temporaryFolder) throws Exception {
         Path importFolder = Files.createDirectory(temporaryFolder.resolve("importFolder"));
         Import addedReport = importStore.store(artifactImporter, importFolder);
 
@@ -89,7 +89,7 @@ public class ImportStoreTest {
     }
 
     @Test
-    public void should_fail_silently_while_removing_an_unexisting_import() throws Exception {
+    void should_fail_silently_while_removing_an_unexisting_import() throws Exception {
 
         importStore.remove("unexinting id");
 

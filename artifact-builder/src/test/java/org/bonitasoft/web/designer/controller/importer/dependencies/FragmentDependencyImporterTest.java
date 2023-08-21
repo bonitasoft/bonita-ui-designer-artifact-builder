@@ -28,7 +28,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FragmentDependencyImporterTest {
+class FragmentDependencyImporterTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -36,7 +36,7 @@ public class FragmentDependencyImporterTest {
     private FragmentDependencyImporter fragmentImporterDependencyImporter;
 
     @Test
-    public void should_verify_that_a_fragment_exists_in_repository() throws Exception {
+    void should_verify_that_a_fragment_exists_in_repository() throws Exception {
         when(fragmentRepository.exists("existingFragment")).thenReturn(true);
 
         boolean exists = fragmentImporterDependencyImporter.exists(aFragment().withId("existingFragment").build());
@@ -45,7 +45,7 @@ public class FragmentDependencyImporterTest {
     }
 
     @Test
-    public void should_verify_that_a_widget_does_not_exists_in_repository() throws Exception {
+    void should_verify_that_a_widget_does_not_exists_in_repository() throws Exception {
         when(fragmentRepository.exists("unknownFragment")).thenReturn(false);
 
         boolean exists = fragmentImporterDependencyImporter.exists(aFragment().withId("unknownFragment").build());

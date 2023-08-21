@@ -66,7 +66,7 @@ import org.mockito.stubbing.Answer;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class ArtifactImporterTest {
+class ArtifactImporterTest {
 
     private static final String WIDGETS_FOLDER = "widgets";
 
@@ -97,7 +97,7 @@ public class ArtifactImporterTest {
     private ArtifactBuilder artifactBuilder;
 
     @BeforeEach
-    public void setUp(@TempDir Path tempDir) throws Exception {
+    void setUp(@TempDir Path tempDir) throws Exception {
         pageImportPath = Files.createTempDirectory(tempDir, "pageImport");
         widgetImportPath = Files.createTempDirectory(tempDir, "widgetImport");
 
@@ -135,7 +135,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_import_artifact_located_on_disk() throws Exception {
+    void should_import_artifact_located_on_disk() throws Exception {
         List<Widget> widgets = wMocks.mockWidgetsAsAddedDependencies();
         Page page = pMocks.mockPageToBeImported();
         when(pageRepository.updateLastUpdateAndSave(page)).thenReturn(page);
@@ -147,7 +147,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_prepare_widget_to_deserialize_on_import_widget() throws Exception {
+    void should_prepare_widget_to_deserialize_on_import_widget() throws Exception {
         Widget widget = spy(aWidget().withId("aWidget").custom().build());
         doReturn(widget).when(jsonHandler).fromJson(any(Path.class), eq(Widget.class), eq(JsonViewPersistence.class));
         when(widgetRepository.updateLastUpdateAndSave(widget)).thenReturn(widget);
@@ -158,7 +158,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_return_an_import_report_containing_imported_element_and_imported_dependencies()
+    void should_return_an_import_report_containing_imported_element_and_imported_dependencies()
             throws Exception {
         var addedWidgets = wMocks.mockWidgetsAsAddedDependencies();
         var overridenWidgets = wMocks.mockWidgetsAsOverridenDependencies();
@@ -175,7 +175,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_return_an_import_report_saying_that_page_is_going_to_be_overwritten_when_element_already_exists_in_repository()
+    void should_return_an_import_report_saying_that_page_is_going_to_be_overwritten_when_element_already_exists_in_repository()
             throws Exception {
         Page page = pMocks.mockPageToBeImported();
         Page existingPageInRepo = aPage().withUUID(page.getUUID()).withName("alreadyHere").build();
@@ -190,7 +190,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_return_an_import_report_saying_that_widget_is_going_to_be_overwritten_when_element_already_exists_in_repository()
+    void should_return_an_import_report_saying_that_widget_is_going_to_be_overwritten_when_element_already_exists_in_repository()
             throws Exception {
         Widget widget = aWidget().withId("aWidget").custom().build();
         Widget existingWidgetInRepo = aWidget().withId("aWidget").favorite().custom().build();
@@ -213,7 +213,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_return_an_import_report_saying_that_element_has_not_been_overwritten_when_element_does_not_exists_in_repository()
+    void should_return_an_import_report_saying_that_element_has_not_been_overwritten_when_element_does_not_exists_in_repository()
             throws Exception {
         Page page = pMocks.mockPageToBeImported();
         when(pageRepository.getByUUID(page.getUUID())).thenReturn(null);
@@ -226,7 +226,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_return_an_import_report_saying_that_element_has_been_imported_when_there_are_no_conflict()
+    void should_return_an_import_report_saying_that_element_has_been_imported_when_there_are_no_conflict()
             throws Exception {
         List<Widget> widgets = wMocks.mockWidgetsAsAddedDependencies();
         Page page = pMocks.mockPageToBeImported();
@@ -239,7 +239,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_return_an_import_report_saying_that_element_has_not_been_imported_when_there_are_conflict()
+    void should_return_an_import_report_saying_that_element_has_not_been_imported_when_there_are_conflict()
             throws Exception {
         List<Widget> overriddenWidgets = wMocks.mockWidgetsAsOverridenDependencies();
         Page page = pMocks.mockPageToBeImported();
@@ -252,7 +252,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_throw_import_exception_when_there_is_no_resource_folder_in_import_path(@TempDir Path tempDir)
+    void should_throw_import_exception_when_there_is_no_resource_folder_in_import_path(@TempDir Path tempDir)
             throws Exception {
         Path newFolder = Files.createDirectory(tempDir.resolve("emptyFolder"));
 
@@ -262,7 +262,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_throw_server_import_exception_when_error_occurs_while_saving_files_in_repository()
+    void should_throw_server_import_exception_when_error_occurs_while_saving_files_in_repository()
             throws Exception {
         Page page = pMocks.mockPageToBeImported(aPage().withId("aPage"));
         when(pageRepository.updateLastUpdateAndSave(page)).thenThrow(RepositoryException.class);
@@ -271,7 +271,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_throw_import_exception_when_an_error_occurs_while_getting_widgets() throws Exception {
+    void should_throw_import_exception_when_an_error_occurs_while_getting_widgets() throws Exception {
         Files.createDirectory(pageUnzippedPath.resolve(WIDGETS_FOLDER));
         wMocks.mockWidgetsAsAddedDependencies();
         pMocks.mockPageToBeImported(aPage().withId("aPage"));
@@ -282,7 +282,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_force_an_import() throws Exception {
+    void should_force_an_import() throws Exception {
         var addedWidgets = wMocks.mockWidgetsAsAddedDependencies();
         var overriddenWidgets = wMocks.mockWidgetsAsOverridenDependencies();
         Page page = pMocks.mockPageToBeImported();
@@ -302,7 +302,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_force_an_import_overwriting_page() throws Exception {
+    void should_force_an_import_overwriting_page() throws Exception {
         wMocks.mockWidgetsAsAddedDependencies();
         Page page = pMocks.mockPageToBeImported();
         Page existingPageInRepo = aPage().withUUID(page.getUUID()).withId("alreadyHere").withName("alreadyHere")
@@ -322,7 +322,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_force_an_import_when_another_page_with_same_id_exist() throws Exception {
+    void should_force_an_import_when_another_page_with_same_id_exist() throws Exception {
         wMocks.mockWidgetsAsAddedDependencies();
         Page page = pMocks.mockPageToBeImported();
         page.setName("myPage");
@@ -344,7 +344,7 @@ public class ArtifactImporterTest {
     }
 
     @Test
-    public void should_return_incompatible_status_if_version_is_not_compatible_with_uid() throws Exception {
+    void should_return_incompatible_status_if_version_is_not_compatible_with_uid() throws Exception {
         uiDesignerProperties.setModelVersion("11.0.0");
         wMocks.mockWidgetsAsAddedDependencies();
         Page page = pMocks.mockPageToBeImported(aPage().withName("myPage").withId("myPage").withModelVersion("12.0.0"));

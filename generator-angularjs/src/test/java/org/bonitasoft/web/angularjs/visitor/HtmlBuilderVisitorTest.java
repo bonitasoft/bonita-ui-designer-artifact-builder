@@ -53,7 +53,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class HtmlBuilderVisitorTest {
+class HtmlBuilderVisitorTest {
 
     private HtmlBuilderVisitor visitor;
     @Mock
@@ -62,12 +62,12 @@ public class HtmlBuilderVisitorTest {
     public TestResource testResource = new TestResource(DefaultHtmlGenerator.class);
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         visitor = new HtmlBuilderVisitor(fragmentRepository);
     }
 
     @Test
-    public void should_build_a_component_html_when_visiting_a_component() throws Exception {
+    void should_build_a_component_html_when_visiting_a_component() throws Exception {
         assertThatHtmlBody(visitor.visit(aComponent("pbWidget")
                 .withReference("component-reference")
                 .withPropertyValue("property", "value")
@@ -75,7 +75,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_add_dimension_to_component() throws Exception {
+    void should_add_dimension_to_component() throws Exception {
 
         Element element = toBody(visitor.visit(aComponent("pbWidget")
                 .withPropertyValue("property", "value")
@@ -86,7 +86,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_build_a_container() throws GenerationException {
+    void should_build_a_container() throws GenerationException {
 
         assertThatHtmlBody(visitor.visit(aContainer()
                 .withReference("container-reference")
@@ -95,14 +95,14 @@ public class HtmlBuilderVisitorTest {
     }
 
     @org.junit.Test
-    public void should_add_rows_to_the_container() {
+    void should_add_rows_to_the_container() {
 
         assertThatHtmlBody(visitor.visit(aContainer().with(aRow()).withReference("container-reference").build()))
                 .isEqualToBody(testResource.load("containerWithRow.html"));
     }
 
     @Test
-    public void should_build_a_repeatable_container() throws GenerationException {
+    void should_build_a_repeatable_container() throws GenerationException {
 
         final String html = visitor.visit(
                 aContainer()
@@ -114,7 +114,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_not_build_a_repeatable_container_if_repeated_collection_is_an_empty_string()
+    void should_not_build_a_repeatable_container_if_repeated_collection_is_an_empty_string()
             throws GenerationException {
 
         assertThatHtmlBody(visitor.visit(aContainer().withReference("container-reference")
@@ -123,7 +123,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_add_dimension_to_the_container() throws GenerationException {
+    void should_add_dimension_to_the_container() throws GenerationException {
         Container container = aContainer().withDimensions(xs(5), sm(7), md(9), lg(10)).build();
 
         String html = visitor.visit(container);
@@ -132,7 +132,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_add_elements_to_the_container_rows() throws Exception {
+    void should_add_elements_to_the_container_rows() throws Exception {
 
         // we should have two div.col-xs-12 with two div.row containing added components
         Elements rows = toBody(visitor.visit(aContainer().with(
@@ -148,7 +148,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_build_a_tabsContainer_html_when_visiting_a_tabsContainer() throws Exception {
+    void should_build_a_tabsContainer_html_when_visiting_a_tabsContainer() throws Exception {
         TabContainer tab = aTabContainer().withId("1").with(aContainer().withReference("first-container"))
                 .withReference("tab-container-1").build();
         TabContainer tab1 = aTabContainer().withId("2").with(aContainer().withReference("last-container"))
@@ -160,7 +160,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_build_a_tab_container_bootstrap_like() throws Exception {
+    void should_build_a_tab_container_bootstrap_like() throws Exception {
 
         assertThatHtmlBody(visitor.visit(aTabsContainer()
                 .withReference("tabs-container-reference")
@@ -170,7 +170,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_add_elements_to_the_tab_container_tabs() throws Exception {
+    void should_add_elements_to_the_tab_container_tabs() throws Exception {
         TabContainer tab = aTabContainer()
                 .withId("1")
                 .with(aContainer()
@@ -184,7 +184,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @org.junit.Test
-    public void should_generate_html_for_a_formcontainer() throws GenerationException {
+    void should_generate_html_for_a_formcontainer() throws GenerationException {
         assertThatHtmlBody(
                 visitor.visit(aFormContainer()
                         .with(aContainer().withReference("container-reference").build())
@@ -194,7 +194,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_add_dimension_to_the_formcontainer() throws GenerationException {
+    void should_add_dimension_to_the_formcontainer() throws GenerationException {
         FormContainer formContainer = aFormContainer()
                 .with(aContainer().withReference("container-reference").build())
                 .withDimensions(xs(5), sm(7), md(9), lg(10)).build();
@@ -205,7 +205,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_add_container_to_the_formcontainer() throws Exception {
+    void should_add_container_to_the_formcontainer() throws Exception {
         FormContainer formContainer = aFormContainer()
                 .with(aContainer().with(aRow().with(
                         aComponent().withWidgetId("pbLabel").withReference("component-reference").build()))
@@ -221,7 +221,7 @@ public class HtmlBuilderVisitorTest {
      * Test for Modal Container
      */
     @Test
-    public void should_build_a_modal_container() throws GenerationException {
+    void should_build_a_modal_container() throws GenerationException {
         assertThatHtmlBody(
                 visitor.visit(aModalContainer().with(aContainer().withReference("container-reference").build())
                         .withReference("modal-container-reference")
@@ -232,7 +232,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_add_row_to_the_modal_container() throws Exception {
+    void should_add_row_to_the_modal_container() throws Exception {
         ModalContainerBuilder modal = aModalContainer();
         modal.withPropertyValue("modalId", "modal1");
         modal.with(aContainer().with(aRow().build()).withReference("first-container").build());
@@ -241,7 +241,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_build_rows() throws Exception {
+    void should_build_rows() throws Exception {
 
         String html = visitor.build(asList(
                 aRow().with(aParagraph().withReference("1")).build(),
@@ -251,7 +251,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_get_html_from_main_container_of_associated_fragment() throws Exception {
+    void should_get_html_from_main_container_of_associated_fragment() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .withId("fragment-id")
                 .withName("person")
@@ -266,7 +266,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_throw_generation_exception_when_associated_fragment_is_not_found() throws Exception {
+    void should_throw_generation_exception_when_associated_fragment_is_not_found() throws Exception {
         when(fragmentRepository.get("unknown-fragment")).thenThrow(new NotFoundException("not found"));
 
         assertThrows(GenerationException.class, () -> visitor.visit(aFragmentElement()
@@ -275,7 +275,7 @@ public class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_throw_generation_exception_when_error_occurs_while_getting_associated_fragment_from_repository() {
+    void should_throw_generation_exception_when_error_occurs_while_getting_associated_fragment_from_repository() {
         when(fragmentRepository.get("bad-fragment")).thenThrow(new RepositoryException("error", new Exception()));
 
         assertThrows(GenerationException.class, () -> visitor.visit(aFragmentElement()

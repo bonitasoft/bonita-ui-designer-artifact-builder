@@ -54,7 +54,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class LiveRepositoryUpdateTest {
+class LiveRepositoryUpdateTest {
 
     JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
@@ -72,13 +72,13 @@ public class LiveRepositoryUpdateTest {
     Path folder;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         repository = new PageRepository(folder, folder, persister, loader,
                 beanValidator, mock(Watcher.class));
     }
 
     @Test
-    public void should_migrate_a_page() throws Exception {
+    void should_migrate_a_page() throws Exception {
         MigrationStep mockMigrationStep = mock(MigrationStep.class);
         Migration<Page> migration = new Migration<Page>("2.1", mockMigrationStep);
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
@@ -95,7 +95,7 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_not_migrate_file_which_are_not_json() throws Exception {
+    void should_not_migrate_file_which_are_not_json() throws Exception {
         Migration<Page> migration = mock(Migration.class);
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
                 singletonList(migration));
@@ -107,7 +107,7 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_not_save_an_artifact_already_migrated() throws Exception {
+    void should_not_save_an_artifact_already_migrated() throws Exception {
         Migration<Page> migration = new Migration<>("1.0.2", mock(MigrationStep.class));
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
                 singletonList(migration));
@@ -119,7 +119,7 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_exclude_assets() throws Exception {
+    void should_exclude_assets() throws Exception {
         Migration<Page> migration = mock(Migration.class);
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
                 singletonList(migration));
@@ -133,7 +133,7 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_be_refresh_repository_index_json_on_start() throws Exception {
+    void should_be_refresh_repository_index_json_on_start() throws Exception {
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository, EMPTY_LIST);
         createPage("1.7.25");
 
@@ -144,7 +144,7 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_order_LiveRepositoryUpdate() {
+    void should_order_LiveRepositoryUpdate() {
         LiveRepositoryUpdate<Page> pageLiveRepositoryUpdate = new LiveRepositoryUpdate<>(repository, EMPTY_LIST);
 
         Repository<Widget> wRepo = new WidgetRepository(folder, folder,

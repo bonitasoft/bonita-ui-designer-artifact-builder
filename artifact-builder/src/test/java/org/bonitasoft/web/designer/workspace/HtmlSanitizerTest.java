@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.bonitasoft.web.angularjs.workspace.HtmlSanitizer;
 import org.junit.jupiter.api.Test;
 
-public class HtmlSanitizerTest {
+class HtmlSanitizerTest {
 
     @Test
-    public void should_escape_unsafe_characters() throws Exception {
+    void should_escape_unsafe_characters() throws Exception {
         HtmlSanitizer htmlSanitizer = new HtmlSanitizer();
 
         assertThat(htmlSanitizer.escapeSingleQuotesAndNewLines("Here\n'goes'\nthe\r\nmessage"))

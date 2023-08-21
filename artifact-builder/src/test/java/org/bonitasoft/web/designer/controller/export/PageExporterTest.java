@@ -62,7 +62,7 @@ class PageExporterTest {
     private ByteArrayOutputStream artifactStream;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         artifactStream = new ByteArrayOutputStream();
         exporter = new PageExporter(jsonHandler, pageService, mock(ExportStep.class));
     }
@@ -82,17 +82,17 @@ class PageExporterTest {
     }
 
     @Test
-    public void should_throw_exception_when_id_is_null() {
+    void should_throw_exception_when_id_is_null() {
         assertThrows(IllegalArgumentException.class, () -> exporter.handleFileExport(null, artifactStream));
     }
 
     @Test
-    public void should_throw_exception_when_id_is_blank() {
+    void should_throw_exception_when_id_is_blank() {
         assertThrows(IllegalArgumentException.class, () -> exporter.handleFileExport(" ", artifactStream));
     }
 
     @Test
-    public void should_throw_exception_when_artefact_to_export_is_not_found() {
+    void should_throw_exception_when_artefact_to_export_is_not_found() {
         NotFoundException cause = new NotFoundException("Page not found");
         when(pageService.get("unknown-id")).thenThrow(cause);
 
@@ -105,7 +105,7 @@ class PageExporterTest {
     }
 
     @Test
-    public void should_failed_when_page_is_not_compatible_with_product_model_version(@TempDir Path tmpDir)
+    void should_failed_when_page_is_not_compatible_with_product_model_version(@TempDir Path tmpDir)
             throws Exception {
         Page page = create(aPage().withModelVersion("5.0").isCompatible(false).build(), tmpDir);
 
@@ -113,17 +113,17 @@ class PageExporterTest {
     }
 
     @Test
-    public void should_fill_output_stream(@TempDir Path tmpDir) throws Exception {
+    void should_fill_output_stream(@TempDir Path tmpDir) throws Exception {
         Page page = create(aPage().withType("layout").withName("thelayout").build(), tmpDir);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         exporter.handleFileExport(page.getId(), stream);
 
-        assertThat(stream.size()).isGreaterThan(0);
+        assertThat(stream.size()).isPositive();
     }
 
     @Test
-    public void should_export_json_model_of_the_exported_artefact(@TempDir Path tmpDir) throws Exception {
+    void should_export_json_model_of_the_exported_artefact(@TempDir Path tmpDir) throws Exception {
         Page page = create(aPage().withId("myPage").build(), tmpDir);
 
         exporter.handleFileExport(page.getId(), artifactStream);
@@ -136,7 +136,7 @@ class PageExporterTest {
     }
 
     @Test
-    public void should_execute_export_steps(@TempDir Path tmpDir) throws Exception {
+    void should_execute_export_steps(@TempDir Path tmpDir) throws Exception {
         FakeStep fakeStep1 = new FakeStep("This is some content", "resources/file1.json");
         FakeStep fakeStep2 = new FakeStep("This is another content", "resources/deep/file2.json");
         Exporter<Page> exporter = new PageExporter(jsonHandler, pageService, fakeStep1, fakeStep2);

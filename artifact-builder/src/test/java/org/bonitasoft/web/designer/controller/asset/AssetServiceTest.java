@@ -49,7 +49,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AssetServiceTest {
+class AssetServiceTest {
 
     @Mock
     private Repository<Page> repository;
@@ -63,12 +63,12 @@ public class AssetServiceTest {
     private AssetService assetService;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         assetService = new AssetService(repository, assetRepository, assetDependencyImporter);
     }
 
     @Test
-    public void should_return_error_when_adding_asset_with_name_null() {
+    void should_return_error_when_adding_asset_with_name_null() {
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             assetService.save(aPage().withId("page-id").build(), anAsset().withName(null).build());
         });
@@ -76,7 +76,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_return_error_when_adding_asset_with_name_empty() {
+    void should_return_error_when_adding_asset_with_name_empty() {
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             //We construct a mockfile (the first arg is the name of the property expected in the controller
             assetService.save(aPage().withId("page-id").build(), anAsset().withName("").build());
@@ -85,7 +85,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_return_error_when_adding_asset_with_type_invalid() {
+    void should_return_error_when_adding_asset_with_type_invalid() {
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             assetService.save(aPage().withId("page-id").build(),
                     anAsset().withName("http://mycdn.com/myasset.js").withType(null).build());
@@ -94,7 +94,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_save_new_asset_and_populate_its_id() throws Exception {
+    void should_save_new_asset_and_populate_its_id() throws Exception {
         Page page = aPage().build();
 
         Asset asset = assetService.save(page,
@@ -106,7 +106,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_compute_order_while_saving_a_new_asset() throws Exception {
+    void should_compute_order_while_saving_a_new_asset() throws Exception {
         Page page = aPage().build();
 
         Asset firstAsset = assetService.save(page, anAsset().withName("http://mycdn.com/first.js").build());
@@ -117,7 +117,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_update_existing_local_asset() throws Exception {
+    void should_update_existing_local_asset() throws Exception {
         Asset existingAsset = anAsset().withId("existingAsset").withName("http://mycdn.com/myasset.js")
                 .withType(JAVASCRIPT).active().build();
         Asset updatedAsset = anAsset().withId("existingAsset").withName("http://mycdn.com/newName.js").withType(CSS)
@@ -132,7 +132,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_return_error_when_error_onsave() throws Exception {
+    void should_return_error_when_error_onsave() throws Exception {
         Page page = aPage().build();
         doThrow(RepositoryException.class).when(repository).updateLastUpdateAndSave(page);
 
@@ -141,7 +141,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_not_return_error_when_adding_existing_asset_witherror_on_delete() {
+    void should_not_return_error_when_adding_existing_asset_witherror_on_delete() {
         Asset asset = anAsset().withId("anAsset").build();
         Page page = aPage().withAsset(asset).build();
 
@@ -161,7 +161,7 @@ public class AssetServiceTest {
 
     @ParameterizedTest
     @MethodSource("invalidArgsForDuplicate")
-    public void should_not_duplicate_asset_when_arg_invalid(Path artifactSourcePath, Path artifactTargetPath, String sourceArtifactId, String targetArtifactId,
+    void should_not_duplicate_asset_when_arg_invalid(Path artifactSourcePath, Path artifactTargetPath, String sourceArtifactId, String targetArtifactId,
                                                             String expectedErrorMessage) {
         when(repository.getComponentName()).thenReturn("page");
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
@@ -171,7 +171,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_duplicate_asset() throws Exception {
+    void should_duplicate_asset() throws Exception {
         Page page = new Page();
         List<Asset> assets = List.of(anAsset().withId("UUID").withName("myfile.js").build());
         Path tempPath = Files.createTempDirectory("test");
@@ -184,7 +184,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_return_error_when_deleting_asset_with_name_empty() {
+    void should_return_error_when_deleting_asset_with_name_empty() {
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
         //We construct a mockfile (the first arg is the name of the property expected in the controller
         assetService.delete(aPage().withId("page-id").build(), null));
@@ -192,7 +192,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_delete_existing_asset() throws Exception {
+    void should_delete_existing_asset() throws Exception {
         Page page = aFilledPage("page-id");
         Asset asset = anAsset().withId("UIID").withName("myfile.js").withType(JAVASCRIPT).build();
         page.getAssets().add(asset);
@@ -203,7 +203,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_remove_asset_in_inactive_list_when_delete_is_called() throws Exception {
+    void should_remove_asset_in_inactive_list_when_delete_is_called() throws Exception {
         Page page = aFilledPage("page-id");
         Asset asset = anAsset().withId("UIID").withName("myfile.js").withType(JAVASCRIPT).unactive().build();
         page.getInactiveAssets().add("UIID");
@@ -218,7 +218,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_not_delete_file_for_existing_external_asset() throws Exception {
+    void should_not_delete_file_for_existing_external_asset() throws Exception {
         Page page = aFilledPage("page-id");
         Asset asset = anAsset().withId("UIID").withName("http://mycdn.com/myasset.js").withExternal(true)
                 .withType(JAVASCRIPT).build();
@@ -231,7 +231,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_throw_IllegalArgument_when_sorting_asset_component_with_no_name() throws Exception {
+    void should_throw_IllegalArgument_when_sorting_asset_component_with_no_name() throws Exception {
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> assetService.changeAssetOrderInComponent(aPage().build(), null, DECREMENT));
         assertThat(exception.getMessage()).isEqualTo("Asset id is required");
@@ -246,7 +246,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_increment_asset_order_in_component() throws Exception {
+    void should_increment_asset_order_in_component() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
 
@@ -261,7 +261,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_decrement_asset_order_in_component() throws Exception {
+    void should_decrement_asset_order_in_component() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
 
@@ -276,7 +276,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_not_increment_asset_order_in_component_when_asset_is_the_last() throws Exception {
+    void should_not_increment_asset_order_in_component_when_asset_is_the_last() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
 
@@ -291,7 +291,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_decrement_asset_order_in_component_when_asset_is_the_last() throws Exception {
+    void should_decrement_asset_order_in_component_when_asset_is_the_last() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
 
@@ -306,7 +306,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_not_decrement_asset_order_in_component_when_asset_is_the_first() throws Exception {
+    void should_not_decrement_asset_order_in_component_when_asset_is_the_first() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
 
@@ -321,7 +321,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_increment_asset_order_in_component_when_asset_is_the_first() throws Exception {
+    void should_increment_asset_order_in_component_when_asset_is_the_first() throws Exception {
         Asset[] assets = getSortedAssets();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(assets).build();
 
@@ -336,7 +336,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_not_change_asset_state_in_previewable_when_asset_is_already_inactive() throws Exception {
+    void should_not_change_asset_state_in_previewable_when_asset_is_already_inactive() throws Exception {
         Page page = aPage()
                 .withId("page-id")
                 .withName("my-page")
@@ -349,7 +349,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_change_asset_state_in_previewable_when_asset_state_is_inactive() throws Exception {
+    void should_change_asset_state_in_previewable_when_asset_state_is_inactive() throws Exception {
         Page page = aPage()
                 .withId("page-id")
                 .withName("my-page")
@@ -362,7 +362,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_reactive_asset_in_previable_when_asset_is_inactive_in_previewable() throws Exception {
+    void should_reactive_asset_in_previable_when_asset_is_inactive_in_previewable() throws Exception {
         Page page = aPage()
                 .withId("page-id")
                 .withName("my-page")
@@ -376,7 +376,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_load_default_assets() {
+    void should_load_default_assets() {
         Page page = aPage().build();
 
         assetService.loadDefaultAssets(page);
@@ -385,7 +385,7 @@ public class AssetServiceTest {
     }
 
     @Test
-    public void should_read_asset_content() throws IOException {
+    void should_read_asset_content() throws IOException {
         Asset myAsset = anAsset().withType(CSS).withName("style.css").build();
         Page page = aPage()
                 .withDesignerVersion("1.7.9").withAsset(myAsset).build();

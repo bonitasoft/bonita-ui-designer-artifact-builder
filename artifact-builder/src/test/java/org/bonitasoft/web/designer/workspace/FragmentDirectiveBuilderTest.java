@@ -44,7 +44,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FragmentDirectiveBuilderTest {
+class FragmentDirectiveBuilderTest {
 
     @TempDir
     public Path repositoryDirectory;
@@ -66,7 +66,7 @@ public class FragmentDirectiveBuilderTest {
     private final TemplateEngine htmlBuilder = new TemplateEngine("fragmentDirectiveTemplate.hbs.js");
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler, htmlBuilderVisitor, true);
         fragmentFile = Files.createFile(repositoryDirectory.resolve("fragment.json"));
         fragment = aFragment()
@@ -79,7 +79,7 @@ public class FragmentDirectiveBuilderTest {
     }
 
     @Test
-    public void should_build_a_fragment_directive() throws Exception {
+    void should_build_a_fragment_directive() throws Exception {
         when(htmlBuilderVisitor.build(anyList())).thenReturn("<p>content</p>");
         fragmentDirectiveBuilder.build(fragmentFile);
 
@@ -89,7 +89,7 @@ public class FragmentDirectiveBuilderTest {
     }
 
     @Test
-    public void should_watch_given_directory_to_build_directives_on_change() throws Exception {
+    void should_watch_given_directory_to_build_directives_on_change() throws Exception {
         when(htmlBuilderVisitor.build(anyList())).thenReturn("");
         fragmentDirectiveBuilder.start(repositoryDirectory);
 
@@ -97,7 +97,7 @@ public class FragmentDirectiveBuilderTest {
     }
 
     @Test
-    public void should_not_watch_given_directory_when_live_build_is_disabled() throws Exception {
+    void should_not_watch_given_directory_when_live_build_is_disabled() throws Exception {
         when(htmlBuilderVisitor.build(anyList())).thenReturn("");
         fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler, htmlBuilderVisitor, false);
         fragmentDirectiveBuilder.start(repositoryDirectory);
@@ -106,7 +106,7 @@ public class FragmentDirectiveBuilderTest {
     }
 
     @Test
-    public void should_exclude_metadata_from_the_build() throws Exception {
+    void should_exclude_metadata_from_the_build() throws Exception {
 
         boolean isBuildable = fragmentDirectiveBuilder.isBuildable(".metadata/123.json");
 

@@ -30,17 +30,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DataToVariableMigrationStepTest {
+class DataToVariableMigrationStepTest {
 
     DataToVariableMigrationStep<Page> dataToVariableMigrationStep;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         dataToVariableMigrationStep = new DataToVariableMigrationStep<Page>();
     }
 
     @Test
-    public void should_migrate_page_with_data() throws Exception {
+    void should_migrate_page_with_data() throws Exception {
         Page pageWithData = aPage().withId("pageWithData")
                 .withData("myData", DataBuilder.aConstantData().value("default value").build()).build();
 
@@ -51,7 +51,7 @@ public class DataToVariableMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_page_with_data_with_null_value() throws Exception {
+    void should_migrate_page_with_data_with_null_value() throws Exception {
         Page pageWithData = aPage().withId("pageWithData").withData("myEmptyData",
                 DataBuilder.aConstantData().exposed(true).build()).build();
 

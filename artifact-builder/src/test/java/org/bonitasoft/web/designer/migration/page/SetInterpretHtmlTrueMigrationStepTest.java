@@ -39,7 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class SetInterpretHtmlTrueMigrationStepTest {
+class SetInterpretHtmlTrueMigrationStepTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -47,13 +47,13 @@ public class SetInterpretHtmlTrueMigrationStepTest {
     SetInterpretHtmlTrueMigrationStep<Page> setInterpretHtmlTrueMigrationStep;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         setInterpretHtmlTrueMigrationStep = new SetInterpretHtmlTrueMigrationStep<>(
                 new ComponentVisitor(fragmentRepository));
     }
 
     @Test
-    public void should_migrate_page_with_added_AllowHTML() throws Exception {
+    void should_migrate_page_with_added_AllowHTML() throws Exception {
         RowBuilder row = aRow().with(aComponent("pbButton"));
         Page pageWithButton = aPage().withId("pageWithButton").withModelVersion("2.2")
                 .with(row.build().toArray(new Element[0])).build();
@@ -64,7 +64,7 @@ public class SetInterpretHtmlTrueMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_fragment_with_added_AllowHTML() throws Exception {
+    void should_migrate_fragment_with_added_AllowHTML() throws Exception {
         RowBuilder row = aRow().with(aComponent("pbCheckbox"));
         Fragment fragmentWithCheckbox = aFragment().withId("fragmentWithCheckbox").withModelVersion("2.2")
                 .with(row.build().toArray(new Element[0])).build();

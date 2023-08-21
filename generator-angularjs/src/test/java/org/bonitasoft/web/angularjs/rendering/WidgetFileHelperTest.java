@@ -30,13 +30,13 @@ import org.junit.jupiter.api.io.TempDir;
 /**
  * @author Benjamin Parisel
  */
-public class WidgetFileHelperTest {
+class WidgetFileHelperTest {
 
     @TempDir
     Path temporaryFolder;
 
     @Test
-    public void should_write_content_at_path() throws Exception {
+    void should_write_content_at_path() throws Exception {
         byte[] content = "Mon content".getBytes();
 
         Path path = WidgetFileHelper.writeFile(content, temporaryFolder, "f8a4574");
@@ -46,7 +46,7 @@ public class WidgetFileHelperTest {
     }
 
     @Test
-    public void should_delete_on_folder_all_old_widgets_directives_file() throws Exception {
+    void should_delete_on_folder_all_old_widgets_directives_file() throws Exception {
         Path assetsFolder = Files.createDirectories(temporaryFolder.resolve("maPage/assets"));
         Path expectToBeDeletedFile = Files.createFile(assetsFolder.resolve("widgets-fdsf45741sf.min.js"));
         Path fragment = Files.createFile(assetsFolder.resolve("123456.js"));
@@ -60,7 +60,7 @@ public class WidgetFileHelperTest {
     }
 
     @Test
-    public void should_delete_on_root_folder_all_old_widgets_directives_file() throws Exception {
+    void should_delete_on_root_folder_all_old_widgets_directives_file() throws Exception {
         Path assetsFolder = Files.createDirectories(temporaryFolder.resolve("myFragmentId"));
         Path fragmentJS = Files.createFile(assetsFolder.resolve("myFragmentId.js"));
         Path oldConcatDirectiveFile = Files.createFile(assetsFolder.resolve("widgets-11111.min.js"));
@@ -74,7 +74,7 @@ public class WidgetFileHelperTest {
     }
 
     @Test
-    public void should_throw_generation_exception_if_not_exist_folder_path_when_write_a_file() {
+    void should_throw_generation_exception_if_not_exist_folder_path_when_write_a_file() {
         Path unexistingFile = temporaryFolder.resolve("FileNotFound");
 
         assertThrows(GenerationException.class,
@@ -82,7 +82,7 @@ public class WidgetFileHelperTest {
     }
 
     @Test
-    public void should_throw_generation_exception_if_not_exist_folder_path_dont_exist_when_delete_a_file() {
+    void should_throw_generation_exception_if_not_exist_folder_path_dont_exist_when_delete_a_file() {
         Path folderNotFound = temporaryFolder.resolve("folderNotFound");
 
         assertThrows(GenerationException.class,
@@ -90,7 +90,7 @@ public class WidgetFileHelperTest {
     }
 
     @Test
-    public void should_delete_files_if_old_files_exists() throws IOException {
+    void should_delete_files_if_old_files_exists() throws IOException {
         Path assetsFolder = Files.createDirectories(temporaryFolder.resolve("maPage/assets"));
         Path expectFileDeleted = Files.createFile(assetsFolder.resolve("widgets-4576.min.js"));
         Path expectFileAlreadyExist = Files.createFile(assetsFolder.resolve("widgets-1z2a3456.min.js"));
@@ -102,7 +102,7 @@ public class WidgetFileHelperTest {
     }
 
     @Test
-    public void should_delete_files_if_exists() throws Exception {
+    void should_delete_files_if_exists() throws Exception {
         Path assetsFolder = Files.createDirectories(temporaryFolder.resolve("maPage/js"));
         Path expectFileDeleted = Files.createFile(assetsFolder.resolve("widgets-4576.min.js"));
 

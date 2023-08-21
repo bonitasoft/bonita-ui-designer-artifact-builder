@@ -46,7 +46,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultArtifactBuilderTest {
+class DefaultArtifactBuilderTest {
 
     private DefaultArtifactBuilder artifactBuilder;
 
@@ -58,7 +58,7 @@ public class DefaultArtifactBuilderTest {
     private WidgetService widgetService;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
 
         artifactBuilder = new DefaultArtifactBuilder(
                 // Workspace management
@@ -79,7 +79,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void build_page_should_call_page_service() throws ModelException, IOException {
+    void build_page_should_call_page_service() throws ModelException, IOException {
         // Given
         var id = UUID.randomUUID().toString();
         when(pageService.get(id)).thenReturn(aPage().withId(id).withName(id).build());
@@ -92,7 +92,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void build_fragment_should_call_page_service() throws ModelException, IOException {
+    void build_fragment_should_call_page_service() throws ModelException, IOException {
         // Given
         var id = UUID.randomUUID().toString();
         when(fragmentService.get(id)).thenReturn(aFragment().withId(id).withName(id).build());
@@ -105,7 +105,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void build_widget_should_call_page_service() throws ModelException, IOException {
+    void build_widget_should_call_page_service() throws ModelException, IOException {
         // Given
         var id = UUID.randomUUID().toString();
         when(widgetService.get(id)).thenReturn(aWidget().withId(id).withName(id).build());
@@ -118,7 +118,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void get_page_status_should_call_page_service() {
+    void get_page_status_should_call_page_service() {
         // Given
         var status = new MigrationStatusReport();
         var page = aPage().build();
@@ -133,7 +133,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void get_page_status_by_id_should_call_page_service() {
+    void get_page_status_by_id_should_call_page_service() {
         // Given
         var id = UUID.randomUUID().toString();
         var status = new MigrationStatusReport();
@@ -149,7 +149,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void get_fragment_status_should_call_fragment_service() {
+    void get_fragment_status_should_call_fragment_service() {
         // Given
         var status = new MigrationStatusReport();
         var fragment = aFragment().build();
@@ -164,7 +164,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void get_fragment_status_by_id_should_call_fragment_service() {
+    void get_fragment_status_by_id_should_call_fragment_service() {
         // Given
         var id = UUID.randomUUID().toString();
         var status = new MigrationStatusReport();
@@ -180,7 +180,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void get_widget_status_should_call_widget_service() {
+    void get_widget_status_should_call_widget_service() {
         // Given
         var status = new MigrationStatusReport();
         var widget = aWidget().build();
@@ -195,7 +195,7 @@ public class DefaultArtifactBuilderTest {
     }
 
     @Test
-    public void get_widget_status_by_id_should_call_widget_service() {
+    void get_widget_status_by_id_should_call_widget_service() {
         // Given
         var id = UUID.randomUUID().toString();
         var status = new MigrationStatusReport();

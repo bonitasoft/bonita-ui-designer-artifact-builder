@@ -33,7 +33,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class StyleUpdateInputRequiredLabelMigrationStepTest {
+class StyleUpdateInputRequiredLabelMigrationStepTest {
 
     @Mock
     private AssetService<Page> pageAssetService;
@@ -42,7 +42,7 @@ public class StyleUpdateInputRequiredLabelMigrationStepTest {
     private StyleUpdateInputRequiredLabelMigrationStep step;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         step = new StyleUpdateInputRequiredLabelMigrationStep(pageAssetService);
     }
 
@@ -51,7 +51,7 @@ public class StyleUpdateInputRequiredLabelMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_style_asset_to_only_update_control_label_required_content_property() throws Exception {
+    void should_migrate_style_asset_to_only_update_control_label_required_content_property() throws Exception {
         Asset style = anAsset().withType(CSS).withName("style.css").build();
         String initContent = "/* Add a red star after required inputs */\n" +
                 ".control-label--required:after {\n" +

@@ -31,13 +31,13 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FilesConcatenatorTest {
+class FilesConcatenatorTest {
 
     @TempDir
     Path temporaryFolder;
 
     @Test
-    public void should_concatenate_files() throws IOException {
+    void should_concatenate_files() throws IOException {
         write(Files.createFile(temporaryFolder.resolve("file1.js")), "file1".getBytes());
         write(Files.createFile(temporaryFolder.resolve("file2.js")), "file2".getBytes());
         List<Path> files = asList(temporaryFolder.resolve("file1.js"), temporaryFolder.resolve("file2.js"));

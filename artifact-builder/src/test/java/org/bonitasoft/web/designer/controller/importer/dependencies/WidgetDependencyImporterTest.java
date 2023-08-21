@@ -36,7 +36,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetDependencyImporterTest {
+class WidgetDependencyImporterTest {
 
     @Mock
     private WidgetRepository widgetRepository;
@@ -45,7 +45,7 @@ public class WidgetDependencyImporterTest {
     private WidgetDependencyImporter widgetDependencyImporter;
 
     @Test
-    public void should_verify_that_a_widget_exists_in_repository() throws Exception {
+    void should_verify_that_a_widget_exists_in_repository() throws Exception {
         when(widgetRepository.exists("existingWidget")).thenReturn(true);
 
         boolean exists = widgetDependencyImporter.exists(aWidget().withId("existingWidget").build());
@@ -54,7 +54,7 @@ public class WidgetDependencyImporterTest {
     }
 
     @Test
-    public void should_verify_that_a_widget_does_not_exists_in_repository() throws Exception {
+    void should_verify_that_a_widget_does_not_exists_in_repository() throws Exception {
         when(widgetRepository.exists("unknownWidget")).thenReturn(false);
 
         boolean exists = widgetDependencyImporter.exists(aWidget().withId("unknownWidget").build());
@@ -63,7 +63,7 @@ public class WidgetDependencyImporterTest {
     }
 
     @Test
-    public void should_load_custom_widgets(@TempDir Path temporaryFolder) throws Exception {
+    void should_load_custom_widgets(@TempDir Path temporaryFolder) throws Exception {
         Path widgetsFolder = Files.createDirectory(temporaryFolder.resolve("widgets"));
 
         widgetDependencyImporter.load(null, temporaryFolder);

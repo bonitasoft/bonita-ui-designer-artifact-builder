@@ -39,7 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class StyleAssetMigrationStepTest {
+class StyleAssetMigrationStepTest {
 
     @Mock
     private AssetRepository<Page> assetRepository;
@@ -49,7 +49,7 @@ public class StyleAssetMigrationStepTest {
     private StyleAssetMigrationStep step;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         AssetService<Page> pageAssetService = new AssetService<>(pageRepository, assetRepository, null);
         step = new StyleAssetMigrationStep(Path.of("src/test/resources"), pageAssetService);
     }
@@ -64,7 +64,7 @@ public class StyleAssetMigrationStepTest {
     }
 
     @Test
-    public void should_add_new_style_asset_to_migrated_pages() throws Exception {
+    void should_add_new_style_asset_to_migrated_pages() throws Exception {
         Page page = aPage().withDesignerVersion("1.4.7").build();
 
         step.migrate(page);
@@ -75,7 +75,7 @@ public class StyleAssetMigrationStepTest {
     }
 
     @Test
-    public void should_add_new_style_asset_with_different_name_while_already_existing() throws Exception {
+    void should_add_new_style_asset_with_different_name_while_already_existing() throws Exception {
         Page page = aPage().withDesignerVersion("1.4.7")
                 .withAsset(anAsset().withType(CSS).withName("style.css"))
                 .withAsset(anAsset().withType(CSS).withName("style1.css")).build();

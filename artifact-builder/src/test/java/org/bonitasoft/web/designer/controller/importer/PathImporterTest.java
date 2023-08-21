@@ -47,7 +47,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PathImporterTest {
+class PathImporterTest {
 
     private Path unzipedPath;
 
@@ -63,7 +63,7 @@ public class PathImporterTest {
     private WidgetImporter widgetImporter;
 
     @BeforeEach
-    public void setUp(@TempDir Path tempDir) throws Exception {
+    void setUp(@TempDir Path tempDir) throws Exception {
         unzipedPath = Files.createDirectory(tempDir.resolve("unzipedPath"));
         pageImporter = mock(PageImporter.class);
         fragmentImporter = mock(FragmentImporter.class);
@@ -90,7 +90,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_import_zip_file() throws Exception {
+    void should_import_zip_file() throws Exception {
         ImportReport expectedReport = anImportReportFor(aPage()).withStatus(IMPORTED).build();
         when(pageImporter.tryToImportAndGenerateReport(aMockedImport(pageImporter), false)).thenReturn(expectedReport);
 
@@ -100,7 +100,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_remove_import_from_store_if_report_status_is_imported() throws Exception {
+    void should_remove_import_from_store_if_report_status_is_imported() throws Exception {
         Import anImport = aMockedImport(pageImporter);
         when(pageImporter.tryToImportAndGenerateReport(anImport, false))
                 .thenReturn(anImportReportFor(aPage()).withStatus(IMPORTED).build());
@@ -111,7 +111,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_remove_import_from_store_if_an_error_occurs_when_importing() throws Exception {
+    void should_remove_import_from_store_if_an_error_occurs_when_importing() throws Exception {
         Import anImport = aMockedImport(pageImporter);
         when(pageImporter.tryToImportAndGenerateReport(anImport, false)).thenThrow(ImportException.class);
 
@@ -124,7 +124,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_force_import_of_zip_file() throws Exception {
+    void should_force_import_of_zip_file() throws Exception {
         Import anImport = aMockedImport(widgetImporter);
         ImportReport expectedReport = anImportReportFor(WidgetBuilder.aWidget()).withStatus(IMPORTED).build();
         when(widgetImporter.tryToImportAndGenerateReport(anImport, true)).thenReturn(expectedReport);
@@ -136,7 +136,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_throw_import_exception_when_an_import_error_occurs() throws Exception {
+    void should_throw_import_exception_when_an_import_error_occurs() throws Exception {
         when(importStore.store(fragmentImporter, unzipedPath)).thenReturn(new Import(fragmentImporter, "a-uuid", unzipedPath));
         doThrow(new ImportException(ImportException.Type.PAGE_NOT_FOUND, "an Error message")).when(fragmentImporter).tryToImportAndGenerateReport(any(),any(Boolean.class));
 

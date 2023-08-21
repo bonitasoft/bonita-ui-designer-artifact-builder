@@ -52,7 +52,7 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class WorkspaceInitializerTest {
+class WorkspaceInitializerTest {
 
     private Path extractPath;
 
@@ -76,7 +76,7 @@ public class WorkspaceInitializerTest {
     private GeneratorProperties generatorProperties;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
 
         extractPath = Files.createDirectory(temporaryFolder.resolve("extract"));
 
@@ -128,7 +128,7 @@ public class WorkspaceInitializerTest {
     }
 
     @Test
-    public void should_initialize_workspace() throws Exception {
+    void should_initialize_workspace() throws Exception {
         // When
         workspace.initialize();
         // Then
@@ -138,7 +138,7 @@ public class WorkspaceInitializerTest {
     }
 
     @Test
-    public void should_start_page_live_migration() throws Exception {
+    void should_start_page_live_migration() throws Exception {
         // When
         workspace.initialize();
         // Then
@@ -146,7 +146,7 @@ public class WorkspaceInitializerTest {
     }
 
     @Test
-    public void should_start_widget_live_migration() throws Exception {
+    void should_start_widget_live_migration() throws Exception {
         // When
         workspace.initialize();
         // Then
@@ -154,7 +154,7 @@ public class WorkspaceInitializerTest {
     }
 
     @Test
-    public void should_throw_runtimeException_if_error_occurs_while_initializing_workspace() throws Exception {
+    void should_throw_runtimeException_if_error_occurs_while_initializing_workspace() throws Exception {
         doThrow(new IOException()).when(workspace).doInitialize();
         // When
         assertThrows(RuntimeException.class, () -> workspace.initialize());

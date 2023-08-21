@@ -33,7 +33,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetIdVisitorTest {
+class WidgetIdVisitorTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -42,13 +42,13 @@ public class WidgetIdVisitorTest {
     private WidgetIdVisitor visitor;
 
     @Test
-    public void should_add_widgetId_of_component() {
+    void should_add_widgetId_of_component() {
         Component component = createComponentWithWidget("foo");
         assertThat(visitor.visit(component)).containsExactly("foo");
     }
 
     @Test
-    public void should_traverse_container() {
+    void should_traverse_container() {
         Container container = new Container();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
         List<Element> row2 = Arrays.<Element> asList(createComponentWithWidget("bar"));
@@ -58,7 +58,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_formcontainer() {
+    void should_traverse_formcontainer() {
         FormContainer formContainer = new FormContainer();
         Container container = new Container();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
@@ -70,7 +70,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_tabs_container() {
+    void should_traverse_tabs_container() {
         TabsContainer tabsContainer = new TabsContainer();
         Container container1 = new Container();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
@@ -85,7 +85,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_modal_container() {
+    void should_traverse_modal_container() {
         ModalContainer modalContainer = new ModalContainer();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
         List<Element> row2 = Arrays.<Element> asList(createComponentWithWidget("bar"));
@@ -95,7 +95,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_fragment_element() {
+    void should_traverse_fragment_element() {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("fragment1");
 

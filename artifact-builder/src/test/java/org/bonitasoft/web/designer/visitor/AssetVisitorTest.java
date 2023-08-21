@@ -53,7 +53,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AssetVisitorTest {
+class AssetVisitorTest {
 
     @Mock
     private WidgetRepository widgetRepository;
@@ -63,7 +63,7 @@ public class AssetVisitorTest {
     private AssetVisitor assetVisitor;
 
     @Test
-    public void should_return_empty_set_when_components_use_no_asset() throws Exception {
+    void should_return_empty_set_when_components_use_no_asset() throws Exception {
         Component component = mockComponentFor(aWidget(), null);
 
         Page page = aPage().with(component).build();
@@ -74,7 +74,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_asset_used_by_widgets() throws Exception {
+    void should_return_list_of_asset_used_by_widgets() throws Exception {
         Component component = mockComponentFor(
                 aWidget(),
                 UUID.randomUUID().toString(),
@@ -89,7 +89,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_asset_used_by_one_page() throws Exception {
+    void should_return_list_of_asset_used_by_one_page() throws Exception {
 
         Page page = aPage().withAsset(anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT).build()).build();
 
@@ -99,7 +99,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_distinct_asset_used_by_page_and_widgets() throws Exception {
+    void should_return_list_of_distinct_asset_used_by_page_and_widgets() throws Exception {
         Component component = mockComponentFor(
                 aWidget(),
                 "id1",
@@ -118,7 +118,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_asset_needed_by_widgets_in_container() throws Exception {
+    void should_return_list_of_asset_needed_by_widgets_in_container() throws Exception {
         Component component1 = mockComponentFor(aWidget(), "id1",
                 anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT));
         Component component2 = mockComponentFor(aWidget(), "id2",
@@ -132,7 +132,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_asset_needed_by_widgets_in_container_who_have_an_asset() throws Exception {
+    void should_return_list_of_asset_needed_by_widgets_in_container_who_have_an_asset() throws Exception {
         Component component1 = mockComponentFor(aWidget(), "id1",
                 anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT));
         Component component2 = mockComponentFor(aWidget(), "id2",
@@ -147,7 +147,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_asset_needed_by_widgets_in_formcontainer() throws Exception {
+    void should_return_list_of_asset_needed_by_widgets_in_formcontainer() throws Exception {
         Component component1 = mockComponentFor(aWidget(), UUID.randomUUID().toString(),
                 anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT));
         Component component2 = mockComponentFor(aWidget(), UUID.randomUUID().toString(),
@@ -160,7 +160,7 @@ public class AssetVisitorTest {
         assertThat(assets).extracting("name").containsOnly("myfile.js", "myfile.css");
     }
 
-    public void should_return_list_of_asset_needed_by_widgets_in_formcontainer_who_have_an_asset() throws Exception {
+    void should_return_list_of_asset_needed_by_widgets_in_formcontainer_who_have_an_asset() throws Exception {
         Component component1 = mockComponentFor(aWidget(), UUID.randomUUID().toString(),
                 anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT));
         Component component2 = mockComponentFor(aWidget(), UUID.randomUUID().toString(),
@@ -175,7 +175,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_asset_needed_by_widgets_in_tabscontainer_plus_uibootstrap_which_is_needed_by_tabscontainer()
+    void should_return_list_of_asset_needed_by_widgets_in_tabscontainer_plus_uibootstrap_which_is_needed_by_tabscontainer()
             throws Exception {
         Component component1 = mockComponentFor(aWidget(), UUID.randomUUID().toString(),
                 anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT));
@@ -194,7 +194,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_update_inactive_indicator_when_asset_is_inactive_in_a_page() throws Exception {
+    void should_update_inactive_indicator_when_asset_is_inactive_in_a_page() throws Exception {
         Page page = aPage()
                 .withAsset(
                         anAsset().withId("assetUIID1").withName("myfile.js").withType(AssetType.JAVASCRIPT).build(),
@@ -209,7 +209,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_asset_needed_by_widgets_in_modal_container() throws Exception {
+    void should_return_list_of_asset_needed_by_widgets_in_modal_container() throws Exception {
         Component component1 = mockComponentFor(aWidget(), UUID.randomUUID().toString(),
                 anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT));
         Component component2 = mockComponentFor(aWidget(), UUID.randomUUID().toString(),
@@ -224,7 +224,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_good_list_widget_asset__if_one_is_inactive() throws Exception {
+    void should_good_list_widget_asset__if_one_is_inactive() throws Exception {
         Component component = mockComponentFor(
                 aWidget(),
                 "id1",
@@ -246,7 +246,7 @@ public class AssetVisitorTest {
     }
 
     @Test
-    public void should_return_list_of_module_needed_by_widgets_in_fragment() throws Exception {
+    void should_return_list_of_module_needed_by_widgets_in_fragment() throws Exception {
         Component component1 = mockComponentFor(aWidget(),
                 anAsset().withName("myfile.js").withType(AssetType.JAVASCRIPT));
         Component component2 = mockComponentFor(aWidget(),

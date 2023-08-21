@@ -30,7 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PagePropertiesExportStepTest {
+class PagePropertiesExportStepTest {
 
     @Mock
     private Zipper zipper;
@@ -42,7 +42,7 @@ public class PagePropertiesExportStepTest {
     private PagePropertiesExportStep step;
 
     @Test
-    public void should_add_page_properties_to_zip() throws Exception {
+    void should_add_page_properties_to_zip() throws Exception {
         Page page = aPage().build();
         when(pagePropertiesBuilder.build(page)).thenReturn("foobar".getBytes());
 

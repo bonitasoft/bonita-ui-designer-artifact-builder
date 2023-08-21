@@ -46,7 +46,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ModelPropertiesVisitorTest {
+class ModelPropertiesVisitorTest {
 
     @Mock
     FragmentRepository fragmentRepository;
@@ -65,7 +65,7 @@ public class ModelPropertiesVisitorTest {
             .withReference("address").build();
 
     @Test
-    public void should_generate_a_model_properties_factory() throws Exception {
+    void should_generate_a_model_properties_factory() throws Exception {
         mock(aFragment().withId("address").withVariable("baz", aConstantVariable().exposed(true)));
         mock(aFragment().withId("person").withVariable("foo", aConstantVariable().exposed(true))
                 .with(aContainer().with(address)));
@@ -85,7 +85,7 @@ public class ModelPropertiesVisitorTest {
     }
 
     @Test
-    public void should_retrieve_nested_fragments_model_properties_for_exposed_variable() throws Exception {
+    void should_retrieve_nested_fragments_model_properties_for_exposed_variable() throws Exception {
         mock(aFragment().withId("address").withVariable("baz", aConstantVariable().exposed(true)));
         mock(aFragment().withId("person").withVariable("foo", aConstantVariable().exposed(true))
                 .with(aContainer().with(address)));
@@ -98,7 +98,7 @@ public class ModelPropertiesVisitorTest {
     }
 
     @Test
-    public void should_not_retrieve_bindings_for_not_exposed_variable() throws Exception {
+    void should_not_retrieve_bindings_for_not_exposed_variable() throws Exception {
         mock(aFragment().withId("address").withVariable("baz", aConstantVariable().exposed(false)));
         mock(aFragment().withId("person").withVariable("foo", aConstantVariable().exposed(false))
                 .with(aContainer().with(address)));
@@ -112,7 +112,7 @@ public class ModelPropertiesVisitorTest {
     }
 
     @Test
-    public void should_retrieve_nested_fragments_model_properties_for_exposed_variable_with_a_modal_container()
+    void should_retrieve_nested_fragments_model_properties_for_exposed_variable_with_a_modal_container()
             throws Exception {
         mock(aFragment().withId("address").withVariable("baz", aConstantVariable().exposed(true)));
         mock(aFragment().withId("person").withVariable("foo", aConstantVariable().exposed(true))

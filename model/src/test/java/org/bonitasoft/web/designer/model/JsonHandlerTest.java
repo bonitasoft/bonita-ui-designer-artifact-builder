@@ -27,12 +27,12 @@ import org.bonitasoft.web.designer.model.exception.MalformedJsonException;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-public class JsonHandlerTest {
+class JsonHandlerTest {
 
     private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     @Test
-    public void should_deserialize_json() throws Exception {
+    void should_deserialize_json() throws Exception {
         String json = "{\"name\": \"colin\", \"number\": 31}";
 
         SimpleObject object = jsonHandler.fromJson(json.getBytes(StandardCharsets.UTF_8), SimpleObject.class);
@@ -42,7 +42,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_serialize_object_into_json() throws Exception {
+    void should_serialize_object_into_json() throws Exception {
         SimpleObject object = new SimpleObject("id", "Vincent", 1);
 
         JSONAssert.assertEquals(new String(jsonHandler.toJson(object)),
@@ -50,7 +50,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_deserialize_json_to_map() throws Exception {
+    void should_deserialize_json_to_map() throws Exception {
         String json = "{\"name\": \"walter\", \"lastname\": \"bates\"}";
 
         Map<String, String> map = jsonHandler.fromJsonToMap(json.getBytes(StandardCharsets.UTF_8));
@@ -60,7 +60,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_serialize_map_into_json() throws Exception {
+    void should_serialize_map_into_json() throws Exception {
         Map<String, String> map = new HashMap<>();
         map.put("name", "walter");
         map.put("lastname", "bates");
@@ -70,7 +70,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_serialize_object_into_json_using_serialization_view() throws Exception {
+    void should_serialize_object_into_json_using_serialization_view() throws Exception {
         SimpleObject object = new SimpleObject("id", "Vincent", 1);
 
         JSONAssert.assertEquals(new String(jsonHandler.toJson(object, JsonViewPersistence.class)),
@@ -78,7 +78,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_serialize_object_into_human_readable_json_using_serialization_view() throws Exception {
+    void should_serialize_object_into_human_readable_json_using_serialization_view() throws Exception {
         SimpleObject object = new SimpleObject("id", "Vincent", 1);
 
         Assertions.assertThat(new String(jsonHandler.toPrettyJson(object, JsonViewPersistence.class)))
@@ -89,7 +89,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_format_json_when_using_pretty_print_on_object() throws Exception {
+    void should_format_json_when_using_pretty_print_on_object() throws Exception {
         SimpleObject object = new SimpleObject("id", "Vincent", 1);
 
         Assertions.assertThat(jsonHandler.prettyPrint(object)).isEqualTo("{" + System.lineSeparator() +
@@ -101,14 +101,14 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_format_json_when_using_pretty_print_on_json() throws Exception {
+    void should_format_json_when_using_pretty_print_on_json() throws Exception {
         Assertions.assertThat(jsonHandler.prettyPrint("{\"foo\":\"bar\"}")).isEqualTo("{" + System.lineSeparator() +
                 "  \"foo\" : \"bar\"" + System.lineSeparator() +
                 "}");
     }
 
     @Test
-    public void should_check_that_json_is_invalid() throws Exception {
+    void should_check_that_json_is_invalid() throws Exception {
         String notjson = "\n"
                 + "    \"fr-FR\": {\n"
                 + "        \"Default name\": \"Nom par défaut\",\n"
@@ -125,7 +125,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_check_that_json_is_valid() throws Exception {
+    void should_check_that_json_is_valid() throws Exception {
         jsonHandler.checkValidJson("{ \"collection\": [\n] }".getBytes(StandardCharsets.UTF_8));
         jsonHandler.checkValidJson("[1, 2, 3, 4]".getBytes(StandardCharsets.UTF_8));
 
@@ -144,7 +144,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_deserialize_json_with_password() throws Exception {
+    void should_deserialize_json_with_password() throws Exception {
         String json = "{\"name\": \"colin\", \"number\": 31, \"password\": \"abcd\"}";
 
         SimpleObject object = jsonHandler.fromJson(json.getBytes(StandardCharsets.UTF_8), SimpleObject.class);
@@ -155,7 +155,7 @@ public class JsonHandlerTest {
     }
 
     @Test
-    public void should_serialize_into_object_with_ignore_password() throws Exception {
+    void should_serialize_into_object_with_ignore_password() throws Exception {
         SimpleObject object = new SimpleObject("id", "Vincent", 1);
         object.setPassword("abcd");
 

@@ -30,7 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FragmentPropertiesExportStepTest {
+class FragmentPropertiesExportStepTest {
 
     @Mock
     private Zipper zipper;
@@ -42,7 +42,7 @@ public class FragmentPropertiesExportStepTest {
     private FragmentPropertiesExportStep step;
 
     @Test
-    public void should_add_page_properties_to_zip() throws Exception {
+    void should_add_page_properties_to_zip() throws Exception {
         Fragment fragment = aFragment().build();
         when(fragmentPropertiesBuilder.build(fragment)).thenReturn("foobar".getBytes());
 

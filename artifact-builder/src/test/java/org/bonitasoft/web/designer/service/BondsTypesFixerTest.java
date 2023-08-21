@@ -35,7 +35,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class BondsTypesFixerTest {
+class BondsTypesFixerTest {
 
     @Mock
     public PageRepository pageRepository;
@@ -44,7 +44,7 @@ public class BondsTypesFixerTest {
     public BondsTypesFixer bondsTypesFixer;
 
     @Test
-    public void should_fix_bonds_types_in_all_pages() throws Exception {
+    void should_fix_bonds_types_in_all_pages() throws Exception {
         Component labelComponent = aComponent("labelComponent").withPropertyValue("text", "constant", "").build();
         Page page = aPage().with(labelComponent).build();
         when(pageRepository.findByObjectId("labelWidget")).thenReturn(singletonList(page));

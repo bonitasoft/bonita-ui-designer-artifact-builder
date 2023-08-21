@@ -39,12 +39,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-public class WidgetTest {
+class WidgetTest {
 
     private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     @Test
-    public void jsonview_light_should_only_manage_id_name_hasValidationError_and_light_page() throws Exception {
+    void jsonview_light_should_only_manage_id_name_hasValidationError_and_light_page() throws Exception {
         String json = jsonHandler.toJsonString(createAFilledWidget(), JsonViewLight.class);
 
         JSONAssert.assertEquals(json, "{"
@@ -76,7 +76,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void jsonview_light_with_fragment_should_only_manage_id_name_hasValidationError_and_light_page()
+    void jsonview_light_with_fragment_should_only_manage_id_name_hasValidationError_and_light_page()
             throws Exception {
         String json = jsonHandler.toJsonString(createAFilledWidgetWithFragment(), JsonViewLight.class);
 
@@ -90,7 +90,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void jsonview_persistence_should_manage_all_fields_except_rows_and_containers() throws Exception {
+    void jsonview_persistence_should_manage_all_fields_except_rows_and_containers() throws Exception {
         Widget widgetInitial = createAFilledWidget();
         //We serialize and deserialize our object
         byte[] json = jsonHandler.toJson(widgetInitial, JsonViewPersistence.class);
@@ -105,14 +105,14 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_convert_widget_id_in_spinal_case() throws Exception {
+    void should_convert_widget_id_in_spinal_case() throws Exception {
         String spinalCase = Widget.spinalCase("CUstomDisplayUTCDate");
 
         Assertions.assertThat(spinalCase).isEqualTo("c-ustom-display-u-t-c-date");
     }
 
     @Test
-    public void should_not_add_useBy_components_when_list_is_empty() throws Exception {
+    void should_not_add_useBy_components_when_list_is_empty() throws Exception {
         Widget widget = new Widget();
         widget.addUsedBy("component", new ArrayList<Identifiable>());
 
@@ -120,7 +120,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_not_add_useBy_components_when_list_is_null() throws Exception {
+    void should_not_add_useBy_components_when_list_is_null() throws Exception {
         Widget widget = new Widget();
         widget.addUsedBy("component", null);
 
@@ -128,7 +128,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_not_add_useBy_components() throws Exception {
+    void should_not_add_useBy_components() throws Exception {
         Page page = PageBuilder.aPage().build();
         Widget widget = new Widget();
         widget.addUsedBy("component", List.of(page));
@@ -137,7 +137,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_have_a_default_type_on_desieralization() throws Exception {
+    void should_have_a_default_type_on_desieralization() throws Exception {
         byte[] content = toByteArray(this.getClass().getResourceAsStream("widget-with-no-type.json"));
 
         Widget widget = jsonHandler.fromJson(content, Widget.class);
@@ -183,7 +183,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_prepare_widget_before_serialize() throws Exception {
+    void should_prepare_widget_before_serialize() throws Exception {
         Widget widget = new Widget();
         widget.setId("widgetToSerialize");
         widget.setTemplate("<div>A widget template</div>");
@@ -196,7 +196,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_prepare_widget_before_deserialize(@TempDir Path tempDir) throws Exception {
+    void should_prepare_widget_before_deserialize(@TempDir Path tempDir) throws Exception {
         Widget widget = new Widget();
         widget.setId("widgetToDeserialize");
         widget.setController("@widgetToDeserialize.ctrl.js");
@@ -219,7 +219,7 @@ public class WidgetTest {
     }
 
     @Test
-    public void should_prepare_widget_before_deserialize_when_field_not_referred_to_files(@TempDir Path tempDir)
+    void should_prepare_widget_before_deserialize_when_field_not_referred_to_files(@TempDir Path tempDir)
             throws Exception {
         Widget widget = new Widget();
         widget.setId("aWidget");

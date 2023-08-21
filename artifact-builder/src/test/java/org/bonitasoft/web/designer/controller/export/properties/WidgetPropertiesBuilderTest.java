@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetPropertiesBuilderTest {
+class WidgetPropertiesBuilderTest {
 
     private static final String DESIGNER_VERSION = "1.12.1";
 
@@ -34,7 +34,7 @@ public class WidgetPropertiesBuilderTest {
     private Widget widget;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setVersion(DESIGNER_VERSION);
         widgetPropertiesBuilder = new WidgetPropertiesBuilder(uiDesignerProperties);
@@ -43,7 +43,7 @@ public class WidgetPropertiesBuilderTest {
     }
 
     @Test
-    public void should_build_a_well_formed_page_property_file() throws Exception {
+    void should_build_a_well_formed_page_property_file() throws Exception {
         widget.setDesignerVersion("1.12.1");
 
         byte[] a = widgetPropertiesBuilder.build(widget);

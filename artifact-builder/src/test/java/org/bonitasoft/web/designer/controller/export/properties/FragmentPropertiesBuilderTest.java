@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FragmentPropertiesBuilderTest {
+class FragmentPropertiesBuilderTest {
 
     private static final String DESIGNER_VERSION = "1.12.1";
 
@@ -35,7 +35,7 @@ public class FragmentPropertiesBuilderTest {
     private Fragment fragment;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setVersion(DESIGNER_VERSION);
         fragmentPropertiesBuilder = new FragmentPropertiesBuilder(uiDesignerProperties);
@@ -45,7 +45,7 @@ public class FragmentPropertiesBuilderTest {
     }
 
     @Test
-    public void should_build_a_well_formed_page_property_file() throws Exception {
+    void should_build_a_well_formed_page_property_file() throws Exception {
         fragment.setDesignerVersion("1.12.1");
 
         byte[] a = fragmentPropertiesBuilder.build(fragment);

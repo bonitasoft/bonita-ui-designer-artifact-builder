@@ -33,12 +33,28 @@ import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderTyp
 import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderType.INCREMENT;
 import static org.bonitasoft.web.designer.model.widget.BondType.CONSTANT;
 import static org.bonitasoft.web.designer.model.widget.BondType.INTERPOLATION;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.notNull;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.builder.PropertyBuilder;
@@ -63,7 +79,6 @@ import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Property;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,7 +88,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetServiceTest {
+class WidgetServiceTest {
 
     private static final String CURRENT_MODEL_VERSION = "2.0";
 
@@ -87,7 +102,7 @@ public class WidgetServiceTest {
     private FragmentRepository fragmentRepository;
 
     @Mock
-    private BondsTypesFixer bondsTypesFixer;
+    private BondsTypesFixer<?> bondsTypesFixer;
 
     @Mock
     private WidgetMigrationApplyer widgetMigrationApplyer;
@@ -107,7 +122,7 @@ public class WidgetServiceTest {
     UiDesignerProperties uiDesignerProperties;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         assetVisitor = new AssetVisitor(widgetRepository, fragmentRepository);
 
         uiDesignerProperties = new UiDesignerProperties("1.13.0", CURRENT_MODEL_VERSION);
@@ -128,7 +143,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_serve_all_widgets_in_repository() throws Exception {
+    void should_serve_all_widgets_in_repository() throws Exception {
         //Given
         Widget input = aWidget().withId("input").build();
         Widget label = aWidget().withId("label").build();
@@ -139,13 +154,13 @@ public class WidgetServiceTest {
         List<Widget> widgets = widgetService.getAll();
 
         //Then
-        assertThat(widgets).hasSameSizeAs(expectedWidgetList);
-        assertThat(widgets).contains(input);
-        assertThat(widgets).contains(label);
+        assertThat(widgets).hasSameSizeAs(expectedWidgetList)
+                .contains(input)
+                .contains(label);
     }
 
     @Test
-    public void should_serve_empty_list_if_widget_repository_is_empty() throws Exception {
+    void should_serve_empty_list_if_widget_repository_is_empty() throws Exception {
         when(widgetRepository.getAll()).thenReturn(new ArrayList<Widget>());
 
         List<Widget> widgets = widgetService.getAll();
@@ -155,14 +170,14 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_throw_repo_exception_if_an_error_occurs_while_getting_widgets() throws Exception {
+    void should_throw_repo_exception_if_an_error_occurs_while_getting_widgets() throws Exception {
         when(widgetRepository.getAll()).thenThrow(new RepositoryException("error occurs", new Exception()));
 
         assertThatThrownBy(() -> widgetService.getAll()).isInstanceOf(RepositoryException.class);
     }
 
     @Test
-    public void should_get_a_widget_by_its_id() throws Exception {
+    void should_get_a_widget_by_its_id() throws Exception {
         String widgetId = "input";
         Widget input = aWidget().withId(widgetId).build();
 
@@ -173,11 +188,11 @@ public class WidgetServiceTest {
         Widget widget = widgetService.get(widgetId);
 
         assertThat(widget).isEqualTo(input);
-        assertThat(widget.getAssets()).hasSize(0);
+        assertThat(widget.getAssets()).isEmpty();
     }
 
     @Test
-    public void should_get_a_widget_with_asset_by_its_id() throws Exception {
+    void should_get_a_widget_with_asset_by_its_id() throws Exception {
         String widgetId = "input";
         Widget input = aWidget().withId(widgetId)
                 .assets(anAsset().withName("myScopeWidgetAsset").withType(AssetType.CSS)).build();
@@ -194,14 +209,14 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_getting_an_unexisting_widget() throws Exception {
+    void should_throw_NotFoundException_when_getting_an_unexisting_widget() throws Exception {
         when(widgetRepository.get("notExistingWidget")).thenThrow(new NotFoundException("not found"));
 
         assertThatThrownBy(() -> widgetService.getWithAsset("notExistingWidget")).isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    public void should_save_a_widget() throws Exception {
+    void should_save_a_widget() throws Exception {
         Widget customLabel = aWidget().withId("customLabel").custom().build();
 
         widgetService.save("customLabel", customLabel);
@@ -210,21 +225,21 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_save_a_pb_widget() throws Exception {
+    void should_not_allow_to_save_a_pb_widget() throws Exception {
         Widget pbWidget = aWidget().custom().build();
 
         assertThatThrownBy(() -> widgetService.save("pbLabel", pbWidget)).isInstanceOf(NotAllowedException.class);
     }
 
     @Test
-    public void should_not_allow_to_save_a_not_custom_widget() throws Exception {
+    void should_not_allow_to_save_a_not_custom_widget() throws Exception {
         Widget pbWidget = aWidget().withId("input").build();
 
         assertThatThrownBy(() -> widgetService.save("customLabel", pbWidget)).isInstanceOf(NotAllowedException.class);
     }
 
     @Test
-    public void should_throw_RepositoryException_if_an_error_occurs_while_saving_a_widget() throws Exception {
+    void should_throw_RepositoryException_if_an_error_occurs_while_saving_a_widget() throws Exception {
         Widget customLabel = aWidget().withId("customLabel").custom().build();
         doThrow(new RepositoryException("error occurs", new Exception())).when(widgetRepository)
                 .updateLastUpdateAndSave(customLabel);
@@ -234,7 +249,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_create_a_new_widget() throws Exception {
+    void should_create_a_new_widget() throws Exception {
         Widget customLabel = aWidget().withName("label").custom().build();
         when(widgetRepository.create(customLabel)).thenReturn(customLabel);
 
@@ -244,7 +259,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_duplicate_a_widget_from_a_widget() throws Exception {
+    void should_duplicate_a_widget_from_a_widget() throws Exception {
         Widget customLabel = aWidget().withName("label").assets(anAsset().withName("myfile.js")).custom().build();
         String sourceWidgetId = "my-widget-source";
         when(widgetRepository.create(customLabel)).thenReturn(customLabel);
@@ -260,7 +275,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_create_a_widget_with_an_empty_name() throws Exception {
+    void should_not_allow_to_create_a_widget_with_an_empty_name() throws Exception {
         Widget customLabel = aWidget().withName("").custom().build();
         when(widgetRepository.create(customLabel)).thenThrow(new IllegalArgumentException());
 
@@ -268,7 +283,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_create_a_widget_with_an_existing_name() throws Exception {
+    void should_not_allow_to_create_a_widget_with_an_existing_name() throws Exception {
         Widget customLabel = aWidget().withName("alreadyExistingName").build();
         when(widgetRepository.create(customLabel)).thenThrow(new NotAllowedException("already existing name"));
 
@@ -276,7 +291,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_delete_a_widget() throws Exception {
+    void should_delete_a_widget() throws Exception {
         Widget customLabel = aWidget().custom().withId("customLabel").build();
         when(widgetRepository.get("customLabel")).thenReturn(customLabel);
         when(fragmentRepository.getArtifactsUsingWidget(customLabel.getId())).thenReturn(emptyList());
@@ -286,19 +301,19 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_delete_a_pb_widget() throws Exception {
+    void should_not_allow_to_delete_a_pb_widget() throws Exception {
         when(widgetRepository.get("pbWidget")).thenReturn(aWidget().withId("pbWidget").build());
         assertThatThrownBy(() -> widgetService.delete("pbWidget")).isInstanceOf(NotAllowedException.class);
     }
 
     @Test
-    public void should_throw_NotFoundException_if_trying_to_delete_an_unknown_widget() throws Exception {
+    void should_throw_NotFoundException_if_trying_to_delete_an_unknown_widget() throws Exception {
         doThrow(new NotFoundException("not found")).when(widgetRepository).get("customLabel");
         assertThatThrownBy(() -> widgetService.delete("customLabel")).isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    public void should_not_allow_to_delete_a_custom_widget_used_in_a_page() throws Exception {
+    void should_not_allow_to_delete_a_custom_widget_used_in_a_page() throws Exception {
         when(widgetRepository.get("customLabel")).thenReturn(aWidget().custom().withId("customLabel").build());
         when(pageRepository.getComponentName()).thenReturn("page");
         when(pageRepository.getArtifactsUsingWidget("customLabel")).thenReturn(asList(aPage().withName("person").build()));
@@ -313,7 +328,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_throw_not_found_if_custom_widget_is_not_existing_when_renaming() throws Exception {
+    void should_throw_not_found_if_custom_widget_is_not_existing_when_renaming() throws Exception {
         Property requestProperty = new PropertyBuilder().name("hello").build();
         when(widgetRepository.updateProperty("my-widget", "name", requestProperty))
                 .thenThrow(new NotFoundException("page not found"));
@@ -323,7 +338,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_add_a_property_to_a_widget_and_return_the_list_of_properties() throws Exception {
+    void should_add_a_property_to_a_widget_and_return_the_list_of_properties() throws Exception {
         Property property = aProperty().build();
         List<Property> expectedProperties = asList(property);
         when(widgetRepository.addProperty("customLabel", property)).thenReturn(expectedProperties);
@@ -334,7 +349,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_add_a_property_to_a_pb_widget() throws Exception {
+    void should_not_allow_to_add_a_property_to_a_pb_widget() throws Exception {
         Property property = aProperty().build();
 
         assertThatThrownBy(() -> widgetService.addProperty("pbLabel", property))
@@ -342,25 +357,27 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_adding_a_property_to_an_unexisting_widget() throws Exception {
+    void should_throw_NotFoundException_when_adding_a_property_to_an_unexisting_widget() throws Exception {
         when(widgetRepository.addProperty(eq("unknownWidget"), any(Property.class))).thenThrow(new NotFoundException("not found"));
-
+        var property = aProperty().build();
+        
         assertThatThrownBy(() ->
-                widgetService.addProperty("unknownWidget", aProperty().build()))
+                widgetService.addProperty("unknownWidget", property))
                 .isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_appear_while_saving_property() throws Exception {
+    void should_throw_RepositoryException_when_error_appear_while_saving_property() throws Exception {
         when(widgetRepository.addProperty(eq("label"), any(Property.class))).thenThrow(RepositoryException.class);
-
+        var property = aProperty().build();
+        
         assertThatThrownBy(() ->
-                widgetService.addProperty("label", aProperty().build()))
+                widgetService.addProperty("label", property))
                 .isInstanceOf(RepositoryException.class);
     }
 
     @Test
-    public void should_update_a_property_of_a_widget_and_return_the_list_of_properties() throws Exception {
+    void should_update_a_property_of_a_widget_and_return_the_list_of_properties() throws Exception {
         Property property = aProperty().build();
         List<Property> expectedProperties = asList(property);
         when(widgetRepository.updateProperty("customLabel", "toBeUpdated", property)).thenReturn(expectedProperties);
@@ -371,29 +388,34 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_update_a_property_of_a_pb_widget() throws Exception {
-        assertThatThrownBy(() -> widgetService.updateProperty("pbLabel", "toBeUpdated", aProperty().build()))
+    void should_not_allow_to_update_a_property_of_a_pb_widget() throws Exception {
+        var property = aProperty().build();
+
+        assertThatThrownBy(() -> widgetService.updateProperty("pbLabel", "toBeUpdated", property))
                 .isInstanceOf(NotAllowedException.class);
     }
 
     @Test
-    public void should_throw_NotFoundException_when_widget_or_property_not_found_while_updating_property()
+    void should_throw_NotFoundException_when_widget_or_property_not_found_while_updating_property()
             throws Exception {
-        assertThatThrownBy(() -> widgetService.updateProperty("pbLabel", "toBeUpdated", aProperty().build()))
+        var property = aProperty().build();
+
+        assertThatThrownBy(() -> widgetService.updateProperty("pbLabel", "toBeUpdated", property))
                 .isInstanceOf(NotAllowedException.class);
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_appear_while_updating_property() throws Exception {
+    void should_throw_RepositoryException_when_error_appear_while_updating_property() throws Exception {
         when(widgetRepository.updateProperty(eq("label"), eq("toBeUpdated"), any(Property.class))).thenThrow(RepositoryException.class);
-
+        var property = aProperty().build();
+        
         assertThatThrownBy(() ->
-                widgetService.updateProperty("label", "toBeUpdated", aProperty().build()))
+                widgetService.updateProperty("label", "toBeUpdated", property))
                 .isInstanceOf(RepositoryException.class);
     }
 
     @Test
-    public void should_delete_a_property_of_a_widget_and_return_the_list_of_properties() throws Exception {
+    void should_delete_a_property_of_a_widget_and_return_the_list_of_properties() throws Exception {
         Property property = aProperty().build();
         List<Property> expectedProperties = asList(property);
         when(widgetRepository.deleteProperty("customLabel", "toBeDeleted")).thenReturn(expectedProperties);
@@ -404,14 +426,14 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_delete_a_property_of_a_pb_widget() throws Exception {
+    void should_not_allow_to_delete_a_property_of_a_pb_widget() throws Exception {
         assertThatThrownBy(() -> widgetService.deleteProperty("pbLabel", "toBeDeleted"))
                 .isInstanceOf(NotAllowedException.class)
                 .hasMessage("Not allowed to modify a non custom widgets");
     }
 
     @Test
-    public void should_throw_NotFoundException_when_widget_or_property_not_found_while_deleting_property() throws Exception {
+    void should_throw_NotFoundException_when_widget_or_property_not_found_while_deleting_property() throws Exception {
         when(widgetRepository.deleteProperty("label", "toBeDeleted"))
                 .thenThrow(new NotFoundException("Widget [ toBeDeleted ] not found"));
 
@@ -421,7 +443,7 @@ public class WidgetServiceTest {
      }
 
     @Test
-    public void should_respond_500_when_error_appear_while_deleting_property() throws Exception {
+    void should_respond_500_when_error_appear_while_deleting_property() throws Exception {
         when(widgetRepository.deleteProperty("label", "toBeDeleted")).thenThrow(RepositoryException.class);
         assertThatThrownBy(() ->
                 widgetService.deleteProperty("label", "toBeDeleted"))
@@ -429,7 +451,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_save_a_local_asset() throws Exception {
+    void should_save_a_local_asset() throws Exception {
         byte[] fileContent = "var hello = 'hello';".getBytes(UTF_8);
         Widget widget = aWidget().withId("my-widget").custom().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
@@ -438,7 +460,7 @@ public class WidgetServiceTest {
         when(widgetAssetService.save(eq(widget), any(), eq(fileContent))).thenAnswer(invocationOnMock -> {
             Asset assetToSave = invocationOnMock.getArgument(1);
 
-            assertThat(assetToSave.getId()).isEqualTo(null);
+            assertThat(assetToSave.getId()).isNull();
 
             assetToSave.setId(assetGeneratedId);
             return assetToSave;
@@ -456,14 +478,16 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_upload_an_asset_for_internal_widget() throws Exception {
+    void should_not_upload_an_asset_for_internal_widget() throws Exception {
+        byte[] bytes = "foo".getBytes();
+
         assertThatThrownBy(
-                () -> widgetService.saveOrUpdateAsset("pbwidget", AssetType.JAVASCRIPT, "myfile.js", "foo".getBytes()))
+                () -> widgetService.saveOrUpdateAsset("pbwidget", AssetType.JAVASCRIPT, "myfile.js", bytes))
                 .isInstanceOf(NotAllowedException.class);
     }
 
     @Test
-    public void should_save_an_external_asset() throws Exception {
+    void should_save_an_external_asset() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         Asset expectedAsset = anAsset().withId("assetId").active().withName("myfile.js").withOrder(2)
                 .withType(AssetType.JAVASCRIPT).build();
@@ -477,7 +501,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_save_an_external_asset_for_internal_widget() throws Exception {
+    void should_not_save_an_external_asset_for_internal_widget() throws Exception {
         Asset asset = anAsset().build();
 
         assertThatThrownBy(() -> widgetService.saveAsset("pb-widget", asset))
@@ -485,7 +509,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_save_an_external_asset_when_upload_send_an_error() throws Exception {
+    void should_not_save_an_external_asset_when_upload_send_an_error() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         Asset asset = anAsset().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
@@ -497,7 +521,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_delete_an_asset() throws Exception {
+    void should_delete_an_asset() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
         doReturn(migrationStatusReport).when(widgetService).getStatus(any());
@@ -508,7 +532,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_increment_an_asset() throws Exception {
+    void should_increment_an_asset() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
         doReturn(migrationStatusReport).when(widgetService).getStatus(any());
@@ -519,7 +543,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_decrement_an_asset() throws Exception {
+    void should_decrement_an_asset() throws Exception {
         Widget widget = aWidget().withId("my-widget").custom().build();
         when(widgetRepository.get("my-widget")).thenReturn(widget);
         doReturn(migrationStatusReport).when(widgetService).getStatus(any());
@@ -530,47 +554,48 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_mark_a_widget_as_favorite() throws Exception {
+    void should_mark_a_widget_as_favorite() throws Exception {
         widgetService.markAsFavorite("my-widget", true);
 
         verify(widgetRepository).markAsFavorite("my-widget");
     }
 
     @Test
-    public void should_unmark_a_widget_as_favorite() throws Exception {
+    void should_unmark_a_widget_as_favorite() throws Exception {
         widgetService.markAsFavorite("my-widget", false);
 
         verify(widgetRepository).unmarkAsFavorite("my-widget");
     }
 
     @Test
-    public void should_load_widget_asset_on_disk() throws Exception {
+    void should_load_widget_asset_on_disk() throws Exception {
         widgetAssetService.findAssetPath("widget-id", "asset.js", AssetType.JAVASCRIPT.getPrefix());
 
         verify(widgetAssetService).findAssetPath("widget-id", "asset.js", AssetType.JAVASCRIPT.getPrefix());
     }
 
     @Test
-    public void should_throw_IOException_when_widget_asset_included_in_page_produce_IOException() throws Exception {
+    void should_throw_IOException_when_widget_asset_included_in_page_produce_IOException() throws Exception {
         when(widgetAssetService.findAssetPath("widget-id", "asset.js", AssetType.JAVASCRIPT.getPrefix()))
                 .thenThrow(new RuntimeException("can't read file"));
-
+        var prefix = AssetType.JAVASCRIPT.getPrefix();
+        
         assertThatThrownBy(() ->
-            widgetService.findAssetPath("widget-id", "asset.js", AssetType.JAVASCRIPT.getPrefix()))
+            widgetService.findAssetPath("widget-id", "asset.js", prefix))
                 .isInstanceOf(RuntimeException.class);
     }
 
     @Test
-    public void should_serve_all_light_widgets_in_repository() throws Exception {
+    void should_serve_all_light_widgets_in_repository() throws Exception {
         Widget input = aWidget().withId("input").build();
         Widget label = aWidget().withId("label").lastUpdate(parse("2015-02-02T00:00:00.000Z")).build();
         when(widgetRepository.getAll()).thenReturn(asList(input, label));
         String[] ids = { "input", "label" };
-        Map<String, List<Page>> map = new HashMap();
+        Map<String, List<Page>> map = new HashMap<>();
         map.put("input", singletonList(aPage().withName("hello").build()));
         when(pageRepository.getArtifactsUsingWidgets(asList(ids))).thenReturn(map);
         when(pageRepository.getComponentName()).thenReturn("page");
-        Map<String, List<Fragment>> map2 = new HashMap();
+        Map<String, List<Fragment>> map2 = new HashMap<>();
         map2.put("label", singletonList(aFragment().withName("helloFragment").build()));
         when(fragmentRepository.getArtifactsUsingWidgets(asList(ids))).thenReturn(map2);
         when(fragmentRepository.getComponentName()).thenReturn("fragment");
@@ -579,17 +604,17 @@ public class WidgetServiceTest {
 
         List<Widget> returnedWidgets = widgetService.getAllWithUsedBy();
 
-        assertThat(returnedWidgets).hasSameSizeAs(expectedWidgets);
-        assertThat(returnedWidgets).contains(input);
-        assertThat(returnedWidgets).contains(label);
-        assertThat(input.getUsedBy().size()).isEqualTo(1);
+        assertThat(returnedWidgets).hasSameSizeAs(expectedWidgets)
+                .contains(input)
+                .contains(label);
+        assertThat(input.getUsedBy()).hasSize(1);
         assertThat(input.getUsedBy().get("page").get(0).getName()).isEqualTo("hello");
-        assertThat(label.getUsedBy().size()).isEqualTo(1);
+        assertThat(label.getUsedBy()).hasSize(1);
         assertThat(label.getUsedBy().get("fragment").get(0).getName()).isEqualTo("helloFragment");
     }
 
     @Test
-    public void should_not_allow_to_delete_a_custom_widget_used_in_a_fragment() throws Exception {
+    void should_not_allow_to_delete_a_custom_widget_used_in_a_fragment() throws Exception {
         when(widgetRepository.get("customLabel")).thenReturn(aWidget().custom().withId("customLabel").build());
         when(pageRepository.getArtifactsUsingWidget("customLabel")).thenReturn(emptyList());
         when(fragmentRepository.getComponentName()).thenReturn("fragment");
@@ -603,7 +628,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_fix_bonds_types_on_save() {
+    void should_fix_bonds_types_on_save() {
         Property constantTextProperty = aProperty().name("text").bond(CONSTANT).build();
         Property interpolationTextProperty = aProperty().name("text").bond(INTERPOLATION).build();
         Widget persistedWidget = aWidget().withId("labelWidget").modelVersion("2.0").property(constantTextProperty)
@@ -616,7 +641,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_migrate_found_widget_when_get_is_called() {
+    void should_migrate_found_widget_when_get_is_called() {
         reset(widgetService);
         Widget widget = aWidget().withId("widget").designerVersion("1.0.0").build();
         Widget widgetMigrated = aWidget().withId("widget").modelVersion("2.0").previousArtifactVersion("1.0.0").build();
@@ -632,7 +657,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_update_and_save_widget_if_no_migration_done() {
+    void should_not_update_and_save_widget_if_no_migration_done() {
         reset(widgetService);
         Widget widget = aWidget().withId("widget").modelVersion("2.0").build();
         Widget widgetMigrated = aWidget().withId("widget").modelVersion("2.0").previousArtifactVersion("2.0").build();
@@ -647,7 +672,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_migrate_all_custom_widget() throws Exception {
+    void should_migrate_all_custom_widget() throws Exception {
         reset(widgetService);
         Widget widget1 = aWidget().withId("widget1").designerVersion("1.0.0").build();
         Widget widget2 = aWidget().withId("widget2").designerVersion("1.0.0").build();
@@ -676,7 +701,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_not_update_and_save_widget_if_migration_finish_on_error() {
+    void should_not_update_and_save_widget_if_migration_finish_on_error() {
         reset(widgetService);
         Widget widget = aWidget().withId("widget").modelVersion("1.0").build();
         Widget widgetMigrated = aWidget().withId("widget").modelVersion("2.0").previousArtifactVersion("2.0").build();
@@ -691,7 +716,7 @@ public class WidgetServiceTest {
     }
 
     @Test
-    public void should_get_correct_migration_status_when_dependency_is_to_migrate() throws Exception {
+    void should_get_correct_migration_status_when_dependency_is_to_migrate() throws Exception {
         reset(widgetService);
         Widget widget = aWidget().withId("widget").designerVersion("1.10.0").build();
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
@@ -700,11 +725,11 @@ public class WidgetServiceTest {
         when(widgetIdVisitor.visit(page)).thenReturn(ids);
 
         MigrationStatusReport status = widgetService.getMigrationStatusOfCustomWidgetUsed(page);
-        Assert.assertEquals(getMigrationStatusReport(true, true), status.toString());
+        assertEquals(getMigrationStatusReport(true, true), status.toString());
     }
 
     @Test
-    public void should_get_correct_migration_status_when_dependency_is_not_compatible() throws Exception {
+    void should_get_correct_migration_status_when_dependency_is_not_compatible() throws Exception {
         reset(widgetService);
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         Widget widget1 = aWidget().withId("widget1").designerVersion("1.10.0").build();
@@ -714,11 +739,11 @@ public class WidgetServiceTest {
         when(widgetIdVisitor.visit(page)).thenReturn(ids);
 
         MigrationStatusReport status = widgetService.getMigrationStatusOfCustomWidgetUsed(page);
-        Assert.assertEquals(getMigrationStatusReport(false, false), status.toString());
+        assertEquals(getMigrationStatusReport(false, false), status.toString());
     }
 
     @Test
-    public void should_get_correct_migration_status_when_dependency_is_not_to_migrate() throws Exception {
+    void should_get_correct_migration_status_when_dependency_is_not_to_migrate() throws Exception {
         reset(widgetService);
         Widget widget = aWidget().withId("widget").designerVersion("2.0").isCompatible(true).isMigration(false).build();
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
@@ -727,7 +752,7 @@ public class WidgetServiceTest {
         when(widgetIdVisitor.visit(page)).thenReturn(ids);
 
         MigrationStatusReport status = widgetService.getMigrationStatusOfCustomWidgetUsed(page);
-        Assert.assertEquals(getMigrationStatusReport(true, false), status.toString());
+        assertEquals(getMigrationStatusReport(true, false), status.toString());
     }
 
     private String getMigrationStatusReport(boolean compatible, boolean migration) {

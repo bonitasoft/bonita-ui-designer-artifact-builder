@@ -59,7 +59,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WebResourcesVisitorTest {
+class WebResourcesVisitorTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -73,7 +73,7 @@ public class WebResourcesVisitorTest {
     private Component btnSubmitTask;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         lenient().when(widgetRepository.get(Mockito.any(String.class))).thenReturn(WidgetBuilder.aWidget().build());
         buttonGet = aComponent().withWidgetId("buttonGet")
                 .withPropertyValue("action", "constant", "GET")
@@ -86,7 +86,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_collect_webResources_when_visiting_a_component() throws Exception {
+    void should_collect_webResources_when_visiting_a_component() throws Exception {
         Map<String, WebResource> webResourceMap = webResourcesVisitor.visit(buttonGet);
 
         assertThat(webResourceMap)
@@ -100,7 +100,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_collect_webResources_from_a_container() throws Exception {
+    void should_collect_webResources_from_a_container() throws Exception {
         Map<String, WebResource> webResourceMap = webResourcesVisitor.visit(aContainer()
                 .with(buttonGet).build());
 
@@ -108,7 +108,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_collect_webResource_from_a_tabs_container() throws Exception {
+    void should_collect_webResource_from_a_tabs_container() throws Exception {
         Map<String, WebResource> webResourceMap = webResourcesVisitor.visit(aTabsContainer()
                 .with(aTabContainer()
                         .with(aContainer()
@@ -119,7 +119,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_formcontainer() throws Exception {
+    void should_collect_component_from_a_formcontainer() throws Exception {
         Map<String, WebResource> webResourceMap = webResourcesVisitor.visit(aFormContainer().with(aContainer()
                 .with(buttonGet).with(Arrays.asList(buttonGet, btnSubmitTask)))
                 .build());
@@ -128,7 +128,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_previewable() throws Exception {
+    void should_collect_component_from_a_previewable() throws Exception {
         // don't forget Variable
         var webResourceMap = webResourcesVisitor.visit(aPage()
                 .with(btnSubmitTask)
@@ -139,7 +139,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_modal_container() throws Exception {
+    void should_collect_component_from_a_modal_container() throws Exception {
         Map<String, WebResource> webResourceMap = webResourcesVisitor.visit(aModalContainer().with(aContainer()
                 .with(buttonGet).with(Arrays.asList(buttonGet, btnSubmitTask)))
                 .build());
@@ -148,7 +148,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_fragment() throws Exception {
+    void should_collect_component_from_a_fragment() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .with(buttonGet)
                 .withVariable("loadProcess", VariableBuilder.anURLVariable().value("../API/bpm/process"))
@@ -173,7 +173,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_api_extensions_resources_found_in_page_fileUpload_widget() throws Exception {
+    void should_add_bonita_api_extensions_resources_found_in_page_fileUpload_widget() throws Exception {
         Component fileUploadComponent = aComponent()
                 .withWidgetId("pbUpload")
                 .withPropertyValue("url", ParameterType.CONSTANT.getValue(), "../API/extension/upload")
@@ -185,7 +185,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_resources_found_in_pages_widgets() throws Exception {
+    void should_add_bonita_resources_found_in_pages_widgets() throws Exception {
         Page page = setUpPageForResourcesTests("myPage");
 
         page.setVariables(singletonMap("foo", anApiVariable("../API/bpm/userTask?filter=mine")));
@@ -196,7 +196,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_resources_found_when_a_BusinessData_variable_is_declared() throws Exception {
+    void should_add_bonita_resources_found_when_a_BusinessData_variable_is_declared() throws Exception {
         Page page = setUpPageForResourcesTests("myPage");
 
         page.setVariables(
@@ -208,7 +208,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_api_extensions_resources_found_in_pages_widgets() throws Exception {
+    void should_add_bonita_api_extensions_resources_found_in_pages_widgets() throws Exception {
         Page page = setUpPageForResourcesTests("myPage");
 
         HashMap<String, Variable> variables = new HashMap<>();
@@ -238,7 +238,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_api_extensions_resources_found_in_page_data_table_properties() throws Exception {
+    void should_add_bonita_api_extensions_resources_found_in_page_data_table_properties() throws Exception {
         Component dataTableComponent = aComponent().withWidgetId("dataTable")
                 .withPropertyValue("apiUrl", "constant", "../API/extension/car")
                 .build();
@@ -249,7 +249,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_api_extensions_resources_found_in_page_button_with_DELETE_action() throws Exception {
+    void should_add_bonita_api_extensions_resources_found_in_page_button_with_DELETE_action() throws Exception {
         Component dataTableComponent = aComponent().withWidgetId("dataTable")
                 .withPropertyValue("action", "constant", "DELETE")
                 .withPropertyValue("url", ParameterType.INTERPOLATION.getValue(), "../API/bpm/document/1")
@@ -260,7 +260,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_api_extensions_resources_found_in_page_button_with_POST_action() throws Exception {
+    void should_add_bonita_api_extensions_resources_found_in_page_button_with_POST_action() throws Exception {
         Component dataTableComponent = aComponent().withWidgetId("dataTable")
                 .withPropertyValue("action", "constant", "POST")
                 .withPropertyValue("url", ParameterType.INTERPOLATION.getValue(), "../API/extension/user")
@@ -271,7 +271,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_start_process_resource_if_a_start_process_submit_is_contained_in_the_page()
+    void should_add_start_process_resource_if_a_start_process_submit_is_contained_in_the_page()
             throws Exception {
         Component component = aComponent().withWidgetId("button")
                 .withPropertyValue("action", "constant", "Start process")
@@ -282,7 +282,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_submit_task_resource_if_a_start_submit_task_is_contained_in_the_page() throws Exception {
+    void should_add_submit_task_resource_if_a_start_submit_task_is_contained_in_the_page() throws Exception {
         Component component = aComponent().withWidgetId("button")
                 .withPropertyValue("action", "constant", "Submit task")
                 .build();
@@ -293,7 +293,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_combined_start_process_submit_task_and_bonita_resources() throws Exception {
+    void should_combined_start_process_submit_task_and_bonita_resources() throws Exception {
         Page page = aPage().with(aContainer().with(Arrays.asList(
                 aComponent().withWidgetId("button")
                         .withPropertyValue("action", "constant", "Start process").build(),
@@ -333,7 +333,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_resources_found_in_fragments() throws Exception {
+    void should_add_bonita_resources_found_in_fragments() throws Exception {
         Page page = setUpPageWithFragmentForResourcesTests();
 
         var properties = webResourcesVisitor.visit(page);
@@ -344,7 +344,7 @@ public class WebResourcesVisitorTest {
     }
 
     @Test
-    public void should_add_bonita_resources_found_in_a_custom_widget() throws Exception {
+    void should_add_bonita_resources_found_in_a_custom_widget() throws Exception {
         Widget widget = WidgetBuilder.aWidget().withId("timeLineWidget").custom()
                 .withWebResources(new WebResource("POST", "customInfo/definition", "timeLineWidget")).build();
         when(widgetRepository.get("timeLineWidget")).thenReturn(widget);

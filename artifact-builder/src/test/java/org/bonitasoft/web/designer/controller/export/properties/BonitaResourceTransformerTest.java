@@ -22,17 +22,17 @@ import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVaria
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BonitaResourceTransformerTest {
+class BonitaResourceTransformerTest {
 
     private BonitaResourceTransformer transformer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         transformer = new BonitaResourceTransformer("(\\w*)/(\\w*)");
     }
 
     @Test
-    public void should_transform_mathing_two_groups_into_an_authorisation_resource_token() throws Exception {
+    void should_transform_mathing_two_groups_into_an_authorisation_resource_token() throws Exception {
 
         String url = transformer.apply(aConstantVariable()
                 .value("group1/group2")
@@ -42,7 +42,7 @@ public class BonitaResourceTransformerTest {
     }
 
     @Test
-    public void should_return_an_empty_string_the_url_value_do_not_matches() throws Exception {
+    void should_return_an_empty_string_the_url_value_do_not_matches() throws Exception {
 
         String url = transformer.apply(aConstantVariable()
                 .value("/path/to/whatever/resource")

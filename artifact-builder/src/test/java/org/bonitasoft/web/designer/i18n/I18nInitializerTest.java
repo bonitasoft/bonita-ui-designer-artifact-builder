@@ -33,7 +33,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class I18nInitializerTest {
+class I18nInitializerTest {
 
     @Mock
     private GeneratorProperties generatorProperties;
@@ -46,12 +46,12 @@ public class I18nInitializerTest {
     private I18nInitializer i18nInitializer;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         when(generatorProperties.getExtractPath()).thenReturn(Paths.get("target/test-classes"));
     }
 
     @Test
-    public void should_start_live_build_on_po_directory() throws Exception {
+    void should_start_live_build_on_po_directory() throws Exception {
 
         i18nInitializer.initialize();
 
@@ -59,7 +59,7 @@ public class I18nInitializerTest {
     }
 
     @Test
-    public void should_throw_a_runtime_exception_on_io_error() throws Exception {
+    void should_throw_a_runtime_exception_on_io_error() throws Exception {
         doThrow(new IOException()).when(languagePackBuilder).start(any(Path.class));
 
         assertThrows(RuntimeException.class, () -> i18nInitializer.initialize());

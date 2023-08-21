@@ -25,7 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class CopyContentIfNotExistsVisitorTest {
+class CopyContentIfNotExistsVisitorTest {
 
     @TempDir
     Path directory;
@@ -37,14 +37,14 @@ public class CopyContentIfNotExistsVisitorTest {
     CopyContentIfNotExistsVisitor visitor;
 
     @BeforeEach
-    public void setup() throws Exception {
+    void setup() throws Exception {
         source = createDirectory(directory.resolve("source"));
         destination = createDirectory(directory.resolve("destination"));
         visitor = new CopyContentIfNotExistsVisitor(source, destination);
     }
 
     @Test
-    public void should_create_given_directory() throws Exception {
+    void should_create_given_directory() throws Exception {
 
         visitor.preVisitDirectory(source.resolve("widgets"), null);
 
@@ -52,7 +52,7 @@ public class CopyContentIfNotExistsVisitorTest {
     }
 
     @Test
-    public void should_not_create_given_directory_if_it_already_exist() throws Exception {
+    void should_not_create_given_directory_if_it_already_exist() throws Exception {
         createDirectories(destination.resolve("widgets"));
 
         visitor.preVisitDirectory(source.resolve("widgets"), null);
@@ -61,7 +61,7 @@ public class CopyContentIfNotExistsVisitorTest {
     }
 
     @Test
-    public void should_copy_given_file_from_source_directory() throws Exception {
+    void should_copy_given_file_from_source_directory() throws Exception {
         write(source.resolve("pbButton.json"), "contents".getBytes());
 
         visitor.visitFile(source.resolve("pbButton.json"), null);
@@ -70,7 +70,7 @@ public class CopyContentIfNotExistsVisitorTest {
     }
 
     @Test
-    public void should_not_copy_given_file_from_source_directory_if_it_already_exist() throws Exception {
+    void should_not_copy_given_file_from_source_directory_if_it_already_exist() throws Exception {
         write(source.resolve("pbButton.json"), "contents from source".getBytes());
         write(destination.resolve("pbButton.json"), "contents from destination".getBytes());
 

@@ -46,7 +46,7 @@ public class FakePageRepository extends PageRepository {
     public Page get(String id) throws NotFoundException, RepositoryException {
         Page page = repo.get(id);
         if (page == null) {
-            throw new NotFoundException(String.format("Page with id %s not found", page.getId()));
+            throw new NotFoundException(String.format("Page with id %s not found", id));
         }
         return page;
     }

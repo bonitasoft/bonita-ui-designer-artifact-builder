@@ -46,7 +46,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
-public class LanguagePackBuilderTest {
+class LanguagePackBuilderTest {
 
     @Mock
     private Watcher watcher;
@@ -58,7 +58,7 @@ public class LanguagePackBuilderTest {
     Path tempDir;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         newLanguagePackBuilder(true);
     }
 
@@ -70,7 +70,7 @@ public class LanguagePackBuilderTest {
     }
 
     @Test
-    public void should_build_all_language_pack_under_provided_directory() throws Exception {
+    void should_build_all_language_pack_under_provided_directory() throws Exception {
         Path frFile = Files.createFile(tempDir.resolve("fr.po"));
         Path appClassPath = Files.createDirectory(tempDir.resolve("appClassPath"));
         Path enFile = Files.createFile(appClassPath.resolve("en.po"));
@@ -84,7 +84,7 @@ public class LanguagePackBuilderTest {
     }
 
     @Test
-    public void should_watch_directives_files() throws Exception {
+    void should_watch_directives_files() throws Exception {
         Path path = generatorProperties.getTmpI18nPath();
 
         builder.start(path);
@@ -93,7 +93,7 @@ public class LanguagePackBuilderTest {
     }
 
     @Test
-    public void should_not_watch_directives_files() throws Exception {
+    void should_not_watch_directives_files() throws Exception {
         newLanguagePackBuilder(false);
         Path path = generatorProperties.getTmpI18nPath();
 
@@ -103,7 +103,7 @@ public class LanguagePackBuilderTest {
     }
 
     @Test
-    public void should_ignore_files_which_are_not_po_files() throws Exception {
+    void should_ignore_files_which_are_not_po_files() throws Exception {
         Path poFile = Files.createFile(tempDir.resolve("fr.po"));
         Files.createFile(tempDir.resolve("script.js"));
         write(poFile, aSimplePoFile());
@@ -116,7 +116,7 @@ public class LanguagePackBuilderTest {
     }
 
     @Test
-    public void should_replace_a_previous_build_with_new_one() throws Exception {
+    void should_replace_a_previous_build_with_new_one() throws Exception {
         Path poFile = Files.createFile(tempDir.resolve("file.po"));
         write(poFile, aSimplePoFile());
 

@@ -33,19 +33,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-public class PageTest {
+class PageTest {
 
     private BeanValidator beanValidator;
     private JsonHandler jsonHandler;
 
     @BeforeEach
-    public void init() {
+    void init() {
         jsonHandler = new JsonHandlerFactory().create();
         beanValidator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
     }
 
     @Test
-    public void jsonview_light_should_only_manage_id_name_hasValidationError_and_favorite() throws Exception {
+    void jsonview_light_should_only_manage_id_name_hasValidationError_and_favorite() throws Exception {
         String json = jsonHandler.toJsonString(createAFilledPage(), JsonViewLight.class);
 
         JSONAssert.assertEquals(json, "{"
@@ -60,7 +60,7 @@ public class PageTest {
     }
 
     @Test
-    public void jsonview_persistence_should_manage_all_properties() throws Exception {
+    void jsonview_persistence_should_manage_all_properties() throws Exception {
         Page myPage = createAFilledPage();
         myPage.setFavorite(true);
 
@@ -82,7 +82,7 @@ public class PageTest {
     }
 
     @Test
-    public void jsonview_persistence_page_with_fragment_should_manage_all_properties() throws Exception {
+    void jsonview_persistence_page_with_fragment_should_manage_all_properties() throws Exception {
         Page myPage = PageWithFragmentBuilder.aPageWithFragmentElement();
 
         //We serialize and deserialize our object
@@ -102,7 +102,7 @@ public class PageTest {
     }
 
     @Test
-    public void jsonview_persitence_should_manage_all_fields() throws Exception {
+    void jsonview_persitence_should_manage_all_fields() throws Exception {
         Page myPage = createAFilledPage();
         //We serialize and deserialize our object
         byte[] data = jsonHandler.toJson(myPage);
@@ -119,7 +119,7 @@ public class PageTest {
     }
 
     @Test
-    public void jsonview_persitence_should_persist_component_name_and_description() throws Exception {
+    void jsonview_persitence_should_persist_component_name_and_description() throws Exception {
         Page myPage = PageBuilder.aPage()
                 .with(ComponentBuilder.anInput().withDescription("A mandatory name input").build()).build();
 
@@ -132,21 +132,21 @@ public class PageTest {
     }
 
     @Test
-    public void should_not_have_a_name_containing_space() throws Exception {
+    void should_not_have_a_name_containing_space() throws Exception {
         Page page = PageBuilder.aPage().withName("the name").build();
 
         assertThrows(ConstraintValidationException.class, () -> beanValidator.validate(page));
     }
 
     @Test
-    public void should_not_have_a_name_containing_special_characters() throws Exception {
+    void should_not_have_a_name_containing_special_characters() throws Exception {
         Page page = PageBuilder.aPage().withName("the-name").build();
 
         assertThrows(ConstraintValidationException.class, () -> beanValidator.validate(page));
     }
 
     @Test
-    public void should_check_for_assets_by_type_and_name() throws Exception {
+    void should_check_for_assets_by_type_and_name() throws Exception {
         Page page = PageBuilder.aPage().withAsset(
                 AssetBuilder.anAsset().withType(AssetType.CSS).withName("aName"))
                 .build();

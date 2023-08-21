@@ -45,7 +45,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetDirectiveBuilderTest {
+class WidgetDirectiveBuilderTest {
 
     @TempDir
     Path widgetRepositoryDirectory;
@@ -67,7 +67,7 @@ public class WidgetDirectiveBuilderTest {
     JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     @BeforeEach
-    public void setup() throws Exception {
+    void setup() throws Exception {
         widgetDirectiveBuilder = new WidgetDirectiveBuilder(watcher,
                 new WidgetFileBasedLoader(jsonHandler), true);
         WidgetFileBasedLoader widgetLoader = new WidgetFileBasedLoader(jsonHandler);
@@ -91,7 +91,7 @@ public class WidgetDirectiveBuilderTest {
     }
 
     @Test
-    public void should_build_directives_of_a_given_directory() throws Exception {
+    void should_build_directives_of_a_given_directory() throws Exception {
         widgetDirectiveBuilder.start(widgetRepositoryDirectory);
 
         assertThat(readDirective("pbInput")).isEqualTo(generateDirective(pbInput));
@@ -99,7 +99,7 @@ public class WidgetDirectiveBuilderTest {
     }
 
     @Test
-    public void should_only_build_directives_files() throws Exception {
+    void should_only_build_directives_files() throws Exception {
         Files.createFile(widgetRepositoryDirectory.resolve("whatever.txt"));
 
         widgetDirectiveBuilder.start(widgetRepositoryDirectory);
@@ -110,7 +110,7 @@ public class WidgetDirectiveBuilderTest {
     }
 
     @Test
-    public void should_watch_given_directory_to_build_directives_on_change() throws Exception {
+    void should_watch_given_directory_to_build_directives_on_change() throws Exception {
 
         widgetDirectiveBuilder.start(widgetRepositoryDirectory);
 
@@ -118,7 +118,7 @@ public class WidgetDirectiveBuilderTest {
     }
 
     @Test
-    public void should_note_watch_given_directory_when_live_build_is_disabled() throws Exception {
+    void should_note_watch_given_directory_when_live_build_is_disabled() throws Exception {
         widgetDirectiveBuilder = new WidgetDirectiveBuilder(watcher,
                 new WidgetFileBasedLoader(jsonHandler), false);
         widgetDirectiveBuilder.start(widgetRepositoryDirectory);
@@ -127,7 +127,7 @@ public class WidgetDirectiveBuilderTest {
     }
 
     @Test
-    public void should_build_directive_even_if_it_already_exist() throws Exception {
+    void should_build_directive_even_if_it_already_exist() throws Exception {
         writeDirective("pbInput", "previous content".getBytes());
 
         widgetDirectiveBuilder.build(resolve("pbInput/pbInput.json"));
@@ -136,7 +136,7 @@ public class WidgetDirectiveBuilderTest {
     }
 
     @Test
-    public void should_exclude_metadata_from_the_build() throws Exception {
+    void should_exclude_metadata_from_the_build() throws Exception {
 
         boolean isBuildable = widgetDirectiveBuilder.isBuildable(".metadata/123.json");
 

@@ -47,7 +47,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.zeroturnaround.zip.ZipUtil;
 
-public class ZipperTest {
+class ZipperTest {
 
     private Zipper zipper;
     private ByteArrayOutputStream out;
@@ -55,14 +55,14 @@ public class ZipperTest {
     private URI dir;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         out = new ByteArrayOutputStream();
         zipper = new Zipper(out);
         dir = getClass().getResource("/aDirectory").toURI();
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         zipper.close();
         out.close();
         if (tmpDir != null) {
@@ -99,7 +99,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_zip_a_directory() throws Exception {
+    void should_zip_a_directory() throws Exception {
 
         zipper.addDirectoryToZip(get(dir), ALL_DIRECTORIES, Zipper.ALL_FILES, "");
 
@@ -108,7 +108,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_zip_a_directory_in_a_destination_folder_without_filter() throws Exception {
+    void should_zip_a_directory_in_a_destination_folder_without_filter() throws Exception {
         zipper.addDirectoryToZip(get(dir), ALL_DIRECTORIES, Zipper.ALL_FILES, "destinationInZip");
 
         Path dest = unzip(out);
@@ -116,7 +116,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_zip_a_directory_in_a_destination_folder() throws Exception {
+    void should_zip_a_directory_in_a_destination_folder() throws Exception {
         zipper.addDirectoryToZip(get(dir), new IncludeChildDirectoryPredicate(get(dir), singleton("aSubDirectory")),
                 Zipper.ALL_FILES, "destinationInZip");
 
@@ -125,7 +125,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_zipentry_contains_paths_instead_of_file_separators() throws Exception {
+    void should_zipentry_contains_paths_instead_of_file_separators() throws Exception {
         zipper.addDirectoryToZip(get(dir), new IncludeChildDirectoryPredicate(get(dir), singleton("aSubDirectory")),
                 Zipper.ALL_FILES, "destinationInZip");
 
@@ -145,7 +145,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_zip_a_directory_and_filter_out_unaccepted_subdirectories() throws Exception {
+    void should_zip_a_directory_and_filter_out_unaccepted_subdirectories() throws Exception {
         String destinationInZip = "destinationInZip";
         zipper.addDirectoryToZip(get(dir), new IncludeChildDirectoryPredicate(get(dir), singleton("nonExisting")),
                 Zipper.ALL_FILES, destinationInZip);
@@ -155,7 +155,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_zip_a_directory_and_filter_out_unaccepted_descriptorjsonfile() throws Exception {
+    void should_zip_a_directory_and_filter_out_unaccepted_descriptorjsonfile() throws Exception {
         String destinationInZip = "destinationInZip";
         zipper.addDirectoryToZip(get(this.getClass().getResource("/workspace/pages/ma-page").toURI()), ALL_DIRECTORIES,
                 new ExcludeDescriptorFilePredicate("ma-page.json"), destinationInZip);
@@ -165,7 +165,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_zip_some_bytes() throws Exception {
+    void should_zip_some_bytes() throws Exception {
         byte[] foo = "foobar".getBytes(StandardCharsets.UTF_8);
 
         zipper.addToZip(foo, "foo.txt");
@@ -176,7 +176,7 @@ public class ZipperTest {
     }
 
     @Test
-    public void should_close_stream() throws Exception {
+    void should_close_stream() throws Exception {
         ByteArrayOutputStream out = mock(ByteArrayOutputStream.class);
         Zipper zipper = new Zipper(out);
 

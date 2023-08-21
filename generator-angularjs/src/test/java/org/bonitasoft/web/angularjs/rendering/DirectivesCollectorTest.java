@@ -45,7 +45,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DirectivesCollectorTest {
+class DirectivesCollectorTest {
 
     @TempDir
     Path temporaryFolder;
@@ -67,7 +67,7 @@ public class DirectivesCollectorTest {
     private Path tmpFragmentsPath;
 
     @BeforeEach
-    public void beforeEach() throws IOException {
+    void beforeEach() throws IOException {
         this.tmpPagesPath = temporaryFolder.resolve("pages");
         this.tmpFragmentsPath = temporaryFolder.resolve("fragments");
         collector = new DirectivesCollector(jsonHandler, tmpPagesPath,
@@ -76,7 +76,7 @@ public class DirectivesCollectorTest {
     }
 
     @Test
-    public void should_build_directives_from_the_preview() throws IOException {
+    void should_build_directives_from_the_preview() throws IOException {
         Page page = aPage().build();
         Path assets = tmpPagesPath.resolve(page.getId()).resolve("js");
         when(directiveFileGenerator.generateAllDirectivesFilesInOne(page, assets)).thenReturn("widgets-123456.min.js");
@@ -87,7 +87,7 @@ public class DirectivesCollectorTest {
     }
 
     @Test
-    public void should_collect_widgets_directives_from_the_fragment_preview() throws Exception {
+    void should_collect_widgets_directives_from_the_fragment_preview() throws Exception {
         Fragment fragment = FragmentBuilder.aFragment().build();
         when(directiveFileGenerator.generateAllDirectivesFilesInOne(fragment,
                 tmpFragmentsPath
@@ -100,7 +100,7 @@ public class DirectivesCollectorTest {
     }
 
     @Test
-    public void should_collect_widget_file_directive_and_fragment_file_when_fragment_will_be_use_in_page()
+    void should_collect_widget_file_directive_and_fragment_file_when_fragment_will_be_use_in_page()
             throws IOException {
 
         Page page = PageBuilder.aPage().build();

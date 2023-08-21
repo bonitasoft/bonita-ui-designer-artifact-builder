@@ -26,7 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class ResourcesCopierTest {
+class ResourcesCopierTest {
 
     private static String FOLDER_TO_COPY = "tmpCopyResources";
     private static String TARGET_FOLDER = "tmpCopiedResources";
@@ -39,12 +39,12 @@ public class ResourcesCopierTest {
     private ResourcesCopier resourcesCopier = new ResourcesCopier();
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         targetFolder = Files.createDirectory(folderManager.resolve(TARGET_FOLDER));
     }
 
     @Test
-    public void should_copy_not_empty_resources_only() throws IOException {
+    void should_copy_not_empty_resources_only() throws IOException {
         //test
         resourcesCopier.copy(targetFolder, FOLDER_TO_COPY);
         Path emptyFile = targetFolder.resolve(FOLDER_TO_COPY).resolve("empty.po");

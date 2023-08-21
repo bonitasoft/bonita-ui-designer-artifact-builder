@@ -21,10 +21,10 @@ import static org.bonitasoft.web.designer.builder.ComponentBuilder.aComponent;
 
 import org.junit.jupiter.api.Test;
 
-public class ConstantPropertyValuePredicateTest {
+class ConstantPropertyValuePredicateTest {
 
     @Test
-    public void should_return_true_when_the_property_value_matches() throws Exception {
+    void should_return_true_when_the_property_value_matches() throws Exception {
         ConstantPropertyValuePredicate predicate = new ConstantPropertyValuePredicate("bar");
 
         assertThat(predicate.test(aComponent()
@@ -33,7 +33,7 @@ public class ConstantPropertyValuePredicateTest {
     }
 
     @Test
-    public void should_return_false_when_property_value_do_not_match() throws Exception {
+    void should_return_false_when_property_value_do_not_match() throws Exception {
         ConstantPropertyValuePredicate predicate = new ConstantPropertyValuePredicate("qux");
 
         assertThat(predicate.test(aComponent()
@@ -42,7 +42,7 @@ public class ConstantPropertyValuePredicateTest {
     }
 
     @Test
-    public void should_return_false_when_property_value_is_not_a_constant() throws Exception {
+    void should_return_false_when_property_value_is_not_a_constant() throws Exception {
         ConstantPropertyValuePredicate predicate = new ConstantPropertyValuePredicate("bar");
 
         assertThat(predicate.test(aComponent()

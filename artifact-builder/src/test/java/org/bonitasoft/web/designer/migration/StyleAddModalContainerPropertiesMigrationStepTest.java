@@ -28,15 +28,15 @@ import org.apache.commons.io.IOUtils;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StyleAddModalContainerPropertiesMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class StyleAddModalContainerPropertiesMigrationStepTest {
 
     @Mock
     private AssetService<Page> pageAssetService;
@@ -44,8 +44,8 @@ public class StyleAddModalContainerPropertiesMigrationStepTest {
     @InjectMocks
     private StyleAddModalContainerPropertiesMigrationStep step;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         step = new StyleAddModalContainerPropertiesMigrationStep(pageAssetService);
     }
 
@@ -54,7 +54,7 @@ public class StyleAddModalContainerPropertiesMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_style_asset_to_add_new_modal_container_css_classes() throws Exception {
+    void should_migrate_style_asset_to_add_new_modal_container_css_classes() throws Exception {
         Asset style = anAsset().withType(CSS).withName("style.css").build();
         String initContent = ".my-content {background: red}";
         Page page = aPage()

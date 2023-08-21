@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.bonitasoft.web.designer.controller.importer.ImportException.Type.MODEL_NOT_FOUND;
 import static org.bonitasoft.web.designer.controller.importer.ImportException.Type.UNEXPECTED_ZIP_STRUCTURE;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -48,7 +48,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultArtifactImporterTest {
+class DefaultArtifactImporterTest {
 
     @TempDir
     public Path tempDir;
@@ -58,7 +58,7 @@ public class DefaultArtifactImporterTest {
     private Path resources;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
 
         ImportStore importStore = new ImportStore();
         PageImporter pageImporter = mock(PageImporter.class);
@@ -84,7 +84,7 @@ public class DefaultArtifactImporterTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_for_an_unknown_artifact_type() throws Exception {
+    void should_throw_NotFoundException_for_an_unknown_artifact_type() throws Exception {
         // Given
         final boolean force = true;
 
@@ -94,7 +94,7 @@ public class DefaultArtifactImporterTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "page", "fragment", "widget" })
-    public void should_get_fragment_importer_from_type(String artifactType) throws Exception {
+    void should_get_fragment_importer_from_type(String artifactType) throws Exception {
         // Given
         doReturn(artifactType).when(artifactImporter).resolveArtifactType(any());
         final boolean force = true;
@@ -120,7 +120,7 @@ public class DefaultArtifactImporterTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "page", "fragment", "widget" })
-    public void should_get_importer_from_path(String artifactType) throws Exception {
+    void should_get_importer_from_path(String artifactType) throws Exception {
         // Given
         Files.createFile(resources.resolve(artifactType + ".json"));
         final boolean force = true;
@@ -145,7 +145,7 @@ public class DefaultArtifactImporterTest {
     }
 
     @Test
-    public void should_get_ImportException_while_resources_folder_is_absent() throws Exception {
+    void should_get_ImportException_while_resources_folder_is_absent() throws Exception {
         Files.delete(resources);
 
         final ImportException importException = assertThrows(ImportException.class,
@@ -156,7 +156,7 @@ public class DefaultArtifactImporterTest {
     }
 
     @Test
-    public void should_get_ImportException_while_no_importer_found_from_path() throws Exception {
+    void should_get_ImportException_while_no_importer_found_from_path() throws Exception {
 
         final ImportException importException = assertThrows(ImportException.class,
                 () -> artifactImporter.importArtifact(tempDir, true));
