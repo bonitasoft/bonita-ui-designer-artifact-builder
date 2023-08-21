@@ -49,7 +49,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class JsonFileBasedPersisterTest {
+class JsonFileBasedPersisterTest {
 
     private static final String DESIGNER_VERSION = "1.0.0";
     private static final String MODEL_VERSION = "2.0";
@@ -65,7 +65,7 @@ public class JsonFileBasedPersisterTest {
     Path temporaryFolder;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         repoDirectory = createDirectory(temporaryFolder.resolve("jsonrepository"));
         jsonHandler = spy(new JsonHandlerFactory().create());
         jsonHandler = spy(new JsonHandlerFactory().create());
@@ -78,7 +78,7 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_serialize_an_object_and_save_it_to_a_file() throws Exception {
+    void should_serialize_an_object_and_save_it_to_a_file() throws Exception {
         SimpleDesignerArtifact expectedObject = new SimpleDesignerArtifact("foo", "aName", 2);
 
         jsonFileBasedPersister.save(repoDirectory, expectedObject);
@@ -88,18 +88,18 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_not_set_model_version_while_saving_if_uid_version_does_not_support_model_version()
+    void should_not_set_model_version_while_saving_if_uid_version_does_not_support_model_version()
             throws Exception {
         SimpleDesignerArtifact expectedObject = new SimpleDesignerArtifact("foo", "aName", 2);
 
         jsonFileBasedPersister.save(repoDirectory, expectedObject);
 
         SimpleDesignerArtifact savedObject = getFromRepository("foo");
-        assertThat(savedObject.getModelVersion()).isEqualTo(null);
+        assertThat(savedObject.getModelVersion()).isNull();
     }
 
     @Test
-    public void should_set_model_version_while_saving_if_not_already_set() throws Exception {
+    void should_set_model_version_while_saving_if_not_already_set() throws Exception {
         SimpleDesignerArtifact expectedObject = new SimpleDesignerArtifact("foo", "aName", 2);
         jsonFileBasedPersister.version = "1.12.0";
         jsonFileBasedPersister.save(repoDirectory, expectedObject);
@@ -110,7 +110,7 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_not_set_model_version_while_saving_if_already_set() throws Exception {
+    void should_not_set_model_version_while_saving_if_already_set() throws Exception {
         jsonFileBasedPersister.version = "1.12.0";
 
         SimpleDesignerArtifact expectedObject = new SimpleDesignerArtifact("foo", "aName", 2);
@@ -124,7 +124,7 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_throw_IOException_when_error_occurs_while_saving_a_object() throws Exception {
+    void should_throw_IOException_when_error_occurs_while_saving_a_object() throws Exception {
         Mockito.doThrow(new RuntimeException()).when(jsonHandler).toJson(ArgumentMatchers.any(),
                 ArgumentMatchers.any(Class.class));
 
@@ -132,12 +132,12 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_validate_beans_before_saving_them() throws Exception {
+    void should_validate_beans_before_saving_them() throws Exception {
         Mockito.doThrow(ConstraintValidationException.class).when(validator)
                 .validate(ArgumentMatchers.any(Object.class));
-
+        var content = new SimpleDesignerArtifact("object1", "object1", 1);
         try {
-            jsonFileBasedPersister.save(repoDirectory, new SimpleDesignerArtifact("object1", "object1", 1));
+            jsonFileBasedPersister.save(repoDirectory, content);
             failBecauseExceptionWasNotThrown(ConstraintValidationException.class);
         } catch (ConstraintValidationException e) {
             // should not have saved object1
@@ -146,7 +146,7 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_persist_metadata_in_a_seperate_file() throws Exception {
+    void should_persist_metadata_in_a_seperate_file() throws Exception {
         SimpleDesignerArtifact artifact = SimpleObjectBuilder.aSimpleObjectBuilder()
                 .id("baz")
                 .metadata("foobar")
@@ -159,7 +159,7 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_support_parrelel_index_saves() throws Exception {
+    void should_support_parrelel_index_saves() throws Exception {
         Page page1 = PageBuilder.aPage().withUUID("baz-uuid").withName("baz").withId("baz-id").build();
         Page page2 = PageBuilder.aPage().withUUID("foo-uuid").withName("foo").withId("foo-id").build();
         JsonFileBasedPersister<Page> pageRepository = new JsonFileBasedPersister<Page>(jsonHandler, validator,
@@ -189,7 +189,7 @@ public class JsonFileBasedPersisterTest {
     }
 
     @Test
-    public void should_persist_all_artifact_id_in_index_when_refresh_indexing_is_called() throws Exception {
+    void should_persist_all_artifact_id_in_index_when_refresh_indexing_is_called() throws Exception {
         List<Page> pages = new ArrayList<>();
         Page page = PageBuilder.aPage().withUUID("baz-uuid").withId("page1").build();
         Page page2 = PageBuilder.aPage().withUUID("foo-uuid").withId("page2").withName("page2").build();

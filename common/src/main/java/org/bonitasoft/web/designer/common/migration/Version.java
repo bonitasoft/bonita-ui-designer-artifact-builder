@@ -20,13 +20,13 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 public class Version {
 
-    public static String INITIAL_MODEL_VERSION = "2.0";
-    public static String INITIAL_UID_VERSION_USING_MODEL_VERSION = "1.12.0-SNAPSHOT";
+    public static final String INITIAL_MODEL_VERSION = "2.0";
+    public static final String INITIAL_UID_VERSION_USING_MODEL_VERSION = "1.12.0-SNAPSHOT";
 
-    private DefaultArtifactVersion version;
+    private DefaultArtifactVersion artifactVersion;
 
     public Version(String version) {
-        this.version = new DefaultArtifactVersion(version);
+        this.artifactVersion = new DefaultArtifactVersion(version);
     }
 
     public static boolean isSupportingModelVersion(String version) {
@@ -34,15 +34,15 @@ public class Version {
     }
 
     public boolean isGreaterThan(String version) {
-        return this.version.compareTo(new DefaultArtifactVersion(version)) > 0;
+        return this.artifactVersion.compareTo(new DefaultArtifactVersion(version)) > 0;
     }
 
     public boolean isGreaterOrEqualThan(String version) {
-        return this.version.compareTo(new DefaultArtifactVersion(version)) >= 0;
+        return this.artifactVersion.compareTo(new DefaultArtifactVersion(version)) >= 0;
     }
 
     @Override
     public String toString() {
-        return version.toString();
+        return artifactVersion.toString();
     }
 }

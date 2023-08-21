@@ -16,16 +16,23 @@
  */
 package org.bonitasoft.web.designer.common.repository;
 
-import static java.nio.file.Files.*;
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.createDirectory;
+import static java.nio.file.Files.createFile;
+import static java.nio.file.Files.write;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.WidgetBuilder.aWidget;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.spy;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -52,6 +59,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -61,7 +70,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetRepositoryTest {
+class WidgetRepositoryTest {
 
     private static final String DESIGNER_VERSION = "1.0.0";
 
@@ -84,7 +93,7 @@ public class WidgetRepositoryTest {
     private Watcher watcher;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         widgetDir = temporaryFolder;
 
         // spying objectMapper to be able to simulate a json conversion error
@@ -105,7 +114,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_get_a_widget_by_its_id() throws Exception {
+    void should_get_a_widget_by_its_id() throws Exception {
         Widget expectedWidget = aWidget().withId("input").build();
         Widget notExpectedWidget = aWidget().withId("label").build();
         addToRepository(expectedWidget, notExpectedWidget);
@@ -116,12 +125,12 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_trying_to_get_an_unexisting_widget() {
+    void should_throw_NotFoundException_when_trying_to_get_an_unexisting_widget() {
         assertThrows(NotFoundException.class, () -> widgetRepository.get("notExistingWidget"));
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_occurs_when_getting_a_widget() throws Exception {
+    void should_throw_RepositoryException_when_error_occurs_when_getting_a_widget() throws Exception {
         addToRepository(aWidget().withId("input").build());
 
         Mockito.doThrow(new IOException()).when(jsonHandler).fromJson(ArgumentMatchers.any(byte[].class),
@@ -131,7 +140,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_retrieve_all_widgets() throws Exception {
+    void should_retrieve_all_widgets() throws Exception {
         Widget input = aWidget().withId("input").build();
         Widget label = aWidget().withId("label").build();
         addToRepository(input, label);
@@ -141,7 +150,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_throw_RepositoryException_if_error_occurs_while_getting_all_widgets() throws Exception {
+    void should_throw_RepositoryException_if_error_occurs_while_getting_all_widgets() throws Exception {
         addToRepository(aWidget().withId("input").build());
 
         Mockito.doThrow(new IOException()).when(jsonHandler).fromJson(ArgumentMatchers.any(byte[].class),
@@ -151,7 +160,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_save_a_custom_widget() throws Exception {
+    void should_save_a_custom_widget() throws Exception {
         Widget customLabel = aWidget().custom().withId("customLabel").build();
 
         createDirectories(widgetDir.resolve("customLabel"));
@@ -163,7 +172,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_save_a_page_without_updating_last_update_date() throws Exception {
+    void should_save_a_page_without_updating_last_update_date() throws Exception {
         Widget widget = widgetRepository
                 .updateLastUpdateAndSave(
                         aWidget().withId("customLabel").withName("theWidgetName").build());
@@ -178,7 +187,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_save_a_list_of_custom_widgets() throws Exception {
+    void should_save_a_list_of_custom_widgets() throws Exception {
         Widget customLabel = aWidget().custom().withId("customLabel").build();
         Widget customInput = aWidget().custom().withId("customInput").build();
 
@@ -191,7 +200,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_set_model_version_while_saving_if_not_already_set() throws Exception {
+    void should_set_model_version_while_saving_if_not_already_set() throws Exception {
         Widget customLabel = aWidget().custom().withId("customLabel").designerVersion("1.12.0").build();
 
         createDirectories(widgetDir.resolve("customLabel"));
@@ -201,7 +210,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_not_set_model_version_while_saving_if_already_set() throws Exception {
+    void should_not_set_model_version_while_saving_if_already_set() throws Exception {
         Widget customLabel = aWidget().custom().withId("customLabel").build();
         customLabel.setModelVersion("alreadySetModelVersion");
         createDirectories(widgetDir.resolve("customLabel"));
@@ -211,28 +220,22 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_throw_IllegalArgumentException_while_saving_a_custom_widget_with_no_id_set() {
+    void should_throw_IllegalArgumentException_while_saving_a_custom_widget_with_no_id_set() {
         Widget aWidget = aWidget().withId(null).custom().build();
 
         assertThrows(IllegalArgumentException.class, () -> widgetRepository.updateLastUpdateAndSave(aWidget));
     }
 
-    @Test
-    public void should_not_allow_to_save_a_widget_without_name() {
-        Widget widget = aWidget().withName(" ").build();
-
-        assertThrows(ConstraintValidationException.class, () -> widgetRepository.updateLastUpdateAndSave(widget));
-    }
-
-    @Test
-    public void should_not_allow_to_save_a_widget_with_name_containing_non_alphanumeric_chars() {
-        Widget widget = aWidget().withName("héllo").build();
+    @ParameterizedTest
+    @ValueSource(strings = {"héllo", "hello world", " "})
+    void should_not_allow_to_save_a_widget_with_name_containing_non_alphanumeric_chars(String widgetName) {
+        Widget widget = aWidget().withName(widgetName).build();
 
         assertThrows(ConstraintValidationException.class, () -> widgetRepository.create(widget));
     }
 
     @Test
-    public void should_not_allow_to_save_as_widget_with_an_invalid_property() throws Exception {
+    void should_not_allow_to_save_as_widget_with_an_invalid_property() throws Exception {
         Widget widget = aWidget().property(PropertyBuilder.aProperty().name("ze invalid name")).custom()
                 .build();
 
@@ -240,21 +243,21 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_allow_to_save_a_custom_widget_with_name_containing_space() throws Exception {
+    void should_allow_to_save_a_custom_widget_with_name_containing_space() throws Exception {
         Widget widget = aWidget().withName("hello world").custom().build();
 
         assertThrows(ConstraintValidationException.class, () -> widgetRepository.create(widget));
     }
 
     @Test
-    public void should_allow_to_save_a_widget_with_name_containing_space() throws Exception {
+    void should_allow_to_save_a_widget_with_name_containing_space() throws Exception {
         Widget widget = aWidget().withName("hello world").build();
         createDirectories(widgetDir.resolve("anId"));
-        widgetRepository.updateLastUpdateAndSave(widget);
+        assertDoesNotThrow(() -> widgetRepository.updateLastUpdateAndSave(widget));
     }
 
     @Test
-    public void should_delete_a_custom_widget() throws Exception {
+    void should_delete_a_custom_widget() throws Exception {
         Widget customLabel = aWidget().withId("customLabel").build();
         customLabel.setController("$scope.hello = 'Hello'");
         customLabel.setTemplate("<div>{{ hello + 'there'}}</div>");
@@ -271,7 +274,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_not_allow_to_delete_a_pb_widget() throws Exception {
+    void should_not_allow_to_delete_a_pb_widget() throws Exception {
         Widget pbLabel = aWidget().withId("pbLabel").build();
         pbLabel.setCustom(false);
         addToRepository(pbLabel);
@@ -279,36 +282,9 @@ public class WidgetRepositoryTest {
         assertThrows(NotAllowedException.class, () -> widgetRepository.delete("pbLabel"));
     }
 
-    @Test
-    public void should_not_allow_to_create_a_widget_without_name() throws Exception {
-        Widget widget = aWidget().withName(" ").build();
-
-        assertThrows(ConstraintValidationException.class, () -> widgetRepository.create(widget));
-    }
 
     @Test
-    public void should_not_allow_to_create_a_widget_with_name_containing_non_alphanumeric_chars() throws Exception {
-        Widget widget = aWidget().withName("héllo").build();
-
-        assertThrows(ConstraintValidationException.class, () -> widgetRepository.create(widget));
-    }
-
-    @Test
-    public void should_not_allow_to_create_a_custom_widget_with_name_containing_non_space() {
-        Widget widget = aWidget().withName("hello world").custom().build();
-
-        assertThrows(ConstraintValidationException.class, () -> widgetRepository.create(widget));
-    }
-
-    @Test
-    public void should_allow_create_a_widget_with_name_containing_space_for_normal_widget() {
-        Widget widget = aWidget().withName("hello world").build();
-
-        assertThrows(ConstraintValidationException.class, () -> widgetRepository.create(widget));
-    }
-
-    @Test
-    public void should_create_a_widget_and_set_his_id() throws Exception {
+    void should_create_a_widget_and_set_his_id() throws Exception {
         Widget expectedWidget = aWidget().withName("aName").build();
         Widget createdWidget = widgetRepository.create(expectedWidget);
 
@@ -319,16 +295,16 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_not_allow_to_create_a_widget_with_an_already_existing_name() throws Exception {
+    void should_not_allow_to_create_a_widget_with_an_already_existing_name() throws Exception {
         Widget widget = aWidget().withName("existingName").withId("customExistingName").build();
         addToRepository(widget);
+        var widget2 = aWidget().withName("existingName").build();
 
-        assertThrows(NotAllowedException.class,
-                () -> widgetRepository.create(aWidget().withName("existingName").build()));
+        assertThrows(NotAllowedException.class, () -> widgetRepository.create(widget2));
     }
 
     @Test
-    public void should_verify_that_a_widget_exists_in_the_repository() throws Exception {
+    void should_verify_that_a_widget_exists_in_the_repository() throws Exception {
         Files.write(Files.createDirectory(temporaryFolder.resolve("pbInput")).resolve("pbInput.json"),
                 "contents".getBytes());
 
@@ -337,7 +313,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_save_a_new_property() throws Exception {
+    void should_save_a_new_property() throws Exception {
         Widget aWidget = addToRepository(aWidget().custom().build());
         Property expectedProperty = PropertyBuilder.aProperty().build();
 
@@ -348,16 +324,17 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_not_allow_to_save_a_new_property_when_property_with_same_name_already_exists() throws Exception {
+    void should_not_allow_to_save_a_new_property_when_property_with_same_name_already_exists() throws Exception {
         Property alreadyAddedProperty = PropertyBuilder.aProperty().build();
         Widget aWidget = addToRepository(aWidget().custom().property(alreadyAddedProperty).build());
+        var id = aWidget.getId();
 
         assertThrows(NotAllowedException.class,
-                () -> widgetRepository.addProperty(aWidget.getId(), alreadyAddedProperty));
+                () -> widgetRepository.addProperty(id, alreadyAddedProperty));
     }
 
     @Test
-    public void should_update_an_existing_property() throws Exception {
+    void should_update_an_existing_property() throws Exception {
         Property initialParam = PropertyBuilder.aProperty().name("propertyName").label("propertyLabel").build();
         Property updatedParam = PropertyBuilder.aProperty().name("newName").label("newLablel").build();
         Widget aWidget = addToRepository(aWidget().custom().property(initialParam).build());
@@ -370,15 +347,17 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_fail_when_trying_to_update_a_not_existing_property() throws Exception {
+    void should_fail_when_trying_to_update_a_not_existing_property() throws Exception {
         Widget expectedWidget = addToRepository(aWidget().custom().build());
-
+        var id = expectedWidget.getId();
+        var property = new Property();
+        
         assertThrows(NotFoundException.class,
-                () -> widgetRepository.updateProperty(expectedWidget.getId(), "notExistingProperty", new Property()));
+                () -> widgetRepository.updateProperty(id, "notExistingProperty", property));
     }
 
     @Test
-    public void should_delete_a_widget_property() throws Exception {
+    void should_delete_a_widget_property() throws Exception {
         Property aProperty = PropertyBuilder.aProperty().name("aParam").build();
         Widget aWidget = addToRepository(
                 aWidget().property(aProperty).property(PropertyBuilder.aProperty().name("anotherParam"))
@@ -392,20 +371,20 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_fail_when_trying_to_delete_a_property_on_an_unknown_widget() {
+    void should_fail_when_trying_to_delete_a_property_on_an_unknown_widget() {
         assertThrows(NotFoundException.class, () -> widgetRepository.deleteProperty("unknownWidget", "aParam"));
     }
 
     @Test
-    public void should_fail_when_trying_to_delete_an_unknown_property() throws Exception {
-        Widget aWidget = addToRepository(aWidget().build());
+    void should_fail_when_trying_to_delete_an_unknown_property() throws Exception {
+        var id = addToRepository(aWidget().build()).getId();
+        
         assertThrows(NotFoundException.class,
-                () -> widgetRepository.deleteProperty(aWidget.getId(), "unknownPrameter"));
-
+                () -> widgetRepository.deleteProperty(id, "unknownPrameter"));
     }
 
     @Test
-    public void should_find_widget_which_use_another_widget() throws Exception {
+    void should_find_widget_which_use_another_widget() throws Exception {
         Widget input = aWidget().withId("input").build();
         Widget label = aWidget().withId("label").template("use <input>").build();
         addToRepository(input, label);
@@ -415,7 +394,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_find_widget_which_not_use_another_widget() throws Exception {
+    void should_find_widget_which_not_use_another_widget() throws Exception {
         Widget input = aWidget().withId("input").build();
         Widget label = aWidget().withId("label").template("use <input>").build();
         addToRepository(input, label);
@@ -425,7 +404,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_find_widget_by_id() throws Exception {
+    void should_find_widget_by_id() throws Exception {
         Widget input = aWidget().withId("input").build();
         Widget label = aWidget().withId("label").build();
         addToRepository(input, label);
@@ -436,7 +415,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_walk_widget_repository() throws Exception {
+    void should_walk_widget_repository() throws Exception {
         Path file = createFile(temporaryFolder.resolve("file"));
         final List<Path> visitedPaths = new ArrayList<>();
 
@@ -453,7 +432,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_watch_widget_repository() throws Exception {
+    void should_watch_widget_repository() throws Exception {
         PathListener pathListener = path -> System.out.println(path);
 
         widgetRepository.watch(pathListener);
@@ -462,7 +441,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_mark_a_widget_as_favorite() throws Exception {
+    void should_mark_a_widget_as_favorite() throws Exception {
         Widget widget = addToRepository(aWidget().notFavorite());
 
         widgetRepository.markAsFavorite(widget.getId());
@@ -473,7 +452,7 @@ public class WidgetRepositoryTest {
     }
 
     @Test
-    public void should_unmark_a_widget_as_favorite() throws Exception {
+    void should_unmark_a_widget_as_favorite() throws Exception {
         Widget widget = addToRepository(aWidget().favorite());
 
         widgetRepository.unmarkAsFavorite(widget.getId());

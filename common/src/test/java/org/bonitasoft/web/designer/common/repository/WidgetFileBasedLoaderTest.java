@@ -1,16 +1,14 @@
-/** 
+/**
  * Copyright (C) 2015 BonitaSoft S.A.
  * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2.0 of the License, or
  * (at your option) any later version.
- *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -19,6 +17,7 @@ package org.bonitasoft.web.designer.common.repository;
 import static java.nio.file.Files.createDirectory;
 import static java.nio.file.Files.write;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
@@ -39,7 +38,7 @@ import org.junit.jupiter.api.io.TempDir;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-public class WidgetFileBasedLoaderTest {
+class WidgetFileBasedLoaderTest {
 
     @TempDir
     public Path temporaryFolder;
@@ -48,7 +47,7 @@ public class WidgetFileBasedLoaderTest {
     private WidgetFileBasedLoader widgetLoader;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         widgetDirectory = temporaryFolder;
         widgetLoader = new WidgetFileBasedLoader(new JsonHandlerFactory().create());
     }
@@ -66,7 +65,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_get_a_widget_by_its_id() throws Exception {
+    void should_get_a_widget_by_its_id() throws Exception {
         Widget expectedWidget = WidgetBuilder.aWidget().withId("input").build();
         Widget notExpectedWidget = WidgetBuilder.aWidget().withId("label").build();
         addToDirectory(widgetDirectory, expectedWidget, notExpectedWidget);
@@ -77,7 +76,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_get_a_widget_with_template_and_controller_by_its_id() throws Exception {
+    void should_get_a_widget_with_template_and_controller_by_its_id() throws Exception {
         String templateFileName = "input.tpl.html";
         String controllerFileName = "input.ctrl.js";
         Widget expectedWidget = WidgetBuilder.aWidget().withId("input").template("@" + templateFileName)
@@ -97,7 +96,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_load_a_widget_with_template_and_controller_by_its_id() throws Exception {
+    void should_load_a_widget_with_template_and_controller_by_its_id() throws Exception {
         String templateFileName = "input.tpl.html";
         String controllerFileName = "input.ctrl.js";
         Widget expectedWidget = WidgetBuilder.aWidget().withId("input").template("@" + templateFileName)
@@ -117,7 +116,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_retrieve_all_widgets() throws Exception {
+    void should_retrieve_all_widgets() throws Exception {
         Widget input = WidgetBuilder.aWidget().withId("input").build();
         Widget label = WidgetBuilder.aWidget().withId("label").build();
         addToDirectory(widgetDirectory, input, label);
@@ -128,14 +127,14 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_not_failed_when_directory_contains_an_hidden_file() throws Exception {
+    void should_not_failed_when_directory_contains_an_hidden_file() throws Exception {
         createDirectory(widgetDirectory.resolve(".DS_Store"));
 
-        widgetLoader.getAll(widgetDirectory);
+        assertDoesNotThrow(() -> widgetLoader.getAll(widgetDirectory));
     }
 
     @Test
-    public void should_retrieve_all_custom_widgets() throws Exception {
+    void should_retrieve_all_custom_widgets() throws Exception {
         Widget input = WidgetBuilder.aWidget().withId("pbInput").build();
         Widget custom1 = WidgetBuilder.aWidget().withId("custom1").custom().build();
         Widget custom2 = WidgetBuilder.aWidget().withId("custom2").custom().build();
@@ -148,7 +147,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_only_load_persisted_properties() throws Exception {
+    void should_only_load_persisted_properties() throws Exception {
         addToDirectory(widgetDirectory, WidgetBuilder.aWidget().withId("customWidget")
                 .custom()
                 .favorite()
@@ -160,7 +159,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_find_widget_which_use_another_widget() throws Exception {
+    void should_find_widget_which_use_another_widget() throws Exception {
         Widget input = WidgetBuilder.aWidget().withId("input").build();
         Widget label = WidgetBuilder.aWidget().withId("label").template("use <input>").build();
         addToDirectory(widgetDirectory, input, label);
@@ -170,7 +169,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_find_widget_which_not_use_another_widget() throws Exception {
+    void should_find_widget_which_not_use_another_widget() throws Exception {
         Widget input = WidgetBuilder.aWidget().withId("input").build();
         Widget label = WidgetBuilder.aWidget().withId("label").template("use <input>").build();
         addToDirectory(widgetDirectory, input, label);
@@ -180,7 +179,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_load_a_single_page_in_the_import_folder() throws Exception {
+    void should_load_a_single_page_in_the_import_folder() throws Exception {
         Widget input = WidgetBuilder.aWidget().withId("input").build();
         addToDirectory(widgetDirectory, input);
 
@@ -190,19 +189,22 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_throw_notfound_exception_when_there_are_no_pages_in_folder() throws Exception {
-        assertThrows(NotFoundException.class, () -> widgetLoader.load(widgetDirectory.resolve("test")));
+    void should_throw_notfound_exception_when_there_are_no_pages_in_folder() throws Exception {
+        var path = widgetDirectory.resolve("test");
+        
+        assertThrows(NotFoundException.class, () -> widgetLoader.load(path));
     }
 
     @Test
-    public void should_throw_json_read_exception_when_loaded_file_is_not_valid_json() throws Exception {
+    void should_throw_json_read_exception_when_loaded_file_is_not_valid_json() throws Exception {
         write(widgetDirectory.resolve("wrongjson.json"), "notJson".getBytes());
-
-        assertThrows(JsonReadException.class, () -> widgetLoader.load(widgetDirectory.resolve("wrongjson.json")));
+        var path =  widgetDirectory.resolve("wrongjson.json");
+        
+        assertThrows(JsonReadException.class, () -> widgetLoader.load(path));
     }
 
     @Test
-    public void should_throw_notfound_exception_when_widget_template_is_not_found() throws Exception {
+    void should_throw_notfound_exception_when_widget_template_is_not_found() throws Exception {
         Widget input = WidgetBuilder.aWidget().withId("input").build();
         input.setTemplate("@missingTemplate.tpl.html");
         addToDirectory(widgetDirectory, input);
@@ -212,7 +214,7 @@ public class WidgetFileBasedLoaderTest {
     }
 
     @Test
-    public void should_throw_notfound_exception_when_widget_controller_is_not_found() throws Exception {
+    void should_throw_notfound_exception_when_widget_controller_is_not_found() throws Exception {
         Widget input = WidgetBuilder.aWidget().withId("input").build();
         input.setController("@missingController.ctrl.js");
         addToDirectory(widgetDirectory, input);

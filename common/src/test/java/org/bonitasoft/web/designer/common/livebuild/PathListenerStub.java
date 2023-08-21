@@ -20,7 +20,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PathListenerStub implements PathListener {
+class PathListenerStub implements PathListener {
 
     final Set<Path> changed = new HashSet<>();
 

@@ -27,17 +27,17 @@ import org.bonitasoft.web.designer.model.exception.ConstraintValidationException
 import org.bonitasoft.web.designer.repository.BeanValidator;
 import org.junit.jupiter.api.Test;
 
-public class BeanValidatorTest {
+class BeanValidatorTest {
 
     @Test
-    public void should_do_nothing_if_bean_is_valid() {
+    void should_do_nothing_if_bean_is_valid() {
         BeanValidator validator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
 
         validator.validate(aValidBean());
     }
 
     @Test
-    public void should_throw_constraintViolationException_when_bean_is_not_valid() throws Exception {
+    void should_throw_constraintViolationException_when_bean_is_not_valid() throws Exception {
         BeanValidator validator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
 
         assertThrows(ConstraintValidationException.class, () -> validator.validate(anInvalidBean()));

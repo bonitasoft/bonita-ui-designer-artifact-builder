@@ -39,7 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class WidgetFileBasedPersisterTest {
+class WidgetFileBasedPersisterTest {
 
     private static final String DESIGNER_VERSION = "2.0.0";
 
@@ -54,7 +54,7 @@ public class WidgetFileBasedPersisterTest {
     private Path repoDirectory;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         repoDirectory = Files.createDirectory(tempDir.resolve("jsonrepository"));
         jsonHandler = spy(new JsonHandlerFactory().create());
         widgetPersister = new WidgetFileBasedPersister(jsonHandler, validator, DESIGNER_VERSION, DESIGNER_VERSION);
@@ -66,7 +66,7 @@ public class WidgetFileBasedPersisterTest {
     }
 
     @Test
-    public void should_serialize_an_object_and_save_it_to_a_file() throws Exception {
+    void should_serialize_an_object_and_save_it_to_a_file() throws Exception {
         String htmlContent = "<div></div>";
         String jsContent = "function ($scope) {}";
         Widget widgetToSave = WidgetBuilder.aWidget().withId("input").template(htmlContent).controller(jsContent)

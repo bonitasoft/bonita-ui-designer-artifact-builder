@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class WatcherTest {
+class WatcherTest {
 
     private final static long POLLING_DELAY = 10;
 
@@ -53,13 +53,13 @@ public class WatcherTest {
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         subDirectory = Files.createDirectory(folder.resolve("un répertoire"));
         watcher = new Watcher(new ObserverFactory(), monitor);
     }
 
     @Test
-    public void should_trigger_a_created_event_when_a_file_is_created() throws Exception {
+    void should_trigger_a_created_event_when_a_file_is_created() throws Exception {
         PathListenerStub listener = new PathListenerStub();
         watcher.watch(folder, listener);
 
@@ -69,7 +69,7 @@ public class WatcherTest {
     }
 
     @Test
-    public void should_trigger_a_modified_event_when_a_file_is_modified() throws Exception {
+    void should_trigger_a_modified_event_when_a_file_is_modified() throws Exception {
         Path existingFile = Files.createFile(subDirectory.resolve("file"));
         PathListenerStub listener = new PathListenerStub();
         watcher.watch(folder, listener);

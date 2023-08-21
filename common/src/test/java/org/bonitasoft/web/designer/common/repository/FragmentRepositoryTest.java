@@ -17,8 +17,8 @@
 package org.bonitasoft.web.designer.common.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,7 +45,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
 
-public class FragmentRepositoryTest {
+class FragmentRepositoryTest {
 
     @TempDir
     Path temporaryFolder;
@@ -57,7 +57,7 @@ public class FragmentRepositoryTest {
     private FragmentRepository repository;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         final BeanValidator validator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
         JsonHandler jsonHandler = new JsonHandlerFactory().create();
         persister = Mockito
@@ -84,7 +84,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_get_a_fragment_from_a_json_file_repository() throws Exception {
+    void should_get_a_fragment_from_a_json_file_repository() throws Exception {
         Fragment expectedFragment = FragmentBuilder.aFilledFragment("fragment-id");
         addToRepository(expectedFragment);
 
@@ -94,17 +94,17 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_getting_an_inexisting_fragment() throws Exception {
+    void should_throw_NotFoundException_when_getting_an_inexisting_fragment() throws Exception {
         assertThrows(NotFoundException.class, () -> repository.get("fragment-id-unknown"));
     }
 
     @Test
-    public void should_get_all_fragment_from_repository_empty() {
+    void should_get_all_fragment_from_repository_empty() {
         assertThat(repository.getAll()).isEmpty();
     }
 
     @Test
-    public void should_get_all_fragment_from_repository() throws Exception {
+    void should_get_all_fragment_from_repository() throws Exception {
         Fragment expectedFragment = FragmentBuilder.aFilledFragment("fragment-id");
         addToRepository(expectedFragment);
 
@@ -114,7 +114,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_get_all_fragment_except_itself() throws Exception {
+    void should_get_all_fragment_except_itself() throws Exception {
         Fragment itself = addToRepository(FragmentBuilder.aFragment().withId("aFragment"));
         Fragment expectedFragment = addToRepository(FragmentBuilder.aFragment().withId("anotherFragment"));
 
@@ -124,7 +124,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_get_all_fragment_except_those_which_are_using_it() throws Exception {
+    void should_get_all_fragment_except_those_which_are_using_it() throws Exception {
         Fragment expectedFragment = addToRepository(FragmentBuilder.aFragment().withId("anotherFragment").build());
         Fragment itself = addToRepository(FragmentBuilder.aFragment().withId("aFragment"));
         addToRepository(FragmentBuilder.aFragment().with(itself).build());
@@ -135,7 +135,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_get_all_fragment_except_those_which_are_using_a_fragment_that_use_itself() throws Exception {
+    void should_get_all_fragment_except_those_which_are_using_a_fragment_that_use_itself() throws Exception {
         Fragment expectedFragment = addToRepository(FragmentBuilder.aFragment().withId("anotherFragment").build());
         Fragment itself = addToRepository(FragmentBuilder.aFragment().withId("aFragment").build());
         Fragment container = addToRepository(FragmentBuilder.aFragment().with(itself));
@@ -148,7 +148,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_save_a_fragment_in_a_json_file_repository() throws Exception {
+    void should_save_a_fragment_in_a_json_file_repository() throws Exception {
         Fragment expectedFragment = FragmentBuilder.aFilledFragment("fragment-id");
 
         Assertions.assertThat(temporaryFolder.resolve(expectedFragment.getId())
@@ -162,7 +162,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_save_a_page_without_updating_last_update_date() {
+    void should_save_a_page_without_updating_last_update_date() {
         Fragment fragment = repository
                 .updateLastUpdateAndSave(
                         FragmentBuilder.aFragment().withId("customLabel").withName("theFragmentName").build());
@@ -177,7 +177,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_occurs_while_saving_a_fragment() throws Exception {
+    void should_throw_RepositoryException_when_error_occurs_while_saving_a_fragment() throws Exception {
         Fragment expectedFragment = FragmentBuilder.aFilledFragment("fragment-id");
         Mockito.doThrow(new IOException()).when(persister)
                 .save(temporaryFolder.resolve(expectedFragment.getId()), expectedFragment);
@@ -186,19 +186,19 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_throw_IllegalArgumentException_while_saving_a_fragment_with_no_id_set() {
+    void should_throw_IllegalArgumentException_while_saving_a_fragment_with_no_id_set() {
         Fragment expectedFragment = FragmentBuilder.aFragment().withId(null).build();
         assertThrows(IllegalArgumentException.class, () -> repository.updateLastUpdateAndSave(expectedFragment));
     }
 
     @Test
-    public void should_throw_ConstraintValidationException_while_saving_a_fragment_with_bad_name() {
+    void should_throw_ConstraintValidationException_while_saving_a_fragment_with_bad_name() {
         Fragment expectedFragment = FragmentBuilder.aFragment().withId("fragment-id").withName("éé&é&z").build();
         assertThrows(ConstraintValidationException.class, () -> repository.updateLastUpdateAndSave(expectedFragment));
     }
 
     @Test
-    public void should_save_all_fragment_in_a_json_file_repository() throws Exception {
+    void should_save_all_fragment_in_a_json_file_repository() throws Exception {
         Fragment expectedFragment = FragmentBuilder.aFilledFragment("fragment-id");
         Assertions.assertThat(temporaryFolder.resolve(expectedFragment.getId())
                 .resolve(expectedFragment.getId() + ".json").toFile()).doesNotExist();
@@ -210,12 +210,12 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_not_thrown_NPE_on_save_all_fragment_when_list_null() {
-        repository.saveAll(null);
+    void should_not_thrown_NPE_on_save_all_fragment_when_list_null() {
+       assertDoesNotThrow(() -> repository.saveAll(null));
     }
 
     @Test
-    public void should_delete_a_fragment_with_his_json_file_repository() throws Exception {
+    void should_delete_a_fragment_with_his_json_file_repository() throws Exception {
         Fragment expectedFragment = FragmentBuilder.aFilledFragment("fragment-id");
         addToRepository(expectedFragment);
         Assertions.assertThat(temporaryFolder.resolve(expectedFragment.getId())
@@ -226,22 +226,22 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_deleting_inexisting_fragment() {
+    void should_throw_NotFoundException_when_deleting_inexisting_fragment() {
         assertThrows(NotFoundException.class, () -> repository.delete("foo"));
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_occurs_on_object_included_search_list() throws Exception {
+    void should_throw_RepositoryException_when_error_occurs_on_object_included_search_list() throws Exception {
         Fragment expectedFragment = FragmentBuilder.aFilledFragment("fragment-id");
         Mockito.doThrow(new IOException()).when(loader).findByObjectId(temporaryFolder,
                 expectedFragment.getId());
-
-        assertThrows(RepositoryException.class, () -> repository.findByObjectId(expectedFragment.getId()));
-
+        var id = expectedFragment.getId();
+       
+        assertThrows(RepositoryException.class, () -> repository.findByObjectId(id));
     }
 
     @Test
-    public void should_mark_a_widget_as_favorite() throws Exception {
+    void should_mark_a_widget_as_favorite() throws Exception {
         Fragment fragment = addToRepository(FragmentBuilder.aFragment().notFavorite());
 
         repository.markAsFavorite(fragment.getId());
@@ -252,7 +252,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_unmark_a_widget_as_favorite() throws Exception {
+    void should_unmark_a_widget_as_favorite() throws Exception {
         Fragment fragment = addToRepository(FragmentBuilder.aFragment().favorite());
 
         repository.unmarkAsFavorite(fragment.getId());
@@ -262,7 +262,7 @@ public class FragmentRepositoryTest {
     }
 
     @Test
-    public void should_keep_fragment_name_id_if_there_is_no_fragment_with_same_id() throws Exception {
+    void should_keep_fragment_name_id_if_there_is_no_fragment_with_same_id() throws Exception {
         String newFragmentId = repository.getNextAvailableId("newFragmentId");
 
         assertThat(newFragmentId).isEqualTo("newFragmentId");

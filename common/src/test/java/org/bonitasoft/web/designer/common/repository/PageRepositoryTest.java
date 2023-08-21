@@ -21,6 +21,7 @@ import static java.nio.file.Files.exists;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.aComponent;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +29,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import javax.validation.Validation;
 
@@ -45,12 +50,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PageRepositoryTest {
+class PageRepositoryTest {
 
     @TempDir
     public Path temporaryFolder;
@@ -64,7 +68,7 @@ public class PageRepositoryTest {
     private Path pageDir;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         JsonHandler jsonHandler = new JsonHandlerFactory().create();
         BeanValidator validator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
 
@@ -93,7 +97,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_get_a_page_from_a_json_file_repository() throws Exception {
+    void should_get_a_page_from_a_json_file_repository() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
         addToRepository(expectedPage);
 
@@ -103,17 +107,17 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_getting_an_inexisting_page() throws Exception {
+    void should_throw_NotFoundException_when_getting_an_inexisting_page() throws Exception {
         assertThrows(NotFoundException.class, () -> repository.get("page-id-unknown"));
     }
 
     @Test
-    public void should_get_all_page_from_repository_empty() throws Exception {
+    void should_get_all_page_from_repository_empty() throws Exception {
         assertThat(repository.getAll()).isEmpty();
     }
 
     @Test
-    public void should_get_all_page_from_repository() throws Exception {
+    void should_get_all_page_from_repository() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
         addToRepository(expectedPage);
 
@@ -123,7 +127,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_save_a_page_in_a_json_file_repository() throws Exception {
+    void should_save_a_page_in_a_json_file_repository() throws Exception {
         Page page = PageBuilder.aFilledPage("page-id");
         assertThat(pageDir.resolve(page.getId()).resolve(page.getId() + ".json").toFile()).doesNotExist();
 
@@ -136,7 +140,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_give_new_id_if_there_is_already_a_page_with_same_id() throws Exception {
+    void should_give_new_id_if_there_is_already_a_page_with_same_id() throws Exception {
         Page page = PageBuilder.aFilledPage("pageName");
         repository.updateLastUpdateAndSave(page);
 
@@ -146,24 +150,23 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_keep_page_name_id_if_there_is_no_page_with_same_id() throws Exception {
+    void should_keep_page_name_id_if_there_is_no_page_with_same_id() throws Exception {
         String newPageId = repository.getNextAvailableId("pageName");
 
         assertThat(newPageId).isEqualTo("pageName");
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_occurs_while_saving_a_page() throws Exception {
+    void should_throw_RepositoryException_when_error_occurs_while_saving_a_page() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
         Path pagePath = pageDir.resolve(expectedPage.getId());
-        Mockito.doThrow(new IOException()).when(persister).save(ArgumentMatchers.eq(pagePath),
-                ArgumentMatchers.eq(expectedPage));
+        Mockito.doThrow(new IOException()).when(persister).save(pagePath, expectedPage);
 
         assertThrows(RepositoryException.class, () -> repository.updateLastUpdateAndSave(expectedPage));
     }
 
     @Test
-    public void should_save_a_page_without_updating_last_update_date() throws Exception {
+    void should_save_a_page_without_updating_last_update_date() throws Exception {
         Page page = repository
                 .updateLastUpdateAndSave(PageBuilder.aPage().withId("page-id").withName("thePageName").build());
         Instant lastUpdate = page.getLastUpdate();
@@ -177,20 +180,20 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_throw_IllegalArgumentException_while_saving_a_page_with_no_id_set() throws Exception {
+    void should_throw_IllegalArgumentException_while_saving_a_page_with_no_id_set() throws Exception {
         Page expectedPage = PageBuilder.aPage().withId(null).build();
         assertThrows(IllegalArgumentException.class, () -> repository.updateLastUpdateAndSave(expectedPage));
     }
 
     @Test
-    public void should_throw_ConstraintValidationException_while_saving_a_page_with_bad_name() throws Exception {
+    void should_throw_ConstraintValidationException_while_saving_a_page_with_bad_name() throws Exception {
         Page expectedPage = PageBuilder.aPage().withId("page-id").withName("éé&é&z").build();
 
         assertThrows(ConstraintValidationException.class, () -> repository.updateLastUpdateAndSave(expectedPage));
     }
 
     @Test
-    public void should_save_all_page_in_a_json_file_repository() throws Exception {
+    void should_save_all_page_in_a_json_file_repository() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
 
         assertThat(pageDir.resolve(expectedPage.getId()).resolve(expectedPage.getId() + ".json").toFile())
@@ -203,7 +206,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_delete_a_page_with_his_json_file_repository() throws Exception {
+    void should_delete_a_page_with_his_json_file_repository() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
         addToRepository(expectedPage);
 
@@ -214,7 +217,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_delete_page_metadata_when_deleting_a_page() throws Exception {
+    void should_delete_page_metadata_when_deleting_a_page() throws Exception {
         Page expectedPage = addToRepository(PageBuilder.aFilledPage("page-id"));
         assertThat(pageDir.resolve(".metadata").resolve(expectedPage.getId() + ".json").toFile()).exists();
 
@@ -224,12 +227,12 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_deleting_inexisting_page() throws Exception {
+    void should_throw_NotFoundException_when_deleting_inexisting_page() throws Exception {
         assertThrows(NotFoundException.class, () -> repository.delete("foo"));
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_occurs_on_object_included_search_list() throws Exception {
+    void should_throw_RepositoryException_when_error_occurs_on_object_included_search_list() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
         Mockito.doThrow(new IOException()).when(loader).findByObjectId(pageDir, expectedPage.getId());
         assertThrows(RepositoryException.class, () -> repository.findByObjectId(expectedPage.getId()));
@@ -237,7 +240,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_mark_a_page_as_favorite() throws Exception {
+    void should_mark_a_page_as_favorite() throws Exception {
         Page page = addToRepository(PageBuilder.aPage().notFavorite());
 
         repository.markAsFavorite(page.getId());
@@ -247,7 +250,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_unmark_a_page_as_favorite() throws Exception {
+    void should_unmark_a_page_as_favorite() throws Exception {
         Page page = addToRepository(PageBuilder.aPage().favorite());
 
         repository.unmarkAsFavorite(page.getId());
@@ -257,7 +260,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_refresh_repository() throws Exception {
+    void should_refresh_repository() throws Exception {
         Page page = addToRepository(PageBuilder.aPage());
         pageDir.resolve(".metadata").resolve(page.getId() + ".json").toFile().delete();
         pageDir.resolve(".metadata").resolve(".index.json").toFile().delete();
@@ -270,7 +273,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_refreshIndexing_repository() throws Exception {
+    void should_refreshIndexing_repository() throws Exception {
         List<Page> pages = new ArrayList<>();
         Page page = PageBuilder.aPage().withUUID("baz-uuid").withId("page1").build();
         Page page2 = PageBuilder.aPage().withUUID("foo-uuid").withId("page2").withName("page2").build();
@@ -283,7 +286,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_return_artefacts_name_which_contains_widget_id() throws Exception {
+    void should_return_artefacts_name_which_contains_widget_id() throws Exception {
         Page page = PageBuilder.aPage()
                 .withUUID("baz-uuid")
                 .withId("page1")
@@ -303,7 +306,7 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_return_artefact_name_which_using_widget_id() throws Exception {
+    void should_return_artefact_name_which_using_widget_id() throws Exception {
         Page page = PageBuilder.aPage()
                 .withUUID("baz-uuid")
                 .withId("page1")
@@ -327,11 +330,10 @@ public class PageRepositoryTest {
     }
 
     @Test
-    public void should_throw_RepositoryException_when_error_occurs_while_refresh_a_page() throws Exception {
+    void should_throw_RepositoryException_when_error_occurs_while_refresh_a_page() throws Exception {
         Page expectedPage = PageBuilder.aFilledPage("page-id");
         Path pagePath = pageDir.resolve(expectedPage.getId());
-        Mockito.doThrow(new IOException()).when(persister).save(ArgumentMatchers.eq(pagePath),
-                ArgumentMatchers.eq(expectedPage));
+        doThrow(new IOException()).when(persister).save(pagePath,expectedPage);
 
         assertThrows(RepositoryException.class, () -> repository.updateLastUpdateAndSave(expectedPage));
     }

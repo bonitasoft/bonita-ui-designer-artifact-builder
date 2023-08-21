@@ -17,13 +17,15 @@
 package org.bonitasoft.web.designer.common.repository;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.*;
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.createFile;
+import static java.nio.file.Files.write;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
-import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +50,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AssetRepositoryTest {
+class AssetRepositoryTest {
 
     @Mock
     private BeanValidator validator;
@@ -63,7 +65,7 @@ public class AssetRepositoryTest {
     Path pagesPath;
 
     @Test
-    public void should_resolveAssetPath() {
+    void should_resolveAssetPath() {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         when(pageRepository.resolvePathFolder("page-id")).thenReturn(pagesPath);
@@ -74,7 +76,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_not_resolveAssetPath_when_asset_invalid() {
+    void should_not_resolveAssetPath_when_asset_invalid() {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
 
@@ -85,7 +87,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_save_asset() throws Exception {
+    void should_save_asset() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         Path fileExpected = pagesPath.resolve("assets").resolve("js").resolve(asset.getName());
@@ -103,13 +105,14 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NullPointerException_when_deleting_asset_componentId_null() throws Exception {
-
-        assertThrows(NullPointerException.class, () -> assetRepository.delete(new Asset()));
+    void should_throw_NullPointerException_when_deleting_asset_componentId_null() throws Exception {
+        Asset asset = new Asset();
+        
+        assertThrows(NullPointerException.class, () -> assetRepository.delete(asset));
     }
 
     @Test
-    public void should_delete_asset() throws Exception {
+    void should_delete_asset() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         Path fileExpected = pagesPath.resolve("assets").resolve("js").resolve(asset.getName());
@@ -125,7 +128,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NotFoundException_when_deleting_inexisting_page() {
+    void should_throw_NotFoundException_when_deleting_inexisting_page() {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         Mockito.when(pageRepository.resolvePathFolder("page-id")).thenReturn(pagesPath);
@@ -135,14 +138,14 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void readAllBytes_for_null_id_should_throw_ex() {
+    void readAllBytes_for_null_id_should_throw_ex() {
         assertThatThrownBy(() -> assetRepository.readAllBytes(null, Mockito.mock(Asset.class)))
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage(AssetRepository.COMPONENT_ID_REQUIRED);
     }
 
     @Test
-    public void should_readAllBytes_asset() throws Exception {
+    void should_readAllBytes_asset() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         Path fileExpected = pagesPath.resolve("assets").resolve("js").resolve(asset.getName());
@@ -156,12 +159,12 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NullPointerException_when_reading_asset_with_component_id_null() {
+    void should_throw_NullPointerException_when_reading_asset_with_component_id_null() {
         assertThrows(NullPointerException.class, () -> assetRepository.readAllBytes(new Asset()));
     }
 
     @Test
-    public void should_throw_NotFoundException_when_reading_inexisting_page() throws Exception {
+    void should_throw_NotFoundException_when_reading_inexisting_page() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         Mockito.when(pageRepository.resolvePathFolder("page-id")).thenReturn(pagesPath);
@@ -171,7 +174,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_find_asset_path_used_by_a_component() throws Exception {
+    void should_find_asset_path_used_by_a_component() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         System.out.println(asset.getName());
@@ -187,7 +190,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NotAllowedException_when_find_external_asset() {
+    void should_throw_NotAllowedException_when_find_external_asset() {
         Page page = PageBuilder.aPage().withId("page-id").build();
 
         Asset asset = AssetBuilder.aFilledAsset(page);
@@ -206,7 +209,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NullPointerException_when_find_asset_with_filename_null() {
+    void should_throw_NullPointerException_when_find_asset_with_filename_null() {
         final NullPointerException exception = assertThrows(NullPointerException.class, () -> {
             assetRepository.findAssetPath("page-id", null, AssetType.JAVASCRIPT);
         });
@@ -215,7 +218,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NullPointerException_when_find_asset_path_with_type_null() throws Exception {
+    void should_throw_NullPointerException_when_find_asset_path_with_type_null() throws Exception {
         final NullPointerException exception = assertThrows(NullPointerException.class, () -> {
             assetRepository.findAssetPath("page-id", "myfile.js", null);
         });
@@ -223,7 +226,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_throw_NoSuchElementException_when_finding_inexistant_asset() throws Exception {
+    void should_throw_NoSuchElementException_when_finding_inexistant_asset() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
         Asset asset = AssetBuilder.aFilledAsset(page);
         createFile(pagesPath.resolve(asset.getName()));
@@ -235,7 +238,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_findAssetInPath_asset() throws Exception {
+    void should_findAssetInPath_asset() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
         write(pagesPath.resolve("file1.css"), "<style>.maclass1{}</style>".getBytes());
         write(pagesPath.resolve("file2.css"), "<style>.maclass2{}</style>".getBytes());
@@ -247,7 +250,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_findAssetInPath_asset_when_noone_is_present() throws Exception {
+    void should_findAssetInPath_asset_when_noone_is_present() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id").build();
 
         List<Asset> assets = assetRepository.findAssetInPath(page, AssetType.CSS, pagesPath);
@@ -256,7 +259,7 @@ public class AssetRepositoryTest {
     }
 
     @Test
-    public void should_refresh_component_assets_from_disk() throws Exception {
+    void should_refresh_component_assets_from_disk() throws Exception {
         Page page = PageBuilder.aPage().withId("page-id")
                 .withAsset(AssetBuilder.anAsset().withName("existing-asset.js")).build();
         createDirectories(pagesPath.resolve("page-id/assets/css"));

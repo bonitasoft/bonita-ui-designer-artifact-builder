@@ -25,7 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-public class ObserverFactoryTest {
+class ObserverFactoryTest {
 
     private Path monitoredFolder;
     private ObserverFactory factory;
@@ -35,14 +35,14 @@ public class ObserverFactoryTest {
     Path tempDir;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         monitoredFolder = Files.createDirectory(tempDir.resolve("répertoire avec un nom b1z@re"));
         factory = new ObserverFactory();
         listener = new PathListenerStub();
     }
 
     @Test
-    public void should_create_an_observer_that_notify_when_a_file_is_created() throws Exception {
+    void should_create_an_observer_that_notify_when_a_file_is_created() throws Exception {
 
         FileAlterationObserver observer = factory.create(monitoredFolder, listener);
         Path aFile = Files.write(monitoredFolder.resolve("aFile"), "coucou".getBytes());
@@ -52,7 +52,7 @@ public class ObserverFactoryTest {
     }
 
     @Test
-    public void should_create_an_observer_that_notify_when_a_file_is_modified() throws Exception {
+    void should_create_an_observer_that_notify_when_a_file_is_modified() throws Exception {
         Files.write(monitoredFolder.resolve("aFile"), "coucou".getBytes());
 
         FileAlterationObserver observer = factory.create(monitoredFolder, listener);

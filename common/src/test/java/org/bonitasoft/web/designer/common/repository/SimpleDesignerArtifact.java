@@ -51,7 +51,7 @@ public final class SimpleDesignerArtifact extends DesignerArtifact {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -60,7 +60,7 @@ public final class SimpleDesignerArtifact extends DesignerArtifact {
         return number;
     }
 
-    public void setNumber(int number) {
+    void setNumber(int number) {
         this.number = number;
     }
 
@@ -68,11 +68,11 @@ public final class SimpleDesignerArtifact extends DesignerArtifact {
         return another;
     }
 
-    public void setAnother(SimpleDesignerArtifact another) {
+    void setAnother(SimpleDesignerArtifact another) {
         this.another = another;
     }
 
-    public void setMetadata(String metadata) {
+    void setMetadata(String metadata) {
         this.metadata = metadata;
     }
 

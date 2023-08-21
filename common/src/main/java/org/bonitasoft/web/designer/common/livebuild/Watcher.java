@@ -16,7 +16,6 @@
  */
 package org.bonitasoft.web.designer.common.livebuild;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
@@ -32,7 +31,7 @@ public class Watcher {
         this.monitor = monitor;
     }
 
-    public void watch(Path path, final PathListener listener) throws IOException {
+    public void watch(Path path, final PathListener listener) {
         FileAlterationObserver observer = observerFactory.create(path, listener);
         monitor.addObserver(observer);
     }

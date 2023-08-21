@@ -17,7 +17,9 @@
 package org.bonitasoft.web.designer.common.repository;
 
 import static java.lang.String.format;
-import static java.nio.file.Files.*;
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Files.write;
 import static java.util.Arrays.stream;
 import static java.util.Objects.requireNonNull;
 
