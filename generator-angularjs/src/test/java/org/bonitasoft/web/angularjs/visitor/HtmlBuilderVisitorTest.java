@@ -268,19 +268,21 @@ class HtmlBuilderVisitorTest {
     @Test
     void should_throw_generation_exception_when_associated_fragment_is_not_found() throws Exception {
         when(fragmentRepository.get("unknown-fragment")).thenThrow(new NotFoundException("not found"));
-
-        assertThrows(GenerationException.class, () -> visitor.visit(aFragmentElement()
+        var fragment = aFragmentElement()
                 .withFragmentId("unknown-fragment")
-                .build()));
+                .build();
+
+        assertThrows(GenerationException.class, () -> visitor.visit(fragment));
     }
 
     @Test
     void should_throw_generation_exception_when_error_occurs_while_getting_associated_fragment_from_repository() {
         when(fragmentRepository.get("bad-fragment")).thenThrow(new RepositoryException("error", new Exception()));
-
-        assertThrows(GenerationException.class, () -> visitor.visit(aFragmentElement()
+        var fragment = aFragmentElement()
                 .withFragmentId("bad-fragment")
-                .build()));
+                .build();
+
+        assertThrows(GenerationException.class, () -> visitor.visit(fragment));
     }
 
 }

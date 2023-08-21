@@ -19,6 +19,6 @@ package org.bonitasoft.web.angularjs.workspace;
 public class HtmlSanitizer {
 
     public String escapeSingleQuotesAndNewLines(String string) {
-        return string.replaceAll("'", "\\\\'").replaceAll("\r?\n", "\\\\n");
+        return string.replace("'", "\\\\'").replaceAll("\r?\n", "\\\\n");
     }
 }

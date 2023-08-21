@@ -39,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HtmlBuilderVisitor implements ElementVisitor<String> {
 
+    private static final String CONTENT = "content";
     private final FragmentRepository fragmentRepository;
 
     @Override
@@ -78,7 +79,7 @@ public class HtmlBuilderVisitor implements ElementVisitor<String> {
     @Override
     public String visit(FormContainer formContainer) {
         return new TemplateEngine("formContainer.hbs.html")
-                .with("content", formContainer.getContainer().accept(this))
+                .with(CONTENT, formContainer.getContainer().accept(this))
                 .build(formContainer);
     }
 
@@ -98,14 +99,14 @@ public class HtmlBuilderVisitor implements ElementVisitor<String> {
     @Override
     public String visit(TabContainer tabContainer) {
         return new TemplateEngine("tabContainer.hbs.html")
-                .with("content", tabContainer.getContainer().accept(this))
+                .with(CONTENT, tabContainer.getContainer().accept(this))
                 .build(tabContainer);
     }
 
     @Override
     public String visit(ModalContainer modalContainer) {
         return new TemplateEngine("modalContainer.hbs.html")
-                .with("content", modalContainer.getContainer().accept(this))
+                .with(CONTENT, modalContainer.getContainer().accept(this))
                 .with("modalidHtml", modalContainer.getPropertyValues().get("modalId").getValue())
                 .build(modalContainer);
     }
@@ -120,8 +121,7 @@ public class HtmlBuilderVisitor implements ElementVisitor<String> {
 
     @Override
     public String visit(Previewable previewable) {
-        //TODO: Add new exeption to replace ArtifactBuilderException
-        throw new RuntimeException("Can't build previewable html by visiting it. Need to call " +
+        throw new IllegalStateException("Can't build previewable html by visiting it. Need to call " +
                 "HtmlBuilderVisitor#build.");
     }
 

@@ -211,16 +211,18 @@ class PropertyValuesVisitorTest {
     @Test
     void should_throw_a_generation_error_when_fragment_is_not_found() {
         when(fragmentRepository.get("fragment-id")).thenThrow(new NotFoundException(""));
+        var fragment = aFragmentElement()
+                .withFragmentId("fragment-id").build();
 
-        assertThrows(GenerationException.class, () -> propertyValuesVisitor.visit(aFragmentElement()
-                .withFragmentId("fragment-id").build()));
+        assertThrows(GenerationException.class, () -> propertyValuesVisitor.visit(fragment));
     }
 
     @Test
     void should_throw_a_generation_error_when_there_is_a_repository_error_while_looking_for_a_fragment() {
         when(fragmentRepository.get("fragment-id")).thenThrow(new RepositoryException("", new RuntimeException()));
+        var fragment = aFragmentElement()
+                .withFragmentId("fragment-id").build();
 
-        assertThrows(GenerationException.class, () -> propertyValuesVisitor.visit(aFragmentElement()
-                .withFragmentId("fragment-id").build()));
+        assertThrows(GenerationException.class, () -> propertyValuesVisitor.visit(fragment));
     }
 }

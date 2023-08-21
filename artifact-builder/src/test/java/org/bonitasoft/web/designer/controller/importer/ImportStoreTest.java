@@ -17,6 +17,7 @@
 package org.bonitasoft.web.designer.controller.importer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Files;
@@ -35,7 +36,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ImportStoreTest {
 
     @Mock
-    private AbstractArtifactImporter artifactImporter;
+    private AbstractArtifactImporter<?> artifactImporter;
 
     private ImportStore importStore;
 
@@ -74,8 +75,9 @@ class ImportStoreTest {
         Import addedReport = importStore.store(artifactImporter, Paths.get("import/path"));
 
         importStore.remove(addedReport.getUUID());
+        var uuid = addedReport.getUUID();
 
-        assertThrows(NotFoundException.class, () -> importStore.get(addedReport.getUUID()));
+        assertThrows(NotFoundException.class, () -> importStore.get(uuid));
     }
 
     @Test
@@ -90,9 +92,6 @@ class ImportStoreTest {
 
     @Test
     void should_fail_silently_while_removing_an_unexisting_import() throws Exception {
-
-        importStore.remove("unexinting id");
-
-        // ok expected no exception
+        assertDoesNotThrow(() -> importStore.remove("unexinting id"));
     }
 }
