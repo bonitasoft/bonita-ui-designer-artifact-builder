@@ -69,26 +69,32 @@ class AssetServiceTest {
 
     @Test
     void should_return_error_when_adding_asset_with_name_null() {
-        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            assetService.save(aPage().withId("page-id").build(), anAsset().withName(null).build());
-        });
+        var page = aPage().withId("page-id").build();
+        var asset = anAsset().withName(null).build();
+
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> assetService.save(page, asset));
         assertThat(exception.getMessage()).isEqualTo("Asset URL is required");
     }
 
     @Test
     void should_return_error_when_adding_asset_with_name_empty() {
+        var page = aPage().withId("page-id").build();
+        var asset = anAsset().withName("").build();
+
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             //We construct a mockfile (the first arg is the name of the property expected in the controller
-            assetService.save(aPage().withId("page-id").build(), anAsset().withName("").build());
+            assetService.save(page, asset);
         });
         assertThat(exception.getMessage()).isEqualTo("Asset URL is required");
     }
 
     @Test
     void should_return_error_when_adding_asset_with_type_invalid() {
+        var page = aPage().withId("page-id").build();
+        var asset = anAsset().withName("http://mycdn.com/myasset.js").withType(null).build();
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            assetService.save(aPage().withId("page-id").build(),
-                    anAsset().withName("http://mycdn.com/myasset.js").withType(null).build());
+            assetService.save(page, asset);
         });
         assertThat(exception.getMessage()).isEqualTo("Asset type is required");
     }
@@ -185,9 +191,11 @@ class AssetServiceTest {
 
     @Test
     void should_return_error_when_deleting_asset_with_name_empty() {
+        var page = aPage().withId("page-id").build();
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
         //We construct a mockfile (the first arg is the name of the property expected in the controller
-        assetService.delete(aPage().withId("page-id").build(), null));
+        assetService.delete(page, null));
+
         assertThat(exception.getMessage()).isEqualTo("Asset id is required");
     }
 
@@ -209,12 +217,12 @@ class AssetServiceTest {
         page.getInactiveAssets().add("UIID");
         page.getAssets().add(asset);
 
-        assertThat(page.getInactiveAssets().size()).isEqualTo(1);
+        assertThat(page.getInactiveAssets()).hasSize(1);
 
         assetService.delete(page, "UIID");
 
         verify(assetRepository).delete(asset);
-        assertThat(page.getInactiveAssets().size()).isEqualTo(0);
+        assertThat(page.getInactiveAssets()).isEmpty();
     }
 
     @Test
@@ -232,8 +240,9 @@ class AssetServiceTest {
 
     @Test
     void should_throw_IllegalArgument_when_sorting_asset_component_with_no_name() throws Exception {
+        var page = aPage().build();
         final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> assetService.changeAssetOrderInComponent(aPage().build(), null, DECREMENT));
+                () -> assetService.changeAssetOrderInComponent(page, null, DECREMENT));
         assertThat(exception.getMessage()).isEqualTo("Asset id is required");
     }
 

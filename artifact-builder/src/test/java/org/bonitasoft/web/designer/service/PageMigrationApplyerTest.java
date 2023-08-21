@@ -141,8 +141,8 @@ class PageMigrationApplyerTest {
         Page migratedPage = (Page) result.getArtifact();
 
         assertThat(result.getFinalStatus()).isEqualTo(MigrationStatus.WARNING);
-        assertThat(result.getMigrationStepReportList().size()).isEqualTo(2);
-        assertThat(result.getMigrationStepReportListFilterByFinalStatus().size()).isEqualTo(1);
+        assertThat(result.getMigrationStepReportList()).hasSize(2);
+        assertThat(result.getMigrationStepReportListFilterByFinalStatus()).hasSize(1);
         assertThat(((MigrationStepReport) result.getMigrationStepReportListFilterByFinalStatus().get(0))
                 .getMigrationStatus()).isEqualTo(MigrationStatus.WARNING);
 

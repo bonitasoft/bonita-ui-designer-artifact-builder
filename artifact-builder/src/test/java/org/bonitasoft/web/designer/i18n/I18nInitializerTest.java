@@ -17,7 +17,10 @@
 package org.bonitasoft.web.designer.i18n;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -55,7 +58,7 @@ class I18nInitializerTest {
 
         i18nInitializer.initialize();
 
-        verify(languagePackBuilder).start(eq(generatorProperties.getExtractPath().resolve("i18n")));
+        verify(languagePackBuilder).start(generatorProperties.getExtractPath().resolve("i18n"));
     }
 
     @Test

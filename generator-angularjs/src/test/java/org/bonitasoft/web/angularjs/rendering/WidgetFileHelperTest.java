@@ -42,7 +42,7 @@ class WidgetFileHelperTest {
         Path path = WidgetFileHelper.writeFile(content, temporaryFolder, "f8a4574");
 
         Assertions.assertThat(path.toFile()).exists();
-        Assertions.assertThat(path.getFileName().toString()).isEqualTo("widgets-f8a4574.js");
+        Assertions.assertThat(path.getFileName()).hasToString("widgets-f8a4574.js");
     }
 
     @Test
@@ -76,9 +76,9 @@ class WidgetFileHelperTest {
     @Test
     void should_throw_generation_exception_if_not_exist_folder_path_when_write_a_file() {
         Path unexistingFile = temporaryFolder.resolve("FileNotFound");
-
+        var content = "Mon content".getBytes();
         assertThrows(GenerationException.class,
-                () -> WidgetFileHelper.writeFile("Mon content".getBytes(), unexistingFile, "notUsedForThisTest"));
+                () -> WidgetFileHelper.writeFile(content, unexistingFile, "notUsedForThisTest"));
     }
 
     @Test

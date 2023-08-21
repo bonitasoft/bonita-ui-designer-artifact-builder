@@ -60,7 +60,7 @@ public class LanguagePack {
     }
 
     private String extractLanguageFrom(Message header) {
-        var matcher = Pattern.compile("Language:(.*?)$", Pattern.MULTILINE).matcher(header.getMsgstr());
+        var matcher = Pattern.compile("Language:(.*)$", Pattern.MULTILINE).matcher(header.getMsgstr());
         if (!matcher.find()) {
             throw new ArtifactBuilderException("Couldn't find po file language.");
         }

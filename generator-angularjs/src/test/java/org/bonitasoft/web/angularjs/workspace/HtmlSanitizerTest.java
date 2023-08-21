@@ -37,7 +37,7 @@ class HtmlSanitizerTest {
     }
 
     private static Stream<Arguments> stringsToEscape() {
-        return Stream.of(Arguments.of("Hello 'romain' and 'benjamin'", "Hello \\\\'romain\\\\' and \\\\'benjamin\\\\'"),
+        return Stream.of(Arguments.of("Hello 'romain' and 'benjamin'", "Hello \\'romain\\' and \\'benjamin\\'"),
                 Arguments.of("Hello \n romain", "Hello \\n romain"),
                 Arguments.of("Hello \r\n romain", "Hello \\n romain"));
     }

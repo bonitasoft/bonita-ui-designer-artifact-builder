@@ -205,7 +205,7 @@ public class Workspace {
     }
 
     private String removeExtension(String fileName) {
-        if (fileName.indexOf(".") > 0) {
+        if (fileName.indexOf(".") != -1) {
             return fileName.substring(0, fileName.lastIndexOf("."));
         } else {
             return fileName;

@@ -75,7 +75,8 @@ public class AssetDependencyImporter<T extends Identifiable & Assetable> impleme
     public void save(List<Asset> elements, Path resources) {
         for (Asset asset : elements) {
             Path assetsPath = AssetScope.WIDGET.equals(asset.getScope())
-                    ? getWidgetAssetsFolderPath(asset.getComponentId(), resources) : resources.resolve("assets");
+                    ? getWidgetAssetsFolderPath(asset.getComponentId(), resources)
+                    : resources.resolve(ASSETS_FOLDER_NAME);
             Path sourceFile = assetsPath.resolve(asset.getType().getPrefix()).resolve(asset.getName());
             try {
                 assetRepository.save(asset, readAllBytes(sourceFile));

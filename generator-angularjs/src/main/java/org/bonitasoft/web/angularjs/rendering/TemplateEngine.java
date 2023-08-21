@@ -40,8 +40,8 @@ public class TemplateEngine {
     public TemplateEngine(String template) {
         var simpleFilterProvider = new SimpleFilterProvider();
         simpleFilterProvider.setFailOnUnknownId(false);
-        var objectMapper = new ObjectMapper();
-        objectMapper.setFilters(simpleFilterProvider);
+        var objectMapper = new ObjectMapper()
+                .setFilterProvider(simpleFilterProvider);
 
         handlebars = new Handlebars(new ClassPathTemplateLoader("/", ""));
         handlebars.registerHelper("json", new Jackson2Helper(objectMapper));
