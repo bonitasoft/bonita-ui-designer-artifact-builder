@@ -16,6 +16,7 @@
     <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
     <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
     <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
