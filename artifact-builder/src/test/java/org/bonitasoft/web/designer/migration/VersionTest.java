@@ -18,12 +18,13 @@ package org.bonitasoft.web.designer.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.bonitasoft.web.designer.common.migration.Version;
+import org.junit.jupiter.api.Test;
 
-public class VersionTest {
+class VersionTest {
 
     @Test
-    public void should_compare_versions() throws Exception {
+    void should_compare_versions() throws Exception {
 
         Version version = new Version("1.2.2");
 
@@ -37,7 +38,7 @@ public class VersionTest {
     }
 
     @Test
-    public void should_return_version_to_string() throws Exception {
+    void should_return_version_to_string() throws Exception {
 
         Version version = new Version("1.2.2-SNAPHOT");
 

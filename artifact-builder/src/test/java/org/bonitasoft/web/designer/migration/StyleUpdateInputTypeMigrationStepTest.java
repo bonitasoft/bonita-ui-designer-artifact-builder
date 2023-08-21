@@ -24,15 +24,15 @@ import static org.mockito.Mockito.*;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StyleUpdateInputTypeMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class StyleUpdateInputTypeMigrationStepTest {
 
     @Mock
     private AssetService<Page> pageAssetService;
@@ -40,8 +40,8 @@ public class StyleUpdateInputTypeMigrationStepTest {
     @InjectMocks
     private StyleUpdateInputTypeMigrationStep step;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         step = new StyleUpdateInputTypeMigrationStep(pageAssetService);
     }
 
@@ -50,7 +50,7 @@ public class StyleUpdateInputTypeMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_style_asset_to_only_update_control_label_required_content_property() throws Exception {
+    void should_migrate_style_asset_to_only_update_control_label_required_content_property() throws Exception {
         Asset style = anAsset().withType(CSS).withName("style.css").build();
         String initContent = "/* Set a red border to invalid input fields in forms */\n" +
                 "input[type='text'].ng-invalid.ng-dirty, input[type='email'].ng-invalid.ng-dirty,\n" +
@@ -75,7 +75,7 @@ public class StyleUpdateInputTypeMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_style_asset_when_only_type_text_is_exist() throws Exception {
+    void should_migrate_style_asset_when_only_type_text_is_exist() throws Exception {
         Asset style = anAsset().withType(CSS).withName("style.css").build();
         String initContent = "/* Set a red border to invalid input fields in forms */\n" +
                 "input[type='text'].ng-invalid.ng-dirty {\n" +
@@ -100,7 +100,7 @@ public class StyleUpdateInputTypeMigrationStepTest {
     }
 
     @Test
-    public void should_not_migrate_style_when_no_css_selector_exists() throws Exception {
+    void should_not_migrate_style_when_no_css_selector_exists() throws Exception {
         Asset style = anAsset().withType(CSS).withName("style.css").build();
         String initContent = "/* Set a red border to invalid input fields in forms */\n";
         Page page = aPage()

@@ -25,14 +25,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.model.Assetable;
 import org.bonitasoft.web.designer.model.Identifiable;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
 
 public class AssetDependencyImporter<T extends Identifiable & Assetable> implements DependencyImporter<Asset> {
 
@@ -75,7 +75,8 @@ public class AssetDependencyImporter<T extends Identifiable & Assetable> impleme
     public void save(List<Asset> elements, Path resources) {
         for (Asset asset : elements) {
             Path assetsPath = AssetScope.WIDGET.equals(asset.getScope())
-                    ? getWidgetAssetsFolderPath(asset.getComponentId(), resources) : resources.resolve("assets");
+                    ? getWidgetAssetsFolderPath(asset.getComponentId(), resources)
+                    : resources.resolve(ASSETS_FOLDER_NAME);
             Path sourceFile = assetsPath.resolve(asset.getType().getPrefix()).resolve(asset.getName());
             try {
                 assetRepository.save(asset, readAllBytes(sourceFile));

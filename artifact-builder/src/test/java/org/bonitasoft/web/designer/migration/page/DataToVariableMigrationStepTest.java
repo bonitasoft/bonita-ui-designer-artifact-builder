@@ -24,23 +24,23 @@ import java.util.Arrays;
 import org.bonitasoft.web.designer.builder.DataBuilder;
 import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DataToVariableMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class DataToVariableMigrationStepTest {
 
     DataToVariableMigrationStep<Page> dataToVariableMigrationStep;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         dataToVariableMigrationStep = new DataToVariableMigrationStep<Page>();
     }
 
     @Test
-    public void should_migrate_page_with_data() throws Exception {
+    void should_migrate_page_with_data() throws Exception {
         Page pageWithData = aPage().withId("pageWithData")
                 .withData("myData", DataBuilder.aConstantData().value("default value").build()).build();
 
@@ -51,7 +51,7 @@ public class DataToVariableMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_page_with_data_with_null_value() throws Exception {
+    void should_migrate_page_with_data_with_null_value() throws Exception {
         Page pageWithData = aPage().withId("pageWithData").withData("myEmptyData",
                 DataBuilder.aConstantData().exposed(true).build()).build();
 

@@ -22,24 +22,18 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.Element;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.model.page.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WidgetIdVisitorTest {
+@ExtendWith(MockitoExtension.class)
+class WidgetIdVisitorTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -48,13 +42,13 @@ public class WidgetIdVisitorTest {
     private WidgetIdVisitor visitor;
 
     @Test
-    public void should_add_widgetId_of_component() {
+    void should_add_widgetId_of_component() {
         Component component = createComponentWithWidget("foo");
         assertThat(visitor.visit(component)).containsExactly("foo");
     }
 
     @Test
-    public void should_traverse_container() {
+    void should_traverse_container() {
         Container container = new Container();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
         List<Element> row2 = Arrays.<Element> asList(createComponentWithWidget("bar"));
@@ -64,7 +58,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_formcontainer() {
+    void should_traverse_formcontainer() {
         FormContainer formContainer = new FormContainer();
         Container container = new Container();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
@@ -76,7 +70,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_tabs_container() {
+    void should_traverse_tabs_container() {
         TabsContainer tabsContainer = new TabsContainer();
         Container container1 = new Container();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
@@ -91,7 +85,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_modal_container() {
+    void should_traverse_modal_container() {
         ModalContainer modalContainer = new ModalContainer();
         List<Element> row1 = Arrays.<Element> asList(createComponentWithWidget("foo"));
         List<Element> row2 = Arrays.<Element> asList(createComponentWithWidget("bar"));
@@ -101,7 +95,7 @@ public class WidgetIdVisitorTest {
     }
 
     @Test
-    public void should_traverse_fragment_element() {
+    void should_traverse_fragment_element() {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("fragment1");
 

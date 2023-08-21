@@ -27,8 +27,16 @@ import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.bonitasoft.web.designer.builder.ModalContainerBuilder.aModalContainer;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVariable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.notNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -43,12 +51,21 @@ import org.bonitasoft.web.designer.builder.ContainerBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.builder.TabContainerBuilder;
 import org.bonitasoft.web.designer.builder.TabsContainerBuilder;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.exception.InUseException;
+import org.bonitasoft.web.designer.common.repository.exception.NotAllowedException;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
+import org.bonitasoft.web.designer.model.exception.NotFoundException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
@@ -60,26 +77,22 @@ import org.bonitasoft.web.designer.model.page.FragmentElement;
 import org.bonitasoft.web.designer.model.page.ModalContainer;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.repository.exception.InUseException;
-import org.bonitasoft.web.designer.repository.exception.NotAllowedException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
-import org.bonitasoft.web.designer.visitor.*;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.visitor.FragmentChangeVisitor;
+import org.bonitasoft.web.designer.visitor.PageHasValidationErrorVisitor;
+import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentServiceTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentServiceTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -99,23 +112,20 @@ public class FragmentServiceTest {
     @Mock
     private AssetVisitor assetVisitor;
 
-    private FragmentChangeVisitor fragmentChangeVisitor;
-    private PageHasValidationErrorVisitor pageHasValidationErrorVisitor;
-
     @InjectMocks
     private DefaultFragmentService fragmentService;
 
-    @Before
-    public void setUp() {
-        fragmentChangeVisitor = new FragmentChangeVisitor();
-        pageHasValidationErrorVisitor = new PageHasValidationErrorVisitor();
+    @BeforeEach
+    void setUp() {
+        FragmentChangeVisitor fragmentChangeVisitor = new FragmentChangeVisitor();
+        PageHasValidationErrorVisitor pageHasValidationErrorVisitor = new PageHasValidationErrorVisitor();
         fragmentService = new DefaultFragmentService(fragmentRepository, pageRepository, fragmentMigrationApplyer,
                 fragmentIdVisitor, fragmentChangeVisitor, pageHasValidationErrorVisitor, assetVisitor,
                 new UiDesignerProperties("1.13.1", "2.0"),
                 new WebResourcesVisitor(fragmentRepository, widgetRepository));
 
-        when(fragmentRepository.getComponentName()).thenReturn("fragment");
-        when(pageRepository.getComponentName()).thenReturn("page");
+        lenient().when(fragmentRepository.getComponentName()).thenReturn("fragment");
+        lenient().when(pageRepository.getComponentName()).thenReturn("page");
         lenient().when(fragmentRepository.updateLastUpdateAndSave(any())).thenAnswer((Answer<Fragment>) call -> {
             Fragment fragmentArg = call.getArgument(0);
             fragmentArg.setLastUpdate(Instant.now());
@@ -125,12 +135,12 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_migrate_found_fragment_when_get_is_called() {
+    void should_migrate_found_fragment_when_get_is_called() {
         Fragment fragment = aFragment().withId("myFragment").withDesignerVersion("1.0.0")
                 .withPreviousDesignerVersion("1.0.0").build();
         Fragment fragmentMigrated = aFragment().withId("myFragment").withDesignerVersion("1.5.0")
                 .withPreviousDesignerVersion("1.0.0").build();
-        MigrationResult<Fragment> mr = new MigrationResult(fragmentMigrated,
+        MigrationResult<Fragment> mr = new MigrationResult<>(fragmentMigrated,
                 singletonList(new MigrationStepReport(MigrationStatus.SUCCESS, "myFragmentBis")));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
                 .thenReturn(new MigrationStatusReport(true, false));
@@ -144,7 +154,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_not_save_fragment_when_migration_is_not_done() {
+    void should_not_save_fragment_when_migration_is_not_done() {
         Fragment fragment = aFragment().withId("myFragment").withModelVersion("2.0")
                 .withPreviousDesignerVersion("1.0.0").build();
         when(fragmentRepository.get("myFragment")).thenReturn(fragment);
@@ -157,13 +167,13 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_not_save_fragment_when_migration_is_finish_in_error() {
+    void should_not_save_fragment_when_migration_is_finish_in_error() {
         Fragment fragment = aFragment().withId("myFragment").withDesignerVersion("1.0.0")
                 .withPreviousDesignerVersion("1.0.0").build();
         Fragment fragmentMigrated = aFragment().withId("myFragment").withDesignerVersion("1.0.0")
                 .withPreviousDesignerVersion("1.0.0").build();
         when(fragmentRepository.get("myFragment")).thenReturn(fragment);
-        MigrationResult mr = new MigrationResult(fragmentMigrated,
+        var mr = new MigrationResult<>(fragmentMigrated,
                 singletonList(new MigrationStepReport(MigrationStatus.ERROR, "myFragmentBis")));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
                 .thenReturn(new MigrationStatusReport(true, true));
@@ -176,7 +186,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_migrate_child_fragment_when_parent_fragment_is_migrate() {
+    void should_migrate_child_fragment_when_parent_fragment_is_migrate() {
         Fragment fragment = aFragment().withId("myFragmentBis").withDesignerVersion("1.0.0")
                 .withPreviousDesignerVersion("1.0.0").build();
         Fragment parentFragment = aFragment().withId("myFragment").withDesignerVersion("1.0.0").with(fragment)
@@ -185,9 +195,9 @@ public class FragmentServiceTest {
                 .withPreviousDesignerVersion("1.0.0").build();
         Fragment parentFragmentMigrated = aFragment().withId("myFragment").withDesignerVersion("2.0")
                 .withPreviousDesignerVersion("1.0.0").with(fragmentMigrated).build();
-        MigrationResult mr = new MigrationResult(fragmentMigrated,
+        var mr = new MigrationResult<>(fragmentMigrated,
                 singletonList(new MigrationStepReport(MigrationStatus.SUCCESS, "myFragmentBis")));
-        MigrationResult parentMigrated = new MigrationResult(parentFragmentMigrated,
+        var parentMigrated = new MigrationResult<>(parentFragmentMigrated,
                 singletonList(new MigrationStepReport(MigrationStatus.SUCCESS, "myFragment")));
         when(fragmentRepository.get("myFragment")).thenReturn(parentFragment);
         lenient().when(fragmentRepository.get("myFragmentBis")).thenReturn(fragment);
@@ -210,7 +220,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_get_correct_migration_status_when_dependency_is_to_migrate() {
+    void should_get_correct_migration_status_when_dependency_is_to_migrate() {
         Fragment fragment = aFragment().withId("fragment").withDesignerVersion("1.10.0").build();
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         Set<String> ids = new HashSet<>(singletonList("fragment"));
@@ -220,11 +230,11 @@ public class FragmentServiceTest {
         when(fragmentIdVisitor.visit(page)).thenReturn(ids);
 
         MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(page);
-        Assert.assertEquals(getMigrationStatusReport(true, true), status.toString());
+        assertEquals(getMigrationStatusReport(true, true), status.toString());
     }
 
     @Test
-    public void should_get_correct_migration_status_when_dependency_is_not_compatible() {
+    void should_get_correct_migration_status_when_dependency_is_not_compatible() {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         Fragment fragment1 = aFragment().withId("fragment1").withDesignerVersion("1.10.0").build();
         Fragment fragment2 = aFragment().withId("fragment2").withModelVersion("2.1").build(); //incompatible
@@ -237,11 +247,11 @@ public class FragmentServiceTest {
         when(fragmentIdVisitor.visit(page)).thenReturn(ids);
 
         MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(page);
-        Assert.assertEquals(getMigrationStatusReport(false, false), status.toString());
+        assertEquals(getMigrationStatusReport(false, false), status.toString());
     }
 
     @Test
-    public void should_get_correct_migration_status_when_fragment_contains_incompatible_fragment() {
+    void should_get_correct_migration_status_when_fragment_contains_incompatible_fragment() {
         Fragment fragment1 = aFragment().withId("fragment1").withDesignerVersion("1.10.0").build();
         Fragment fragment2 = aFragment().withId("fragment2").withModelVersion("2.1").build(); //incompatible
         Set<String> ids = new HashSet<>(singletonList("fragment2"));
@@ -253,11 +263,11 @@ public class FragmentServiceTest {
         when(fragmentRepository.getByIds(ids)).thenReturn(singletonList(fragment2));
 
         MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(fragment1);
-        Assert.assertEquals(getMigrationStatusReport(false, false), status.toString());
+        assertEquals(getMigrationStatusReport(false, false), status.toString());
     }
 
     @Test
-    public void should_get_correct_migration_status_when_dependency_is_not_to_migrate() {
+    void should_get_correct_migration_status_when_dependency_is_not_to_migrate() {
         Fragment fragment = aFragment().withId("fragment").withDesignerVersion("2.0").isMigration(false).build();
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         Set<String> ids = new HashSet<>(singletonList("fragment"));
@@ -266,7 +276,7 @@ public class FragmentServiceTest {
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
                 .thenReturn(new MigrationStatusReport(true, false));
         MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(page);
-        Assert.assertEquals(getMigrationStatusReport(true, false), status.toString());
+        assertEquals(getMigrationStatusReport(true, false), status.toString());
     }
 
     private String getMigrationStatusReport(boolean compatible, boolean migration) {
@@ -274,7 +284,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_create_a_fragment() {
+    void should_create_a_fragment() {
         // Given
         when(fragmentRepository.getAll()).thenReturn(Collections.<Fragment>emptyList());
         final String heidi = "Heidi"; // 👺
@@ -294,7 +304,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_respond_an_error_when_fragment_name_already_exist() {
+    void should_respond_an_error_when_fragment_name_already_exist() {
         Fragment fragment = aFragment()
                 .withName("person")
                 .build();
@@ -316,7 +326,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_save_a_fragment() throws Exception {
+    void should_save_a_fragment() throws Exception {
         //given
         Asset pageAsset = aPageAsset();
         Asset widgetAsset = aWidgetAsset();
@@ -339,7 +349,7 @@ public class FragmentServiceTest {
     }
 
     @Test()
-    public void should_respond_422_on_save_when_fragment_is_incompatible() {
+    void should_respond_422_on_save_when_fragment_is_incompatible() {
         //Given
         Asset pageAsset = aPageAsset();
         Asset widgetAsset = aWidgetAsset();
@@ -357,24 +367,25 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_throw_not_allowed_when_changing_name_and_that_name_already_exist() {
+    void should_throw_not_allowed_when_changing_name_and_that_name_already_exist() {
         //Given
         when(fragmentRepository.getAll()).thenReturn(asList(
                 aFragment().withId("fragment1").withName("Person").build(),
                 aFragment().withId("fragment2").withName("Persons").build()));
 
-        Fragment fragment = aFragment()
+        var fragment = aFragment()
                 .withId("fragment1")
                 .withName("Persons")
                 .build();
-
+        var id = fragment.getId();
+        
         //When
-        assertThatThrownBy(() -> fragmentService.save(fragment.getId(), fragment)).isInstanceOf(NotAllowedException.class);
+        assertThatThrownBy(() -> fragmentService.save(id, fragment)).isInstanceOf(NotAllowedException.class);
 
     }
 
     @Test
-    public void should_throw_repo_exception_when_error_occurs_while_saving_a_page() {
+    void should_throw_repo_exception_when_error_occurs_while_saving_a_page() {
         //given
         Fragment fragment = aFragment().build();
         when(fragmentRepository.get(fragment.getId())).thenReturn(fragment);
@@ -382,14 +393,15 @@ public class FragmentServiceTest {
         doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(fragment);
         when(fragmentRepository.updateLastUpdateAndSave(fragment))
                 .thenThrow(new RepositoryException("exception occured", new Exception()));
+        var id = fragment.getId();
 
         //When
-        assertThatThrownBy(() -> fragmentService.save(fragment.getId(), fragment))
+        assertThatThrownBy(() -> fragmentService.save(id, fragment))
                 .isInstanceOf(RepositoryException.class);
     }
 
     @Test
-    public void should_throw_not_found_when_trying_get_an_unexisting_fragment() {
+    void should_throw_not_found_when_trying_get_an_unexisting_fragment() {
         //Given
         when(fragmentRepository.get("unknownfragment")).thenThrow(NotFoundException.class);
 
@@ -398,7 +410,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_get_all_fragments() {
+    void should_get_all_fragments() {
         //Given
         Fragment fragment1 = aFragment().withId("fragment1").withName("fragment1").build();
         Fragment fragment2 = aFragment().withId("fragment2").withName("fragment2").build();
@@ -421,7 +433,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_get_all_fragment_used_elsewhere() {
+    void should_get_all_fragment_used_elsewhere() {
         //Given
         Fragment fragment1 = aFragment().withId("fragment1").withName("fragment1").build();
         Fragment fragment2 = aFragment().withId("fragment2").withName("fragment2").build();
@@ -444,15 +456,15 @@ public class FragmentServiceTest {
         assertThat(fragments).hasSameSizeAs(expectedfragments);
         assertThat(fragments.stream().filter(o -> o.getName().equals("fragment1")).findFirst())
                 .isPresent()
-                .hasValueSatisfying(fragment -> assertThat(fragment.getUsedBy().get("page").size()).isEqualTo(1));
+                .hasValueSatisfying(fragment -> assertThat(fragment.getUsedBy().get("page")).hasSize(1));
         assertThat(fragments.stream().filter(o -> o.getName().equals("fragment2")).findFirst())
                 .isPresent()
-                .hasValueSatisfying(fragment -> assertThat(fragment.getUsedBy().get("fragment").size()).isEqualTo(1));
+                .hasValueSatisfying(fragment -> assertThat(fragment.getUsedBy().get("fragment")).hasSize(1));
 
     }
 
     @Test
-    public void should_get_all_fragment_not_using_a_fragment_id() {
+    void should_get_all_fragment_not_using_a_fragment_id() {
         //Given
         List<Fragment> expectedfragments = asList(aFragment().withId("fragment1").build(),
                 aFragment().withId("fragment2").build());
@@ -472,7 +484,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_get_a_fragment_by_its_id() {
+    void should_get_a_fragment_by_its_id() {
         //Given
         String fragmentId = "fragment1";
         Fragment fragment1 = aFragment().withId(fragmentId).build();
@@ -491,7 +503,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_delete_a_fragment() {
+    void should_delete_a_fragment() {
         //When
         fragmentService.delete("my-fragment");
 
@@ -500,7 +512,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_delete_a_fragment_used_in_a_page() {
+    void should_not_allow_to_delete_a_fragment_used_in_a_page() {
         //Given
         when(pageRepository.findByObjectIds(singletonList("my-fragment"))).thenReturn(Map.of("my-fragment", singletonList(aPage().withName("person").build())));
 
@@ -510,7 +522,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_delete_a_fragment_used_in_another_fragment() {
+    void should_not_allow_to_delete_a_fragment_used_in_another_fragment() {
         when(fragmentRepository.findByObjectIds(singletonList("my-fragment"))).thenReturn(Map.of("my-fragment", asList(aFragment().withName("person1").build(),aFragment().withName("person2").build())));
 
         //When
@@ -518,7 +530,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_return_not_found_when_get_inexisting_fragment() {
+    void should_return_not_found_when_get_inexisting_fragment() {
         //Given
         when(fragmentRepository.get("nonExistingFragment")).thenThrow(new NotFoundException("fragment not found"));
 
@@ -527,7 +539,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_return_not_found_when_delete_inexisting_fragment() {
+    void should_return_not_found_when_delete_inexisting_fragment() {
         doThrow(new NotFoundException("fragment not found")).when(fragmentRepository).delete("my-fragment");
 
         //When
@@ -535,7 +547,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_return_repo_exception_when_error_on_deletion_fragment() {
+    void should_return_repo_exception_when_error_on_deletion_fragment() {
         //Given
         doThrow(new RepositoryException("error occurs", new RuntimeException())).when(fragmentRepository)
                 .delete("my-fragment");
@@ -545,7 +557,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_rename_a_fragment() throws Exception {
+    void should_rename_a_fragment() throws Exception {
         //Given
         String newName = "myNewFragment";
         Fragment fragment = aFragment().withName("oldName").withId("myFragment").with(ComponentBuilder.anInput())
@@ -567,7 +579,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_throw_NotAllowedException_when_rename_a_fragment_who_new_name_already_exist() {
+    void should_throw_NotAllowedException_when_rename_a_fragment_who_new_name_already_exist() {
         //Given
         Fragment myFragmentToRename = aFragment().withId("my-fragment").withName("oldName").build();
         when(fragmentRepository.getAll()).thenReturn(asList(
@@ -580,7 +592,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_mark_a_page_as_favorite() {
+    void should_mark_a_page_as_favorite() {
         //When
         fragmentService.markAsFavorite("my-fragment", true);
         //Then
@@ -588,7 +600,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_unmark_a_page_as_favorite() {
+    void should_unmark_a_page_as_favorite() {
         //When
         fragmentService.markAsFavorite("my-fragment", false);
         //Then
@@ -596,7 +608,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_save_a_fragment_renaming_it() throws Exception {
+    void should_save_a_fragment_renaming_it() throws Exception {
         //Given
         Fragment existingFragment = aFragment().withId("myFragment").withName("myFragment").build();
         when(fragmentRepository.get("myFragment")).thenReturn(existingFragment);
@@ -616,7 +628,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_in_a_page_when_fragment_is_saving_with_renaming() throws Exception {
+    void should_update_reference_of_fragment_in_a_page_when_fragment_is_saving_with_renaming() throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
         fragmentElement.setDimension(Map.of("md", 8));
@@ -652,7 +664,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_use_in_two_container_when_fragment_is_saving_with_renaming()
+    void should_update_reference_of_fragment_use_in_two_container_when_fragment_is_saving_with_renaming()
             throws Exception {
         //Given
         FragmentElement fragmentElement = new FragmentElement();
@@ -692,7 +704,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_in_a_page_when_fragment_is_renaming() throws Exception {
+    void should_update_reference_of_fragment_in_a_page_when_fragment_is_renaming() throws Exception {
         //Given
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
@@ -722,7 +734,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_use_in_container_in_a_page_when_fragment_is_renaming()
+    void should_update_reference_of_fragment_use_in_container_in_a_page_when_fragment_is_renaming()
             throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
@@ -753,7 +765,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_use_in_form_container_in_a_page_when_fragment_is_renaming()
+    void should_update_reference_of_fragment_use_in_form_container_in_a_page_when_fragment_is_renaming()
             throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
@@ -784,7 +796,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_in_a_modal_container_when_fragment_is_renaming() throws Exception {
+    void should_update_reference_of_fragment_in_a_modal_container_when_fragment_is_renaming() throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
         fragmentElement.setDimension(Map.of("md", 8));
@@ -814,7 +826,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_only_good_fragment_use_in_container_in_a_page_when_fragment_is_renaming()
+    void should_update_reference_of_only_good_fragment_use_in_container_in_a_page_when_fragment_is_renaming()
             throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
@@ -852,7 +864,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_use_in_tab_container_in_a_page_when_fragment_is_renaming()
+    void should_update_reference_of_fragment_use_in_tab_container_in_a_page_when_fragment_is_renaming()
             throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
@@ -886,7 +898,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_in_a_form_when_fragment_is_renaming() throws Exception {
+    void should_update_reference_of_fragment_in_a_form_when_fragment_is_renaming() throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
         fragmentElement.setDimension(Map.of("md", 8));
@@ -914,7 +926,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_in_a_layout_when_fragment_is_renaming() throws Exception {
+    void should_update_reference_of_fragment_in_a_layout_when_fragment_is_renaming() throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId("aFragment");
         fragmentElement.setDimension(Map.of("md", 8));
@@ -945,7 +957,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_in_an_parent_fragment_when_fragment_is_renaming() throws Exception {
+    void should_update_reference_of_fragment_in_an_parent_fragment_when_fragment_is_renaming() throws Exception {
         String fragmentChildId = "fragmentChild";
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setId(fragmentChildId);
@@ -974,7 +986,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_reference_of_fragment_in_an_parent_fragment_when_fragment_is_saving_with_renaming()
+    void should_update_reference_of_fragment_in_an_parent_fragment_when_fragment_is_saving_with_renaming()
             throws Exception {
         FragmentElement fragmentElement = new FragmentElement();
         String fragmentChildId = "fragmentChild";
@@ -1007,7 +1019,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_to_true_parent_page_when_validation_error_status_changes() throws Exception {
+    void should_update_to_true_parent_page_when_validation_error_status_changes() throws Exception {
         // Given
         final String fragmentChildId = "fragmentChild";
         FragmentElement fragmentElement = new FragmentElement();
@@ -1045,7 +1057,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_to_true_parent_fragment_when_validation_error_status_changes() throws Exception {
+    void should_update_to_true_parent_fragment_when_validation_error_status_changes() throws Exception {
         final String fragmentChildId = "fragmentChild";
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setHasValidationError(false);
@@ -1083,7 +1095,8 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_to_true_parent_page_of_parent_fragment_when_validation_error_status_changes()
+    @MockitoSettings(strictness = Strictness.WARN)
+    void should_update_to_true_parent_page_of_parent_fragment_when_validation_error_status_changes()
             throws Exception {
 
         final String fragmentChildId = "fragmentChild";
@@ -1139,7 +1152,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_to_false_parent_page_when_validation_error_status_changes() throws Exception {
+    void should_update_to_false_parent_page_when_validation_error_status_changes() throws Exception {
         // Given
         final String fragmentChildId = "fragmentChild";
         FragmentElement fragmentElement = new FragmentElement();
@@ -1177,7 +1190,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_to_false_parent_fragment_when_validation_error_status_changes() throws Exception {
+    void should_update_to_false_parent_fragment_when_validation_error_status_changes() throws Exception {
         final String fragmentChildId = "fragmentChild";
         FragmentElement fragmentElement = new FragmentElement();
         fragmentElement.setHasValidationError(false);
@@ -1214,7 +1227,7 @@ public class FragmentServiceTest {
     }
 
     @Test
-    public void should_update_to_false_parent_page_of_parent_fragment_when_validation_error_status_changes()
+    void should_update_to_false_parent_page_of_parent_fragment_when_validation_error_status_changes()
             throws Exception {
 
         final String fragmentChildId = "fragmentChild";

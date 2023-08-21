@@ -27,27 +27,29 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 import static org.bonitasoft.web.designer.builder.VariableBuilder.aConstantVariable;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.angularjs.visitor.VariableModelVisitor;
+import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.rendering.GenerationException;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class VariableModelVisitorTest {
+@ExtendWith(MockitoExtension.class)
+class VariableModelVisitorTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -57,18 +59,18 @@ public class VariableModelVisitorTest {
 
     private Variable variable;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         variable = aConstantVariable().value("bar").build();
     }
 
     @Test
-    public void should_not_retrieve_any_variable_model_when_visiting_a_component() throws Exception {
+    void should_not_retrieve_any_variable_model_when_visiting_a_component() throws Exception {
         assertThat(variableModelVisitor.visit(aComponent().build())).isEmpty();
     }
 
     @Test
-    public void should_retrieve_variable_model_from_page() throws Exception {
+    void should_retrieve_variable_model_from_page() throws Exception {
         Page page = aPage()
                 .withId("page-id")
                 .withVariable("foo", variable)
@@ -78,7 +80,7 @@ public class VariableModelVisitorTest {
     }
 
     @Test
-    public void should_generate_a_factory_based_on_model_found_in_the_page() throws Exception {
+    void should_generate_a_factory_based_on_model_found_in_the_page() throws Exception {
         Page page = aPage()
                 .withId("page-id")
                 .withVariable("foo", variable)
@@ -91,7 +93,7 @@ public class VariableModelVisitorTest {
     }
 
     @Test
-    public void should_retrieve_data_model_from_fragment() throws Exception {
+    void should_retrieve_data_model_from_fragment() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .withId("fragment-id")
                 .withVariable("foo", variable)
@@ -102,26 +104,26 @@ public class VariableModelVisitorTest {
                 .build())).containsExactly(entry("fragment-id", singletonMap("foo", variable)));
     }
 
-    @Test(expected = GenerationException.class)
-    public void should_throw_a_generation_error_when_the_fragment_is_not_found() throws Exception {
+    @Test
+    void should_throw_a_generation_error_when_the_fragment_is_not_found() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenThrow(new NotFoundException(""));
 
-        variableModelVisitor.visit(aFragmentElement()
+        assertThrows(GenerationException.class, () -> variableModelVisitor.visit(aFragmentElement()
                 .withFragmentId("fragment-id")
-                .build());
-    }
-
-    @Test(expected = GenerationException.class)
-    public void should_throw_a_generation_error_when_an_error_occur_in_the_fragment_repository() throws Exception {
-        when(fragmentRepository.get("fragment-id")).thenThrow(new GenerationException("", new RuntimeException()));
-
-        variableModelVisitor.visit(aFragmentElement()
-                .withFragmentId("fragment-id")
-                .build());
+                .build()));
     }
 
     @Test
-    public void should_retrieve_variable_model_from_a_container_content() throws Exception {
+    void should_throw_a_generation_error_when_an_error_occur_in_the_fragment_repository() throws Exception {
+        when(fragmentRepository.get("fragment-id")).thenThrow(new GenerationException("", new RuntimeException()));
+
+        assertThrows(GenerationException.class, () -> variableModelVisitor.visit(aFragmentElement()
+                .withFragmentId("fragment-id")
+                .build()));
+    }
+
+    @Test
+    void should_retrieve_variable_model_from_a_container_content() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .withId("fragment-id")
                 .withVariable("foo", variable)
@@ -133,7 +135,7 @@ public class VariableModelVisitorTest {
     }
 
     @Test
-    public void should_retrieve_variable_model_from_a_tabs_container_content() throws Exception {
+    void should_retrieve_variable_model_from_a_tabs_container_content() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .withId("fragment-id")
                 .withVariable("foo", variable)
@@ -145,7 +147,7 @@ public class VariableModelVisitorTest {
     }
 
     @Test
-    public void should_generate_a_factory_with_fragment() throws Exception {
+    void should_generate_a_factory_with_fragment() throws Exception {
         Map<String, Map<String, Variable>> variableModel = new HashMap<>();
         variableModel.put("page-id", singletonMap("foo", variable));
         variableModel.put("fragment-id", singletonMap("baz", variable));

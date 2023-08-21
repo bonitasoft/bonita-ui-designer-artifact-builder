@@ -18,106 +18,95 @@ package org.bonitasoft.web.designer.workspace;
 
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Files.write;
-import static java.nio.file.Paths.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.anInput;
 import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.JsonHandlerFactory;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.PathListener;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.angularjs.rendering.TemplateEngine;
+import org.bonitasoft.web.angularjs.visitor.HtmlBuilderVisitor;
+import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
+import org.bonitasoft.web.designer.common.livebuild.PathListener;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.rendering.TemplateEngine;
-import org.bonitasoft.web.designer.visitor.HtmlBuilderVisitor;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentDirectiveBuilderTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentDirectiveBuilderTest {
 
-    @Rule
-    public TemporaryFolder repositoryDirectory = new TemporaryFolder();
+    @TempDir
+    public Path repositoryDirectory;
 
     @Mock
     private Watcher watcher;
 
-    private JsonHandler jsonHandler = new JsonHandlerFactory().create();
+    private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     @Mock
     private HtmlBuilderVisitor htmlBuilderVisitor;
 
-    private HtmlSanitizer htmlSanitizer = new HtmlSanitizer();
-
     private FragmentDirectiveBuilder fragmentDirectiveBuilder;
 
-    private File fragmentFile;
+    private Path fragmentFile;
 
     private Fragment fragment;
 
-    private TemplateEngine htmlBuilder = new TemplateEngine("fragmentDirectiveTemplate.hbs.js");
+    private final TemplateEngine htmlBuilder = new TemplateEngine("fragmentDirectiveTemplate.hbs.js");
 
-    @Before
-    public void setUp() throws Exception {
-        fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler, htmlBuilderVisitor, htmlSanitizer,
-                new WorkspaceUidProperties());
-        fragmentFile = repositoryDirectory.newFile("fragment.json");
+    @BeforeEach
+    void setUp() throws Exception {
+        fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler, htmlBuilderVisitor, true);
+        fragmentFile = Files.createFile(repositoryDirectory.resolve("fragment.json"));
         fragment = aFragment()
                 .withName("aUnicornFragment")
                 .with(anInput().build())
                 .build();
 
-        write(fragmentFile.toPath(), jsonHandler.toJson(fragment));
+        write(fragmentFile, jsonHandler.toJson(fragment));
 
-        when(htmlBuilderVisitor.build(anyList())).thenReturn("");
     }
 
     @Test
-    public void should_build_a_fragment_directive() throws Exception {
+    void should_build_a_fragment_directive() throws Exception {
         when(htmlBuilderVisitor.build(anyList())).thenReturn("<p>content</p>");
-        fragmentDirectiveBuilder.build(fragmentFile.toPath());
+        fragmentDirectiveBuilder.build(fragmentFile);
 
-        String directive = new String(readAllBytes(get(repositoryDirectory.getRoot().toString(), "fragment.js")));
+        String directive = new String(readAllBytes(repositoryDirectory.resolve("fragment.js")));
 
         assertThat(directive).isEqualTo(generateDirective(fragment, "<p>content</p>"));
     }
 
     @Test
-    public void should_watch_given_directory_to_build_directives_on_change() throws Exception {
+    void should_watch_given_directory_to_build_directives_on_change() throws Exception {
+        when(htmlBuilderVisitor.build(anyList())).thenReturn("");
+        fragmentDirectiveBuilder.start(repositoryDirectory);
 
-        fragmentDirectiveBuilder.start(repositoryDirectory.getRoot().toPath());
-
-        verify(watcher).watch(eq(repositoryDirectory.getRoot().toPath()), any(PathListener.class));
+        verify(watcher).watch(eq(repositoryDirectory), any(PathListener.class));
     }
 
     @Test
-    public void should_not_watch_given_directory_when_live_build_is_disabled() throws Exception {
-        var workspaceUid = new WorkspaceUidProperties();
-        workspaceUid.setLiveBuildEnabled(false);
-        fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler, htmlBuilderVisitor, htmlSanitizer,
-                workspaceUid);
-        fragmentDirectiveBuilder.start(repositoryDirectory.getRoot().toPath());
+    void should_not_watch_given_directory_when_live_build_is_disabled() throws Exception {
+        when(htmlBuilderVisitor.build(anyList())).thenReturn("");
+        fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler, htmlBuilderVisitor, false);
+        fragmentDirectiveBuilder.start(repositoryDirectory);
 
-        verify(watcher, never()).watch(eq(repositoryDirectory.getRoot().toPath()), any(PathListener.class));
+        verify(watcher, never()).watch(eq(repositoryDirectory), any(PathListener.class));
     }
 
     @Test
-    public void should_exclude_metadata_from_the_build() throws Exception {
+    void should_exclude_metadata_from_the_build() throws Exception {
 
         boolean isBuildable = fragmentDirectiveBuilder.isBuildable(".metadata/123.json");
 

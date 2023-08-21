@@ -24,23 +24,23 @@ import org.bonitasoft.web.designer.builder.FragmentBuilder;
 import org.bonitasoft.web.designer.model.data.DataType;
 import org.bonitasoft.web.designer.model.data.Variable;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DataExposedMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class DataExposedMigrationStepTest {
 
     DataExposedMigrationStep dataExposedMigrationStep;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         dataExposedMigrationStep = new DataExposedMigrationStep();
     }
 
     @Test
-    public void should_migrate_fragment_when_data_is_exposed() throws Exception {
+    void should_migrate_fragment_when_data_is_exposed() throws Exception {
         Fragment fragment = FragmentBuilder.aFilledFragment("myFragment");
         Variable variable = new Variable(DataType.JSON, "{}");
         variable.setExposed(true);
@@ -54,7 +54,7 @@ public class DataExposedMigrationStepTest {
     }
 
     @Test
-    public void should_not_migrate_fragment_when_data_is_not_exposed() throws Exception {
+    void should_not_migrate_fragment_when_data_is_not_exposed() throws Exception {
         Fragment fragment = FragmentBuilder.aFilledFragment("myFragment");
         Variable variable = new Variable(DataType.JSON, "{}");
         variable.setExposed(false);

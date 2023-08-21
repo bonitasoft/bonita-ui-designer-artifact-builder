@@ -20,23 +20,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WidgetPropertiesBuilderTest {
+@ExtendWith(MockitoExtension.class)
+class WidgetPropertiesBuilderTest {
 
     private static final String DESIGNER_VERSION = "1.12.1";
 
     private WidgetPropertiesBuilder widgetPropertiesBuilder;
-    private UiDesignerProperties uiDesignerProperties;
     private Widget widget;
 
-    @Before
-    public void setUp() throws Exception {
-        uiDesignerProperties = new UiDesignerProperties();
+    @BeforeEach
+    void setUp() throws Exception {
+        UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setVersion(DESIGNER_VERSION);
         widgetPropertiesBuilder = new WidgetPropertiesBuilder(uiDesignerProperties);
         widget = new Widget();
@@ -44,7 +43,7 @@ public class WidgetPropertiesBuilderTest {
     }
 
     @Test
-    public void should_build_a_well_formed_page_property_file() throws Exception {
+    void should_build_a_well_formed_page_property_file() throws Exception {
         widget.setDesignerVersion("1.12.1");
 
         byte[] a = widgetPropertiesBuilder.build(widget);

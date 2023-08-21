@@ -26,39 +26,32 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
 import org.bonitasoft.web.designer.utils.FakePageRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StyleAssetMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class StyleAssetMigrationStepTest {
 
     @Mock
     private AssetRepository<Page> assetRepository;
 
     private final PageRepository pageRepository = new FakePageRepository();
 
-    @InjectMocks
     private StyleAssetMigrationStep step;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         AssetService<Page> pageAssetService = new AssetService<>(pageRepository, assetRepository, null);
-        var uiDesignerProperties = new UiDesignerPropertiesBuilder()
-                .workspacePath(Path.of("target/workspace/"))
-                .build();
-        uiDesignerProperties.getWorkspaceUid().setExtractPath(Path.of("src/test/resources"));
-        step = new StyleAssetMigrationStep(uiDesignerProperties, pageAssetService);
+        step = new StyleAssetMigrationStep(Path.of("src/test/resources"), pageAssetService);
     }
 
     private Asset expectedAsset(String name) {
@@ -71,7 +64,7 @@ public class StyleAssetMigrationStepTest {
     }
 
     @Test
-    public void should_add_new_style_asset_to_migrated_pages() throws Exception {
+    void should_add_new_style_asset_to_migrated_pages() throws Exception {
         Page page = aPage().withDesignerVersion("1.4.7").build();
 
         step.migrate(page);
@@ -82,7 +75,7 @@ public class StyleAssetMigrationStepTest {
     }
 
     @Test
-    public void should_add_new_style_asset_with_different_name_while_already_existing() throws Exception {
+    void should_add_new_style_asset_with_different_name_while_already_existing() throws Exception {
         Page page = aPage().withDesignerVersion("1.4.7")
                 .withAsset(anAsset().withType(CSS).withName("style.css"))
                 .withAsset(anAsset().withType(CSS).withName("style1.css")).build();

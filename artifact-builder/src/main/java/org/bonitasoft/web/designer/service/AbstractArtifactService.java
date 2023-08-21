@@ -16,11 +16,11 @@
  */
 package org.bonitasoft.web.designer.service;
 
+import org.bonitasoft.web.designer.common.migration.Version;
+import org.bonitasoft.web.designer.common.repository.Repository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
-import org.bonitasoft.web.designer.migration.Version;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.repository.Repository;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 
 public abstract class AbstractArtifactService<R extends Repository<T>, T extends Identifiable>
         implements ArtifactService<T> {

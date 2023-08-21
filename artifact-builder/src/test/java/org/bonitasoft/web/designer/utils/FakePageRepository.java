@@ -19,19 +19,20 @@ package org.bonitasoft.web.designer.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
 
 public class FakePageRepository extends PageRepository {
 
     private final Map<String, Page> repo;
 
     public FakePageRepository() {
-        super(new WorkspaceProperties(), new WorkspaceUidProperties(), null, null, null, null);
+        super(new WorkspaceProperties().getPages().getDir(), new WorkspaceUidProperties().getTemplateResourcesPath(),
+                null, null, null, null);
         repo = new HashMap<>();
     }
 
@@ -45,7 +46,7 @@ public class FakePageRepository extends PageRepository {
     public Page get(String id) throws NotFoundException, RepositoryException {
         Page page = repo.get(id);
         if (page == null) {
-            throw new NotFoundException(String.format("Page with id %s not found", page.getId()));
+            throw new NotFoundException(String.format("Page with id %s not found", id));
         }
         return page;
     }

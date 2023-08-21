@@ -30,8 +30,8 @@ import static org.bonitasoft.web.designer.controller.asset.AssetService.OrderTyp
 import static org.bonitasoft.web.designer.model.asset.AssetScope.PAGE;
 import static org.bonitasoft.web.designer.model.asset.AssetType.JAVASCRIPT;
 import static org.bonitasoft.web.designer.model.data.DataType.URL;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -39,46 +39,43 @@ import static org.mockito.Mockito.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.bonitasoft.web.designer.builder.AssetBuilder;
 import org.bonitasoft.web.designer.builder.PageBuilder;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
-import org.bonitasoft.web.designer.controller.asset.MalformedJsonException;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.data.DataType;
 import org.bonitasoft.web.designer.model.data.Variable;
+import org.bonitasoft.web.designer.model.exception.NotFoundException;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
-import org.bonitasoft.web.designer.model.page.*;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
+import org.bonitasoft.web.designer.model.page.Component;
+import org.bonitasoft.web.designer.model.page.Element;
+import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.service.exception.IncompatibleException;
-import org.bonitasoft.web.designer.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import com.fasterxml.jackson.core.FakeJsonProcessingException;
-
-@RunWith(MockitoJUnitRunner.class)
-public class PageServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class PageServiceTest {
 
     private static final String CURRENT_MODEL_VERSION = "2.0";
 
@@ -110,8 +107,8 @@ public class PageServiceTest {
 
     private MigrationStatusReport defaultStatusReport;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         pageService = spy(new DefaultPageService(
                 pageRepository,
                 pageMigrationApplyer,
@@ -127,12 +124,12 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_migrate_found_page_when_get_is_called() {
+    void should_migrate_found_page_when_get_is_called() {
         Page page = PageBuilder.aPage().withId("myPage").withDesignerVersion("1.0.0").build();
         Page migratedPage = PageBuilder.aPage().withId("myPage").withModelVersion("2.0")
                 .withPreviousArtifactVersion("1.0.0").build();
         when(pageRepository.get("myPage")).thenReturn(page);
-        MigrationResult mr = new MigrationResult(migratedPage,
+        var mr = new MigrationResult(migratedPage,
                 asList(new MigrationStepReport(MigrationStatus.SUCCESS)));
         when(pageMigrationApplyer.migrate(page)).thenReturn(mr);
         doReturn(new MigrationStatusReport(true, true)).when(pageService).getStatus(any());
@@ -144,10 +141,9 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_not_update_and_save_page_if_no_migration_done() {
+    void should_not_update_and_save_page_if_no_migration_done() {
         Page page = PageBuilder.aPage().withId("myPage").withDesignerVersion("2.0").build();
         when(pageRepository.get("myPage")).thenReturn(page);
-
         Page returnedPage = pageService.get("myPage");
 
         verify(pageMigrationApplyer, never()).migrate(page);
@@ -157,7 +153,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_not_update_and_save_page_if_migration_is_on_error() {
+    void should_not_update_and_save_page_if_migration_is_on_error() {
         Page page = PageBuilder.aPage().withId("myPage").withDesignerVersion("1.0.0").build();
         Page migratedPage = PageBuilder.aPage().withId("myPage").withModelVersion("2.0")
                 .withPreviousArtifactVersion("1.0.0").build();
@@ -173,7 +169,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_migrate_page_when_dependencies_need_to_be_migrated() {
+    void should_migrate_page_when_dependencies_need_to_be_migrated() {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         Page migratedPage = PageBuilder.aPage().withId("myPage").withModelVersion("2.0")
                 .withPreviousArtifactVersion("1.0.0").build();
@@ -190,7 +186,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_not_migrate_page_when_page_not_compatible() {
+    void should_not_migrate_page_when_page_not_compatible() {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("3.0").build();
         when(pageRepository.get("myPage")).thenReturn(page);
 
@@ -201,7 +197,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_not_migrate_page_when_dependencies_not_compatible() {
+    void should_not_migrate_page_when_dependencies_not_compatible() {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         when(pageRepository.get("myPage")).thenReturn(page);
 
@@ -212,7 +208,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_migrate_page_when_no_artifact_version_is_declared() {
+    void should_migrate_page_when_no_artifact_version_is_declared() {
         Page page = PageBuilder.aPage().withId("myPage").build();
         Page migratedPage = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         when(pageRepository.get("myPage")).thenReturn(page);
@@ -245,7 +241,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_list_pages() throws Exception {
+    void should_list_pages() throws Exception {
         Page page = new Page();
         final String pageId = "id";
         page.setId(pageId);
@@ -273,7 +269,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_create_a_page_from_a_Page() throws Exception {
+    void should_create_a_page_from_a_Page() throws Exception {
         Page pageToBeSaved = aPage().withId("my-page").build();
         List<Element> emptyRow = emptyList();
         List<List<Element>> rows = singletonList(emptyRow);
@@ -293,7 +289,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_duplicate_a_page_from_a_Page() throws Exception {
+    void should_duplicate_a_page_from_a_Page() throws Exception {
         Asset pageAsset = aPageAsset();
         Asset widgetAsset = aWidgetAsset();
 
@@ -315,7 +311,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_save_a_page() throws Exception {
+    void should_save_a_page() throws Exception {
         final String pageId = "my-page";
         Page pageToBeSaved = mockPageOfId(pageId);
 
@@ -325,13 +321,13 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_save_a_page_with_fragment() throws Exception {
-
+    void should_save_a_page_with_fragment() throws Exception {
         Page pageToBeSaved = aPageWithFragmentElement();
         final String name = pageToBeSaved.getName();
         pageToBeSaved.setId(name);
 
-        when(pageRepository.get(name)).thenThrow(new NotFoundException());
+        when(pageRepository.get(name))
+                .thenThrow(new org.bonitasoft.web.designer.common.repository.exception.NotFoundException());
         when(pageRepository.getNextAvailableId(name)).thenReturn(name);
 
         // When
@@ -342,7 +338,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_save_a_page_renaming_it() throws Exception {
+    void should_save_a_page_renaming_it() throws Exception {
 
         final String myPageName = "my-page";
         Page existingPage = aPage().withId(myPageName).withName(myPageName).build();
@@ -366,12 +362,11 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_not_save_widget_assets_while_saving_a_page() throws Exception {
+    void should_not_save_widget_assets_while_saving_a_page() throws Exception {
         Page pageToBeSaved = aPage().withId("my-page")
                 .withAsset(aPageAsset())
                 .build();
         when(pageRepository.get("my-page")).thenReturn(pageToBeSaved);
-
         Page expectedPage = aPage().withId("my-page")
                 .withAsset(aPageAsset())
                 .build();
@@ -384,10 +379,12 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_retrieve_a_page_representation_by_its_id() throws Exception {
+    void should_retrieve_a_page_representation_by_its_id() throws Exception {
         final String pageId = "my-page";
         Page expectedPage = aFilledPage(pageId);
         expectedPage.setStatus(new MigrationStatusReport(true, true));
+        doReturn(new MigrationStatusReport(false, false)).when(pageService).getStatus(any());
+
         when(pageRepository.get(pageId)).thenReturn(expectedPage);
 
         final Page savedPage = pageService.get(pageId);
@@ -396,7 +393,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_respond_ex_not_found_if_page_is_not_existing() throws Exception {
+    void should_respond_ex_not_found_if_page_is_not_existing() throws Exception {
         final String pageId = "my-page";
         when(pageRepository.get(pageId)).thenThrow(new NotFoundException("page not found"));
 
@@ -404,7 +401,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_respond_422_on_save_when_page_is_incompatible() throws Exception {
+    void should_respond_422_on_save_when_page_is_incompatible() throws Exception {
         final String pageId = "my-page";
         Page pageToBeSaved = mockPageOfId(pageId);
         doReturn(new MigrationStatusReport(false, false)).when(pageService).getStatus(any());
@@ -418,7 +415,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_respond_404_not_found_when_delete_inexisting_page() throws Exception {
+    void should_respond_404_not_found_when_delete_inexisting_page() throws Exception {
 
         final String pageId = "my-page";
         doThrow(new NotFoundException("page not found")).when(pageRepository).delete(pageId);
@@ -428,7 +425,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_rename_a_page() throws Exception {
+    void should_rename_a_page() throws Exception {
         String newName = "my-page-new-name";
         final String pageId = "my-page";
         Page pageToBeUpdated = aPage().withId(pageId).withName("page-name").build();
@@ -446,13 +443,12 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_not_rename_a_page_if_name_is_same() throws Exception {
+    void should_not_rename_a_page_if_name_is_same() throws Exception {
         String name = "page-name";
         final String pageId = "my-page";
 
         Page pageToBeUpdated = aPage().withId(pageId).withName(name).build();
         when(pageRepository.get(pageId)).thenReturn(pageToBeUpdated);
-
         // When
         final Page page = pageService.rename(pageId, name);
 
@@ -460,7 +456,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_keep_assets_when_page_is_renamed() throws Exception {
+    void should_keep_assets_when_page_is_renamed() throws Exception {
         String newName = "my-page-new-name";
 
         final String pageId = "my-page";
@@ -483,7 +479,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_respond_404_not_found_if_page_is_not_existing_when_renaming() throws Exception {
+    void should_respond_404_not_found_if_page_is_not_existing_when_renaming() throws Exception {
         final String pageId = "my-page";
         when(pageRepository.get(pageId)).thenThrow(new NotFoundException("page not found"));
 
@@ -492,19 +488,18 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_respond_500_internal_error_if_error_occurs_while_renaming_a_page() throws Exception {
+    void should_respond_500_internal_error_if_error_occurs_while_renaming_a_page() throws Exception {
 
         final String pageId = "my-page";
         when(pageRepository.get(pageId)).thenReturn(aPage().withId(pageId).withName(pageId).build());
         when(pageRepository.updateLastUpdateAndSave(any()))
                 .thenThrow(new RepositoryException("exception occurs", new Exception()));
-
         //When
         assertThatThrownBy(() -> pageService.rename(pageId, "hello")).isInstanceOf(RepositoryException.class);
     }
 
     @Test
-    public void should_upload_a_local_asset() throws Exception {
+    void should_upload_a_local_asset() throws Exception {
         //We construct a mockfile (the first arg is the name of the property expected in the controller
         final String fileName = "myfile.js";
         final byte[] fileContent = "foo".getBytes();
@@ -520,13 +515,8 @@ public class PageServiceTest {
         assertThat(asset).isEqualTo(expectedAsset);
     }
 
-    private MalformedJsonException aMalformedJsonException(byte[] bytes, int errorLine, int errorColumn) {
-        return new MalformedJsonException(
-                new FakeJsonProcessingException("Error while checking json", bytes, errorLine, errorColumn));
-    }
-
     @Test
-    public void should_save_an_external_asset() throws Exception {
+    void should_save_an_external_asset() throws Exception {
         Page page = mockPageOfId("my-page");
         Asset expectedAsset = anAsset().withId("assetId").active().withName("myfile.js").withOrder(2).withScope(PAGE)
                 .withType(JAVASCRIPT).build();
@@ -540,17 +530,18 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_not_save_an_external_asset_when_upload_send_an_error() throws Exception {
+    void should_not_save_an_external_asset_when_upload_send_an_error() throws Exception {
         Page page = mockPageOfId("my-page");
         Asset asset = anAsset().build();
         doThrow(IllegalArgumentException.class).when(pageAssetService).save(page, asset);
+        var id = page.getId();
 
-        assertThatThrownBy(() -> pageService.saveAsset(page.getId(), asset))
+        assertThatThrownBy(() -> pageService.saveAsset(id, asset))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    public void should_list_page_assets() throws Exception {
+    void should_list_page_assets() throws Exception {
         Page page = mockPageOfId("my-page");
         Set<Asset> assets = Set.of(
                 anAsset().withName("myCss.css").withType(AssetType.CSS).withScope(AssetScope.WIDGET)
@@ -567,7 +558,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_list_page_assets_while_getting_a_page() throws Exception {
+    void should_list_page_assets_while_getting_a_page() throws Exception {
         Page page = mockPageOfId("my-page");
         Set<Asset> assets = Set.of(
                 anAsset().withName("myCss.css").withType(AssetType.CSS).withScope(AssetScope.WIDGET)
@@ -576,7 +567,6 @@ public class PageServiceTest {
                 anAsset().withName("https://mycdn.com/myExternalJs.js").withScope(AssetScope.PAGE).withType(JAVASCRIPT)
                         .build());
         when(assetVisitor.visit(page)).thenReturn(assets);
-
         //When
         final Page pageAgain = pageService.getWithAsset(page.getId());
 
@@ -584,7 +574,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_increment_an_asset() throws Exception {
+    void should_increment_an_asset() throws Exception {
         Page page = mockPageOfId("my-page");
         Asset asset = anAsset().withId("UIID").withComponentId("my-page").withOrder(3).build();
 
@@ -594,17 +584,16 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_decrement_an_asset() throws Exception {
+    void should_decrement_an_asset() throws Exception {
         Page page = mockPageOfId("my-page");
         Asset asset = anAsset().withId("UIID").withComponentId("my-page").withOrder(3).build();
-
         pageService.changeAssetOrder(page.getId(), asset.getId(), DECREMENT);
 
         verify(pageAssetService).changeAssetOrderInComponent(page, asset.getId(), DECREMENT);
     }
 
     @Test
-    public void should_delete_an_asset() throws Exception {
+    void should_delete_an_asset() throws Exception {
         final String pageId = "my-page";
         final String assetId = "UIID";
         Page page = mockPageOfId(pageId);
@@ -615,31 +604,29 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_inactive_an_asset() throws Exception {
+    void should_inactive_an_asset() throws Exception {
         Page page = mockPageOfId("my-page");
-        Asset asset = anAsset().withComponentId(page.getId()).withOrder(3).build();
-
         pageService.changeAssetStateInPreviewable(page.getId(), "UIID", false);
 
         verify(pageAssetService).changeAssetStateInPreviewable(page, "UIID", false);
     }
 
     @Test
-    public void should_mark_a_page_as_favorite() throws Exception {
+    void should_mark_a_page_as_favorite() throws Exception {
 
         pageService.markAsFavorite("my-page", true);
         verify(pageRepository).markAsFavorite("my-page");
     }
 
     @Test
-    public void should_unmark_a_page_as_favorite() throws Exception {
+    void should_unmark_a_page_as_favorite() throws Exception {
 
         pageService.markAsFavorite("my-page", false);
         verify(pageRepository).unmarkAsFavorite("my-page");
     }
 
     @Test
-    public void should_load_page_asset_on_disk_with_content_type_text() throws Exception {
+    void should_load_page_asset_on_disk_with_content_type_text() throws Exception {
         pageService.findAssetPath("id", "fileName", "js");
         verify(pageAssetService).findAssetPath("id", "fileName", "js");
     }
@@ -655,7 +642,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_show_the_correct_information_for_variables() throws Exception {
+    void should_show_the_correct_information_for_variables() throws Exception {
         Path expectedFilePath = Paths.get(getClass().getResource("/page-with-variables/").toURI())
                 .resolve("page-with-variables.json");
         String expectedFileString = String.join("", readAllLines(expectedFilePath));
@@ -680,7 +667,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_upload_newfile_and_save_new_asset() throws Exception {
+    void should_upload_newfile_and_save_new_asset() throws Exception {
         Page page = mockPageOfId("aPage");
         byte[] fileContent = "function(){}".getBytes();
         Asset expectedAsset = anAsset()
@@ -698,7 +685,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_upload_a_json_asset() throws Exception {
+    void should_upload_a_json_asset() throws Exception {
         Page page = mockPageOfId("page-id");
         byte[] fileContent = "{ \"some\": \"json\" }".getBytes();
         Asset expectedAsset = anAsset()
@@ -714,7 +701,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_return_error_when_uploading_with_error_onsave() throws Exception {
+    void should_return_error_when_uploading_with_error_onsave() throws Exception {
         Page page = mockPageOfId("id");
 
         final String message = "Error while saving internal asset";
@@ -729,7 +716,7 @@ public class PageServiceTest {
     }
 
     @Test
-    public void should_upload_existing_file() throws Exception {
+    void should_upload_existing_file() throws Exception {
         Asset existingAsset = anAsset().withId("UIID").withName("asset.js").build();
         Page page = aPage().withId("page-id").withName("my-page").withAsset(existingAsset).build();
         when(pageRepository.get(page.getId())).thenReturn(page);

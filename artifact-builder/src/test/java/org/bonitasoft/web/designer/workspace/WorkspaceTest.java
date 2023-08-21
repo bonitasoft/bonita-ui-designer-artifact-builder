@@ -16,8 +16,7 @@
  */
 package org.bonitasoft.web.designer.workspace;
 
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Files.write;
+import static java.nio.file.Files.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -28,7 +27,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 
@@ -37,20 +35,19 @@ import org.bonitasoft.web.designer.ArtifactBuilderFactory;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WorkspaceTest {
+@ExtendWith(MockitoExtension.class)
+class WorkspaceTest {
 
     private static final String CURRENT_MODEL_VERSION = "2.0";
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @TempDir
+    public Path temporaryFolder;
 
     private Workspace workspace;
 
@@ -58,20 +55,19 @@ public class WorkspaceTest {
 
     private WorkspaceProperties workspaceProperties;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
 
         uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setModelVersion(CURRENT_MODEL_VERSION);
 
         workspaceProperties = uiDesignerProperties.getWorkspace();
-        final String fakeProjectFolder = temporaryFolder.toPath().toString();
-        workspaceProperties.getPages().setDir(Paths.get(fakeProjectFolder, "pages"));
-        workspaceProperties.getWidgets().setDir(Paths.get(fakeProjectFolder, "widgets"));
-        workspaceProperties.getFragments().setDir(Paths.get(fakeProjectFolder, "fragments"));
+        workspaceProperties.getPages().setDir(createDirectory(temporaryFolder.resolve("pages")));
+        workspaceProperties.getWidgets().setDir(createDirectory(temporaryFolder.resolve("widgets")));
+        workspaceProperties.getFragments().setDir(createDirectory(temporaryFolder.resolve("fragments")));
 
         WorkspaceUidProperties workspaceUidProperties = uiDesignerProperties.getWorkspaceUid();
-        workspaceUidProperties.setExtractPath(Paths.get(fakeProjectFolder).resolve("tmpExtract"));
+        workspaceUidProperties.setExtractPath(createDirectory(temporaryFolder.resolve("tmpExtract")));
 
         ArtifactBuilder artifactBuilder = new ArtifactBuilderFactory(uiDesignerProperties).create();
 
@@ -81,17 +77,17 @@ public class WorkspaceTest {
     }
 
     private void createWidget(String id, String content) throws IOException {
-        final Path widgetPath = temporaryFolder.toPath().resolve("widgets/" + id);
+        final Path widgetPath = temporaryFolder.resolve("widgets/" + id);
         if (Files.exists(widgetPath)) {
             Files.walk(widgetPath)
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
         }
-
-        Path labelFile = temporaryFolder.newFolderPath("widgets", id).resolve(id + ".json");
+        Path widgetFolder = createDirectories(temporaryFolder.resolve("widgets").resolve(id));
+        Path widgetJson = createFile(widgetFolder.resolve(id + ".json"));
         byte[] fileContent = content.getBytes(StandardCharsets.UTF_8);
-        write(labelFile, fileContent, StandardOpenOption.CREATE);
+        write(widgetJson, fileContent, StandardOpenOption.CREATE);
     }
 
     private String contentOf(Path path) throws IOException {
@@ -99,37 +95,37 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_ensure_that_folders_page_and_widgets_are_created() throws Exception {
+    void should_ensure_that_folders_page_and_widgets_are_created() throws Exception {
 
         workspace.initialize();
 
         getClass().getResourceAsStream("");
 
         // no exception expected and we have 3 folders
-        assertThat(temporaryFolder.toPath().resolve("pages")).exists();
-        assertThat(temporaryFolder.toPath().resolve("widgets")).exists();
+        assertThat(temporaryFolder.resolve("pages")).exists();
+        assertThat(temporaryFolder.resolve("widgets")).exists();
     }
 
     @Test
-    public void should_not_throw_exception_when_a_folder_exist_before_init() throws Exception {
+    void should_not_throw_exception_when_a_folder_exist_before_init() throws Exception {
         //Folder creation
-        if (!Files.exists(temporaryFolder.toPath().resolve("pages"))) {
-            temporaryFolder.newFolderPath("pages");
+        if (!Files.exists(temporaryFolder.resolve("pages"))) {
+            createDirectory(temporaryFolder.resolve("pages"));
         }
-        Path widgetFolder = temporaryFolder.toPath().resolve("widgets");
+        Path widgetFolder = temporaryFolder.resolve("widgets");
         if (!Files.exists(widgetFolder)) {
-            temporaryFolder.newFolderPath("pages");
+            createDirectory(temporaryFolder.resolve("widgets"));
         }
 
         workspace.initialize();
 
         // no exception expected and we have 3 folders
-        assertThat(temporaryFolder.toPath().resolve("pages")).exists();
-        assertThat(temporaryFolder.toPath().resolve("widgets")).exists();
+        assertThat(temporaryFolder.resolve("pages")).exists();
+        assertThat(temporaryFolder.resolve("widgets")).exists();
     }
 
     @Test
-    public void should_copy_widget_to_widget_repository_folder() throws Exception {
+    void should_copy_widget_to_widget_repository_folder() throws Exception {
 
         workspace.initialize();
 
@@ -140,7 +136,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_not_copy_widget_file_if_it_is_already_in_widget_repository_with_same_version() throws Exception {
+    void should_not_copy_widget_file_if_it_is_already_in_widget_repository_with_same_version() throws Exception {
         String existingWidgetContent = "{\"id\":\"pbLabel\", \"template\": \"<div>Hello</div>\", \"designerVersion\": \""
                 + CURRENT_MODEL_VERSION + "\"}";
         createWidget("pbLabel", existingWidgetContent);
@@ -152,7 +148,7 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_copy_widget_file_if_it_is_already_in_widget_repository_folder_with_a_former_version()
+    void should_copy_widget_file_if_it_is_already_in_widget_repository_folder_with_a_former_version()
             throws Exception {
         String existingWidgetContent = this.getClass()
                 .getResourceAsStream("/workspace/widgets/pbWidgetToOverride/pbWidgetToOverride.json").readAllBytes()
@@ -166,54 +162,53 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_delete_page_reference_when_page_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
+    void should_delete_page_reference_when_page_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
             throws Exception {
         //Folder creation
-        temporaryFolder.newFolderPath("pages", "myPageToRemove", "js");
-        temporaryFolder.newFilePath("pages/.gitignore");
+        createDirectories(temporaryFolder.resolve("pages").resolve("myPageToRemove").resolve("js"));
+        createFile(temporaryFolder.resolve("pages").resolve(".gitignore"));
 
         workspace.cleanPageWorkspace();
 
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve("myPageToRemove")).doesNotExist();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve(".gitignore")).exists();
+        assertThat(temporaryFolder.resolve("pages").resolve("myPageToRemove")).doesNotExist();
+        assertThat(temporaryFolder.resolve("pages").resolve(".gitignore")).exists();
     }
 
     @Test
-    public void should_delete_only_js_folder_for_page_artifact_when_page_exist() throws Exception {
+    void should_delete_only_js_folder_for_page_artifact_when_page_exist() throws Exception {
         //Folder creation
-        temporaryFolder.newFolderPath("pages", "myPage", "js");
-        temporaryFolder.newFilePath("pages/myPage/myPage.json");
+        createDirectories(temporaryFolder.resolve("pages").resolve("myPage").resolve("js"));
+        createFile(temporaryFolder.resolve("pages").resolve("myPage/myPage.json"));
 
         workspace.cleanPageWorkspace();
 
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve("myPage")).exists();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve("myPage").resolve("js")).doesNotExist();
+        assertThat(temporaryFolder.resolve("pages").resolve("myPage")).exists();
+        assertThat(temporaryFolder.resolve("pages").resolve("myPage").resolve("js")).doesNotExist();
     }
 
     @Test
-    public void should_keep_file_with_a_reference_on_workspace_when_cleanup_is_called() throws Exception {
+    void should_keep_file_with_a_reference_on_workspace_when_cleanup_is_called() throws Exception {
         //Folder creation
-        temporaryFolder.newFolderPath("pages", ".metadata");
-        temporaryFolder.newFolderPath("pages", "myPage");
-        temporaryFolder.newFilePath("pages/myPage/myPage.json");
-
-        temporaryFolder.newFilePath("pages/.metadata/.index.json");
-        temporaryFolder.newFilePath("pages/.metadata/myPage.json");
-        temporaryFolder.newFilePath("pages/.metadata/oldestPage.json");
+        createDirectories(temporaryFolder.resolve("pages").resolve(".metadata"));
+        createDirectories(temporaryFolder.resolve("pages").resolve("myPage"));
+        createFile(temporaryFolder.resolve("pages/myPage/myPage.json"));
+        createFile(temporaryFolder.resolve("pages/.metadata/.index.json"));
+        createFile(temporaryFolder.resolve("pages/.metadata/myPage.json"));
+        createFile(temporaryFolder.resolve("pages/.metadata/oldestPage.json"));
 
         workspace.cleanPageWorkspace();
 
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve("myPage")).exists();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve("myPage").resolve("js")).doesNotExist();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve(".metadata").resolve(".index.json"))
+        assertThat(temporaryFolder.resolve("pages").resolve("myPage")).exists();
+        assertThat(temporaryFolder.resolve("pages").resolve("myPage").resolve("js")).doesNotExist();
+        assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve(".index.json"))
                 .doesNotExist();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve(".metadata").resolve("oldestPage.json"))
+        assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve("oldestPage.json"))
                 .doesNotExist();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve(".metadata").resolve("myPage.json")).exists();
+        assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve("myPage.json")).exists();
     }
 
     @Test
-    public void should_ensure_that_folders_page_widgets_fragments_are_created() throws Exception {
+    void should_ensure_that_folders_page_widgets_fragments_are_created() throws Exception {
 
         workspace.initialize();
 
@@ -224,20 +219,20 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_not_throw_exception_when_a_folder_exist_before_init_with_fragment() throws Exception {
+    void should_not_throw_exception_when_a_folder_exist_before_init_with_fragment() throws Exception {
         //Folder creation
-        if (!Files.exists(temporaryFolder.toPath().resolve("fragments"))) {
-            temporaryFolder.newFolderPath("fragments");
+        if (!Files.exists(temporaryFolder.resolve("fragments"))) {
+            createDirectories(temporaryFolder.resolve("fragments"));
         }
 
         workspace.initialize();
 
         // no exception expected and we have fragment folder
-        assertThat(temporaryFolder.toPath().resolve("fragments")).exists();
+        assertThat(temporaryFolder.resolve("fragments")).exists();
     }
 
     @Test
-    public void should_not_copy_widget_file_if_it_is_already_in_widget_repository_folder() throws Exception {
+    void should_not_copy_widget_file_if_it_is_already_in_widget_repository_folder() throws Exception {
         //We create the widget files
         String existingWidget = "{\"id\":\"pbLabel\", \"template\": \"<div>Hello</div>\", \"designerVersion\": \""
                 + CURRENT_MODEL_VERSION + "\"}";
@@ -251,50 +246,51 @@ public class WorkspaceTest {
     }
 
     @Test
-    public void should_delete_fragment_reference_when_fragment_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
+    void should_delete_fragment_reference_when_fragment_doesnt_exist_anymore_but_any_file_stay_on_filesystem()
             throws Exception {
         //Folder creation
-        temporaryFolder.newFolderPath("fragments", "myFragment");
-        temporaryFolder.newFilePath("fragments/myFragment/widgets-abcd487.min.js");
+        createDirectories(temporaryFolder.resolve("fragments/myFragment"));
+        createFile(temporaryFolder.resolve("fragments/myFragment/widgets-abcd487.min.js"));
 
         workspace.initialize();
 
-        assertThat(temporaryFolder.toPath().resolve("fragments").resolve("myFragment")).doesNotExist();
+        assertThat(temporaryFolder.resolve("fragments").resolve("myFragment")).doesNotExist();
     }
 
     @Test
-    public void should_delete_only_js_file_for_fragment_artifact_when_fragment_descriptor_exist() throws Exception {
+    void should_delete_only_js_file_for_fragment_artifact_when_fragment_descriptor_exist() throws Exception {
         //Folder creation
-        temporaryFolder.newFolderPath("fragments", "myFragment");
-        temporaryFolder.newFolderPath("fragments", ".metadata");
-        temporaryFolder.newFilePath("fragments/myFragment/widgets-abcd487.min.js");
+        createDirectories(temporaryFolder.resolve("fragments/myFragment"));
+        createDirectories(temporaryFolder.resolve("fragments/.metadata"));
+        createFile(temporaryFolder.resolve("fragments/myFragment/widgets-abcd487.min.js"));
+
         //test will fail if fake files are empty (no json inside)
-        Files.write(temporaryFolder.newFilePath("fragments/myFragment/myFragment.json"), "{}".getBytes(),
+        Files.write(createFile(temporaryFolder.resolve("fragments/myFragment/myFragment.json")), "{}".getBytes(),
                 StandardOpenOption.WRITE);
-        Files.write(temporaryFolder.newFilePath("fragments/.metadata/myFragment.json"), "{}".getBytes(),
+        Files.write(createFile(temporaryFolder.resolve("fragments/.metadata/myFragment.json")), "{}".getBytes(),
                 StandardOpenOption.WRITE);
-        Files.write(temporaryFolder.newFilePath("fragments/.metadata/oldestFragment.json"), "{}".getBytes(),
+        Files.write(createFile(temporaryFolder.resolve("fragments/.metadata/oldestFragment.json")), "{}".getBytes(),
                 StandardOpenOption.WRITE);
-        temporaryFolder.newFilePath("fragments/.DSSTORE");
-        temporaryFolder.newFilePath("fragments/.gitignore");
+        createFile(temporaryFolder.resolve("fragments/.DSSTORE"));
+        createFile(temporaryFolder.resolve("fragments/.gitignore"));
 
         workspace.initialize();
 
         assertThat(
-                temporaryFolder.toPath().resolve("fragments").resolve("myFragment").resolve("widgets-abcd487.min.js"))
+                temporaryFolder.resolve("fragments").resolve("myFragment").resolve("widgets-abcd487.min.js"))
                 .doesNotExist();
-        assertThat(temporaryFolder.toPath().resolve("fragments").resolve("myFragment")).exists();
-        assertThat(temporaryFolder.toPath().resolve("fragments").resolve(".DSSTORE")).exists();
-        assertThat(temporaryFolder.toPath().resolve("fragments").resolve(".gitignore")).exists();
-        assertThat(temporaryFolder.toPath().resolve("fragments").resolve(".metadata").resolve("oldestFragment.json"))
+        assertThat(temporaryFolder.resolve("fragments").resolve("myFragment")).exists();
+        assertThat(temporaryFolder.resolve("fragments").resolve(".DSSTORE")).exists();
+        assertThat(temporaryFolder.resolve("fragments").resolve(".gitignore")).exists();
+        assertThat(temporaryFolder.resolve("fragments").resolve(".metadata").resolve("oldestFragment.json"))
                 .doesNotExist();
-        assertThat(temporaryFolder.toPath().resolve("fragments").resolve(".metadata").resolve("myFragment.json"))
+        assertThat(temporaryFolder.resolve("fragments").resolve(".metadata").resolve("myFragment.json"))
                 .exists();
 
     }
 
     @Test
-    public void should_initialize_workspace() throws Exception {
+    void should_initialize_workspace() throws Exception {
 
         //When
         workspace.initialize();
@@ -303,17 +299,11 @@ public class WorkspaceTest {
         verify(workspace).cleanPageWorkspace();
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_runtimeException_if_error_occurs_while_initializing_workspace() throws Exception {
-        doThrow(new IOException()).when(workspace).initialize();
-        workspace.initialize();
-    }
-
     @Test
-    public void should_refresh_index_file_in_metadata_folder_when_initialize_is_called() throws Exception {
+    void should_refresh_index_file_in_metadata_folder_when_initialize_is_called() throws Exception {
         //Folder creation
-        temporaryFolder.newFolderPath("pages", ".metadata");
-        temporaryFolder.newFolderPath("pages", "myPage");
+        createDirectories(temporaryFolder.resolve("pages/myPage"));
+        createDirectories(temporaryFolder.resolve("pages/.metadata"));
         var pageContent = "{\"designerVersion\": \"1.0.0\"," +
                 "\"id\": \"myPage\"," +
                 "\"uuid\": \"123ca6c5-9a72-4a03-a890-2e6bc2aeed93\"," +
@@ -322,29 +312,29 @@ public class WorkspaceTest {
                 "\"lastUpdate\": 1436966572684," +
                 "\"rows\": [[]],\"assets\": [],\"data\": {}}";
 
-        write(temporaryFolder.newFilePath("pages/myPage/myPage.json"),
+        write(createFile(temporaryFolder.resolve("pages/myPage/myPage.json")),
                 pageContent.getBytes(), StandardOpenOption.WRITE);
 
-        write(temporaryFolder.newFilePath("pages/.metadata/.index.json"),
+        write(createFile(temporaryFolder.resolve("pages/.metadata/.index.json")),
                 "{\"4a732c6f-254b-4b37-841f-9582696d40e9\":\"anyPage\",\"225ca6c5-9a72-4a03-a890-2e6bc2aeed93\":\"myPage\"}"
                         .getBytes(),
                 StandardOpenOption.WRITE);
 
-        temporaryFolder.newFilePath("pages/.metadata/oldestPage.json");
+        createFile(temporaryFolder.resolve("pages/.metadata/oldestPage.json"));
 
         workspace.initialize();
 
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve("myPage")).exists();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve("myPage").resolve("js")).doesNotExist();
+        assertThat(temporaryFolder.resolve("pages").resolve("myPage")).exists();
+        assertThat(temporaryFolder.resolve("pages").resolve("myPage").resolve("js")).doesNotExist();
         await().atMost(2, SECONDS).untilAsserted(
-                () -> assertThat(temporaryFolder.toPath().resolve("pages").resolve(".metadata").resolve(".index.json"))
+                () -> assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve(".index.json"))
                         .exists());
-        assertThat(contentOf(temporaryFolder.toPath().resolve("pages").resolve(".metadata").resolve(".index.json")))
+        assertThat(contentOf(temporaryFolder.resolve("pages").resolve(".metadata").resolve(".index.json")))
                 .isEqualTo("{\"123ca6c5-9a72-4a03-a890-2e6bc2aeed93\":\"myPage\"}");
 
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve(".metadata").resolve("oldestPage.json"))
+        assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve("oldestPage.json"))
                 .doesNotExist();
-        assertThat(temporaryFolder.toPath().resolve("pages").resolve(".metadata").resolve("myPage.json")).exists();
+        assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve("myPage.json")).exists();
     }
 
 }

@@ -23,20 +23,20 @@ import static org.springframework.util.StringUtils.hasText;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.asset.PageAssetPredicate;
+import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.WebResource;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.service.exception.IncompatibleException;
-import org.bonitasoft.web.designer.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
 import org.bonitasoft.web.designer.visitor.WebResourcesVisitor;
 
@@ -209,7 +209,7 @@ public class DefaultPageService extends AbstractAssetableArtifactService<PageRep
 
         MigrationResult<Page> migratedResult = pageMigrationApplyer.migrate(pageToMigrate);
         Page migratedPage = migratedResult.getArtifact();
-        // Error during adding modalContainer classes in asset, Missing templates/page/assets/css/style.css from classpath
+
         if (!migratedResult.getFinalStatus().equals(MigrationStatus.ERROR)) {
             repository.updateLastUpdateAndSave(migratedPage);
         } else {

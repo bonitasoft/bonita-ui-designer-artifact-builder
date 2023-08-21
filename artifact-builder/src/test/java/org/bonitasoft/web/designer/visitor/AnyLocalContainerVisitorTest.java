@@ -25,38 +25,33 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FormContainer;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.TabContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.model.page.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AnyLocalContainerVisitorTest {
+@ExtendWith(MockitoExtension.class)
+class AnyLocalContainerVisitorTest {
 
     @InjectMocks
     private AnyLocalContainerVisitor anyLocalContainerVisitor;
 
     private Component component;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         component = aComponent().build();
     }
 
     @Test
-    public void should_not_collect_components() throws Exception {
+    void should_not_collect_components() throws Exception {
         assertThat(anyLocalContainerVisitor.visit(component)).isEmpty();
     }
 
     @Test
-    public void should_collect_containers() throws Exception {
+    void should_collect_containers() throws Exception {
         Container container = aContainer()
                 .with(component)
                 .build();
@@ -65,7 +60,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_tabs_containers_and_content() throws Exception {
+    void should_collect_tabs_containers_and_content() throws Exception {
         Container container = aContainer().build();
         TabContainer tab = aTabContainer()
                 .with(container).build();
@@ -77,7 +72,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_form_containers_and_content() throws Exception {
+    void should_collect_form_containers_and_content() throws Exception {
         Container container = aContainer().build();
         FormContainer formContainer = aFormContainer().with(container).build();
 
@@ -85,7 +80,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_container_within_previewable() throws Exception {
+    void should_collect_container_within_previewable() throws Exception {
         Container container = aContainer().build();
 
         assertThat(anyLocalContainerVisitor.visit(aPage()
@@ -94,7 +89,7 @@ public class AnyLocalContainerVisitorTest {
     }
 
     @Test
-    public void should_collect_modalContainer() throws Exception {
+    void should_collect_modalContainer() throws Exception {
         Container container = aContainer().with(component).build();
         ModalContainer modalContainer = aModalContainer()
                 .with(container)

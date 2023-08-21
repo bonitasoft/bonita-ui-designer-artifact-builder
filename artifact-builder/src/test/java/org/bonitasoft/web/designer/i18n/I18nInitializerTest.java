@@ -16,26 +16,30 @@
  */
 package org.bonitasoft.web.designer.i18n;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
+import org.bonitasoft.web.angularjs.GeneratorProperties;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class I18nInitializerTest {
+@ExtendWith(MockitoExtension.class)
+class I18nInitializerTest {
 
     @Mock
-    private WorkspaceUidProperties workspaceUidProperties;
+    private GeneratorProperties generatorProperties;
     @Mock
     private ResourcesCopier resourcesCopier;
     @Mock
@@ -44,23 +48,23 @@ public class I18nInitializerTest {
     @InjectMocks
     private I18nInitializer i18nInitializer;
 
-    @Before
-    public void setUp() throws Exception {
-        when(workspaceUidProperties.getExtractPath()).thenReturn(Paths.get("target/test-classes"));
+    @BeforeEach
+    void setUp() throws Exception {
+        when(generatorProperties.getExtractPath()).thenReturn(Paths.get("target/test-classes"));
     }
 
     @Test
-    public void should_start_live_build_on_po_directory() throws Exception {
+    void should_start_live_build_on_po_directory() throws Exception {
 
         i18nInitializer.initialize();
 
-        verify(languagePackBuilder).start(eq(workspaceUidProperties.getExtractPath().resolve("i18n")));
+        verify(languagePackBuilder).start(generatorProperties.getExtractPath().resolve("i18n"));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_a_runtime_exception_on_io_error() throws Exception {
+    @Test
+    void should_throw_a_runtime_exception_on_io_error() throws Exception {
         doThrow(new IOException()).when(languagePackBuilder).start(any(Path.class));
 
-        i18nInitializer.initialize();
+        assertThrows(RuntimeException.class, () -> i18nInitializer.initialize());
     }
 }

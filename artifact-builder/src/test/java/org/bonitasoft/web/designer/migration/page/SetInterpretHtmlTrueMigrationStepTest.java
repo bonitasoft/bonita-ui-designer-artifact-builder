@@ -17,7 +17,7 @@
 package org.bonitasoft.web.designer.migration.page;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.bonitasoft.web.designer.builder.ComponentBuilder.*;
+import static org.bonitasoft.web.designer.builder.ComponentBuilder.aComponent;
 import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
@@ -25,35 +25,35 @@ import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
 import java.util.Map;
 
 import org.bonitasoft.web.designer.builder.RowBuilder;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.AbstractPage;
 import org.bonitasoft.web.designer.model.page.Element;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.visitor.ComponentVisitor;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SetInterpretHtmlTrueMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class SetInterpretHtmlTrueMigrationStepTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
 
     SetInterpretHtmlTrueMigrationStep<Page> setInterpretHtmlTrueMigrationStep;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         setInterpretHtmlTrueMigrationStep = new SetInterpretHtmlTrueMigrationStep<>(
                 new ComponentVisitor(fragmentRepository));
     }
 
     @Test
-    public void should_migrate_page_with_added_AllowHTML() throws Exception {
+    void should_migrate_page_with_added_AllowHTML() throws Exception {
         RowBuilder row = aRow().with(aComponent("pbButton"));
         Page pageWithButton = aPage().withId("pageWithButton").withModelVersion("2.2")
                 .with(row.build().toArray(new Element[0])).build();
@@ -64,7 +64,7 @@ public class SetInterpretHtmlTrueMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_fragment_with_added_AllowHTML() throws Exception {
+    void should_migrate_fragment_with_added_AllowHTML() throws Exception {
         RowBuilder row = aRow().with(aComponent("pbCheckbox"));
         Fragment fragmentWithCheckbox = aFragment().withId("fragmentWithCheckbox").withModelVersion("2.2")
                 .with(row.build().toArray(new Element[0])).build();

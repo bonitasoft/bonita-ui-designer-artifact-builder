@@ -20,17 +20,17 @@ import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.bonitasoft.web.designer.controller.export.Zipper;
+import org.bonitasoft.web.designer.common.export.Zipper;
 import org.bonitasoft.web.designer.controller.export.properties.FragmentPropertiesBuilder;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentPropertiesExportStepTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentPropertiesExportStepTest {
 
     @Mock
     private Zipper zipper;
@@ -42,7 +42,7 @@ public class FragmentPropertiesExportStepTest {
     private FragmentPropertiesExportStep step;
 
     @Test
-    public void should_add_page_properties_to_zip() throws Exception {
+    void should_add_page_properties_to_zip() throws Exception {
         Fragment fragment = aFragment().build();
         when(fragmentPropertiesBuilder.build(fragment)).thenReturn("foobar".getBytes());
 

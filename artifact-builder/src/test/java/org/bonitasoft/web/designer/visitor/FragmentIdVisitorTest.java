@@ -26,27 +26,25 @@ import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
 import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContainer;
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.model.page.Container;
-import org.bonitasoft.web.designer.model.page.FragmentElement;
-import org.bonitasoft.web.designer.model.page.ModalContainer;
-import org.bonitasoft.web.designer.model.page.TabsContainer;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.model.page.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * @author Colin Puy
  */
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentIdVisitorTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentIdVisitorTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -54,20 +52,20 @@ public class FragmentIdVisitorTest {
     @InjectMocks
     private FragmentIdVisitor fragmentIdVisitor;
 
-    @Before
-    public void setUp() {
-        when(fragmentRepository.get(anyString())).thenReturn(aFragment().build());  // return empty fragment
+    @BeforeEach
+    void setUp() {
+        lenient().when(fragmentRepository.get(anyString())).thenReturn(aFragment().build()); // return empty fragment
     }
 
     @Test
-    public void should_add_fragment_id_to_visited_fragment_ids_when_visiting_fragment() throws Exception {
+    void should_add_fragment_id_to_visited_fragment_ids_when_visiting_fragment() throws Exception {
         FragmentElement fragmentElement = aFragmentElement().withFragmentId("aFragmentId").build();
 
         assertThat(fragmentIdVisitor.visit(fragmentElement)).containsOnly("aFragmentId");
     }
 
     @Test
-    public void should_visit_each_container_rows() throws Exception {
+    void should_visit_each_container_rows() throws Exception {
         Container container = aContainer().with(
                 aRow().with(aFragmentElement().withFragmentId("fragment1")),
                 aRow().with(aFragmentElement().withFragmentId("fragment2"))).build();
@@ -76,7 +74,7 @@ public class FragmentIdVisitorTest {
     }
 
     @Test
-    public void should_visit_formcontainer() throws Exception {
+    void should_visit_formcontainer() throws Exception {
         Container container = aContainer().with(
                 aRow().with(aFragmentElement().withFragmentId("fragment1")),
                 aRow().with(aFragmentElement().withFragmentId("fragment2"))).build();
@@ -86,7 +84,7 @@ public class FragmentIdVisitorTest {
     }
 
     @Test
-    public void should_visit_each_tabsContainer_containers() throws Exception {
+    void should_visit_each_tabsContainer_containers() throws Exception {
         TabsContainer tabsContainer = aTabsContainer().with(
                 aTabContainer().with(aContainer().with(aFragmentElement().withFragmentId("fragment3"))),
                 aTabContainer().with(aContainer().with(aFragmentElement().withFragmentId("fragment4")))).build();
@@ -95,7 +93,7 @@ public class FragmentIdVisitorTest {
     }
 
     @Test
-    public void should_visit_each_modal_container_rows() throws Exception {
+    void should_visit_each_modal_container_rows() throws Exception {
         ModalContainer modalContainer = aModalContainer().with(aContainer().with(
                 aRow().with(aFragmentElement().withFragmentId("fragment5")),
                 aRow().with(aFragmentElement().withFragmentId("fragment6")))).build();
@@ -104,7 +102,7 @@ public class FragmentIdVisitorTest {
     }
 
     @Test
-    public void should_visit_fragment_container_when_visiting_a_fragment_element() throws Exception {
+    void should_visit_fragment_container_when_visiting_a_fragment_element() throws Exception {
         FragmentElement fragmentElement = aFragmentElement().withFragmentId("aFragmentId").build();
 
         Fragment fragment = aFragment().with(aRow().with(aFragmentElement().withFragmentId("anotherFragmentId")))
@@ -115,7 +113,7 @@ public class FragmentIdVisitorTest {
     }
 
     @Test
-    public void should_do_noting_when_visiting_a_component() throws Exception {
+    void should_do_noting_when_visiting_a_component() throws Exception {
         assertThat(fragmentIdVisitor.visit(new Component())).isEmpty();
     }
 }
