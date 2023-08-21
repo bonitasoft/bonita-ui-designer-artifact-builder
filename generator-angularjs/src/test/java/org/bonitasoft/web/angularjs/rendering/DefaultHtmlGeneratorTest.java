@@ -23,6 +23,7 @@ import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.aParagraph;
 import static org.bonitasoft.web.designer.builder.ComponentBuilder.anInput;
 import static org.bonitasoft.web.designer.builder.ContainerBuilder.aContainer;
+import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.builder.RowBuilder.aRow;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,18 +39,15 @@ import java.util.Set;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bonitasoft.web.angularjs.utils.rule.TestResource;
 import org.bonitasoft.web.angularjs.visitor.HtmlBuilderVisitor;
-import org.bonitasoft.web.angularjs.visitor.PropertyValuesVisitor;
 import org.bonitasoft.web.angularjs.visitor.RequiredModulesVisitor;
-import org.bonitasoft.web.angularjs.visitor.VariableModelVisitor;
 import org.bonitasoft.web.designer.common.repository.AssetRepository;
 import org.bonitasoft.web.designer.common.repository.FragmentRepository;
-import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.common.visitor.PageFactory;
-import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
+import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
 import org.jsoup.Jsoup;
@@ -87,18 +85,6 @@ class DefaultHtmlGeneratorTest {
     @Mock
     private FragmentRepository fragmentRepository;
 
-    @Mock
-    private WidgetRepository widgetRepository;
-
-    @Mock
-    private PropertyValuesVisitor propertyValuesVisitor;
-
-    @Mock
-    private VariableModelVisitor variableModelVisitor;
-
-    @Mock
-    private WidgetIdVisitor widgetIdVisitor;
-
     private String assetSHA1;
 
     @Mock
@@ -118,54 +104,54 @@ class DefaultHtmlGeneratorTest {
                 widgetAssetRepository,
                 pageAssetRepository,
                 List.of(pageFactory));
-        when(requiredModulesVisitor.visit(any(Page.class))).thenReturn(Collections.emptySet());
 
-        //        when(widgetAssetRepository.readAllBytes(any(Asset.class))).thenReturn(assetsContent);
         assetSHA1 = DigestUtils.sha1Hex(assetsContent);
     }
-    //    @Test
-    //    void should_generate_an_html_with_the_list_of_widgets() throws Exception {
-    //        Page page = aPage().withId("page-id").build();
-    //        when(directivesCollector.buildUniqueDirectivesFiles(page, page.getId()))
-    //                .thenReturn(Arrays.asList("assets/widgets.js"));
-    //
-    //        // when we generate the html
-    //        String generatedHtml = generator.build(page, "mycontext/");
-    //
-    //        // then we should have the directive scripts included
-    //        assertThat(generatedHtml).contains("<script src=\"assets/widgets.js\"></script>")
-    //                .contains("pb-model='page-id'"); // and an empty object as constant
-    //    }
 
-    //    @Test
-    //    void should_generate_formatted_html_with_given_widgets() throws Exception {
-    //        Page page = aPage().build();
-    //        when(generator.build(page, "mycontext/")).thenReturn("foobar");
-    //
-    //        String generateHtml = this.generator.build(page, "mycontext/");
-    //
-    //        assertThat(generateHtml).isEqualTo(format("foobar"));
-    //    }
+    @Test
+    void should_generate_an_html_with_the_list_of_widgets() throws Exception {
+        Page page = aPage().withId("page-id").build();
+        when(directivesCollector.buildUniqueDirectivesFiles(page, page.getId()))
+                .thenReturn(Arrays.asList("assets/widgets.js"));
 
-    //    @Test
-    //    void should_generate_formatted_html_with_no_context() throws Exception {
-    //        Page page = aPage().build();
-    //        //        when(generator.build(page, "")).thenReturn("foobar");
-    //
-    //        String generateHtml = generator.generateHtml(page);
-    //
-    //        assertThat(generateHtml).isEqualTo(format("foobar"));
-    //    }
-    //
-    //    @Test
-    //    void should_generate_formatted_html_for_fragment_with_given_widgets() throws Exception {
-    //        Fragment fragment = aFragment().build();
-    //        when(generator.build(fragment, "mycontext/")).thenReturn("foobar");
-    //
-    //        String generateHtml = generator.generateHtml(fragment, "mycontext/");
-    //
-    //        assertThat(generateHtml).isEqualTo(format("foobar"));
-    //    }
+        // when we generate the html
+        String generatedHtml = generator.build(page, "mycontext/");
+
+        // then we should have the directive scripts included
+        assertThat(generatedHtml).contains("<script src=\"assets/widgets.js\"></script>")
+                .contains("pb-model='page-id'"); // and an empty object as constant
+    }
+
+    @Test
+    void should_generate_formatted_html_with_no_context() {
+        Page page = aPage().withId("page-id").build();
+
+        when(pageFactory.generate(page)).thenReturn("foobar");
+        when(directivesCollector.buildUniqueDirectivesFiles(page, page.getId()))
+                .thenReturn(Collections.emptyList());
+        when(assetVisitor.visit(page)).thenReturn(Collections.emptySet());
+
+        String html = generator.build(page, "");
+
+        assertThatHtmlBody(html).isEqualToBody(testResource.load("pageWithNoContext.html"));
+        assertThatHtmlHead(html).isEqualToHead(testResource.load("pageWithNoContext.html"));
+    }
+
+    @Test
+    void should_generate_formatted_html_for_fragment_with_given_widgets() throws Exception {
+        Fragment fragment = aFragment().build();
+        when(pageFactory.generate(fragment)).thenReturn("foobar");
+        when(directivesCollector.buildUniqueDirectivesFiles(fragment, fragment.getId()))
+                .thenReturn(Collections.emptyList());
+        when(assetVisitor.visit(fragment)).thenReturn(Collections.emptySet());
+        when(requiredModulesVisitor.visit(any(Fragment.class))).thenReturn(Collections.emptySet());
+
+        String generateHtml = generator.generateHtml(fragment, "mycontext/");
+
+        assertThatHtmlBody(generateHtml).isEqualToBody(testResource.load("fragmentWithNoContext.html"));
+        assertThatHtmlHead(generateHtml).isEqualToHead(testResource.load("fragmentWithNoContext.html"));
+
+    }
 
     @Test
     void should_build_a_container_fluid_for_a_previewable() throws Exception {

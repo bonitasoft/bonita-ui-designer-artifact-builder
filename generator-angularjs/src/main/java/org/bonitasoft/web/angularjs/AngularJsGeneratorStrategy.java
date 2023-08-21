@@ -46,11 +46,14 @@ import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
 
+import lombok.Getter;
+
 public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
 
     private final GeneratorProperties generatorProperties;
     private final DirectiveFileGenerator directiveFileGenerator;
     private final DefaultHtmlGenerator htmlGenerator;
+    @Getter
     private final HtmlBuilderVisitor htmlBuilderVisitor;
     private final WidgetIdVisitor widgetIdVisitor;
     private final Path widgetUserRepoPath;
@@ -105,10 +108,6 @@ public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
     }
 
     public ExportStep[] getPageExportStep() {
-        //        var commonSteps = super.getPageExportStep();
-        //        var pageExportSteps = Stream
-        //                .concat(Arrays.stream(commonSteps), Arrays.stream(angularJsGenerator.getPageExportStep()))
-        //                .toArray(ExportStep[]::new);
         return new ExportStep[] {
                 new HtmlExportStep(htmlGenerator, this.generatorProperties.getExportBackendResourcesPath()),
                 new WidgetsExportStep<Page>(widgetUserRepoPath, widgetIdVisitor,
@@ -129,10 +128,6 @@ public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
     @Override
     public AbstractLiveFileBuilder fragmentDirectiveBuilder() {
         return fragmentDirectiveBuilder;
-    }
-
-    public HtmlBuilderVisitor getHtmlBuilderVisitor() {
-        return this.htmlBuilderVisitor;
     }
 
     public HtmlGenerator getHtmlGenerator() {
