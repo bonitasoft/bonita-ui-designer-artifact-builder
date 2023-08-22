@@ -19,20 +19,17 @@ package org.bonitasoft.web.designer.model;
 /**
  * Report for artifact status
  *
- * @deprecated Not for public use.
- * @candidate for removal in a future release.
- *            This class don't have an explicit name. Replaced by {@link #ArtifactStatusReport}
+ * @deprecated Not for public use. *
+ *             This class don't have an explicit name. Replaced by {@link #ArtifactStatusReport}
  */
-@Deprecated
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class MigrationStatusReport extends ArtifactStatusReport {
 
     public MigrationStatusReport(boolean compatible, boolean migration) {
-        this.compatible = compatible;
-        this.migration = migration;
+        super(compatible, migration);
     }
 
     public MigrationStatusReport() {
-        this.compatible = true;
-        this.migration = true;
+        super(true, true);
     }
 }

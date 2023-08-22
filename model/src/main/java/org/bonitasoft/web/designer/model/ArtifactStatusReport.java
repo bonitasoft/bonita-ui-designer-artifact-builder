@@ -28,8 +28,8 @@ import lombok.Setter;
 @Setter
 public class ArtifactStatusReport {
 
-    protected boolean compatible;
-    protected boolean migration;
+    private boolean compatible;
+    private boolean migration;
 
     public ArtifactStatusReport(boolean compatible, boolean migration) {
         this.compatible = compatible;
