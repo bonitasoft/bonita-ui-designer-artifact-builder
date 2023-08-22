@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
  */
 public class JacksonDeserializationProblemHandler extends DeserializationProblemHandler {
 
-    protected static final Logger logger = LoggerFactory.getLogger(JacksonDeserializationProblemHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(JacksonDeserializationProblemHandler.class);
 
     @Override
     public boolean handleUnknownProperty(DeserializationContext ctxt, com.fasterxml.jackson.core.JsonParser jp,
