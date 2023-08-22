@@ -40,8 +40,8 @@ import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.Predicates;
 import org.bonitasoft.web.designer.controller.asset.PageAssetPredicate;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
@@ -131,10 +131,10 @@ public class DefaultFragmentService extends AbstractArtifactService<FragmentRepo
     }
 
     @Override
-    public MigrationStatusReport getStatus(Fragment fragment) {
+    public ArtifactStatusReport getStatus(Fragment fragment) {
         var fragmentStatusReport = super.getStatus(fragment);
         var depWidgetReport = fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment);
-        var depFragmentReport = getMigrationStatusOfFragmentUsed(fragment);
+        var depFragmentReport = getArtifactStatusOfFragmentUsed(fragment);
         return mergeStatusReport(fragmentStatusReport, mergeStatusReport(depWidgetReport, depFragmentReport));
     }
 
@@ -169,8 +169,8 @@ public class DefaultFragmentService extends AbstractArtifactService<FragmentRepo
     }
 
     @Override
-    public MigrationStatusReport getMigrationStatusOfFragmentUsed(Previewable previewable) {
-        List<MigrationStatusReport> reports = new ArrayList<>();
+    public ArtifactStatusReport getArtifactStatusOfFragmentUsed(Previewable previewable) {
+        List<ArtifactStatusReport> reports = new ArrayList<>();
         repository.getByIds(fragmentIdVisitor.visit(previewable))
                 .forEach(fragment -> reports.add(getStatus(fragment)));
 
@@ -183,7 +183,7 @@ public class DefaultFragmentService extends AbstractArtifactService<FragmentRepo
                 migration = true;
             }
         }
-        return new MigrationStatusReport(true, migration);
+        return new ArtifactStatusReport(true, migration);
     }
 
     @Override

@@ -46,10 +46,10 @@ import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.importer.mocks.PageImportMock;
 import org.bonitasoft.web.designer.controller.importer.mocks.WidgetImportMock;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.JsonViewPersistence;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
 import org.bonitasoft.web.designer.service.DefaultPageService;
@@ -349,7 +349,7 @@ class ArtifactImporterTest {
         wMocks.mockWidgetsAsAddedDependencies();
         Page page = pMocks.mockPageToBeImported(aPage().withName("myPage").withId("myPage").withModelVersion("12.0.0"));
         lenient().when(pageRepository.getNextAvailableId(page.getName())).thenReturn("myPage1");
-        when(pageService.getStatusWithoutDependencies(page)).thenReturn(new MigrationStatusReport(false, false));
+        when(pageService.getStatusWithoutDependencies(page)).thenReturn(new ArtifactStatusReport(false, false));
 
         final ImportReport report = artifactBuilder.importPage(pageImportPath, true);
 

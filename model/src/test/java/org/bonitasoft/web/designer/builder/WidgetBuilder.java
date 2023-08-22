@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.page.WebResource;
 import org.bonitasoft.web.designer.model.widget.Property;
 import org.bonitasoft.web.designer.model.widget.Widget;
@@ -49,7 +49,7 @@ public class WidgetBuilder {
     private boolean hasHelp = false;
 
     private Set<WebResource> webResources = new HashSet<>();
-    private MigrationStatusReport migrationStatusReport = new MigrationStatusReport(true, true);
+    private ArtifactStatusReport artifactStatusReport = new ArtifactStatusReport(true, true);
 
     public static WidgetBuilder aWidget() {
         return new WidgetBuilder();
@@ -144,18 +144,18 @@ public class WidgetBuilder {
         return this;
     }
 
-    public WidgetBuilder withMigrationStatusReport(MigrationStatusReport migrationStatusReport) {
-        this.migrationStatusReport = migrationStatusReport;
+    public WidgetBuilder withArtifactStatusReport(ArtifactStatusReport artifactStatusReport) {
+        this.artifactStatusReport = artifactStatusReport;
         return this;
     }
 
     public WidgetBuilder isCompatible(boolean compatible) {
-        this.migrationStatusReport.setCompatible(compatible);
+        this.artifactStatusReport.setCompatible(compatible);
         return this;
     }
 
     public WidgetBuilder isMigration(boolean migration) {
-        this.migrationStatusReport.setMigration(migration);
+        this.artifactStatusReport.setMigration(migration);
         return this;
     }
 
@@ -185,7 +185,7 @@ public class WidgetBuilder {
         if (controller != null) {
             widget.setController(controller);
         }
-        widget.setStatus(migrationStatusReport);
+        widget.setStatus(artifactStatusReport);
 
         if (assetBuilders != null) {
             for (AssetBuilder assetBuilder : assetBuilders) {

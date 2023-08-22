@@ -25,7 +25,7 @@ import org.bonitasoft.web.designer.common.generator.rendering.GenerationExceptio
 import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.controller.export.ExportException;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
@@ -77,15 +77,15 @@ public interface ArtifactBuilder {
 
     void cancelImport(String uuid);
 
-    MigrationStatusReport getPageStatus(@NotNull String id);
+    ArtifactStatusReport getPageStatus(@NotNull String id);
 
-    MigrationStatusReport getPageStatus(@NotNull Page page);
+    ArtifactStatusReport getPageStatus(@NotNull Page page);
 
-    MigrationStatusReport getFragmentStatus(@NotNull String id);
+    ArtifactStatusReport getFragmentStatus(@NotNull String id);
 
-    MigrationStatusReport getFragmentStatus(@NotNull Fragment fragment);
+    ArtifactStatusReport getFragmentStatus(@NotNull Fragment fragment);
 
-    MigrationStatusReport getWidgetStatus(@NotNull String id);
+    ArtifactStatusReport getWidgetStatus(@NotNull String id);
 
-    MigrationStatusReport getWidgetStatus(@NotNull Widget widget);
+    ArtifactStatusReport getWidgetStatus(@NotNull Widget widget);
 }

@@ -46,9 +46,9 @@ import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
-import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
@@ -92,23 +92,17 @@ class PageServiceTest {
     private AssetVisitor assetVisitor;
 
     @Mock
-    private FragmentIdVisitor fragmentIdVisitor;
-
-    @Mock
     private AssetService<Page> pageAssetService;
 
     private DefaultPageService pageService;
 
     @Mock
-    private DefaultFragmentService fragmentService;
-
-    @Mock
     private WebResourcesVisitor webResourcesVisitor;
 
-    private MigrationStatusReport defaultStatusReport;
+    private ArtifactStatusReport defaultStatusReport;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         pageService = spy(new DefaultPageService(
                 pageRepository,
                 pageMigrationApplyer,
@@ -117,7 +111,7 @@ class PageServiceTest {
                 new UiDesignerProperties("1.13.0", CURRENT_MODEL_VERSION),
                 pageAssetService,
                 webResourcesVisitor));
-        defaultStatusReport = new MigrationStatusReport(true, false);
+        defaultStatusReport = new ArtifactStatusReport(true, false);
         doReturn(defaultStatusReport).when(pageService).getStatus(any());
         when(pageRepository.updateLastUpdateAndSave(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -289,7 +283,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_duplicate_a_page_from_a_Page() throws Exception {
+    void should_duplicate_a_page_from_a_Page() {
         Asset pageAsset = aPageAsset();
         Asset widgetAsset = aWidgetAsset();
 
@@ -311,7 +305,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_save_a_page() throws Exception {
+    void should_save_a_page() {
         final String pageId = "my-page";
         Page pageToBeSaved = mockPageOfId(pageId);
 
@@ -338,7 +332,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_save_a_page_renaming_it() throws Exception {
+    void should_save_a_page_renaming_it() {
 
         final String myPageName = "my-page";
         Page existingPage = aPage().withId(myPageName).withName(myPageName).build();
@@ -362,7 +356,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_not_save_widget_assets_while_saving_a_page() throws Exception {
+    void should_not_save_widget_assets_while_saving_a_page() {
         Page pageToBeSaved = aPage().withId("my-page")
                 .withAsset(aPageAsset())
                 .build();
@@ -382,8 +376,8 @@ class PageServiceTest {
     void should_retrieve_a_page_representation_by_its_id() throws Exception {
         final String pageId = "my-page";
         Page expectedPage = aFilledPage(pageId);
-        expectedPage.setStatus(new MigrationStatusReport(true, true));
-        doReturn(new MigrationStatusReport(false, false)).when(pageService).getStatus(any());
+        expectedPage.setStatus(new ArtifactStatusReport(true, true));
+        doReturn(new ArtifactStatusReport(false, false)).when(pageService).getStatus(any());
 
         when(pageRepository.get(pageId)).thenReturn(expectedPage);
 
@@ -401,7 +395,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_respond_422_on_save_when_page_is_incompatible() throws Exception {
+    void should_respond_422_on_save_when_page_is_incompatible() {
         final String pageId = "my-page";
         Page pageToBeSaved = mockPageOfId(pageId);
         doReturn(new MigrationStatusReport(false, false)).when(pageService).getStatus(any());
@@ -443,7 +437,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_not_rename_a_page_if_name_is_same() throws Exception {
+    void should_not_rename_a_page_if_name_is_same() {
         String name = "page-name";
         final String pageId = "my-page";
 
@@ -456,7 +450,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_keep_assets_when_page_is_renamed() throws Exception {
+    void should_keep_assets_when_page_is_renamed() {
         String newName = "my-page-new-name";
 
         final String pageId = "my-page";
@@ -488,7 +482,7 @@ class PageServiceTest {
     }
 
     @Test
-    void should_respond_500_internal_error_if_error_occurs_while_renaming_a_page() throws Exception {
+    void should_respond_500_internal_error_if_error_occurs_while_renaming_a_page() {
 
         final String pageId = "my-page";
         when(pageRepository.get(pageId)).thenReturn(aPage().withId(pageId).withName(pageId).build());
@@ -658,7 +652,7 @@ class PageServiceTest {
         page.setName("page");
         page.setLastUpdate(Instant.ofEpochMilli(1514989634397L));
         page.setRows(new ArrayList<>());
-        page.setStatus(new MigrationStatusReport());
+        page.setStatus(new ArtifactStatusReport());
 
         when(pageRepository.get("id")).thenReturn(page);
 

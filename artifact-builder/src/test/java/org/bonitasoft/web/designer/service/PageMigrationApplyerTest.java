@@ -27,6 +27,7 @@ import java.util.Optional;
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.migration.MigrationStep;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
@@ -190,39 +191,39 @@ class PageMigrationApplyerTest {
     @Test
     void should_get_correct_migration_status_when_one_dependency_is_to_migrate() throws Exception {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
-        when(widgetService.getMigrationStatusOfCustomWidgetUsed(page))
+        when(widgetService.getArtifactStatusOfCustomWidgetUsed(page))
                 .thenReturn(new MigrationStatusReport(true, true));
-        when(fragmentService.getMigrationStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, false));
+        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, false));
 
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
-        MigrationStatusReport status = migrationApplyer.getMigrationStatusDependencies(page);
+        ArtifactStatusReport status = migrationApplyer.getPageStatusDependencies(page);
         assertThat(getMigrationStatusReport(true, true)).isEqualTo(status.toString());
     }
 
     @Test
     void should_get_correct_migration_status_when_one_dependency_is_incompatible() throws Exception {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
-        when(widgetService.getMigrationStatusOfCustomWidgetUsed(page))
+        when(widgetService.getArtifactStatusOfCustomWidgetUsed(page))
                 .thenReturn(new MigrationStatusReport(false, false));
-        when(fragmentService.getMigrationStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, true));
+        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, true));
 
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
-        MigrationStatusReport status = migrationApplyer.getMigrationStatusDependencies(page);
+        ArtifactStatusReport status = migrationApplyer.getPageStatusDependencies(page);
         assertThat(getMigrationStatusReport(false, false)).isEqualTo(status.toString());
     }
 
     @Test
     void should_get_correct_migration_status_when_dependencies_are_correct() throws Exception {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
-        when(widgetService.getMigrationStatusOfCustomWidgetUsed(page))
+        when(widgetService.getArtifactStatusOfCustomWidgetUsed(page))
                 .thenReturn(new MigrationStatusReport(true, false));
-        when(fragmentService.getMigrationStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, false));
+        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, false));
 
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
-        MigrationStatusReport status = migrationApplyer.getMigrationStatusDependencies(page);
+        ArtifactStatusReport status = migrationApplyer.getPageStatusDependencies(page);
         assertThat(getMigrationStatusReport(true, false)).isEqualTo(status.toString());
     }
 

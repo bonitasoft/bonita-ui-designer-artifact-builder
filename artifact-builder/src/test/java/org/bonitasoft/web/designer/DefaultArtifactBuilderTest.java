@@ -33,6 +33,7 @@ import org.bonitasoft.web.designer.controller.importer.FragmentImporter;
 import org.bonitasoft.web.designer.controller.importer.ImportStore;
 import org.bonitasoft.web.designer.controller.importer.PageImporter;
 import org.bonitasoft.web.designer.controller.importer.WidgetImporter;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.service.FragmentService;
@@ -198,8 +199,8 @@ class DefaultArtifactBuilderTest {
     void get_widget_status_by_id_should_call_widget_service() {
         // Given
         var id = UUID.randomUUID().toString();
-        var status = new MigrationStatusReport();
-        var widget = aWidget().withId(id).withMigrationStatusReport(status).build();
+        var status = new ArtifactStatusReport();
+        var widget = aWidget().withId(id).withArtifactStatusReport(status).build();
         when(widgetService.get(id)).thenReturn(widget);
 
         // When

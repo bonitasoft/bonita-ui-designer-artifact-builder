@@ -16,23 +16,36 @@
  */
 package org.bonitasoft.web.designer.model;
 
-/**
- * Report for artifact status
- *
- * @deprecated Not for public use.
- * @candidate for removal in a future release.
- *            This class don't have an explicit name. Replaced by {@link #ArtifactStatusReport}
- */
-@Deprecated
-public class MigrationStatusReport extends ArtifactStatusReport {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
-    public MigrationStatusReport(boolean compatible, boolean migration) {
+import lombok.Getter;
+import lombok.Setter;
+
+@JsonIgnoreProperties(value = { "compatible", "migration" }, allowGetters = true)
+@JsonView({ JsonViewLight.class })
+@Getter
+@Setter
+public class ArtifactStatusReport {
+
+    protected boolean compatible;
+    protected boolean migration;
+
+    public ArtifactStatusReport(boolean compatible, boolean migration) {
         this.compatible = compatible;
         this.migration = migration;
     }
 
-    public MigrationStatusReport() {
+    public ArtifactStatusReport() {
         this.compatible = true;
         this.migration = true;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"compatible\":" + compatible +
+                ",\"migration\":" + migration +
+                '}';
     }
 }

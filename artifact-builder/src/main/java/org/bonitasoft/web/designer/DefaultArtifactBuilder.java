@@ -40,7 +40,7 @@ import org.bonitasoft.web.designer.controller.importer.ImportStore;
 import org.bonitasoft.web.designer.controller.importer.PageImporter;
 import org.bonitasoft.web.designer.controller.importer.WidgetImporter;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
@@ -190,32 +190,32 @@ public class DefaultArtifactBuilder implements ArtifactBuilder {
     }
 
     @Override
-    public MigrationStatusReport getPageStatus(@NonNull String id) {
+    public ArtifactStatusReport getPageStatus(@NonNull String id) {
         return pageService.get(id).getStatus();
     }
 
     @Override
-    public MigrationStatusReport getPageStatus(@NonNull Page page) {
+    public ArtifactStatusReport getPageStatus(@NonNull Page page) {
         return pageService.getStatus(page);
     }
 
     @Override
-    public MigrationStatusReport getFragmentStatus(@NonNull String id) {
+    public ArtifactStatusReport getFragmentStatus(@NonNull String id) {
         return fragmentService.get(id).getStatus();
     }
 
     @Override
-    public MigrationStatusReport getFragmentStatus(@NonNull Fragment fragment) {
+    public ArtifactStatusReport getFragmentStatus(@NonNull Fragment fragment) {
         return fragmentService.getStatus(fragment);
     }
 
     @Override
-    public MigrationStatusReport getWidgetStatus(@NonNull String id) {
+    public ArtifactStatusReport getWidgetStatus(@NonNull String id) {
         return widgetService.get(id).getStatus();
     }
 
     @Override
-    public MigrationStatusReport getWidgetStatus(@NonNull Widget widget) {
+    public ArtifactStatusReport getWidgetStatus(@NonNull Widget widget) {
         return widgetService.getStatus(widget);
     }
 

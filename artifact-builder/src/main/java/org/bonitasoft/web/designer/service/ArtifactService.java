@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.service;
 
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 
 public interface ArtifactService<T extends Identifiable> {
@@ -32,8 +32,8 @@ public interface ArtifactService<T extends Identifiable> {
 
     MigrationResult<T> migrateWithReport(T artifact);
 
-    MigrationStatusReport getStatus(T artifact);
+    ArtifactStatusReport getStatus(T artifact);
 
-    MigrationStatusReport getStatusWithoutDependencies(T artifact);
+    ArtifactStatusReport getStatusWithoutDependencies(T artifact);
 
 }
