@@ -29,7 +29,7 @@ import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.controller.asset.PageAssetPredicate;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
@@ -222,10 +222,10 @@ public class DefaultPageService extends AbstractAssetableArtifactService<PageRep
     }
 
     @Override
-    public MigrationStatusReport getStatus(Page page) {
+    public ArtifactStatusReport getStatus(Page page) {
 
-        MigrationStatusReport pageStatusReport = super.getStatus(page);
-        MigrationStatusReport depReport = pageMigrationApplyer.getMigrationStatusDependencies(page);
+        ArtifactStatusReport pageStatusReport = super.getStatus(page);
+        ArtifactStatusReport depReport = pageMigrationApplyer.getPageStatusDependencies(page);
 
         return mergeStatusReport(pageStatusReport, depReport);
     }

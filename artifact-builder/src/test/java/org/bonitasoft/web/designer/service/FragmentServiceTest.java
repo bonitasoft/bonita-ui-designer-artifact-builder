@@ -60,6 +60,7 @@ import org.bonitasoft.web.designer.common.repository.exception.RepositoryExcepti
 import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.asset.Asset;
@@ -225,11 +226,11 @@ class FragmentServiceTest {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         Set<String> ids = new HashSet<>(singletonList("fragment"));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
-                .thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, false));
         when(fragmentRepository.getByIds(ids)).thenReturn(singletonList(fragment));
         when(fragmentIdVisitor.visit(page)).thenReturn(ids);
 
-        MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(page);
+        ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(page);
         assertEquals(getMigrationStatusReport(true, true), status.toString());
     }
 
@@ -240,13 +241,13 @@ class FragmentServiceTest {
         Fragment fragment2 = aFragment().withId("fragment2").withModelVersion("2.1").build(); //incompatible
         Set<String> ids = new HashSet<>(asList("fragment1", "fragment2"));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment1))
-                .thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, false));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment2))
-                .thenReturn(new MigrationStatusReport(false, false));
+                .thenReturn(new ArtifactStatusReport(false, false));
         when(fragmentRepository.getByIds(ids)).thenReturn(asList(fragment1, fragment2));
         when(fragmentIdVisitor.visit(page)).thenReturn(ids);
 
-        MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(page);
+        ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(page);
         assertEquals(getMigrationStatusReport(false, false), status.toString());
     }
 
@@ -256,13 +257,13 @@ class FragmentServiceTest {
         Fragment fragment2 = aFragment().withId("fragment2").withModelVersion("2.1").build(); //incompatible
         Set<String> ids = new HashSet<>(singletonList("fragment2"));
         lenient().when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment1))
-                .thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, false));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment2))
-                .thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, false));
         when(fragmentIdVisitor.visit(fragment1)).thenReturn(ids);
         when(fragmentRepository.getByIds(ids)).thenReturn(singletonList(fragment2));
 
-        MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(fragment1);
+        ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(fragment1);
         assertEquals(getMigrationStatusReport(false, false), status.toString());
     }
 
@@ -274,13 +275,13 @@ class FragmentServiceTest {
         when(fragmentRepository.getByIds(ids)).thenReturn(singletonList(fragment));
         when(fragmentIdVisitor.visit(page)).thenReturn(ids);
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
-                .thenReturn(new MigrationStatusReport(true, false));
-        MigrationStatusReport status = fragmentService.getMigrationStatusOfFragmentUsed(page);
+                .thenReturn(new ArtifactStatusReport(true, false));
+        ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(page);
         assertEquals(getMigrationStatusReport(true, false), status.toString());
     }
 
     private String getMigrationStatusReport(boolean compatible, boolean migration) {
-        return new MigrationStatusReport(compatible, migration).toString();
+        return new ArtifactStatusReport(compatible, migration).toString();
     }
 
     @Test
@@ -335,7 +336,7 @@ class FragmentServiceTest {
                 .withHasValidationError(false).build();
         when(fragmentRepository.get("fragment1")).thenReturn(fragment);
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(fragment);
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(fragment);
 
         //When
         fragmentService.save(fragment.getId(), fragment);
@@ -357,7 +358,7 @@ class FragmentServiceTest {
         Fragment fragment = aFragment().withId("fragment1").withName("Person").with(pageAsset, widgetAsset).build();
         when(fragmentRepository.get("fragment1")).thenReturn(fragment);
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(false, false)).when(fragmentService).getStatus(fragment);
+        doReturn(new ArtifactStatusReport(false, false)).when(fragmentService).getStatus(fragment);
 
         //When
         assertThatThrownBy(() -> fragmentService.save(fragment.getId(), fragment)).isInstanceOf(ModelException.class);
@@ -390,7 +391,7 @@ class FragmentServiceTest {
         Fragment fragment = aFragment().build();
         when(fragmentRepository.get(fragment.getId())).thenReturn(fragment);
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(fragment);
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(fragment);
         when(fragmentRepository.updateLastUpdateAndSave(fragment))
                 .thenThrow(new RepositoryException("exception occured", new Exception()));
         var id = fragment.getId();
@@ -418,7 +419,7 @@ class FragmentServiceTest {
 
         when(fragmentRepository.getAll()).thenReturn(expectedfragments);
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //when
         List<Fragment> fragments = fragmentService.getAllNotUsingFragment(null);
@@ -447,7 +448,7 @@ class FragmentServiceTest {
         when(fragmentRepository.findByObjectIds(asList(ids))).thenReturn(Map.of("fragment2", singletonList(fragment1)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //when
         List<Fragment> fragments = fragmentService.getAllNotUsingFragment(null);
@@ -472,7 +473,7 @@ class FragmentServiceTest {
                 expectedfragments);
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //when
         List<Fragment> fragments = fragmentService.getAllNotUsingFragment("used-fragment");
@@ -491,7 +492,7 @@ class FragmentServiceTest {
         doReturn(fragment1).when(fragmentRepository).get(fragmentId);
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //When
         Fragment fragment = fragmentService.get(fragmentId);
@@ -617,7 +618,7 @@ class FragmentServiceTest {
         when(fragmentRepository.getNextAvailableId(fragmentToBeSaved.getName())).thenReturn(myNewFragmentId);
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //When
         Fragment savedFragment = fragmentService.save(existingFragment.getId(), fragmentToBeSaved);
@@ -650,7 +651,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(page)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //When
         Fragment savedFragment = fragmentService.save(existingFragment.getId(), fragmentToBeSaved);
@@ -688,7 +689,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(page)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //When
         Fragment savedFragment = fragmentService.save(existingFragment.getId(), fragmentToBeSaved);
@@ -1004,7 +1005,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(fragmentParent)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         //When
         Fragment savedFragment = fragmentService.save(fragmentChildId, aFragment().withName(newName).build());
@@ -1043,7 +1044,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(page)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         Fragment fragmentToSave = aFragment().withId(fragmentChildId).withName(fragmentChildId)
                 .withHasValidationError(true).build();
@@ -1081,7 +1082,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(fragmentParent)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         Fragment fragmentToSave = aFragment().withId(fragmentChildId).withName(fragmentChildId)
                 .withHasValidationError(true).build();
@@ -1137,7 +1138,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(fragmentParent)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         Fragment fragmentToSave = aFragment().withId(fragmentChildId).withName(fragmentChildId)
                 .withHasValidationError(true).build();
@@ -1176,7 +1177,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(page)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         Fragment fragmentToSave = aFragment().withId("fragmentChild").withName("fragmentChild")
                 .withHasValidationError(false).build();
@@ -1213,7 +1214,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(fragmentParent)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         Fragment fragmentToSave = aFragment().withId(fragmentChildId).withName(fragmentChildId)
                 .withHasValidationError(false).build();
@@ -1269,7 +1270,7 @@ class FragmentServiceTest {
                 .thenReturn(Map.of(existingFragment.getId(), singletonList(page)));
 
         fragmentService = spy(fragmentService);
-        doReturn(new MigrationStatusReport(true, false)).when(fragmentService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, false)).when(fragmentService).getStatus(any());
 
         Fragment fragmentToSave = aFragment().withId(fragmentChildId).withName(fragmentChildId)
                 .withHasValidationError(false).build();

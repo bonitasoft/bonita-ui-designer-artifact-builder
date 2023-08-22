@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.data.Data;
@@ -63,7 +63,7 @@ public class PageBuilder {
     private String previousArtifactVersion;
     private boolean favorite = false;
     private String type;
-    private MigrationStatusReport migrationStatusReport = new MigrationStatusReport();
+    private ArtifactStatusReport artifactStatusReport = new ArtifactStatusReport();
 
     private PageBuilder() {
     }
@@ -211,18 +211,18 @@ public class PageBuilder {
         return this;
     }
 
-    public PageBuilder withMigrationStatusReport(MigrationStatusReport migrationStatusReport) {
-        this.migrationStatusReport = migrationStatusReport;
+    public PageBuilder withMigrationStatusReport(ArtifactStatusReport artifactStatusReport) {
+        this.artifactStatusReport = artifactStatusReport;
         return this;
     }
 
     public PageBuilder isCompatible(boolean compatible) {
-        this.migrationStatusReport.setCompatible(compatible);
+        this.artifactStatusReport.setCompatible(compatible);
         return this;
     }
 
     public PageBuilder isMigration(boolean migration) {
-        this.migrationStatusReport.setMigration(migration);
+        this.artifactStatusReport.setMigration(migration);
         return this;
     }
 
@@ -244,7 +244,7 @@ public class PageBuilder {
         } else {
             page.setPreviousDesignerVersion(previousDesignerVersion);
         }
-        page.setStatus(migrationStatusReport);
+        page.setStatus(artifactStatusReport);
 
         page.setFavorite(favorite);
 

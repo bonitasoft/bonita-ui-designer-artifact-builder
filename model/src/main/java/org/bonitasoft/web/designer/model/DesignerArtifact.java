@@ -37,7 +37,7 @@ public abstract class DesignerArtifact implements Identifiable {
     private boolean favorite = false;
 
     // This field is only in memory, we don't need to store it
-    private MigrationStatusReport status;
+    private ArtifactStatusReport status;
 
     private Set<WebResource> webResources = new HashSet<>();
 
@@ -112,12 +112,12 @@ public abstract class DesignerArtifact implements Identifiable {
     public abstract String getType();
 
     @JsonView({ JsonViewLight.class })
-    public MigrationStatusReport getStatus() {
+    public ArtifactStatusReport getStatus() {
         return this.status;
     }
 
     @JsonIgnore
-    public void setStatus(MigrationStatusReport status) {
+    public void setStatus(ArtifactStatusReport status) {
         this.status = status;
     }
 

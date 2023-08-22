@@ -49,7 +49,7 @@ public class FragmentBuilder {
     private Set<Asset> assets = new HashSet<>();
     private boolean favorite = false;
     private boolean hasValidationError = false;
-    private MigrationStatusReport migrationStatusReport = new MigrationStatusReport();
+    private ArtifactStatusReport artifactStatusReport = new ArtifactStatusReport();
 
     public static FragmentBuilder aFragment() {
         return new FragmentBuilder();
@@ -130,18 +130,18 @@ public class FragmentBuilder {
         return this;
     }
 
-    public FragmentBuilder withMigrationStatusReport(MigrationStatusReport migrationStatusReport) {
-        this.migrationStatusReport = migrationStatusReport;
+    public FragmentBuilder withMigrationStatusReport(ArtifactStatusReport artifactStatusReport) {
+        this.artifactStatusReport = artifactStatusReport;
         return this;
     }
 
     public FragmentBuilder isCompatible(boolean compatible) {
-        this.migrationStatusReport.setCompatible(compatible);
+        this.artifactStatusReport.setCompatible(compatible);
         return this;
     }
 
     public FragmentBuilder isMigration(boolean migration) {
-        this.migrationStatusReport.setMigration(migration);
+        this.artifactStatusReport.setMigration(migration);
         return this;
     }
 
@@ -165,7 +165,7 @@ public class FragmentBuilder {
         } else {
             fragment.setPreviousDesignerVersion(previousDesignerVersion);
         }
-        fragment.setStatus(migrationStatusReport);
+        fragment.setStatus(artifactStatusReport);
 
         fragment.setHasValidationError(hasValidationError);
         return fragment;

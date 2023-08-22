@@ -16,49 +16,20 @@
  */
 package org.bonitasoft.web.designer.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
-
-public class MigrationStatusReport {
-
-    private boolean compatible;
-    private boolean migration;
+/**
+ * Report for artifact status
+ *
+ * @deprecated Not for public use. *
+ *             This class don't have an explicit name. Replaced by {@link #ArtifactStatusReport}
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
+public class MigrationStatusReport extends ArtifactStatusReport {
 
     public MigrationStatusReport(boolean compatible, boolean migration) {
-        this.compatible = compatible;
-        this.migration = migration;
+        super(compatible, migration);
     }
 
     public MigrationStatusReport() {
-        this.compatible = true;
-        this.migration = true;
-    }
-
-    @JsonView({ JsonViewLight.class })
-    public boolean isCompatible() {
-        return compatible;
-    }
-
-    @JsonIgnore
-    public void setCompatible(boolean compatible) {
-        this.compatible = compatible;
-    }
-
-    @JsonView({ JsonViewLight.class })
-    public boolean isMigration() {
-        return migration;
-    }
-
-    @JsonIgnore
-    public void setMigration(boolean migration) {
-        this.migration = migration;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "\"compatible\":" + compatible +
-                ",\"migration\":" + migration +
-                '}';
+        super(true, true);
     }
 }

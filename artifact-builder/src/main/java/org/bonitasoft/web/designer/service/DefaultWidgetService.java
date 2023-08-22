@@ -34,8 +34,8 @@ import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
@@ -251,8 +251,8 @@ public class DefaultWidgetService extends AbstractAssetableArtifactService<Widge
     }
 
     @Override
-    public MigrationStatusReport getMigrationStatusOfCustomWidgetUsed(Previewable previewable) {
-        List<MigrationStatusReport> reports = new ArrayList<>();
+    public ArtifactStatusReport getArtifactStatusOfCustomWidgetUsed(Previewable previewable) {
+        List<ArtifactStatusReport> reports = new ArrayList<>();
         repository.getByIds(widgetIdVisitor.visit(previewable))
                 .forEach(widget -> reports.add(this.getStatus(widget)));
 
@@ -265,6 +265,6 @@ public class DefaultWidgetService extends AbstractAssetableArtifactService<Widge
                 migration = true;
             }
         }
-        return new MigrationStatusReport(true, migration);
+        return new ArtifactStatusReport(true, migration);
     }
 }
