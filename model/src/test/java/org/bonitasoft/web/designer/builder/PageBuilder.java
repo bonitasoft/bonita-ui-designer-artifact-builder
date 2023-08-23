@@ -211,7 +211,7 @@ public class PageBuilder {
         return this;
     }
 
-    public PageBuilder withMigrationStatusReport(ArtifactStatusReport artifactStatusReport) {
+    public PageBuilder withArtifactStatusReport(ArtifactStatusReport artifactStatusReport) {
         this.artifactStatusReport = artifactStatusReport;
         return this;
     }

@@ -49,7 +49,6 @@ import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.ArtifactStatusReport;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
 import org.bonitasoft.web.designer.model.asset.AssetType;
@@ -126,7 +125,7 @@ class PageServiceTest {
         var mr = new MigrationResult(migratedPage,
                 asList(new MigrationStepReport(MigrationStatus.SUCCESS)));
         when(pageMigrationApplyer.migrate(page)).thenReturn(mr);
-        doReturn(new MigrationStatusReport(true, true)).when(pageService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, true)).when(pageService).getStatus(any());
 
         pageService.get("myPage");
 
@@ -154,7 +153,7 @@ class PageServiceTest {
         when(pageRepository.get("myPage")).thenReturn(page);
         MigrationResult mr = new MigrationResult(migratedPage, asList(new MigrationStepReport(MigrationStatus.ERROR)));
         when(pageMigrationApplyer.migrate(page)).thenReturn(mr);
-        doReturn(new MigrationStatusReport(true, true)).when(pageService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, true)).when(pageService).getStatus(any());
 
         pageService.get("myPage");
 
@@ -171,7 +170,7 @@ class PageServiceTest {
         MigrationResult mr = new MigrationResult(migratedPage,
                 asList(new MigrationStepReport(MigrationStatus.SUCCESS)));
         when(pageMigrationApplyer.migrate(page)).thenReturn(mr);
-        doReturn(new MigrationStatusReport(true, true)).when(pageService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, true)).when(pageService).getStatus(any());
 
         pageService.get("myPage");
 
@@ -209,7 +208,7 @@ class PageServiceTest {
         MigrationResult mr = new MigrationResult(migratedPage,
                 asList(new MigrationStepReport(MigrationStatus.SUCCESS)));
         when(pageMigrationApplyer.migrate(page)).thenReturn(mr);
-        doReturn(new MigrationStatusReport(true, true)).when(pageService).getStatus(any());
+        doReturn(new ArtifactStatusReport(true, true)).when(pageService).getStatus(any());
 
         pageService.get("myPage");
 
@@ -398,7 +397,7 @@ class PageServiceTest {
     void should_respond_422_on_save_when_page_is_incompatible() {
         final String pageId = "my-page";
         Page pageToBeSaved = mockPageOfId(pageId);
-        doReturn(new MigrationStatusReport(false, false)).when(pageService).getStatus(any());
+        doReturn(new ArtifactStatusReport(false, false)).when(pageService).getStatus(any());
 
         when(pageRepository.get(pageId)).thenReturn(pageToBeSaved);
 

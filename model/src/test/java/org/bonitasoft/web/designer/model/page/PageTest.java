@@ -164,7 +164,7 @@ class PageTest {
         page.setUUID("UUID");
         page.setFavorite(true);
         page.setName("myPage");
-        page.setStatus(new MigrationStatusReport());
+        page.setStatus(new ArtifactStatusReport());
         return page;
     }
 }

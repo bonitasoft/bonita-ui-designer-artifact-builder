@@ -18,7 +18,7 @@ package org.bonitasoft.web.designer.migration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.bonitasoft.web.designer.builder.FragmentBuilder;
 import org.bonitasoft.web.designer.model.data.DataType;
@@ -35,7 +35,7 @@ class DataExposedMigrationStepTest {
     DataExposedMigrationStep dataExposedMigrationStep;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         dataExposedMigrationStep = new DataExposedMigrationStep();
     }
 
@@ -48,9 +48,9 @@ class DataExposedMigrationStepTest {
 
         dataExposedMigrationStep.migrate(fragment);
 
-        assertThat(fragment.getVariables().get("myExposedVariable").isExposed()).isEqualTo(true);
+        assertThat(fragment.getVariables().get("myExposedVariable").isExposed()).isTrue();
         assertThat(fragment.getVariables().get("myExposedVariable").getType()).isEqualTo(DataType.CONSTANT);
-        assertThat(fragment.getVariables().get("myExposedVariable").getValue()).isEqualTo(Arrays.asList(""));
+        assertThat(fragment.getVariables().get("myExposedVariable").getValue()).isEqualTo(List.of(""));
     }
 
     @Test
@@ -62,8 +62,8 @@ class DataExposedMigrationStepTest {
 
         dataExposedMigrationStep.migrate(fragment);
 
-        assertThat(fragment.getVariables().get("myNotExposedVariable").isExposed()).isEqualTo(false);
+        assertThat(fragment.getVariables().get("myNotExposedVariable").isExposed()).isFalse();
         assertThat(fragment.getVariables().get("myNotExposedVariable").getType()).isEqualTo(DataType.JSON);
-        assertThat(fragment.getVariables().get("myNotExposedVariable").getValue()).isEqualTo(Arrays.asList("{}"));
+        assertThat(fragment.getVariables().get("myNotExposedVariable").getValue()).isEqualTo(List.of("{}"));
     }
 }

@@ -34,7 +34,6 @@ import org.bonitasoft.web.designer.controller.importer.ImportStore;
 import org.bonitasoft.web.designer.controller.importer.PageImporter;
 import org.bonitasoft.web.designer.controller.importer.WidgetImporter;
 import org.bonitasoft.web.designer.model.ArtifactStatusReport;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
@@ -121,7 +120,7 @@ class DefaultArtifactBuilderTest {
     @Test
     void get_page_status_should_call_page_service() {
         // Given
-        var status = new MigrationStatusReport();
+        var status = new ArtifactStatusReport();
         var page = aPage().build();
         when(pageService.getStatus(page)).thenReturn(status);
 
@@ -137,8 +136,8 @@ class DefaultArtifactBuilderTest {
     void get_page_status_by_id_should_call_page_service() {
         // Given
         var id = UUID.randomUUID().toString();
-        var status = new MigrationStatusReport();
-        var page = aPage().withId(id).withMigrationStatusReport(status).build();
+        var status = new ArtifactStatusReport();
+        var page = aPage().withId(id).withArtifactStatusReport(status).build();
         when(pageService.get(id)).thenReturn(page);
 
         // When
@@ -152,7 +151,7 @@ class DefaultArtifactBuilderTest {
     @Test
     void get_fragment_status_should_call_fragment_service() {
         // Given
-        var status = new MigrationStatusReport();
+        var status = new ArtifactStatusReport();
         var fragment = aFragment().build();
         when(fragmentService.getStatus(fragment)).thenReturn(status);
 
@@ -168,8 +167,8 @@ class DefaultArtifactBuilderTest {
     void get_fragment_status_by_id_should_call_fragment_service() {
         // Given
         var id = UUID.randomUUID().toString();
-        var status = new MigrationStatusReport();
-        var fragment = aFragment().withId(id).withMigrationStatusReport(status).build();
+        var status = new ArtifactStatusReport();
+        var fragment = aFragment().withId(id).withArtifactStatusReport(status).build();
         when(fragmentService.get(id)).thenReturn(fragment);
 
         // When
@@ -183,7 +182,7 @@ class DefaultArtifactBuilderTest {
     @Test
     void get_widget_status_should_call_widget_service() {
         // Given
-        var status = new MigrationStatusReport();
+        var status = new ArtifactStatusReport();
         var widget = aWidget().build();
         when(widgetService.getStatus(widget)).thenReturn(status);
 
