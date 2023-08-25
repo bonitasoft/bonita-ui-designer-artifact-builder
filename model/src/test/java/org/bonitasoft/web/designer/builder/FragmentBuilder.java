@@ -130,7 +130,7 @@ public class FragmentBuilder {
         return this;
     }
 
-    public FragmentBuilder withMigrationStatusReport(ArtifactStatusReport artifactStatusReport) {
+    public FragmentBuilder withArtifactStatusReport(ArtifactStatusReport artifactStatusReport) {
         this.artifactStatusReport = artifactStatusReport;
         return this;
     }

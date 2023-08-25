@@ -61,7 +61,6 @@ import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
 import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.ArtifactStatusReport;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.asset.AssetScope;
@@ -144,7 +143,7 @@ class FragmentServiceTest {
         MigrationResult<Fragment> mr = new MigrationResult<>(fragmentMigrated,
                 singletonList(new MigrationStepReport(MigrationStatus.SUCCESS, "myFragmentBis")));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
-                .thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, false));
         when(fragmentMigrationApplyer.migrate(fragment, true)).thenReturn(mr);
         when(fragmentRepository.get("myFragment")).thenReturn(fragment);
 
@@ -160,7 +159,7 @@ class FragmentServiceTest {
                 .withPreviousDesignerVersion("1.0.0").build();
         when(fragmentRepository.get("myFragment")).thenReturn(fragment);
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
-                .thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, false));
 
         fragmentService.get("myFragment");
 
@@ -177,7 +176,7 @@ class FragmentServiceTest {
         var mr = new MigrationResult<>(fragmentMigrated,
                 singletonList(new MigrationStepReport(MigrationStatus.ERROR, "myFragmentBis")));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
-                .thenReturn(new MigrationStatusReport(true, true));
+                .thenReturn(new ArtifactStatusReport(true, true));
         when(fragmentMigrationApplyer.migrate(fragment, true)).thenReturn(mr);
 
         fragmentService.get("myFragment");
@@ -203,9 +202,9 @@ class FragmentServiceTest {
         when(fragmentRepository.get("myFragment")).thenReturn(parentFragment);
         lenient().when(fragmentRepository.get("myFragmentBis")).thenReturn(fragment);
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
-                .thenReturn(new MigrationStatusReport(true, true));
+                .thenReturn(new ArtifactStatusReport(true, true));
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(parentFragment))
-                .thenReturn(new MigrationStatusReport(true, true));
+                .thenReturn(new ArtifactStatusReport(true, true));
         when(fragmentMigrationApplyer.migrate(parentFragment, true)).thenReturn(parentMigrated);
         when(fragmentMigrationApplyer.migrate(fragment, false)).thenReturn(mr);
         Set<String> h = new HashSet<>(singletonList("myFragmentBis"));
@@ -231,7 +230,7 @@ class FragmentServiceTest {
         when(fragmentIdVisitor.visit(page)).thenReturn(ids);
 
         ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(page);
-        assertEquals(getMigrationStatusReport(true, true), status.toString());
+        assertEquals(getArtifactStatusReport(true, true), status.toString());
     }
 
     @Test
@@ -248,7 +247,7 @@ class FragmentServiceTest {
         when(fragmentIdVisitor.visit(page)).thenReturn(ids);
 
         ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(page);
-        assertEquals(getMigrationStatusReport(false, false), status.toString());
+        assertEquals(getArtifactStatusReport(false, false), status.toString());
     }
 
     @Test
@@ -264,7 +263,7 @@ class FragmentServiceTest {
         when(fragmentRepository.getByIds(ids)).thenReturn(singletonList(fragment2));
 
         ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(fragment1);
-        assertEquals(getMigrationStatusReport(false, false), status.toString());
+        assertEquals(getArtifactStatusReport(false, false), status.toString());
     }
 
     @Test
@@ -277,10 +276,10 @@ class FragmentServiceTest {
         when(fragmentMigrationApplyer.getMigrationStatusOfCustomWidgetsUsed(fragment))
                 .thenReturn(new ArtifactStatusReport(true, false));
         ArtifactStatusReport status = fragmentService.getArtifactStatusOfFragmentUsed(page);
-        assertEquals(getMigrationStatusReport(true, false), status.toString());
+        assertEquals(getArtifactStatusReport(true, false), status.toString());
     }
 
-    private String getMigrationStatusReport(boolean compatible, boolean migration) {
+    private String getArtifactStatusReport(boolean compatible, boolean migration) {
         return new ArtifactStatusReport(compatible, migration).toString();
     }
 

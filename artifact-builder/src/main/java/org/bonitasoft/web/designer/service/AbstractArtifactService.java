@@ -21,7 +21,6 @@ import org.bonitasoft.web.designer.common.repository.Repository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 
 public abstract class AbstractArtifactService<R extends Repository<T>, T extends Identifiable>
         implements ArtifactService<T> {
@@ -75,7 +74,7 @@ public abstract class AbstractArtifactService<R extends Repository<T>, T extends
     /**
      * Return status of artifact without checking dependencies
      *
-     * @return MigrationStatusReport
+     * @return ArtifactStatusReport
      */
     public ArtifactStatusReport getStatusWithoutDependencies(T artifact) {
         return getArtifactStatus(artifact);

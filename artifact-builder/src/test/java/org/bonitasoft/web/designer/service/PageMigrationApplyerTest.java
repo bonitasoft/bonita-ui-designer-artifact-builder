@@ -28,7 +28,6 @@ import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.migration.MigrationStep;
 import org.bonitasoft.web.designer.model.ArtifactStatusReport;
-import org.bonitasoft.web.designer.model.MigrationStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
@@ -192,42 +191,42 @@ class PageMigrationApplyerTest {
     void should_get_correct_migration_status_when_one_dependency_is_to_migrate() throws Exception {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         when(widgetService.getArtifactStatusOfCustomWidgetUsed(page))
-                .thenReturn(new MigrationStatusReport(true, true));
-        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, true));
+        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new ArtifactStatusReport(true, false));
 
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
         ArtifactStatusReport status = migrationApplyer.getPageStatusDependencies(page);
-        assertThat(getMigrationStatusReport(true, true)).isEqualTo(status.toString());
+        assertThat(getArtifactStatusReport(true, true)).isEqualTo(status.toString());
     }
 
     @Test
     void should_get_correct_migration_status_when_one_dependency_is_incompatible() throws Exception {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         when(widgetService.getArtifactStatusOfCustomWidgetUsed(page))
-                .thenReturn(new MigrationStatusReport(false, false));
-        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, true));
+                .thenReturn(new ArtifactStatusReport(false, false));
+        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new ArtifactStatusReport(true, true));
 
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
         ArtifactStatusReport status = migrationApplyer.getPageStatusDependencies(page);
-        assertThat(getMigrationStatusReport(false, false)).isEqualTo(status.toString());
+        assertThat(getArtifactStatusReport(false, false)).isEqualTo(status.toString());
     }
 
     @Test
     void should_get_correct_migration_status_when_dependencies_are_correct() throws Exception {
         Page page = PageBuilder.aPage().withId("myPage").withModelVersion("2.0").build();
         when(widgetService.getArtifactStatusOfCustomWidgetUsed(page))
-                .thenReturn(new MigrationStatusReport(true, false));
-        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new MigrationStatusReport(true, false));
+                .thenReturn(new ArtifactStatusReport(true, false));
+        when(fragmentService.getArtifactStatusOfFragmentUsed(page)).thenReturn(new ArtifactStatusReport(true, false));
 
         PageMigrationApplyer migrationApplyer = new PageMigrationApplyer(Collections.singletonList(null), widgetService,
                 fragmentService);
         ArtifactStatusReport status = migrationApplyer.getPageStatusDependencies(page);
-        assertThat(getMigrationStatusReport(true, false)).isEqualTo(status.toString());
+        assertThat(getArtifactStatusReport(true, false)).isEqualTo(status.toString());
     }
 
-    private String getMigrationStatusReport(boolean compatible, boolean migration) {
-        return new MigrationStatusReport(compatible, migration).toString();
+    private String getArtifactStatusReport(boolean compatible, boolean migration) {
+        return new ArtifactStatusReport(compatible, migration).toString();
     }
 }

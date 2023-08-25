@@ -35,7 +35,7 @@ class FragmentPropertiesBuilderTest {
     private Fragment fragment;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setVersion(DESIGNER_VERSION);
         fragmentPropertiesBuilder = new FragmentPropertiesBuilder(uiDesignerProperties);
@@ -51,9 +51,10 @@ class FragmentPropertiesBuilderTest {
         byte[] a = fragmentPropertiesBuilder.build(fragment);
         String properties = new String(a);
 
-        assertThat(properties).contains("contentType=fragment");
-        assertThat(properties).contains("name=myFragment");
-        assertThat(properties).contains("designerVersion=1.12.1");
+        assertThat(properties)
+                .contains("contentType=fragment")
+                .contains("name=myFragment")
+                .contains("designerVersion=1.12.1");
     }
 
 }
