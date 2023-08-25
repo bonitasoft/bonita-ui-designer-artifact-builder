@@ -25,17 +25,17 @@ import static org.bonitasoft.web.designer.model.widget.BondType.INTERPOLATION;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BondsTypesFixerTest {
+@ExtendWith(MockitoExtension.class)
+class BondsTypesFixerTest {
 
     @Mock
     public PageRepository pageRepository;
@@ -44,7 +44,7 @@ public class BondsTypesFixerTest {
     public BondsTypesFixer bondsTypesFixer;
 
     @Test
-    public void should_fix_bonds_types_in_all_pages() throws Exception {
+    void should_fix_bonds_types_in_all_pages() throws Exception {
         Component labelComponent = aComponent("labelComponent").withPropertyValue("text", "constant", "").build();
         Page page = aPage().with(labelComponent).build();
         when(pageRepository.findByObjectId("labelWidget")).thenReturn(singletonList(page));

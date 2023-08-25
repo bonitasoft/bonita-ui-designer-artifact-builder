@@ -67,14 +67,14 @@ public class SetInterpretHtmlTrueMigrationStep<T extends AbstractPage> extends A
         }
 
         if (pageChanged) {
-            String mess = String.format(
+            String message = String.format(
                     "'Interpret HTML' property has been added in some widgets for page %s. Now, you can disable it if you don't need it. "
                             +
                             "If you keep it enabled, this could potentially lead to HTML injections attacks. Please take into account these risks.",
                     page.getName());
-            logger.info("[MIGRATION] " + mess);
+            logger.info("[MIGRATION] {}", message);
             return Optional
-                    .of(MigrationStepReport.warningMigrationReport(page.getName(), mess, this.getClass().getName()));
+                    .of(MigrationStepReport.warningMigrationReport(page.getName(), message, this.getClass().getName()));
         }
         return Optional.empty();
     }

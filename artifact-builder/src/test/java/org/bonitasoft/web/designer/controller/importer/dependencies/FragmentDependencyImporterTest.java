@@ -20,15 +20,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
 import static org.mockito.Mockito.when;
 
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentDependencyImporterTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentDependencyImporterTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -36,7 +36,7 @@ public class FragmentDependencyImporterTest {
     private FragmentDependencyImporter fragmentImporterDependencyImporter;
 
     @Test
-    public void should_verify_that_a_fragment_exists_in_repository() throws Exception {
+    void should_verify_that_a_fragment_exists_in_repository() throws Exception {
         when(fragmentRepository.exists("existingFragment")).thenReturn(true);
 
         boolean exists = fragmentImporterDependencyImporter.exists(aFragment().withId("existingFragment").build());
@@ -45,7 +45,7 @@ public class FragmentDependencyImporterTest {
     }
 
     @Test
-    public void should_verify_that_a_widget_does_not_exists_in_repository() throws Exception {
+    void should_verify_that_a_widget_does_not_exists_in_repository() throws Exception {
         when(fragmentRepository.exists("unknownFragment")).thenReturn(false);
 
         boolean exists = fragmentImporterDependencyImporter.exists(aFragment().withId("unknownFragment").build());

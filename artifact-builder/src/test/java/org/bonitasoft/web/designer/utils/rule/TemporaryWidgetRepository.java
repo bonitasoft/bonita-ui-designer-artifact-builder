@@ -21,20 +21,20 @@ import static org.mockito.Mockito.mock;
 
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.widget.Widget;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.JsonFileBasedPersister;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
 
-public class TemporaryWidgetRepository extends TemporaryFolder {
+public class TemporaryWidgetRepository {
 
     private JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
@@ -42,36 +42,35 @@ public class TemporaryWidgetRepository extends TemporaryFolder {
 
     private WorkspaceProperties workspaceProperties;
 
+    private Path tempPath;
+
     public TemporaryWidgetRepository(WorkspaceProperties workspaceProperties) {
         this.workspaceProperties = workspaceProperties;
     }
 
-    @Override
-    protected void before() throws Throwable {
-        super.before();
-
-        workspaceProperties.getWidgets().setDir(this.toPath());
+    public void init(Path tempPath) throws Throwable {
+        this.tempPath = tempPath;
+        workspaceProperties.getWidgets().setDir(tempPath);
 
         var uiDesignerProperties = new UiDesignerProperties("1.13.0", Version.MODEL_VERSION);
         uiDesignerProperties.setWorkspace(workspaceProperties);
 
         repository = new WidgetRepository(
-                uiDesignerProperties.getWorkspace(),
-                uiDesignerProperties.getWorkspaceUid(),
-                new JsonFileBasedPersister<>(jsonHandler, mock(BeanValidator.class), uiDesignerProperties),
+                workspaceProperties.getWidgets().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                new JsonFileBasedPersister<>(jsonHandler, mock(BeanValidator.class), "1.13.0", Version.MODEL_VERSION),
                 new WidgetFileBasedLoader(jsonHandler),
                 mock(BeanValidator.class),
-                mock(Watcher.class),
-                uiDesignerProperties);
+                mock(Watcher.class));
 
     }
 
     public Path resolveWidgetJson(String id) {
-        return this.toPath().resolve(format("%s/%s.json", id, id));
+        return this.tempPath.resolve(format("%s/%s.json", id, id));
     }
 
     public Path resolveWidgetMetadata(String id) {
-        return this.toPath().resolve(format("%s/%s.metadata.json", id, id));
+        return this.tempPath.resolve(format("%s/%s.metadata.json", id, id));
     }
 
     public Widget addWidget(WidgetBuilder widgetBuilder) {

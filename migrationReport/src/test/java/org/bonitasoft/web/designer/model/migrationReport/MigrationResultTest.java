@@ -16,58 +16,56 @@
  */
 package org.bonitasoft.web.designer.model.migrationReport;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 
-@RunWith(MockitoJUnitRunner.class)
-public class MigrationResultTest {
+class MigrationResultTest {
 
-    MigrationResult migrationResult;
+    MigrationResult<?> migrationResult;
 
     @Test
-    public void should_return_only_Warning_status_report_when_the_most_severe_error_is_warning() {
+    void should_return_only_Warning_status_report_when_the_most_severe_error_is_warning() {
         List<MigrationStepReport> migrationList = Arrays.asList(
                 new MigrationStepReport(MigrationStatus.SUCCESS, "myPage", "First step of migration", "MigrationOne"),
                 new MigrationStepReport(MigrationStatus.SUCCESS, "myPage", "Second step of migration", "MigrationTwo"),
                 new MigrationStepReport(MigrationStatus.WARNING, "myPage", "Third step of migration", "MigrationTree"));
 
-        this.migrationResult = new MigrationResult(new Object(), migrationList);
+        this.migrationResult = new MigrationResult<>(new Object(), migrationList);
 
-        Assert.assertEquals(this.migrationResult.getFinalStatus(), MigrationStatus.WARNING);
-        Assert.assertEquals(this.migrationResult.getMigrationStepReportList().size(), 3);
-        Assert.assertEquals(this.migrationResult.getMigrationStepReportListFilterByFinalStatus().size(), 1);
+        assertEquals(MigrationStatus.WARNING, this.migrationResult.getFinalStatus());
+        assertEquals(3, this.migrationResult.getMigrationStepReportList().size());
+        assertEquals(1, this.migrationResult.getMigrationStepReportListFilterByFinalStatus().size());
     }
 
     @Test
-    public void should_return_an_empty_list_when_all_step_is_finish_on_success() {
+    void should_return_an_empty_list_when_all_step_is_finish_on_success() {
         List<MigrationStepReport> migrationList = Arrays.asList(
                 new MigrationStepReport(MigrationStatus.SUCCESS, "myPage", "First step of migration", "MigrationOne"),
                 new MigrationStepReport(MigrationStatus.SUCCESS, "myPage", "Second step of migration", "MigrationTwo"),
                 new MigrationStepReport(MigrationStatus.SUCCESS, "myPage", "Third step of migration", "MigrationTree"));
 
-        this.migrationResult = new MigrationResult(new Object(), migrationList);
+        this.migrationResult = new MigrationResult<>(new Object(), migrationList);
 
-        Assert.assertEquals(this.migrationResult.getFinalStatus(), MigrationStatus.SUCCESS);
-        Assert.assertEquals(this.migrationResult.getMigrationStepReportList().size(), 3);
-        Assert.assertEquals(this.migrationResult.getMigrationStepReportListFilterByFinalStatus().size(), 0);
+        assertEquals(MigrationStatus.SUCCESS, this.migrationResult.getFinalStatus());
+        assertEquals(3, this.migrationResult.getMigrationStepReportList().size());
+        assertEquals(0, this.migrationResult.getMigrationStepReportListFilterByFinalStatus().size());
     }
 
     @Test
-    public void should_return_error_final_status_when_one_step_is_on_error() {
+    void should_return_error_final_status_when_one_step_is_on_error() {
         List<MigrationStepReport> migrationList = Arrays.asList(
                 new MigrationStepReport(MigrationStatus.SUCCESS, "myPage", "First step of migration", "MigrationOne"),
                 new MigrationStepReport(MigrationStatus.ERROR, "myPage", "Second step of migration", "MigrationTwo"),
                 new MigrationStepReport(MigrationStatus.ERROR, "myPage", "Third step of migration", "MigrationTree"));
 
-        this.migrationResult = new MigrationResult(new Object(), migrationList);
+        this.migrationResult = new MigrationResult<>(new Object(), migrationList);
 
-        Assert.assertEquals(this.migrationResult.getFinalStatus(), MigrationStatus.ERROR);
-        Assert.assertEquals(this.migrationResult.getMigrationStepReportList().size(), 3);
-        Assert.assertEquals(this.migrationResult.getMigrationStepReportListFilterByFinalStatus().size(), 2);
+        assertEquals(MigrationStatus.ERROR, this.migrationResult.getFinalStatus());
+        assertEquals(3, this.migrationResult.getMigrationStepReportList().size());
+        assertEquals(2, this.migrationResult.getMigrationStepReportListFilterByFinalStatus().size());
     }
 }

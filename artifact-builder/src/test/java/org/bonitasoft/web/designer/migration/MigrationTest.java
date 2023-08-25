@@ -23,15 +23,15 @@ import static org.mockito.Mockito.verify;
 import java.util.Optional;
 
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class MigrationTest {
+@ExtendWith(MockitoExtension.class)
+class MigrationTest {
 
     @Mock
     MigrationStep<Page> migrationStep;
@@ -40,13 +40,13 @@ public class MigrationTest {
 
     Page page = aPage().withId("123").build();
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         migration = new Migration<>("1.0.1", migrationStep);
     }
 
     @Test
-    public void should_migrate_a_page_with_a_version_lower_than_migration() throws Exception {
+    void should_migrate_a_page_with_a_version_lower_than_migration() throws Exception {
         Mockito.when(migrationStep.migrate(Mockito.any(Page.class))).thenReturn(Optional.empty());
         page.setDesignerVersion("1.0.0");
 
@@ -56,7 +56,7 @@ public class MigrationTest {
     }
 
     @Test
-    public void should_not_migrate_a_page_with_a_version_greater_than_migration() throws Exception {
+    void should_not_migrate_a_page_with_a_version_greater_than_migration() throws Exception {
 
         page.setDesignerVersion("1.0.2");
 
@@ -66,7 +66,7 @@ public class MigrationTest {
     }
 
     @Test
-    public void should_not_migrate_a_page_with_a_version_equal_to_migration() throws Exception {
+    void should_not_migrate_a_page_with_a_version_equal_to_migration() throws Exception {
         page.setDesignerVersion("1.0.1");
 
         migration.migrate(page);

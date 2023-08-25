@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.bonitasoft.web</groupId>
   <artifactId>ui-designer-artifact-builder-parent</artifactId>
-  <version>1.0.0-alpha-04</version>
+  <version>1.0.0-alpha-05</version>
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Aggregator</name>
   <description>This module is the aggregator module</description>
@@ -25,11 +25,14 @@
   </developers>
   <modules>
     <module>artifact-builder-dependencies</module>
+    <module>model</module>
+    <module>common</module>
+    <module>generator-angularjs</module>
     <module>artifact-builder</module>
     <module>migrationReport</module>
     <module>coverage-report</module>
   </modules>
-  <scm>
+  <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
     <connection>scm:git:git@github.com:bonitasoft/bonita-ui-designer-artifact-builder.git</connection>
     <developerConnection>scm:git:git@github.com:bonitasoft/bonita-ui-designer-artifact-builder.git</developerConnection>
     <tag>HEAD</tag>
@@ -57,7 +60,7 @@
     <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     <maven-dependency-plugin.version>3.6.0</maven-dependency-plugin.version>
-    <maven-enforcer-plugin.version>3.3.0</maven-enforcer-plugin.version>
+    <maven-enforcer-plugin.version>3.4.0</maven-enforcer-plugin.version>
     <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
     <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
     <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
@@ -73,18 +76,20 @@
     <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
     <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
-    <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
+    <frontend-maven-plugin.version>1.13.4</frontend-maven-plugin.version>
     <gitflow-maven-plugin.version>1.20.0</gitflow-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
     <versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
     <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
     <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
-    <spotless-maven-plugin.version>2.37.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.38.0</spotless-maven-plugin.version>
+    <mockito-junit-jupiter.version>5.3.1</mockito-junit-jupiter.version>
+    <mockito-core-plugin.version>5.3.1</mockito-core-plugin.version>
     <!-- Spotless resources location -->
-    <eclipse.formatter.file>${project.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.basedir}/header.txt</header.file>
+    <eclipse.formatter.file>${maven.multiModuleProjectDirectory}/formatter.xml</eclipse.formatter.file>
+    <eclipse.importorder.file>${maven.multiModuleProjectDirectory}/eclipse.importorder</eclipse.importorder.file>
+    <header.file>${maven.multiModuleProjectDirectory}/header.txt</header.file>
     <!-- Sonar -->
     <sonar.projectKey>${sonar.organization}_bonita-ui-designer-artifact-builder</sonar.projectKey>
     <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
@@ -92,6 +97,7 @@
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../coverage-report/target/site/jacoco-aggregate/jacoco.xml,
 			${project.basedir}/coverage-report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
   <build>
     <pluginManagement>
@@ -234,9 +240,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>${maven-deploy-plugin.version}</version>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
@@ -254,6 +257,7 @@
             <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
             <serverId>ossrh</serverId>
             <nexusUrl>https://oss.sonatype.org</nexusUrl>
+            <skipStaging>${maven.deploy.skip}</skipStaging>
           </configuration>
         </plugin>
         <plugin>

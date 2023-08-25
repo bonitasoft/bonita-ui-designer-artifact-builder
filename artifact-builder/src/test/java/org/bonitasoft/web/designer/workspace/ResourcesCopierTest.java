@@ -19,32 +19,32 @@ package org.bonitasoft.web.designer.workspace;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-public class ResourcesCopierTest {
+class ResourcesCopierTest {
 
     private static String FOLDER_TO_COPY = "tmpCopyResources";
     private static String TARGET_FOLDER = "tmpCopiedResources";
 
     private Path targetFolder;
 
-    @Rule
-    public TemporaryFolder folderManager = new TemporaryFolder();
+    @TempDir
+    public Path folderManager;
 
     private ResourcesCopier resourcesCopier = new ResourcesCopier();
 
-    @Before
-    public void setUp() throws IOException {
-        targetFolder = folderManager.newFolder(TARGET_FOLDER).toPath();
+    @BeforeEach
+    void setUp() throws IOException {
+        targetFolder = Files.createDirectory(folderManager.resolve(TARGET_FOLDER));
     }
 
     @Test
-    public void should_copy_not_empty_resources_only() throws IOException {
+    void should_copy_not_empty_resources_only() throws IOException {
         //test
         resourcesCopier.copy(targetFolder, FOLDER_TO_COPY);
         Path emptyFile = targetFolder.resolve(FOLDER_TO_COPY).resolve("empty.po");

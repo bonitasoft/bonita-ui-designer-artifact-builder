@@ -28,17 +28,17 @@ import static org.bonitasoft.web.designer.builder.TabContainerBuilder.aTabContai
 import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsContainer;
 import static org.mockito.Mockito.when;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
 import org.bonitasoft.web.designer.model.page.Component;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ComponentVisitorTest {
+@ExtendWith(MockitoExtension.class)
+class ComponentVisitorTest {
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -48,13 +48,13 @@ public class ComponentVisitorTest {
 
     private Component component;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         component = aComponent().build();
     }
 
     @Test
-    public void should_collect_component_when_visiting_a_component() throws Exception {
+    void should_collect_component_when_visiting_a_component() throws Exception {
 
         Iterable<Component> components = componentVisitor.visit(component);
 
@@ -62,7 +62,7 @@ public class ComponentVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_container() throws Exception {
+    void should_collect_component_from_a_container() throws Exception {
 
         Iterable<Component> components = componentVisitor.visit(aContainer()
                 .with(component)
@@ -72,7 +72,7 @@ public class ComponentVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_tabs_container() throws Exception {
+    void should_collect_component_from_a_tabs_container() throws Exception {
 
         Iterable<Component> components = componentVisitor.visit(aTabsContainer()
                 .with(aTabContainer()
@@ -84,7 +84,7 @@ public class ComponentVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_formcontainer() throws Exception {
+    void should_collect_component_from_a_formcontainer() throws Exception {
 
         Iterable<Component> components = componentVisitor.visit(aFormContainer().with(aContainer()
                 .with(component)
@@ -94,7 +94,7 @@ public class ComponentVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_previewable() throws Exception {
+    void should_collect_component_from_a_previewable() throws Exception {
 
         Iterable<Component> components = componentVisitor.visit(aPage()
                 .with(component)
@@ -104,7 +104,7 @@ public class ComponentVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_modal_container() throws Exception {
+    void should_collect_component_from_a_modal_container() throws Exception {
         Iterable<Component> components = componentVisitor.visit(aModalContainer()
                 .with(aContainer()
                         .with(component))
@@ -114,7 +114,7 @@ public class ComponentVisitorTest {
     }
 
     @Test
-    public void should_collect_component_from_a_fragment() throws Exception {
+    void should_collect_component_from_a_fragment() throws Exception {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .with(component).build());
 

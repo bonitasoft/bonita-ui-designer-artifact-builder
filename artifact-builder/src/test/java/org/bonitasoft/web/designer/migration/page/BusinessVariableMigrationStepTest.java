@@ -26,25 +26,23 @@ import org.bonitasoft.web.designer.builder.VariableBuilder;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.AbstractPage;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import junit.framework.TestCase;
-
-@RunWith(MockitoJUnitRunner.class)
-public class BusinessVariableMigrationStepTest extends TestCase {
+@ExtendWith(MockitoExtension.class)
+class BusinessVariableMigrationStepTest {
 
     BusinessVariableMigrationStep<AbstractPage> businessVariableMigrationStep;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         businessVariableMigrationStep = new BusinessVariableMigrationStep<>();
     }
 
     @Test
-    public void should_migrate_page_with_business_data() throws Exception {
+    void should_migrate_page_with_business_data() throws Exception {
 
         var businessDataValue = "{\"businessObjectName\":\"BusinessObject1\",\"id\":\"com_company_model_BusinessObject1\",\"filters\":[],\"pagination\":{\"p\":0,\"c\":10}}";
         var expectedValue = "{\"businessObjectName\":\"BusinessObject1\",\"id\":\"com.company.model.BusinessObject1\",\"filters\":[],\"pagination\":{\"p\":\"0\",\"c\":\"10\"}}";
@@ -59,7 +57,7 @@ public class BusinessVariableMigrationStepTest extends TestCase {
     }
 
     @Test
-    public void should_migrate_fragment_with_business_data() throws Exception {
+    void should_migrate_fragment_with_business_data() throws Exception {
 
         var businessDataValue = "{\"businessObjectName\":\"BusinessObject1\",\"id\":\"com_company_model_BusinessObject1\",\"filters\":[],\"pagination\":{\"p\":0,\"c\":10}}";
         var expectedValue = "{\"businessObjectName\":\"BusinessObject1\",\"id\":\"com.company.model.BusinessObject1\",\"filters\":[],\"pagination\":{\"p\":\"0\",\"c\":\"10\"}}";

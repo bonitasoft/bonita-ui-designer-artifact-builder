@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer.controller.importer.mocks;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-public class StreamMock {
+class StreamMock {
 
     public static InputStream aStream() {
         return new ByteArrayInputStream("foo".getBytes());

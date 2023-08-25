@@ -19,9 +19,9 @@ package org.bonitasoft.web.designer.controller;
 import static org.bonitasoft.web.designer.controller.Predicates.propertyEqualTo;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class PredicatesTest {
+class PredicatesTest {
 
     class Person {
 
@@ -35,23 +35,23 @@ public class PredicatesTest {
             return name;
         }
 
-        public void setName(String name) {
+        void setName(String name) {
             this.name = name;
         }
     }
 
     @Test
-    public void should_return_true_when_property_values_are_equal() throws Exception {
+    void should_return_true_when_property_values_are_equal() throws Exception {
         Assertions.assertThat(propertyEqualTo("name", "Vincent").test(new Person("Vincent"))).isTrue();
     }
 
     @Test
-    public void should_return_false_when_property_values_are_not_equal() throws Exception {
+    void should_return_false_when_property_values_are_not_equal() throws Exception {
         Assertions.assertThat(propertyEqualTo("name", "Vincent").test(new Person("Colin"))).isFalse();
     }
 
     @Test
-    public void should_return_false_when_property_does_not_exist() throws Exception {
+    void should_return_false_when_property_does_not_exist() throws Exception {
         Assertions.assertThat(propertyEqualTo("age", 28).test(new Person("Vincent"))).isFalse();
     }
 }

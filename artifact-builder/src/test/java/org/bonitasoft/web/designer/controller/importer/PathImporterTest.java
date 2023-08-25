@@ -21,35 +21,33 @@ import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.bonitasoft.web.designer.builder.ImportReportBuilder.anImportReportFor;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import static org.bonitasoft.web.designer.controller.importer.report.ImportReport.Status.IMPORTED;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.AngularJsArtifactBuilder;
 import org.bonitasoft.web.designer.ArtifactBuilder;
+import org.bonitasoft.web.designer.DefaultArtifactBuilder;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
+import org.bonitasoft.web.designer.common.generator.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.controller.export.FragmentExporter;
 import org.bonitasoft.web.designer.controller.export.PageExporter;
 import org.bonitasoft.web.designer.controller.export.WidgetExporter;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 import org.bonitasoft.web.designer.service.FragmentService;
 import org.bonitasoft.web.designer.service.PageService;
 import org.bonitasoft.web.designer.service.WidgetService;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
 import org.bonitasoft.web.designer.workspace.Workspace;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class PathImporterTest {
-
-    @Rule
-    public TemporaryFolder tempDir = new TemporaryFolder();
+@ExtendWith(MockitoExtension.class)
+class PathImporterTest {
 
     private Path unzipedPath;
 
@@ -64,13 +62,13 @@ public class PathImporterTest {
 
     private WidgetImporter widgetImporter;
 
-    @Before
-    public void setUp() throws Exception {
-        unzipedPath = tempDir.newFolderPath("unzipedPath");
+    @BeforeEach
+    void setUp(@TempDir Path tempDir) throws Exception {
+        unzipedPath = Files.createDirectory(tempDir.resolve("unzipedPath"));
         pageImporter = mock(PageImporter.class);
         fragmentImporter = mock(FragmentImporter.class);
         widgetImporter = mock(WidgetImporter.class);
-        artifactBuilder = new AngularJsArtifactBuilder(
+        artifactBuilder = new DefaultArtifactBuilder(
                 mock(Workspace.class),
                 mock(WidgetService.class),
                 mock(FragmentService.class),
@@ -92,7 +90,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_import_zip_file() throws Exception {
+    void should_import_zip_file() throws Exception {
         ImportReport expectedReport = anImportReportFor(aPage()).withStatus(IMPORTED).build();
         when(pageImporter.tryToImportAndGenerateReport(aMockedImport(pageImporter), false)).thenReturn(expectedReport);
 
@@ -102,7 +100,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_remove_import_from_store_if_report_status_is_imported() throws Exception {
+    void should_remove_import_from_store_if_report_status_is_imported() throws Exception {
         Import anImport = aMockedImport(pageImporter);
         when(pageImporter.tryToImportAndGenerateReport(anImport, false))
                 .thenReturn(anImportReportFor(aPage()).withStatus(IMPORTED).build());
@@ -113,7 +111,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_remove_import_from_store_if_an_error_occurs_when_importing() throws Exception {
+    void should_remove_import_from_store_if_an_error_occurs_when_importing() throws Exception {
         Import anImport = aMockedImport(pageImporter);
         when(pageImporter.tryToImportAndGenerateReport(anImport, false)).thenThrow(ImportException.class);
 
@@ -126,7 +124,7 @@ public class PathImporterTest {
     }
 
     @Test
-    public void should_force_import_of_zip_file() throws Exception {
+    void should_force_import_of_zip_file() throws Exception {
         Import anImport = aMockedImport(widgetImporter);
         ImportReport expectedReport = anImportReportFor(WidgetBuilder.aWidget()).withStatus(IMPORTED).build();
         when(widgetImporter.tryToImportAndGenerateReport(anImport, true)).thenReturn(expectedReport);
@@ -137,11 +135,11 @@ public class PathImporterTest {
         verify(importStore).remove(anImport.getUUID());
     }
 
-    @Test(expected = ImportException.class)
-    public void should_throw_import_exception_when_an_import_error_occurs() throws Exception {
+    @Test
+    void should_throw_import_exception_when_an_import_error_occurs() throws Exception {
         when(importStore.store(fragmentImporter, unzipedPath)).thenReturn(new Import(fragmentImporter, "a-uuid", unzipedPath));
         doThrow(new ImportException(ImportException.Type.PAGE_NOT_FOUND, "an Error message")).when(fragmentImporter).tryToImportAndGenerateReport(any(),any(Boolean.class));
 
-        artifactBuilder.importFragment(unzipedPath, false);
+        assertThrows(ImportException.class, () -> artifactBuilder.importFragment(unzipedPath, false));
     }
 }

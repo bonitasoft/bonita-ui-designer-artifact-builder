@@ -18,34 +18,33 @@ package org.bonitasoft.web.designer.controller.export.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_FILES;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.io.OutputStream;
 import java.nio.file.Path;
 
+import org.bonitasoft.web.angularjs.export.IncludeChildDirectoryPredicate;
+import org.bonitasoft.web.designer.common.export.Zipper;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.visitor.FragmentIdVisitor;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.controller.export.IncludeChildDirectoryPredicate;
-import org.bonitasoft.web.designer.controller.export.Zipper;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
 import org.bonitasoft.web.designer.utils.rule.TemporaryFragmentRepository;
-import org.bonitasoft.web.designer.visitor.FragmentIdVisitor;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentsExportStepTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentsExportStepTest {
 
-    private WorkspaceProperties workspaceProperties = new WorkspaceProperties();
+    private final WorkspaceProperties workspaceProperties = new WorkspaceProperties();
 
-    @Rule
     public TemporaryFragmentRepository repositoryFactory = new TemporaryFragmentRepository(workspaceProperties);
 
     private FragmentRepository fragmentRepository;
@@ -55,8 +54,13 @@ public class FragmentsExportStepTest {
     @Mock
     private Zipper zipper;
 
-    @Before
-    public void beforeEach() {
+    @TempDir
+    Path tempPath;
+
+    @BeforeEach
+    void beforeEach() {
+        repositoryFactory.init(tempPath);
+
         fragmentRepository = repositoryFactory.toRepository();
         step = new FragmentsExportStep(
                 new FragmentIdVisitor(fragmentRepository),
@@ -65,7 +69,7 @@ public class FragmentsExportStepTest {
     }
 
     @Test
-    public void should_add_fragments_to_zip() throws Exception {
+    void should_add_fragments_to_zip() throws Exception {
         Fragment fragment = aFragment().withId("fragment").build();
         fragmentRepository.save(fragment);
 
@@ -79,15 +83,15 @@ public class FragmentsExportStepTest {
         verify(zipper).addDirectoryToZip(importPathCaptor.capture(), directoryPredicateCaptor.capture(), eq(ALL_FILES),
                 destinationDirectoryNameCaptor.capture());
 
-        assertThat(importPathCaptor.getValue()).isEqualTo(repositoryFactory.toPath());
-        assertThat(directoryPredicateCaptor.getValue().getSourceDirectory()).isEqualTo(repositoryFactory.toPath());
+        assertThat(importPathCaptor.getValue()).isEqualTo(tempPath);
+        assertThat(directoryPredicateCaptor.getValue().getSourceDirectory()).isEqualTo(tempPath);
         assertThat(destinationDirectoryNameCaptor.getValue())
                 .isEqualTo("resources/" + fragmentRepository.getComponentName() + "s");
 
     }
 
     @Test
-    public void should_not_add_fragment_metadata_to_zip() throws Exception {
+    void should_not_add_fragment_metadata_to_zip() throws Exception {
         Fragment fragment = aFragment().withId("fragment").build();
         fragmentRepository.save(fragment);
 

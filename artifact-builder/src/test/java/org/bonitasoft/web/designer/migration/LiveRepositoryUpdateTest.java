@@ -23,8 +23,8 @@ import static java.util.Collections.singletonList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,36 +32,29 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
-import org.bonitasoft.web.designer.JsonHandlerFactory;
-import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedPersister;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.Repository;
+import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.JsonFileBasedLoader;
-import org.bonitasoft.web.designer.repository.JsonFileBasedPersister;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.Repository;
-import org.bonitasoft.web.designer.repository.WidgetFileBasedLoader;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class LiveRepositoryUpdateTest {
-
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+@ExtendWith(MockitoExtension.class)
+class LiveRepositoryUpdateTest {
 
     JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
@@ -75,19 +68,17 @@ public class LiveRepositoryUpdateTest {
 
     PageRepository repository;
 
-    private WorkspaceProperties workspaceProperties;
+    @TempDir
+    Path folder;
 
-    @Before
-    public void setUp() throws Exception {
-        workspaceProperties = new WorkspaceProperties();
-        workspaceProperties.getPages().setDir(folder.toPath());
-        workspaceProperties.getWidgets().setDir(folder.toPath());
-        repository = new PageRepository(workspaceProperties, new WorkspaceUidProperties(), persister, loader,
+    @BeforeEach
+    void setUp() throws Exception {
+        repository = new PageRepository(folder, folder, persister, loader,
                 beanValidator, mock(Watcher.class));
     }
 
     @Test
-    public void should_migrate_a_page() throws Exception {
+    void should_migrate_a_page() throws Exception {
         MigrationStep mockMigrationStep = mock(MigrationStep.class);
         Migration<Page> migration = new Migration<Page>("2.1", mockMigrationStep);
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
@@ -100,15 +91,15 @@ public class LiveRepositoryUpdateTest {
         liveRepositoryUpdate.migrate();
 
         page.setModelVersion("2.1");
-        verify(persister).save(folder.getRoot().toPath().resolve("pageJson"), page);
+        verify(persister).save(folder.resolve("pageJson"), page);
     }
 
     @Test
-    public void should_not_migrate_file_which_are_not_json() throws Exception {
+    void should_not_migrate_file_which_are_not_json() throws Exception {
         Migration<Page> migration = mock(Migration.class);
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
                 singletonList(migration));
-        folder.newFile("whatever");
+        Files.createFile(folder.resolve("whatever"));
 
         liveRepositoryUpdate.migrate();
 
@@ -116,7 +107,7 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_not_save_an_artifact_already_migrated() throws Exception {
+    void should_not_save_an_artifact_already_migrated() throws Exception {
         Migration<Page> migration = new Migration<>("1.0.2", mock(MigrationStep.class));
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
                 singletonList(migration));
@@ -128,13 +119,13 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_exclude_assets() throws Exception {
+    void should_exclude_assets() throws Exception {
         Migration<Page> migration = mock(Migration.class);
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository,
                 singletonList(migration));
         createPage("1.0.0");
-        folder.newFolder("pageJson", "assets");
-        folder.newFile("pageJson/assets/whatever.json");
+        var pageFolder = Files.createDirectory(folder.resolve("pageJson").resolve("assets"));
+        Files.createFile(pageFolder.resolve("whatever.json"));
 
         liveRepositoryUpdate.migrate();
 
@@ -142,7 +133,7 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_be_refresh_repository_index_json_on_start() throws Exception {
+    void should_be_refresh_repository_index_json_on_start() throws Exception {
         LiveRepositoryUpdate<Page> liveRepositoryUpdate = new LiveRepositoryUpdate<>(repository, EMPTY_LIST);
         createPage("1.7.25");
 
@@ -153,12 +144,12 @@ public class LiveRepositoryUpdateTest {
     }
 
     @Test
-    public void should_order_LiveRepositoryUpdate() throws Exception {
+    void should_order_LiveRepositoryUpdate() {
         LiveRepositoryUpdate<Page> pageLiveRepositoryUpdate = new LiveRepositoryUpdate<>(repository, EMPTY_LIST);
 
-        Repository<Widget> wRepo = new WidgetRepository(workspaceProperties, new WorkspaceUidProperties(),
+        Repository<Widget> wRepo = new WidgetRepository(folder, folder,
                 mock(JsonFileBasedPersister.class), mock(WidgetFileBasedLoader.class), beanValidator,
-                mock(Watcher.class), mock(UiDesignerProperties.class));
+                mock(Watcher.class));
 
         LiveRepositoryUpdate<Widget> widgetLiveRepositoryUpdate = new LiveRepositoryUpdate<>(wRepo, EMPTY_LIST);
 
@@ -172,9 +163,10 @@ public class LiveRepositoryUpdateTest {
     }
 
     private Page createPage(String version) throws IOException {
-        folder.newFolder("pageJson");
-        File pageJson = folder.newFile("pageJson/pageJson.json");
-        write(pageJson.toPath(), format("{ \"id\": \"pageJson\", \"modelVersion\": \"%s\" }", version).getBytes());
-        return loader.load(pageJson.getParentFile().toPath().resolve(pageJson.getName()));
+        var pageJson = Files.createDirectory(folder.resolve("pageJson"));
+        Path descriptor = Files.createFile(pageJson.resolve("pageJson.json"));
+        write(descriptor, format("{ \"id\": \"pageJson\", \"modelVersion\": \"%s\" }", version).getBytes());
+
+        return loader.load(descriptor);
     }
 }

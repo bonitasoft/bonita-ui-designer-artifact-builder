@@ -16,8 +16,8 @@
  */
 package org.bonitasoft.web.designer.controller.importer.dependencies;
 
+import org.bonitasoft.web.designer.common.repository.Repository;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.repository.Repository;
 
 public abstract class ComponentDependencyImporter<T extends Identifiable> implements DependencyImporter<T> {
 

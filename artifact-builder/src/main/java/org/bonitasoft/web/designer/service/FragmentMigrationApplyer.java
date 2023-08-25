@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.migration.Migration;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
@@ -60,11 +60,11 @@ public class FragmentMigrationApplyer {
             logger.info("[MIGRATION] Fragment {} has been terminated in {} seconds!", fragment.getName(), durationTime);
         }
 
-        return new MigrationResult(fragment, reports);
+        return new MigrationResult<>(fragment, reports);
     }
 
-    public MigrationStatusReport getMigrationStatusOfCustomWidgetsUsed(Fragment fragment) {
-        return widgetService.getMigrationStatusOfCustomWidgetUsed(fragment);
+    public ArtifactStatusReport getMigrationStatusOfCustomWidgetsUsed(Fragment fragment) {
+        return widgetService.getArtifactStatusOfCustomWidgetUsed(fragment);
     }
 
     private List<MigrationStepReport> migrateAllCustomWidgetUsed(Fragment fragment) {

@@ -4,18 +4,13 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-04</version>
+    <version>1.0.0-alpha-05</version>
   </parent>
   <artifactId>ui-designer-backend-migrationReport</artifactId>
   <name>Bonita UI Designer Migration Report</name>
   <description>This module is the backend component for the migration report model of the UI Designer.</description>
-  <scm>
-    <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
-  </scm>
   <properties>
-    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -31,11 +26,6 @@
   <dependencies>
     <!-- Test dependencies -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
@@ -45,16 +35,14 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

@@ -22,23 +22,23 @@ import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 import java.util.UUID;
 
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class PageUUIDMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class PageUUIDMigrationStepTest {
 
     PageUUIDMigrationStep pageUUIDMigrationStep;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         pageUUIDMigrationStep = new PageUUIDMigrationStep();
     }
 
     @Test
-    public void should_migrate_page_with_UUID_like_id() throws Exception {
+    void should_migrate_page_with_UUID_like_id() throws Exception {
         Page pageWithoutUUID = aPage().withId(UUID.randomUUID().toString()).withUUID(null).build();
 
         pageUUIDMigrationStep.migrate(pageWithoutUUID);
@@ -47,7 +47,7 @@ public class PageUUIDMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_page_generating_a_UUID() throws Exception {
+    void should_migrate_page_generating_a_UUID() throws Exception {
         Page pageWithoutUUID = aPage().withId("maPage").withUUID(null).build();
 
         pageUUIDMigrationStep.migrate(pageWithoutUUID);
@@ -56,7 +56,7 @@ public class PageUUIDMigrationStepTest {
     }
 
     @Test
-    public void should_not_migrate_a_page_with_already_a_uuid() throws Exception {
+    void should_not_migrate_a_page_with_already_a_uuid() throws Exception {
         String uuid = UUID.randomUUID().toString();
         Page pageWithUUID = aPage().withId("maPage").withUUID(uuid).build();
 

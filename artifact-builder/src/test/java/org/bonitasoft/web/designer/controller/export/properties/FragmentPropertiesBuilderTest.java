@@ -20,13 +20,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentPropertiesBuilderTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentPropertiesBuilderTest {
 
     private static final String DESIGNER_VERSION = "1.12.1";
 
@@ -34,11 +34,9 @@ public class FragmentPropertiesBuilderTest {
 
     private Fragment fragment;
 
-    private UiDesignerProperties uiDesignerProperties;
-
-    @Before
-    public void setUp() throws Exception {
-        uiDesignerProperties = new UiDesignerProperties();
+    @BeforeEach
+    void setUp() {
+        UiDesignerProperties uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setVersion(DESIGNER_VERSION);
         fragmentPropertiesBuilder = new FragmentPropertiesBuilder(uiDesignerProperties);
 
@@ -47,15 +45,16 @@ public class FragmentPropertiesBuilderTest {
     }
 
     @Test
-    public void should_build_a_well_formed_page_property_file() throws Exception {
+    void should_build_a_well_formed_page_property_file() throws Exception {
         fragment.setDesignerVersion("1.12.1");
 
         byte[] a = fragmentPropertiesBuilder.build(fragment);
         String properties = new String(a);
 
-        assertThat(properties).contains("contentType=fragment");
-        assertThat(properties).contains("name=myFragment");
-        assertThat(properties).contains("designerVersion=1.12.1");
+        assertThat(properties)
+                .contains("contentType=fragment")
+                .contains("name=myFragment")
+                .contains("designerVersion=1.12.1");
     }
 
 }

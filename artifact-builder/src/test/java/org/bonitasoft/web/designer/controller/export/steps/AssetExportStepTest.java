@@ -18,25 +18,25 @@ package org.bonitasoft.web.designer.controller.export.steps;
 
 import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_DIRECTORIES;
-import static org.bonitasoft.web.designer.controller.export.Zipper.ALL_FILES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_DIRECTORIES;
+import static org.bonitasoft.web.designer.common.export.Zipper.ALL_FILES;
 import static org.mockito.Mockito.*;
 
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.controller.export.Zipper;
+import org.bonitasoft.web.designer.common.export.Zipper;
+import org.bonitasoft.web.designer.common.repository.AssetRepository;
 import org.bonitasoft.web.designer.model.asset.AssetType;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.AssetRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AssetExportStepTest {
+@ExtendWith(MockitoExtension.class)
+class AssetExportStepTest {
 
     @Mock
     private AssetRepository<Page> pageAssetRepository;
@@ -51,7 +51,7 @@ public class AssetExportStepTest {
     private AssetExportStep assetExportStep;
 
     @Test
-    public void should_call_zipper_when_page_has_no_asset() throws Exception {
+    void should_call_zipper_when_page_has_no_asset() throws Exception {
 
         assetExportStep.execute(zipper, aPage().build());
 
@@ -59,7 +59,7 @@ public class AssetExportStepTest {
     }
 
     @Test
-    public void should_export_asset_when_page_has_asset() throws Exception {
+    void should_export_asset_when_page_has_asset() throws Exception {
         when(pageAssetRepository.findAssetPath("pageId", "myfile.css", AssetType.CSS)).thenReturn(assetPath);
         Page page = aPage().withId("pageId").withAsset(
                 anAsset().withName("myfile.css").withType(AssetType.CSS)).build();
@@ -70,7 +70,7 @@ public class AssetExportStepTest {
     }
 
     @Test
-    public void should_not_export_external_assets() throws Exception {
+    void should_not_export_external_assets() throws Exception {
         Page page = aPage().withAsset(
                 anAsset().withName("http://external.asset").withExternal(true)).build();
 

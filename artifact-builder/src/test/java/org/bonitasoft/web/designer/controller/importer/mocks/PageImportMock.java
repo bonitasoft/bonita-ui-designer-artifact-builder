@@ -26,22 +26,20 @@ import java.nio.file.Path;
 import java.time.Instant;
 
 import org.bonitasoft.web.designer.builder.PageBuilder;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.JsonViewPersistence;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.bonitasoft.web.designer.repository.PageRepository;
 import org.mockito.stubbing.Answer;
 
 public class PageImportMock {
 
-    private PageRepository pageRepositoryMock;
-    private JsonHandler jsonHandlerMock;
-    private Path unzippedPath;
+    private final PageRepository pageRepositoryMock;
+    private final JsonHandler jsonHandlerMock;
 
-    public PageImportMock(Path unzippedPath, PageRepository pageRepositoryMock, JsonHandler jsonHandlerMock) {
+    public PageImportMock(PageRepository pageRepositoryMock, JsonHandler jsonHandlerMock) {
         this.pageRepositoryMock = pageRepositoryMock;
         this.jsonHandlerMock = jsonHandlerMock;
-        this.unzippedPath = unzippedPath;
     }
 
     public Page mockPageToBeImported() throws IOException {

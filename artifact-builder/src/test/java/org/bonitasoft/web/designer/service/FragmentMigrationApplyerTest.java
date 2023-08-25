@@ -17,8 +17,12 @@
 package org.bonitasoft.web.designer.service;
 
 import static org.bonitasoft.web.designer.builder.FragmentBuilder.aFragment;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -26,20 +30,20 @@ import java.util.Optional;
 import org.bonitasoft.web.designer.migration.Migration;
 import org.bonitasoft.web.designer.migration.MigrationStep;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FragmentMigrationApplyerTest {
+@ExtendWith(MockitoExtension.class)
+class FragmentMigrationApplyerTest {
 
     @Mock
     private WidgetService widgetService;
 
     @Test
-    public void should_migrate_a_fragment() throws Exception {
-        MigrationStep mockMigrationStep = mock(MigrationStep.class);
+    void should_migrate_a_fragment() throws Exception {
+        var mockMigrationStep = mock(MigrationStep.class);
         Migration<Fragment> migration = new Migration("2.0", mockMigrationStep);
         FragmentMigrationApplyer migrationApplyer = new FragmentMigrationApplyer(Collections.singletonList(migration),
                 widgetService);
@@ -49,14 +53,14 @@ public class FragmentMigrationApplyerTest {
 
         migrationApplyer.migrate(fragment, false);
 
-        assertEquals(fragment.getPreviousArtifactVersion(), "1.0.0");
-        assertEquals(fragment.getArtifactVersion(), "2.0");
+        assertEquals("1.0.0", fragment.getPreviousArtifactVersion());
+        assertEquals("2.0", fragment.getArtifactVersion());
         verify(widgetService, never()).migrateAllCustomWidgetUsedInPreviewable(fragment);
     }
 
     @Test
-    public void should_migrate_a_fragment_with_new_model_version() throws Exception {
-        MigrationStep mockMigrationStep = mock(MigrationStep.class);
+    void should_migrate_a_fragment_with_new_model_version() throws Exception {
+        var mockMigrationStep = mock(MigrationStep.class);
         Migration<Fragment> migration = new Migration("2.1", mockMigrationStep);
         FragmentMigrationApplyer migrationApplyer = new FragmentMigrationApplyer(Collections.singletonList(migration),
                 widgetService);
@@ -66,13 +70,13 @@ public class FragmentMigrationApplyerTest {
 
         migrationApplyer.migrate(fragment, false);
 
-        assertEquals(fragment.getPreviousArtifactVersion(), "2.0");
-        assertEquals(fragment.getArtifactVersion(), "2.1");
+        assertEquals("2.0", fragment.getPreviousArtifactVersion());
+        assertEquals("2.1", fragment.getArtifactVersion());
         verify(widgetService, never()).migrateAllCustomWidgetUsedInPreviewable(fragment);
     }
 
     @Test
-    public void should_not_migrate_a_fragment_when_its_already_in_good_version() throws Exception {
+    void should_not_migrate_a_fragment_when_its_already_in_good_version() throws Exception {
         MigrationStep mockMigrationStep = mock(MigrationStep.class);
         Migration<Fragment> migration = new Migration("2.0", mock(MigrationStep.class));
         FragmentMigrationApplyer migrationApplyer = new FragmentMigrationApplyer(Collections.singletonList(migration),
@@ -84,15 +88,15 @@ public class FragmentMigrationApplyerTest {
 
         migrationApplyer.migrate(fragment, false);
 
-        assertEquals(fragment.getPreviousArtifactVersion(), "2.0");
-        assertEquals(fragment.getArtifactVersion(), "2.0");
+        assertEquals("2.0", fragment.getPreviousArtifactVersion());
+        assertEquals("2.0", fragment.getArtifactVersion());
         verify(widgetService, never()).migrateAllCustomWidgetUsedInPreviewable(fragment);
     }
 
     @Test
-    public void should_migrate_all_widgets_use_in_fragment_when_fragment_is_migrated() throws Exception {
-        MigrationStep mockMigrationStep = mock(MigrationStep.class);
-        Migration<Fragment> migration = new Migration("2.0", mockMigrationStep);
+    void should_migrate_all_widgets_use_in_fragment_when_fragment_is_migrated() throws Exception {
+        var mockMigrationStep = mock(MigrationStep.class);
+        Migration<Fragment> migration = new Migration<>("2.0", mockMigrationStep);
         FragmentMigrationApplyer migrationApplyer = new FragmentMigrationApplyer(Collections.singletonList(migration),
                 widgetService);
 
@@ -102,8 +106,8 @@ public class FragmentMigrationApplyerTest {
 
         migrationApplyer.migrate(fragment, true);
 
-        assertEquals(fragment.getPreviousArtifactVersion(), "1.0.0");
-        assertEquals(fragment.getArtifactVersion(), "2.0");
+        assertEquals("1.0.0", fragment.getPreviousArtifactVersion());
+        assertEquals("2.0", fragment.getArtifactVersion());
         verify(widgetService).migrateAllCustomWidgetUsedInPreviewable(fragment);
 
     }

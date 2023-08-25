@@ -19,7 +19,7 @@ files: [
   #
   # Source files filter
   #
-  "source" : "artifact-builder/target/crowdin/widgets-lang-template.pot",
+  "source" : "generator-angularjs/target/crowdin/widgets-lang-template.pot",
 
   #
   # The dest allows you to specify a file name in Crowdin
@@ -29,7 +29,7 @@ files: [
   #
   # Where translations will be placed
   #
-  "translation" : "artifact-builder/src/main/resources/i18n/%file_name%-%two_letters_code%.po",
+  "translation" : "generator-angularjs/src/main/resources/i18n/%file_name%-%two_letters_code%.po",
 
   "languages_mapping" : {
      "two_letters_code" : {

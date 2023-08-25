@@ -27,9 +27,9 @@ import static org.bonitasoft.web.designer.builder.TabsContainerBuilder.aTabsCont
 
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.widget.BondType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class FixBondsTypesVisitorTest {
+class FixBondsTypesVisitorTest {
 
     private FixBondsTypesVisitor fixBondsTypesVisitor = new FixBondsTypesVisitor(asList(
             aProperty().name("foo").bond(BondType.CONSTANT).build(),
@@ -41,7 +41,7 @@ public class FixBondsTypesVisitorTest {
             .build();
 
     @Test
-    public void should_fix_component_bond_when_visiting_it() {
+    void should_fix_component_bond_when_visiting_it() {
 
         fixBondsTypesVisitor.visit(component);
 
@@ -49,7 +49,7 @@ public class FixBondsTypesVisitorTest {
     }
 
     @Test
-    public void should_not_change_bond_if_type_in_inbound_expression_value() {
+    void should_not_change_bond_if_type_in_inbound_expression_value() {
 
         fixBondsTypesVisitor.visit(component);
 
@@ -57,7 +57,7 @@ public class FixBondsTypesVisitorTest {
     }
 
     @Test
-    public void should_visit_container_rows() {
+    void should_visit_container_rows() {
 
         fixBondsTypesVisitor.visit(aContainer().with(component).build());
 
@@ -65,14 +65,14 @@ public class FixBondsTypesVisitorTest {
     }
 
     @Test
-    public void should_visit_previewable_rows() {
+    void should_visit_previewable_rows() {
         fixBondsTypesVisitor.visit(aPage().with(component).build());
 
         assertThat(component.getPropertyValues().get("bar").getType()).isEqualTo("constant");
     }
 
     @Test
-    public void should_visit_container_from_tabs_container() {
+    void should_visit_container_from_tabs_container() {
         fixBondsTypesVisitor.visit(aTabsContainer().with(aTabContainer().with(aContainer().with(component))).build());
 
         assertThat(component.getPropertyValues().get("bar").getType()).isEqualTo("constant");

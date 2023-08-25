@@ -22,12 +22,12 @@ import java.nio.file.Path;
 
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class UiDesignerPropertiesBuilderTest {
+class UiDesignerPropertiesBuilderTest {
 
     @Test
-    public void default_props_should_be_set() {
+    void default_props_should_be_set() {
         var properties = new UiDesignerPropertiesBuilder()
                 .workspacePath(Path.of("some/place/"))
                 .build();
@@ -38,7 +38,7 @@ public class UiDesignerPropertiesBuilderTest {
     }
 
     @Test
-    public void default_paths_should_be_set() {
+    void default_paths_should_be_set() {
         var workspacePath = Path.of("some", "place");
 
         var properties = new UiDesignerPropertiesBuilder()
@@ -50,7 +50,7 @@ public class UiDesignerPropertiesBuilderTest {
     }
 
     @Test
-    public void should_override_default_folder_name() {
+    void should_override_default_folder_name() {
         var workspacePath = Path.of("some", "place");
 
         var pageFolder = "web-pages";

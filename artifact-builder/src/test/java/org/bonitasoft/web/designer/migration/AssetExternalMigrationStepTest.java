@@ -22,12 +22,12 @@ import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AssetExternalMigrationStepTest {
+class AssetExternalMigrationStepTest {
 
     @Test
-    public void should_migrate_artifact_assets() throws Exception {
+    void should_migrate_artifact_assets() {
         AssetExternalMigrationStep<Page> migrationStep = new AssetExternalMigrationStep<>();
 
         Page page = aPage()
@@ -47,7 +47,7 @@ public class AssetExternalMigrationStepTest {
     }
 
     @Test
-    public void should_not_change_an_asset_external_property() throws Exception {
+    void should_not_change_an_asset_external_property() {
         AssetExternalMigrationStep<Page> migrationStep = new AssetExternalMigrationStep<>();
 
         Page page = aPage()

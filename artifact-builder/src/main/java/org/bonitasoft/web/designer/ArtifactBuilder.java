@@ -19,14 +19,17 @@ package org.bonitasoft.web.designer;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javax.validation.constraints.NotNull;
+
+import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.controller.export.ExportException;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.ModelException;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.rendering.GenerationException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.workspace.Workspace;
 
 public interface ArtifactBuilder {
@@ -73,4 +76,16 @@ public interface ArtifactBuilder {
     ImportReport replayImportIgnoringConflicts(String uuid);
 
     void cancelImport(String uuid);
+
+    ArtifactStatusReport getPageStatus(@NotNull String id);
+
+    ArtifactStatusReport getPageStatus(@NotNull Page page);
+
+    ArtifactStatusReport getFragmentStatus(@NotNull String id);
+
+    ArtifactStatusReport getFragmentStatus(@NotNull Fragment fragment);
+
+    ArtifactStatusReport getWidgetStatus(@NotNull String id);
+
+    ArtifactStatusReport getWidgetStatus(@NotNull Widget widget);
 }

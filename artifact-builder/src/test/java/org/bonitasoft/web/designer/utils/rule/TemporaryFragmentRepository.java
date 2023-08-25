@@ -21,51 +21,51 @@ import static org.mockito.Mockito.mock;
 
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.Version;
 import org.bonitasoft.web.designer.builder.FragmentBuilder;
+import org.bonitasoft.web.designer.common.livebuild.Watcher;
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedLoader;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedPersister;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
-import org.bonitasoft.web.designer.livebuild.Watcher;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
 import org.bonitasoft.web.designer.repository.BeanValidator;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.JsonFileBasedLoader;
-import org.bonitasoft.web.designer.repository.JsonFileBasedPersister;
 
-public class TemporaryFragmentRepository extends TemporaryFolder {
+public class TemporaryFragmentRepository {
 
     private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     private FragmentRepository repository;
 
     private final WorkspaceProperties workspaceProperties;
+    private Path tempPath;
 
-    public TemporaryFragmentRepository(WorkspaceProperties workspaceProperties) {
-        this.workspaceProperties = workspaceProperties;
-    }
-
-    @Override
-    protected void before() throws Throwable {
-        super.before();
-
+    public void init(Path tempDir) {
+        tempPath = tempDir;
         var uiDesignerProperties = new UiDesignerProperties("1.13.0", Version.MODEL_VERSION);
-        workspaceProperties.getFragments().setDir(this.toPath());
+        workspaceProperties.getFragments().setDir(tempPath);
         uiDesignerProperties.setWorkspace(workspaceProperties);
 
         BeanValidator validator = mock(BeanValidator.class);
         Watcher watcher = mock(Watcher.class);
 
         repository = new FragmentRepository(
-                uiDesignerProperties.getWorkspace(),
-                new WorkspaceUidProperties(),
-                new JsonFileBasedPersister<>(jsonHandler, validator, uiDesignerProperties),
+                uiDesignerProperties.getWorkspace().getFragments().getDir(),
+                new WorkspaceUidProperties().getTemplateResourcesPath(),
+                new JsonFileBasedPersister<>(jsonHandler, validator, uiDesignerProperties.getVersion(),
+                        uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Fragment.class),
                 validator,
                 watcher);
 
+    }
+
+    public TemporaryFragmentRepository(WorkspaceProperties workspaceProperties) {
+        this.workspaceProperties = workspaceProperties;
     }
 
     public FragmentRepository toRepository() {
@@ -73,11 +73,11 @@ public class TemporaryFragmentRepository extends TemporaryFolder {
     }
 
     public Path resolveFragmentJson(String id) {
-        return this.toPath().resolve(format("%s/%s.json", id, id));
+        return this.tempPath.resolve(format("%s/%s.json", id, id));
     }
 
     public Path resolveFragmentMetadata(String id) {
-        return this.toPath().resolve(format("%s/%s.metadata.json", id, id));
+        return this.tempPath.resolve(format("%s/%s.metadata.json", id, id));
     }
 
     public Fragment addFragment(FragmentBuilder fragmentBuilder) {

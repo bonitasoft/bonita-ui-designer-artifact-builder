@@ -31,18 +31,14 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
+import org.bonitasoft.web.designer.common.repository.Repository;
+import org.bonitasoft.web.designer.common.repository.exception.JsonReadException;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.common.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.controller.importer.dependencies.DependencyImporter;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
-import org.bonitasoft.web.designer.model.HasUUID;
-import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.JsonHandler;
-import org.bonitasoft.web.designer.model.JsonViewPersistence;
+import org.bonitasoft.web.designer.model.*;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.Repository;
-import org.bonitasoft.web.designer.repository.exception.JsonReadException;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
-import org.bonitasoft.web.designer.repository.exception.RepositoryException;
 import org.bonitasoft.web.designer.service.ArtifactService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +94,7 @@ public abstract class AbstractArtifactImporter<T extends Identifiable> {
             // first load everything
             var element = load(resources.resolve(modelFile));
             if (element != null && element.getArtifactVersion() != null) {
-                MigrationStatusReport status = artifactService.getStatusWithoutDependencies(element);
+                ArtifactStatusReport status = artifactService.getStatusWithoutDependencies(element);
                 if (!status.isCompatible()) {
                     var report = new ImportReport(element, null);
                     report.setStatus(ImportReport.Status.INCOMPATIBLE);

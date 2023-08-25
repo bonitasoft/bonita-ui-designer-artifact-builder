@@ -24,24 +24,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetContainerRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
+import org.bonitasoft.web.designer.common.repository.exception.InUseException;
+import org.bonitasoft.web.designer.common.repository.exception.NotAllowedException;
+import org.bonitasoft.web.designer.common.visitor.AssetVisitor;
+import org.bonitasoft.web.designer.common.visitor.WidgetIdVisitor;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.model.WidgetContainerRepository;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Previewable;
 import org.bonitasoft.web.designer.model.widget.Property;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.repository.exception.InUseException;
-import org.bonitasoft.web.designer.repository.exception.NotAllowedException;
-import org.bonitasoft.web.designer.visitor.AssetVisitor;
-import org.bonitasoft.web.designer.visitor.WidgetIdVisitor;
 
 public class DefaultWidgetService extends AbstractAssetableArtifactService<WidgetRepository, Widget>
         implements WidgetService {
@@ -251,8 +251,8 @@ public class DefaultWidgetService extends AbstractAssetableArtifactService<Widge
     }
 
     @Override
-    public MigrationStatusReport getMigrationStatusOfCustomWidgetUsed(Previewable previewable) {
-        List<MigrationStatusReport> reports = new ArrayList<>();
+    public ArtifactStatusReport getArtifactStatusOfCustomWidgetUsed(Previewable previewable) {
+        List<ArtifactStatusReport> reports = new ArrayList<>();
         repository.getByIds(widgetIdVisitor.visit(previewable))
                 .forEach(widget -> reports.add(this.getStatus(widget)));
 
@@ -265,6 +265,6 @@ public class DefaultWidgetService extends AbstractAssetableArtifactService<Widge
                 migration = true;
             }
         }
-        return new MigrationStatusReport(true, migration);
+        return new ArtifactStatusReport(true, migration);
     }
 }

@@ -4,15 +4,13 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-04</version>
+    <version>1.0.0-alpha-05</version>
   </parent>
   <artifactId>coverage-report</artifactId>
   <packaging>pom</packaging>
   <name>Coverage report</name>
   <properties>
-    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -23,6 +21,21 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ui-designer-backend-migrationReport</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ui-designer-artifact-builder-generator-angularjs</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ui-designer-artifact-builder-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>ui-designer-artifact-builder-common</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

@@ -18,7 +18,7 @@ package org.bonitasoft.web.designer.service;
 
 import java.util.List;
 
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Previewable;
 import org.bonitasoft.web.designer.model.widget.Property;
@@ -50,5 +50,5 @@ public interface WidgetService extends AssetableArtifactService<Widget> {
 
     List<MigrationStepReport> migrateAllCustomWidgetUsedInPreviewable(Previewable previewable);
 
-    MigrationStatusReport getMigrationStatusOfCustomWidgetUsed(Previewable previewable);
+    ArtifactStatusReport getArtifactStatusOfCustomWidgetUsed(Previewable previewable);
 }

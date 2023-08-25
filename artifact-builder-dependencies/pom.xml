@@ -4,31 +4,48 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-04</version>
+    <version>1.0.0-alpha-05</version>
   </parent>
   <artifactId>ui-designer-artifact-builder-dependencies</artifactId>
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Dependencies</name>
   <description>This module is the Bill of Material of the UI Designer Artifact Builder</description>
-  <scm>
-    <connection>scm:git:git@github.com:bonitasoft/bonita-ui-designer-artifact-builder.git</connection>
-    <developerConnection>scm:git:git@github.com:bonitasoft/bonita-ui-designer-artifact-builder.git</developerConnection>
-    <tag>HEAD</tag>
-    <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
-  </scm>
   <properties>
-    <spring-boot.version>2.7.13</spring-boot.version>
+    <spring-boot.version>2.7.15</spring-boot.version>
     <handlebar.version>4.3.1</handlebar.version>
-    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-backend-migrationReport</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder-common</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder-model</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.parent.groupId}</groupId>
+        <artifactId>ui-designer-artifact-builder-generator-angularjs</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.12.0</version>
+        <version>3.13.0</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId>
@@ -43,7 +60,7 @@
       <dependency>
         <groupId>org.zeroturnaround</groupId>
         <artifactId>zt-zip</artifactId>
-        <version>1.15</version>
+        <version>1.16</version>
       </dependency>
       <dependency>
         <groupId>com.github.jknack</groupId>
@@ -73,39 +90,9 @@
       </dependency>
       <!-- Spring -->
       <dependency>
-        <groupId>javax.inject</groupId>
-        <artifactId>javax.inject</artifactId>
-        <version>1</version>
-      </dependency>
-      <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-artifact</artifactId>
-        <version>3.9.2</version>
-      </dependency>
-      <!-- Tests dependencies -->
-      <dependency>
-        <groupId>com.jayway.jsonpath</groupId>
-        <artifactId>json-path-assert</artifactId>
-        <version>2.8.0</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.github.dreamhead</groupId>
-        <artifactId>moco-junit</artifactId>
-        <version>1.4.0</version>
-        <scope>test</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>pl.pragmatists</groupId>
-        <artifactId>JUnitParams</artifactId>
-        <version>1.1.1</version>
-        <scope>test</scope>
+        <version>3.9.4</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -124,15 +111,8 @@
         <configuration>
           <updatePomFile>true</updatePomFile>
           <pomElements>
-            <dependencyManagement>expand</dependencyManagement>
+            <dependencyManagement>interpolate</dependencyManagement>
           </pomElements>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
         </configuration>
       </plugin>
       <plugin>

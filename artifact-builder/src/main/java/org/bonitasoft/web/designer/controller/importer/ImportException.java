@@ -21,8 +21,9 @@ import java.util.Map;
 
 public class ImportException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
     private final Type type;
-    private Map<String, Object> infos;
+    private final transient Map<String, Object> infos = new HashMap<>();
 
     public ImportException(Type type, String msg) {
         super(msg);
@@ -43,9 +44,6 @@ public class ImportException extends RuntimeException {
     }
 
     public void addInfo(String name, Object value) {
-        if (infos == null) {
-            infos = new HashMap<>();
-        }
         infos.put(name, value);
     }
 

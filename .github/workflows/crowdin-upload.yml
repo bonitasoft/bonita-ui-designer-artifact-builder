@@ -41,18 +41,18 @@ jobs:
         run: sudo apt-get install gettext
       - name: Build pot files
         run: |
-          cd artifact-builder
+          cd generator-angularjs
           yarn install && npm run pot
       - name: Concatenate pot files
         run: |
-          cd artifact-builder
+          cd generator-angularjs
           mkdir -p target/crowdin
           cat `find . -name '*.pot' -print` | msguniq -s > target/crowdin/widgets-lang-template.pot
       - name: Set Crowdin branch name
         run: |
           echo "crowdinBranch=$(echo ${{ matrix.branch }} | tr / -)" >> $GITHUB_ENV
       - name: crowdin action
-        uses: crowdin/github-action@v1.11.0
+        uses: crowdin/github-action@v1.12.0
         with:
           upload_sources: true
           crowdin_branch_name: ${{ env.crowdinBranch }}

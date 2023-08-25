@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
 import org.bonitasoft.web.designer.migration.Migration;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Page;
@@ -58,17 +58,17 @@ public class PageMigrationApplyer {
         return new MigrationResult<>(page, reports);
     }
 
-    public MigrationStatusReport getMigrationStatusDependencies(Page page) {
-        var widgetStatus = widgetService.getMigrationStatusOfCustomWidgetUsed(page);
-        var fragmentStatus = fragmentService.getMigrationStatusOfFragmentUsed(page);
+    public ArtifactStatusReport getPageStatusDependencies(Page page) {
+        var widgetStatus = widgetService.getArtifactStatusOfCustomWidgetUsed(page);
+        var fragmentStatus = fragmentService.getArtifactStatusOfFragmentUsed(page);
 
         if (!widgetStatus.isCompatible() || !fragmentStatus.isCompatible()) {
-            return new MigrationStatusReport(false, false);
+            return new ArtifactStatusReport(false, false);
         }
         if (widgetStatus.isMigration() || fragmentStatus.isMigration()) {
-            return new MigrationStatusReport();
+            return new ArtifactStatusReport();
         }
-        return new MigrationStatusReport(true, false);
+        return new ArtifactStatusReport(true, false);
     }
 
     protected void updatePreviousArtifactVersionIfMigrationDone(Page page, String formerArtifactVersion,

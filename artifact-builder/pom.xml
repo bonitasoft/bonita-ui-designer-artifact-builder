@@ -4,18 +4,13 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-04</version>
+    <version>1.0.0-alpha-05</version>
   </parent>
   <artifactId>ui-designer-artifact-builder</artifactId>
   <name>Bonita UI Designer Artifact Builder</name>
   <description>This module is the backend component use to build UID artifacts.</description>
-  <scm>
-    <url>https://github.com/bonitasoft/bonita-ui-designer-artifact-builder</url>
-  </scm>
   <properties>
-    <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
-    <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
-    <header.file>${project.parent.basedir}/header.txt</header.file>
+    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -31,8 +26,19 @@
   <dependencies>
     <dependency>
       <groupId>org.bonitasoft.web</groupId>
+      <artifactId>ui-designer-artifact-builder-model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.bonitasoft.web</groupId>
+      <artifactId>ui-designer-artifact-builder-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.bonitasoft.web</groupId>
+      <artifactId>ui-designer-artifact-builder-generator-angularjs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.bonitasoft.web</groupId>
       <artifactId>ui-designer-backend-migrationReport</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -60,16 +66,12 @@
       <artifactId>maven-artifact</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
@@ -98,14 +100,6 @@
       <artifactId>spring-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.github.jknack</groupId>
-      <artifactId>handlebars</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.github.jknack</groupId>
-      <artifactId>handlebars-jackson2</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
     </dependency>
@@ -118,9 +112,17 @@
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
     </dependency>
+    <!--  Test dependencies  -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.bonitasoft.web</groupId>
+      <artifactId>ui-designer-artifact-builder-model</artifactId>
+      <version>${project.version}</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -139,8 +141,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>pl.pragmatists</groupId>
-      <artifactId>JUnitParams</artifactId>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -155,18 +157,7 @@
     </dependency>
   </dependencies>
   <build>
-    <!-- filtering only properties file -->
     <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-      <resource>
-        <targetPath>templates</targetPath>
-        <directory>node_modules/widget-builder/src</directory>
-        <includes>
-          <include>widgetDirectiveTemplate.hbs.js</include>
-        </includes>
-      </resource>
       <resource>
         <targetPath>${project.build.directory}/generated-sources/</targetPath>
         <filtering>true</filtering>
@@ -175,74 +166,8 @@
           <include>**/*.java</include>
         </includes>
       </resource>
-      <resource>
-        <directory>${project.build.directory}/generated-resources</directory>
-        <includes>
-          <include>META-INF/*.json</include>
-        </includes>
-      </resource>
     </resources>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>install node and yarn</id>
-            <goals>
-              <goal>install-node-and-yarn</goal>
-            </goals>
-            <phase>initialize</phase>
-          </execution>
-          <execution>
-            <id>yarn install</id>
-            <goals>
-              <goal>yarn</goal>
-            </goals>
-            <phase>initialize</phase>
-            <configuration>
-              <arguments>install</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>yarn build</id>
-            <goals>
-              <goal>yarn</goal>
-            </goals>
-            <phase>generate-sources</phase>
-            <configuration>
-              <arguments>run build</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>list-dependencies</id>
-            <goals>
-              <goal>yarn</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <arguments>listDependencies</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>yarn test</id>
-            <goals>
-              <goal>yarn</goal>
-            </goals>
-            <phase>test</phase>
-            <configuration>
-              <arguments>test</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -250,28 +175,6 @@
           <execution>
             <goals>
               <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.jsonschema2pojo</groupId>
-        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <configuration>
-          <sourceDirectory>${project.build.directory}/widget-schema/</sourceDirectory>
-          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-          <targetPackage>org.bonitasoft.web.designer.generator.widgets</targetPackage>
-          <annotationStyle>none</annotationStyle>
-          <includeAdditionalProperties>false</includeAdditionalProperties>
-          <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-          <includeToString>false</includeToString>
-          <removeOldOutput>false</removeOldOutput>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
             </goals>
           </execution>
         </executions>

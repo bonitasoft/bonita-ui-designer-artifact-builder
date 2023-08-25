@@ -21,12 +21,12 @@ import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
 import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
 
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AssetIdMigrationStepTest {
+class AssetIdMigrationStepTest {
 
     @Test
-    public void should_migrate_artifact_assets() throws Exception {
+    void should_migrate_artifact_assets() throws Exception {
         AssetIdMigrationStep<Page> migrationStep = new AssetIdMigrationStep<>();
 
         Page page = aPage()
@@ -40,7 +40,7 @@ public class AssetIdMigrationStepTest {
     }
 
     @Test
-    public void should_not_change_an_asset_id() throws Exception {
+    void should_not_change_an_asset_id() throws Exception {
         AssetIdMigrationStep<Page> migrationStep = new AssetIdMigrationStep<>();
 
         Page page = aPage()

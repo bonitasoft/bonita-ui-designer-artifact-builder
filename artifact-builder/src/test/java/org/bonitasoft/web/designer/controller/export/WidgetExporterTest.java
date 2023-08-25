@@ -17,9 +17,11 @@
 package org.bonitasoft.web.designer.controller.export;
 
 import static java.lang.String.format;
-import static java.nio.file.Files.*;
+import static java.nio.file.Files.readString;
+import static java.nio.file.Files.write;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,40 +30,39 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.bonitasoft.web.designer.JsonHandlerFactory;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;
-import org.bonitasoft.web.designer.controller.export.steps.ExportStep;
+import org.bonitasoft.web.designer.common.export.ExportStep;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.controller.utils.Unzipper;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.JsonViewPersistence;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
 import org.bonitasoft.web.designer.service.WidgetService;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WidgetExporterTest {
-
-    @Rule
-    public TemporaryFolder repositoryFolder = new TemporaryFolder();
+@ExtendWith(MockitoExtension.class)
+class WidgetExporterTest {
 
     @Mock
     private WidgetService widgetService;
 
-    private JsonHandler jsonHandler = new JsonHandlerFactory().create();
+    private final JsonHandler jsonHandler = new JsonHandlerFactory().create();
 
     private WidgetExporter exporter;
 
     private ByteArrayOutputStream artifactStream;
 
-    @Before
-    public void setUp() throws Exception {
+    @TempDir
+    Path repositoryFolder;
+
+    @BeforeEach
+    void setUp() throws Exception {
         artifactStream = new ByteArrayOutputStream();
         exporter = new WidgetExporter(jsonHandler, widgetService, mock(ExportStep.class));
     }
@@ -71,7 +72,7 @@ public class WidgetExporterTest {
             widget.setId("default-id");
         }
         when(widgetService.get(widget.getId())).thenReturn(widget);
-        write(repositoryFolder.toPath().resolve(format("%s.json", widget.getId())),
+        write(repositoryFolder.resolve(format("%s.json", widget.getId())),
                 jsonHandler.toJson(widget, JsonViewPersistence.class));
         return widget;
     }
@@ -80,20 +81,20 @@ public class WidgetExporterTest {
         return new Unzipper().unzipInTempDir(new ByteArrayInputStream(artifactZipStream.toByteArray()), "exportertest");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throw_exception_when_id_is_null() throws Exception {
+    @Test
+    void should_throw_exception_when_id_is_null() throws Exception {
 
-        exporter.handleFileExport(null, artifactStream);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throw_exception_when_id_is_blank() throws Exception {
-
-        exporter.handleFileExport(" ", artifactStream);
+        assertThrows(IllegalArgumentException.class, () -> exporter.handleFileExport(null, artifactStream));
     }
 
     @Test
-    public void should_throw_exception_when_artefact_to_export_is_not_found() throws Exception {
+    void should_throw_exception_when_id_is_blank() throws Exception {
+
+        assertThrows(IllegalArgumentException.class, () -> exporter.handleFileExport(" ", artifactStream));
+    }
+
+    @Test
+    void should_throw_exception_when_artefact_to_export_is_not_found() throws Exception {
         NotFoundException cause = new NotFoundException("Widget not found");
         when(widgetService.get("unknown-id")).thenThrow(cause);
 
@@ -106,7 +107,7 @@ public class WidgetExporterTest {
     }
 
     @Test
-    public void should_export_template_and_controller_file_reference() throws Exception {
+    void should_export_template_and_controller_file_reference() throws Exception {
         Widget widget = create(WidgetBuilder.aWidget().withId("aWidget").custom().controller("function widgetCtrl(){}")
                 .template("<p>A widget label</p>").build());
         exporter.handleFileExport(widget.getId(), artifactStream);
@@ -117,7 +118,7 @@ public class WidgetExporterTest {
     }
 
     @Test
-    public void should_export_a_widget_without_template_and_controller() throws Exception {
+    void should_export_a_widget_without_template_and_controller() throws Exception {
         Widget widget = create(WidgetBuilder.aWidget().withId("aWidget").custom().build());
         widget.setTemplate(null);
         exporter.handleFileExport(widget.getId(), artifactStream);

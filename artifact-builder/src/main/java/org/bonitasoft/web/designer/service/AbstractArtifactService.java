@@ -16,11 +16,11 @@
  */
 package org.bonitasoft.web.designer.service;
 
+import org.bonitasoft.web.designer.common.migration.Version;
+import org.bonitasoft.web.designer.common.repository.Repository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.controller.MigrationStatusReport;
-import org.bonitasoft.web.designer.migration.Version;
+import org.bonitasoft.web.designer.model.ArtifactStatusReport;
 import org.bonitasoft.web.designer.model.Identifiable;
-import org.bonitasoft.web.designer.repository.Repository;
 
 public abstract class AbstractArtifactService<R extends Repository<T>, T extends Identifiable>
         implements ArtifactService<T> {
@@ -43,15 +43,15 @@ public abstract class AbstractArtifactService<R extends Repository<T>, T extends
         }
     }
 
-    public MigrationStatusReport getStatus(T artifact) {
+    public ArtifactStatusReport getStatus(T artifact) {
         return getArtifactStatus(artifact);
     }
 
-    private MigrationStatusReport getArtifactStatus(T artifact) {
+    private ArtifactStatusReport getArtifactStatus(T artifact) {
         // Check status of this artifact
         var artifactVersion = artifact.getArtifactVersion();
         if (artifactVersion == null) {
-            return new MigrationStatusReport(true, true);
+            return new ArtifactStatusReport(true, true);
         }
 
         var modelVersion = new Version(uiDesignerProperties.getModelVersion());
@@ -59,25 +59,24 @@ public abstract class AbstractArtifactService<R extends Repository<T>, T extends
         var migration = modelVersion.isGreaterThan(artifactVersion);
         var compatible = modelVersion.isGreaterOrEqualThan(artifactVersion);
 
-        return new MigrationStatusReport(compatible, migration);
+        return new ArtifactStatusReport(compatible, migration);
     }
 
-    public MigrationStatusReport mergeStatusReport(MigrationStatusReport artifactReport,
-            MigrationStatusReport dependenciesReport) {
+    public ArtifactStatusReport mergeStatusReport(ArtifactStatusReport artifactReport,
+            ArtifactStatusReport dependenciesReport) {
 
         var isCompatible = artifactReport.isCompatible() && dependenciesReport.isCompatible();
         var needMigration = isCompatible && (artifactReport.isMigration() || dependenciesReport.isMigration());
 
-        return new MigrationStatusReport(isCompatible, needMigration);
+        return new ArtifactStatusReport(isCompatible, needMigration);
     }
 
     /**
      * Return status of artifact without checking dependencies
      *
-     * @param artifact
-     * @return MigrationStatusReport
+     * @return ArtifactStatusReport
      */
-    public MigrationStatusReport getStatusWithoutDependencies(T artifact) {
+    public ArtifactStatusReport getStatusWithoutDependencies(T artifact) {
         return getArtifactStatus(artifact);
     }
 

@@ -25,15 +25,15 @@ import static org.mockito.Mockito.when;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StyleUpdateInputRequiredLabelMigrationStepTest {
+@ExtendWith(MockitoExtension.class)
+class StyleUpdateInputRequiredLabelMigrationStepTest {
 
     @Mock
     private AssetService<Page> pageAssetService;
@@ -41,8 +41,8 @@ public class StyleUpdateInputRequiredLabelMigrationStepTest {
     @InjectMocks
     private StyleUpdateInputRequiredLabelMigrationStep step;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         step = new StyleUpdateInputRequiredLabelMigrationStep(pageAssetService);
     }
 
@@ -51,7 +51,7 @@ public class StyleUpdateInputRequiredLabelMigrationStepTest {
     }
 
     @Test
-    public void should_migrate_style_asset_to_only_update_control_label_required_content_property() throws Exception {
+    void should_migrate_style_asset_to_only_update_control_label_required_content_property() throws Exception {
         Asset style = anAsset().withType(CSS).withName("style.css").build();
         String initContent = "/* Add a red star after required inputs */\n" +
                 ".control-label--required:after {\n" +

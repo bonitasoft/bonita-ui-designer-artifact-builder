@@ -30,6 +30,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaBusinessDataResourcePredicate;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaResourceTransformer;
 import org.bonitasoft.web.designer.controller.export.properties.BonitaVariableResourcePredicate;
@@ -47,8 +49,6 @@ import org.bonitasoft.web.designer.model.page.TabContainer;
 import org.bonitasoft.web.designer.model.page.TabsContainer;
 import org.bonitasoft.web.designer.model.page.WebResource;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
 
 import lombok.RequiredArgsConstructor;
 

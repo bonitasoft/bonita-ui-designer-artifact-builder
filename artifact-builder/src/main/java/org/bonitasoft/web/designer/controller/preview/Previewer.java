@@ -16,9 +16,9 @@
  */
 package org.bonitasoft.web.designer.controller.preview;
 
+import org.bonitasoft.web.angularjs.rendering.DefaultHtmlGenerator;
 import org.bonitasoft.web.designer.model.Identifiable;
 import org.bonitasoft.web.designer.model.page.Previewable;
-import org.bonitasoft.web.designer.rendering.HtmlGenerator;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Previewer {
 
-    private final HtmlGenerator generator;
+    private final DefaultHtmlGenerator generator;
 
     /**
      * Build a preview for a previewable

@@ -17,6 +17,7 @@
 package org.bonitasoft.web.designer.workspace;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -25,58 +26,72 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.bonitasoft.web.designer.JsonHandlerFactory;
+import org.bonitasoft.web.angularjs.GeneratorProperties;
+import org.bonitasoft.web.angularjs.workspace.FragmentDirectiveBuilder;
+import org.bonitasoft.web.angularjs.workspace.WidgetDirectiveBuilder;
+import org.bonitasoft.web.designer.common.GeneratorStrategy;
+import org.bonitasoft.web.designer.common.repository.PageRepository;
+import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
 import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
 import org.bonitasoft.web.designer.model.JsonHandler;
+import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.repository.PageRepository;
-import org.bonitasoft.web.designer.repository.WidgetRepository;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WorkspaceInitializerTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class WorkspaceInitializerTest {
 
-    private String extractPath;
+    private Path extractPath;
 
-    @Rule
-    public TemporaryFolder temporaryExtractFolder = new TemporaryFolder();
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @TempDir
+    public Path temporaryFolder;
 
     @Mock
     private LiveRepositoryUpdate<Page> pageRepositoryLiveUpdate;
 
     @Mock
     private LiveRepositoryUpdate<Widget> widgetRepositoryLiveUpdate;
+    @Mock
+    WidgetRepository widgetRepository;
 
     private Workspace workspace;
 
-    @Before
-    public void setUp() throws IOException {
+    @Mock
+    private GeneratorStrategy generatorStrategy;
 
-        extractPath = temporaryExtractFolder.toPath().toString();
+    @Mock
+    private GeneratorProperties generatorProperties;
+
+    @BeforeEach
+    void setUp() throws IOException {
+
+        extractPath = Files.createDirectory(temporaryFolder.resolve("extract"));
 
         UiDesignerProperties uiDesignerProperties = newUiDesignerProperties();
 
-        WidgetRepository widgetRepository = mock(WidgetRepository.class);
         when(widgetRepository.resolvePath(anyString())).thenAnswer(invocation -> {
             String id = invocation.getArgument(0);
             return uiDesignerProperties.getWorkspace().getWidgets().getDir().resolve(id);
         });
+
+        when(generatorStrategy.getGeneratorProperties()).thenReturn(generatorProperties);
+        when(generatorStrategy.widgetFileBuilder()).thenReturn(mock(WidgetDirectiveBuilder.class));
+        when(generatorStrategy.fragmentDirectiveBuilder()).thenReturn(mock(FragmentDirectiveBuilder.class));
+        when(generatorProperties.getExtractPath()).thenReturn(extractPath);
         PageRepository pageRepository = mock(PageRepository.class);
-        WidgetDirectiveBuilder widgetDirectiveBuilder = mock(WidgetDirectiveBuilder.class);
-        FragmentDirectiveBuilder fragmentDirectiveBuilder = mock(FragmentDirectiveBuilder.class);
         AssetDependencyImporter<Widget> widgetAssetDependencyImporter = mock(AssetDependencyImporter.class);
 
         ResourcesCopier resourcesCopier = new ResourcesCopier();
@@ -87,8 +102,7 @@ public class WorkspaceInitializerTest {
                 uiDesignerProperties,
                 widgetRepository,
                 pageRepository,
-                widgetDirectiveBuilder,
-                fragmentDirectiveBuilder,
+                generatorStrategy,
                 widgetAssetDependencyImporter,
                 resourcesCopier,
                 migrations,
@@ -101,25 +115,20 @@ public class WorkspaceInitializerTest {
         uiDesignerProperties.setModelVersion("2.0");
 
         WorkspaceProperties workspaceProperties = uiDesignerProperties.getWorkspace();
-        final Path fakeProjectFolder = temporaryFolder.toPath();
+        final Path fakeProjectFolder = temporaryFolder;
         workspaceProperties.setPath(fakeProjectFolder);
-        workspaceProperties.getPages().setDir(temporaryFolder.newFolderPath("pages"));
-        workspaceProperties.getWidgets().setDir(temporaryFolder.newFolderPath("widgets"));
-        workspaceProperties.getFragments().setDir(temporaryFolder.newFolderPath("fragments"));
+        workspaceProperties.getPages().setDir(Files.createDirectory(temporaryFolder.resolve("pages")));
+        workspaceProperties.getWidgets().setDir(Files.createDirectory(temporaryFolder.resolve("widgets")));
+        workspaceProperties.getFragments().setDir(Files.createDirectory(temporaryFolder.resolve("fragments")));
 
         WorkspaceUidProperties workspaceUidProperties = uiDesignerProperties.getWorkspaceUid();
-        final Path extractDirPath = Path.of(extractPath);
-        if (!Files.exists(extractDirPath)) {
-            Files.createDirectory(extractDirPath);
-        }
-        workspaceUidProperties.setExtractPath(extractDirPath);
-        //        workspaceUidProperties.setExtractPath(Paths.get(extractPath));
+        workspaceUidProperties.setExtractPath(extractPath);
 
         return uiDesignerProperties;
     }
 
     @Test
-    public void should_initialize_workspace() throws Exception {
+    void should_initialize_workspace() throws Exception {
         // When
         workspace.initialize();
         // Then
@@ -129,7 +138,7 @@ public class WorkspaceInitializerTest {
     }
 
     @Test
-    public void should_start_page_live_migration() throws Exception {
+    void should_start_page_live_migration() throws Exception {
         // When
         workspace.initialize();
         // Then
@@ -137,18 +146,18 @@ public class WorkspaceInitializerTest {
     }
 
     @Test
-    public void should_start_widget_live_migration() throws Exception {
+    void should_start_widget_live_migration() throws Exception {
         // When
         workspace.initialize();
         // Then
         verify(widgetRepositoryLiveUpdate).start();
     }
 
-    @Test(expected = RuntimeException.class)
-    public void should_throw_runtimeException_if_error_occurs_while_initializing_workspace() throws Exception {
+    @Test
+    void should_throw_runtimeException_if_error_occurs_while_initializing_workspace() throws Exception {
         doThrow(new IOException()).when(workspace).doInitialize();
         // When
-        workspace.initialize();
+        assertThrows(RuntimeException.class, () -> workspace.initialize());
         // Then
     }
 }

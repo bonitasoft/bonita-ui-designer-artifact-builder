@@ -18,8 +18,8 @@ package org.bonitasoft.web.designer.i18n;
 
 import java.io.IOException;
 
+import org.bonitasoft.web.designer.common.IGeneratorProperties;
 import org.bonitasoft.web.designer.config.DesignerInitializerException;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.workspace.ResourcesCopier;
 
 import lombok.RequiredArgsConstructor;
@@ -36,11 +36,11 @@ public class I18nInitializer {
 
     private final LanguagePackBuilder languagePackBuilder;
     private final ResourcesCopier resourcesCopier;
-    private final WorkspaceUidProperties workspaceUidProperties;
+    private final IGeneratorProperties generatorProperties;
 
     public void initialize() {
         try {
-            var extractPath = workspaceUidProperties.getExtractPath();
+            var extractPath = generatorProperties.getExtractPath();
             resourcesCopier.copy(extractPath, I18N_RESOURCES);
             languagePackBuilder.start(extractPath.resolve(I18N_RESOURCES));
         } catch (IOException e) {

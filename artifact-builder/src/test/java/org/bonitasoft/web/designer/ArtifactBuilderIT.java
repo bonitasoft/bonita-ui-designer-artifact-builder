@@ -36,27 +36,26 @@ import org.bonitasoft.web.designer.config.UiDesignerPropertiesBuilder;
 import org.bonitasoft.web.designer.controller.importer.report.ImportReport;
 import org.bonitasoft.web.designer.controller.utils.Unzipper;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.bonitasoft.web.designer.utils.rule.TemporaryFolder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-public class ArtifactBuilderIT {
+class ArtifactBuilderIT {
 
     private UiDesignerProperties properties;
     private ArtifactBuilder artifactBuilder;
 
     private Unzipper unziper;
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir
+    public Path tempFolder;
 
     public ArtifactBuilderIT() throws IOException {
         unziper = new Unzipper();
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         properties = new UiDesignerPropertiesBuilder()
                 .workspacePath(Path.of("./target/ArtifactBuilderIT/project"))
                 .workspaceUidPath(Path.of("./target/ArtifactBuilderIT/uid"))
@@ -74,10 +73,10 @@ public class ArtifactBuilderIT {
     }
 
     @Test
-    public void should_import_cutom_widget_without_prefix() throws Exception {
+    void should_import_custom_widget_without_prefix() throws Exception {
 
         // Given
-        Path timelineWidgetToImportPath = tempFolder.newFolderPath("timelineWidget");
+        Path timelineWidgetToImportPath = Files.createDirectory(tempFolder.resolve("timelineWidget"));
         FileUtils.copyDirectory(Path.of("src/test/resources/import/timelineWidget").toFile(),
                 timelineWidgetToImportPath.toFile());
 
@@ -113,7 +112,7 @@ public class ArtifactBuilderIT {
     }
 
     @Test
-    public void should_export_page() throws Exception {
+    void should_export_page() throws Exception {
 
         // Given
         var pageId = "ma-page";
@@ -134,7 +133,7 @@ public class ArtifactBuilderIT {
     }
 
     @Test
-    public void should_export_fragment() throws Exception {
+    void should_export_fragment() throws Exception {
 
         // Given
         var fragmentPerson = "person";
@@ -153,7 +152,7 @@ public class ArtifactBuilderIT {
     }
 
     @Test
-    public void should_index_pages() throws Exception {
+    void should_index_pages() throws Exception {
         // Given
         createPage("ma-page");
 
@@ -167,7 +166,7 @@ public class ArtifactBuilderIT {
     }
 
     @Test
-    public void should_watch_pages() throws Exception {
+    void should_watch_pages() throws Exception {
         // Given
         var pageId = "ma-page";
         var target = properties.getWorkspace().getPages().getDir().resolve(pageId);

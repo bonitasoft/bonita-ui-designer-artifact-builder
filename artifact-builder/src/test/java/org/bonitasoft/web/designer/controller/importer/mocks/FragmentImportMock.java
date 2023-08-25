@@ -26,18 +26,18 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bonitasoft.web.designer.common.repository.FragmentRepository;
+import org.bonitasoft.web.designer.common.repository.JsonFileBasedLoader;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.repository.FragmentRepository;
-import org.bonitasoft.web.designer.repository.JsonFileBasedLoader;
 
-public class FragmentImportMock {
+class FragmentImportMock {
 
     private static final String FRAGMENTS_FOLDER = "fragments";
 
-    private FragmentRepository fragmentRepository;
-    private JsonFileBasedLoader<Fragment> fragmentLoader;
-    private Path unzippedPath;
-    private List<Fragment> fragments = new ArrayList<>();
+    private final FragmentRepository fragmentRepository;
+    private final JsonFileBasedLoader<Fragment> fragmentLoader;
+    private final Path unzippedPath;
+    private final List<Fragment> fragments = new ArrayList<>();
 
     public FragmentImportMock(Path unzippedPath, FragmentRepository fragmentRepository,
             JsonFileBasedLoader<Fragment> fragmentLoader) throws IOException {

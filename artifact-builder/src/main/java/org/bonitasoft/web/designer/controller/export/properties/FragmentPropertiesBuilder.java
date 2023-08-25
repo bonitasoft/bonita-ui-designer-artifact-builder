@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
-import org.bonitasoft.web.designer.rendering.GenerationException;
 
 public class FragmentPropertiesBuilder {
 

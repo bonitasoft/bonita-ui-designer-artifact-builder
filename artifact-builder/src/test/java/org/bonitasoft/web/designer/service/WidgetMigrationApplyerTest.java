@@ -16,6 +16,7 @@
  */
 package org.bonitasoft.web.designer.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,16 +30,15 @@ import org.bonitasoft.web.designer.model.migrationReport.MigrationResult;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStatus;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.widget.Widget;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WidgetMigrationApplyerTest {
+@ExtendWith(MockitoExtension.class)
+class WidgetMigrationApplyerTest {
 
     @Test
-    public void should_migrate_a_widget() throws Exception {
+    void should_migrate_a_widget() throws Exception {
         MigrationStep mockMigrationStep = mock(MigrationStep.class);
         Optional<MigrationStepReport> stepReport = Optional
                 .of(new MigrationStepReport(MigrationStatus.SUCCESS, "customWidget"));
@@ -51,12 +51,12 @@ public class WidgetMigrationApplyerTest {
 
         widgetMigrationApplyer.migrate(widget);
 
-        Assert.assertEquals(widget.getPreviousArtifactVersion(), "1.0.1");
-        Assert.assertEquals(widget.getArtifactVersion(), "2.0");
+        assertEquals("1.0.1", widget.getPreviousArtifactVersion());
+        assertEquals("2.0", widget.getArtifactVersion());
     }
 
     @Test
-    public void should_migrate_a_widget_with_new_model_version() throws Exception {
+    void should_migrate_a_widget_with_new_model_version() throws Exception {
         MigrationStep mockMigrationStep = mock(MigrationStep.class);
         Optional<MigrationStepReport> stepReport = Optional
                 .of(new MigrationStepReport(MigrationStatus.SUCCESS, "customWidget"));
@@ -69,12 +69,12 @@ public class WidgetMigrationApplyerTest {
 
         widgetMigrationApplyer.migrate(widget);
 
-        Assert.assertEquals(widget.getPreviousArtifactVersion(), "2.0");
-        Assert.assertEquals(widget.getArtifactVersion(), "2.1");
+        assertEquals("2.0", widget.getPreviousArtifactVersion());
+        assertEquals("2.1", widget.getArtifactVersion());
     }
 
     @Test
-    public void should_migrate_a_widget_with_no_previous_version() throws Exception {
+    void should_migrate_a_widget_with_no_previous_version() throws Exception {
         MigrationStep mockMigrationStep = mock(MigrationStep.class);
         Optional<MigrationStepReport> stepReport = Optional
                 .of(new MigrationStepReport(MigrationStatus.SUCCESS, "customWidget"));
@@ -86,12 +86,12 @@ public class WidgetMigrationApplyerTest {
 
         widgetMigrationApplyer.migrate(widget);
 
-        Assert.assertEquals(widget.getPreviousArtifactVersion(), "1.0.1");
-        Assert.assertEquals(widget.getArtifactVersion(), "2.0");
+        assertEquals("1.0.1", widget.getPreviousArtifactVersion());
+        assertEquals("2.0", widget.getArtifactVersion());
     }
 
     @Test
-    public void should_not_modify_previous_model_version_when_no_migration_done_on_widget() {
+    void should_not_modify_previous_model_version_when_no_migration_done_on_widget() {
         Migration<Widget> migrations = new Migration("2.0", mock(MigrationStep.class));
         WidgetMigrationApplyer widgetMigrationApplyer = new WidgetMigrationApplyer(
                 Collections.singletonList(migrations));
@@ -100,12 +100,12 @@ public class WidgetMigrationApplyerTest {
 
         widgetMigrationApplyer.migrate(widget);
 
-        Assert.assertEquals(widget.getPreviousArtifactVersion(), "2.0");
-        Assert.assertEquals(widget.getArtifactVersion(), "2.0");
+        assertEquals("2.0", widget.getPreviousArtifactVersion());
+        assertEquals("2.0", widget.getArtifactVersion());
     }
 
     @Test
-    public void should_return_an_report_with_error_when_error_occurs_during_widget_migration() throws Exception {
+    void should_return_an_report_with_error_when_error_occurs_during_widget_migration() throws Exception {
         MigrationStep mockMigrationStep = mock(MigrationStep.class);
         Migration<Widget> migrations = new Migration("2.1", mockMigrationStep);
         WidgetMigrationApplyer widgetMigrationApplyer = new WidgetMigrationApplyer(
@@ -117,11 +117,11 @@ public class WidgetMigrationApplyerTest {
         MigrationResult result = widgetMigrationApplyer.migrate(widget);
 
         Widget migratedWidget = (Widget) result.getArtifact();
-        Assert.assertEquals(migratedWidget.getPreviousArtifactVersion(), "2.0");
-        Assert.assertEquals(migratedWidget.getArtifactVersion(), "2.1");
+        assertEquals("2.0", migratedWidget.getPreviousArtifactVersion());
+        assertEquals("2.1", migratedWidget.getArtifactVersion());
         MigrationStepReport report = (MigrationStepReport) result.getMigrationStepReportList().get(0);
-        Assert.assertEquals(report.getMigrationStatus(), MigrationStatus.ERROR);
-        Assert.assertEquals(report.getArtifactId(), "customWidget");
+        assertEquals(MigrationStatus.ERROR, report.getMigrationStatus());
+        assertEquals("customWidget", report.getArtifactId());
     }
 
 }

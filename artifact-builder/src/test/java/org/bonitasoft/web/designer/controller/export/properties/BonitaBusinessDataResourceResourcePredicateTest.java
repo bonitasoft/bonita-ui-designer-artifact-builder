@@ -21,34 +21,34 @@ import static org.bonitasoft.web.designer.model.data.DataType.BUSINESSDATA;
 import static org.bonitasoft.web.designer.model.data.DataType.URL;
 
 import org.bonitasoft.web.designer.model.data.Variable;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class BonitaBusinessDataResourceResourcePredicateTest {
+class BonitaBusinessDataResourceResourcePredicateTest {
 
     private Variable variable;
     private BonitaBusinessDataResourcePredicate predicate;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         variable = new Variable(BUSINESSDATA, "");
         predicate = new BonitaBusinessDataResourcePredicate();
     }
 
     @Test
-    public void should_return_true_when_variable_is_a_businessData() throws Exception {
+    void should_return_true_when_variable_is_a_businessData() throws Exception {
         assertThat(predicate.test(variable)).isTrue();
     }
 
     @Test
-    public void should_return_false_when_variable_is_not_a_businessData() throws Exception {
+    void should_return_false_when_variable_is_not_a_businessData() throws Exception {
         variable.setType(URL);
 
         assertThat(predicate.test(variable)).isFalse();
     }
 
     @Test
-    public void should_return_false_when_variable_value_is_empty() throws Exception {
+    void should_return_false_when_variable_value_is_empty() throws Exception {
         variable.setValue(null);
         assertThat(predicate.test(variable)).isFalse();
     }

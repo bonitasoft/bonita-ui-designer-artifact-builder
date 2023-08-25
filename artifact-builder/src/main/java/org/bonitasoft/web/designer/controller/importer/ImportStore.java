@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bonitasoft.web.designer.repository.exception.NotFoundException;
+import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;
 
 public class ImportStore {
 
