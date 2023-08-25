@@ -2980,14 +2980,14 @@ gulp-cli@^2.2.0:
     v8flags "^3.2.0"
     yargs "^7.1.0"
 
-gulp-concat@~2.4.2:
-  version "2.4.3"
-  resolved "https://registry.npmjs.org/gulp-concat/-/gulp-concat-2.4.3.tgz#dd913c3773b02f9dfb3f70e30215dc07a5cf32f7"
-  integrity sha1-3ZE8N3OwL537P3DjAhXcB6XPMvc=
+gulp-concat@~2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/gulp-concat/-/gulp-concat-2.6.1.tgz#633d16c95d88504628ad02665663cee5a4793353"
+  integrity sha512-a2scActrQrDBpBbR3WUZGyGS1JEPLg5PZJdIa7/Bi3GuKAmPYDK6SFhy/NZq5R8KsKKFvtfR0fakbUCcKGCCjg==
   dependencies:
     concat-with-sourcemaps "^1.0.0"
-    gulp-util "^3.0.1"
-    through "^2.3.4"
+    through2 "^2.0.0"
+    vinyl "^2.0.0"
 
 gulp-eslint@^6.0.0:
   version "6.0.0"
@@ -3124,7 +3124,7 @@ gulp-uglify-es@^2.0.0:
     vinyl "^2.2.0"
     vinyl-sourcemaps-apply "^0.2.1"
 
-gulp-util@^3.0.0, gulp-util@^3.0.1, gulp-util@^3.0.7, gulp-util@~3, gulp-util@~3.0.1:
+gulp-util@^3.0.0, gulp-util@^3.0.7, gulp-util@~3, gulp-util@~3.0.1:
   version "3.0.8"
   resolved "https://registry.npmjs.org/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
   integrity sha1-AFTh50RQLifATBh8PsxQXdVLu08=
@@ -6227,7 +6227,7 @@ through2@^0.6.1, through2@^0.6.5, through2@~0.6, through2@~0.6.2, through2@~0.6.
     readable-stream ">=1.0.33-1 <1.1.0-0"
     xtend ">=4.0.0 <4.1.0-0"
 
-through@2, through@^2.3.4, through@^2.3.6, through@~2.3, through@~2.3.1, through@~2.3.4:
+through@2, through@^2.3.6, through@~2.3, through@~2.3.1, through@~2.3.4:
   version "2.3.8"
   resolved "https://registry.npmjs.org/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
