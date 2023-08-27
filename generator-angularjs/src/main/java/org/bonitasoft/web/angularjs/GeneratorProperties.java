@@ -29,17 +29,15 @@ import lombok.Setter;
 public class GeneratorProperties implements IGeneratorProperties {
 
     public static final String EXTRACT_BACKEND_RESOURCES = "META-INF/resources";
+    public static final String I18N_RESOURCE = "i18n";
     private final Path path;
 
     @Getter
     @Setter
     private boolean isLiveBuildEnabled = true;
 
-    private final String i18NResourcesName;
-
-    public GeneratorProperties(String workspaceName, String i18nResourcesName) {
-        this.i18NResourcesName = i18nResourcesName;
-        this.path = Path.of(System.getProperty("java.io.tmpdir")).resolve(workspaceName);
+    public GeneratorProperties(Path uidWorkspace) {
+        this.path = uidWorkspace;
     }
 
     public static final String FRAGMENTS = "fragments";
@@ -57,7 +55,7 @@ public class GeneratorProperties implements IGeneratorProperties {
     }
 
     public Path getTmpI18nPath() throws IOException {
-        return createDirectories(getPath().resolve(this.i18NResourcesName));
+        return createDirectories(getPath().resolve(I18N_RESOURCE));
     }
 
     @Override

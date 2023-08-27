@@ -39,8 +39,6 @@ public class WorkspaceUidProperties {
 
     private Path path = Path.of(System.getProperty("java.io.tmpdir")).resolve("workspace-uid");
 
-    private Path extractPath = getPath().resolve("extract");
-
     public Path getTmpFragmentsRepositoryPath() {
         return getPath().resolve(FRAGMENTS);
     }
@@ -55,6 +53,10 @@ public class WorkspaceUidProperties {
 
     public Path getExportBackendResourcesPath() {
         return getExtractPath().resolve(EXTRACT_BACKEND_RESOURCES).resolve("runtime");
+    }
+
+    public Path getExtractPath() {
+        return path.resolve("extract");
     }
 
     public Path getTemplateResourcesPath() {

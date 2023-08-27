@@ -34,7 +34,6 @@ import org.bonitasoft.web.designer.ArtifactBuilder;
 import org.bonitasoft.web.designer.ArtifactBuilderFactory;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,6 +48,9 @@ class WorkspaceTest {
     @TempDir
     public Path temporaryFolder;
 
+    @TempDir
+    public Path uiWorkspaceTmp;
+
     private Workspace workspace;
 
     private UiDesignerProperties uiDesignerProperties;
@@ -57,32 +59,29 @@ class WorkspaceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-
         uiDesignerProperties = new UiDesignerProperties();
         uiDesignerProperties.setModelVersion(CURRENT_MODEL_VERSION);
 
         workspaceProperties = uiDesignerProperties.getWorkspace();
+        workspaceProperties.setPath(uiWorkspaceTmp);
         workspaceProperties.getPages().setDir(createDirectory(temporaryFolder.resolve("pages")));
         workspaceProperties.getWidgets().setDir(createDirectory(temporaryFolder.resolve("widgets")));
         workspaceProperties.getFragments().setDir(createDirectory(temporaryFolder.resolve("fragments")));
-
-        WorkspaceUidProperties workspaceUidProperties = uiDesignerProperties.getWorkspaceUid();
-        workspaceUidProperties.setExtractPath(createDirectory(temporaryFolder.resolve("tmpExtract")));
 
         ArtifactBuilder artifactBuilder = new ArtifactBuilderFactory(uiDesignerProperties).create();
 
         workspace = spy(artifactBuilder.getWorkspace());
         workspace.initialized.set(false);
-
     }
 
     private void createWidget(String id, String content) throws IOException {
         final Path widgetPath = temporaryFolder.resolve("widgets/" + id);
         if (Files.exists(widgetPath)) {
-            Files.walk(widgetPath)
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+            try (var files = Files.walk(widgetPath)) {
+                files.sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            }
         }
         Path widgetFolder = createDirectories(temporaryFolder.resolve("widgets").resolve(id));
         Path widgetJson = createFile(widgetFolder.resolve(id + ".json"));

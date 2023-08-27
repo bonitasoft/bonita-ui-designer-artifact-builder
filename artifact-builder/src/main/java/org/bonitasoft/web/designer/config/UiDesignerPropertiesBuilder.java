@@ -62,7 +62,6 @@ public class UiDesignerPropertiesBuilder {
 
     public UiDesignerPropertiesBuilder workspaceUidPath(Path path) {
         this.workspaceUid.setPath(path);
-        this.workspaceUid.setExtractPath(this.workspaceUid.getPath().resolve("extract"));
         return this;
     }
 
