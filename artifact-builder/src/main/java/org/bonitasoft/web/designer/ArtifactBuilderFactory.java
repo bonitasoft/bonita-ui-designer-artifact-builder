@@ -101,7 +101,9 @@ public class ArtifactBuilderFactory {
                 core.getWidgetAssetRepository(),
                 core.getPageAssetRepository(),
                 core.getFragmentRepository(),
-                uiDesignerProperties.getWorkspace().getWidgets().getDir());
+                uiDesignerProperties.getWorkspace().getWidgets().getDir(),
+                uiDesignerProperties.getWorkspaceUid().getPath(),
+                uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
         /**
          * END Specific generation
          */

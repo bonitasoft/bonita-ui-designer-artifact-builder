@@ -61,8 +61,6 @@ class WorkspaceMigrationTest {
         uiDesignerProperties.setVersion("1.13.0-SNAPSHOT");
         uiDesignerProperties.setEdition("Community");
         uiDesignerProperties.getWorkspaceUid().setPath(tempdir);
-        Path extract = Files.createDirectories(tempdir.resolve("extract"));
-        uiDesignerProperties.getWorkspaceUid().setExtractPath(extract);
 
         Path assetCss = Files.createDirectories(
                 uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve("angularjs/templates/page/assets/css"));
