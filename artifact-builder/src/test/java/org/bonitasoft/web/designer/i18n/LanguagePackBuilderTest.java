@@ -63,7 +63,7 @@ class LanguagePackBuilderTest {
     }
 
     private void newLanguagePackBuilder(boolean liveBuildEnabled) {
-        generatorProperties = new GeneratorProperties(this.tempDir.toString(), "i18n");
+        generatorProperties = new GeneratorProperties(this.tempDir);
         generatorProperties.setLiveBuildEnabled(liveBuildEnabled);
         builder = new LanguagePackBuilder(watcher, new LanguagePackFactory(
                 new JacksonJsonHandler(new ObjectMapper())), generatorProperties);

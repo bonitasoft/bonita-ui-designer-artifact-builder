@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.bonitasoft.web</groupId>
   <artifactId>ui-designer-artifact-builder-parent</artifactId>
-  <version>1.0.0-alpha-05</version>
+  <version>1.0.0-alpha-06</version>
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Aggregator</name>
   <description>This module is the aggregator module</description>
@@ -83,7 +83,7 @@
     <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
     <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
     <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
-    <spotless-maven-plugin.version>2.38.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.39.0</spotless-maven-plugin.version>
     <mockito-junit-jupiter.version>5.3.1</mockito-junit-jupiter.version>
     <mockito-core-plugin.version>5.3.1</mockito-core-plugin.version>
     <!-- Spotless resources location -->
@@ -447,6 +447,12 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>offline</id>
+      <properties>
+        <spotless.check.skip>true</spotless.check.skip>
+      </properties>
     </profile>
   </profiles>
 </project>
