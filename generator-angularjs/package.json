@@ -45,7 +45,7 @@
     "gulp-shell": "~0.2.10",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-strip-comments": "^2.6.0",
-    "gulp-uglify-es": "^2.0.0",
+    "gulp-uglify-es": "^3.0.0",
     "handlebars": "^4.7.7",
     "jasmine-core": "^5.1.1",
     "karma": "^5.2.3",
