@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.bonitasoft.web.angularjs.AngularJsGeneratorStrategy;
+import org.bonitasoft.web.angularjs.GeneratorProperties;
 import org.bonitasoft.web.angularjs.export.WidgetsExportStep;
 import org.bonitasoft.web.angularjs.rendering.DirectiveFileGenerator;
 import org.bonitasoft.web.designer.common.export.ExportStep;
@@ -62,13 +63,17 @@ import lombok.RequiredArgsConstructor;
 public class ArtifactBuilderFactory {
 
     private final UiDesignerProperties uiDesignerProperties;
+    private final GeneratorProperties generatorProperties;
     private final JsonHandler jsonHandler;
     private final UiDesignerCore core;
 
     public ArtifactBuilderFactory(UiDesignerProperties uiDesignerProperties) {
         this.uiDesignerProperties = uiDesignerProperties;
         this.jsonHandler = new JsonHandlerFactory().create();
-        this.core = new UiDesignerCoreFactory(this.uiDesignerProperties, this.jsonHandler).create();
+        this.generatorProperties = new GeneratorProperties(uiDesignerProperties.getWorkspaceUid().getPath());
+        generatorProperties.setLiveBuildEnabled(uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
+        this.core = new UiDesignerCoreFactory(this.uiDesignerProperties, this.generatorProperties,
+                this.jsonHandler).create();
     }
 
     /**
@@ -77,7 +82,6 @@ public class ArtifactBuilderFactory {
      * @return
      */
     public ArtifactBuilder create() {
-
         var fragmentIdVisitor = new FragmentIdVisitor(core.getFragmentRepository());
         var widgetIdVisitor = new WidgetIdVisitor(core.getFragmentRepository());
 
@@ -102,8 +106,8 @@ public class ArtifactBuilderFactory {
                 core.getPageAssetRepository(),
                 core.getFragmentRepository(),
                 uiDesignerProperties.getWorkspace().getWidgets().getDir(),
-                uiDesignerProperties.getWorkspaceUid().getPath(),
-                uiDesignerProperties.getWorkspaceUid().isLiveBuildEnabled());
+                generatorProperties);
+
         /**
          * END Specific generation
          */

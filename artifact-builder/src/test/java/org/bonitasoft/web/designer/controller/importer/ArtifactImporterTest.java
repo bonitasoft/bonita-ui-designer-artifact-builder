@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bonitasoft.web.angularjs.GeneratorProperties;
 import org.bonitasoft.web.designer.ArtifactBuilder;
 import org.bonitasoft.web.designer.ArtifactBuilderFactory;
 import org.bonitasoft.web.designer.UiDesignerCore;
@@ -113,7 +114,8 @@ class ArtifactImporterTest {
             return tempDir.resolve(WIDGETS_FOLDER).resolve(widgetId);
         });
 
-        UiDesignerCore core = new UiDesignerCoreFactory(uiDesignerProperties, jsonHandler).create(
+        var generatorProperties = new GeneratorProperties(tempDir);
+        UiDesignerCore core = new UiDesignerCoreFactory(uiDesignerProperties, generatorProperties, jsonHandler).create(
                 mock(Watcher.class),
                 widgetRepository,
                 mock(AssetRepository.class),
@@ -121,7 +123,8 @@ class ArtifactImporterTest {
                 pageRepository,
                 mock(AssetRepository.class));
 
-        artifactBuilder = new ArtifactBuilderFactory(uiDesignerProperties, jsonHandler, core).create();
+        artifactBuilder = new ArtifactBuilderFactory(uiDesignerProperties, generatorProperties, jsonHandler, core)
+                .create();
 
         pageUnzippedPath = pageImportPath.resolve("resources");
         Files.createDirectory(pageUnzippedPath);

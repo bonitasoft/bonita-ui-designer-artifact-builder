@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.io.FileUtils;
+import org.bonitasoft.web.angularjs.GeneratorProperties;
 import org.bonitasoft.web.angularjs.rendering.WidgetFileHelper;
 import org.bonitasoft.web.designer.ArtifactBuilderException;
 import org.bonitasoft.web.designer.common.GeneratorStrategy;
@@ -38,7 +39,6 @@ import org.bonitasoft.web.designer.common.repository.WidgetFileBasedLoader;
 import org.bonitasoft.web.designer.common.repository.WidgetRepository;
 import org.bonitasoft.web.designer.config.DesignerInitializerException;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.controller.importer.dependencies.AssetDependencyImporter;
 import org.bonitasoft.web.designer.migration.LiveRepositoryUpdate;
 import org.bonitasoft.web.designer.model.JsonHandler;
@@ -218,11 +218,11 @@ public class Workspace {
     }
 
     private void ensureTemplateRepositoryPresent() throws IOException {
-        createDirectories(extractPath.resolve(WorkspaceUidProperties.TEMPLATES_RESOURCES));
+        createDirectories(extractPath.resolve(GeneratorProperties.TEMPLATES_RESOURCES));
     }
 
     private void ensureTemplateRepositoryFilled() throws IOException {
-        resourcesCopier.copy(extractPath, WorkspaceUidProperties.TEMPLATES_RESOURCES);
+        resourcesCopier.copy(extractPath, GeneratorProperties.TEMPLATES_RESOURCES);
     }
 
     private void ensurePageRepositoryPresent() throws IOException {

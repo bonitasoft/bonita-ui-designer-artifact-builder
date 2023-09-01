@@ -17,6 +17,7 @@
 package org.bonitasoft.web.designer.migration;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +48,7 @@ public class StyleUpdateInputTypeMigrationStep extends AbstractMigrationStep<Pag
                 Matcher matcher = pattern.matcher(newContent);
                 if (matcher.find()) {
                     String updatedStyleContent = newContent.replaceAll(REGEX_SELECTOR, replacement);
-                    pageAssetService.save(page, asset, updatedStyleContent.getBytes());
+                    pageAssetService.save(page, asset, updatedStyleContent.getBytes(StandardCharsets.UTF_8));
                     logger.info("[MIGRATION] Update input style in asset [{}] for {} [{}]",
                             asset.getName(), page.getType(), page.getName());
                 }
