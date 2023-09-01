@@ -23,6 +23,7 @@ import java.util.List;
 import javax.validation.Validation;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.bonitasoft.web.angularjs.GeneratorProperties;
 import org.bonitasoft.web.designer.common.livebuild.ObserverFactory;
 import org.bonitasoft.web.designer.common.livebuild.Watcher;
 import org.bonitasoft.web.designer.common.repository.*;
@@ -52,9 +53,12 @@ public class UiDesignerCoreFactory {
     private final UiDesignerProperties uiDesignerProperties;
     private final JsonHandler jsonHandler;
     private final BeanValidator beanValidator;
+    private GeneratorProperties generatorProperties;
 
-    public UiDesignerCoreFactory(UiDesignerProperties uiDesignerProperties, JsonHandler jsonHandler) {
+    public UiDesignerCoreFactory(UiDesignerProperties uiDesignerProperties, GeneratorProperties generatorProperties,
+            JsonHandler jsonHandler) {
         this.uiDesignerProperties = uiDesignerProperties;
+        this.generatorProperties = generatorProperties;
         this.jsonHandler = jsonHandler;
         this.beanValidator = new BeanValidator(Validation.buildDefaultValidatorFactory().getValidator());
     }
@@ -133,7 +137,7 @@ public class UiDesignerCoreFactory {
                 new Migration<>("1.2.9", new AssetExternalMigrationStep<>()),
                 new Migration<>("1.5.7",
                         new StyleAssetMigrationStep(
-                                uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve("angularjs"),
+                                generatorProperties.getExtractPath(),
                                 pageAssetService)),
                 new Migration<>("1.5.10",
                         new UIBootstrapAssetMigrationStep(pageAssetService, componentVisitor, widgetRepository)),
@@ -290,7 +294,7 @@ public class UiDesignerCoreFactory {
     public PageRepository createPageRepository(Watcher watcher) {
         return new PageRepository(
                 uiDesignerProperties.getWorkspace().getPages().getDir(),
-                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                generatorProperties.getTemplateResourcesPath(),
                 new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
                         this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Page.class),
@@ -306,7 +310,7 @@ public class UiDesignerCoreFactory {
     public FragmentRepository createFragmentRepository(Watcher watcher) {
         return new FragmentRepository(
                 uiDesignerProperties.getWorkspace().getFragments().getDir(),
-                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                generatorProperties.getTemplateResourcesPath(),
                 new JsonFileBasedPersister<>(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
                         this.uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Fragment.class),
@@ -332,7 +336,7 @@ public class UiDesignerCoreFactory {
     public WidgetRepository createWidgetRepository(Watcher watcher) {
         return new WidgetRepository(
                 uiDesignerProperties.getWorkspace().getWidgets().getDir(),
-                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                generatorProperties.getTemplateResourcesPath(),
                 new WidgetFileBasedPersister(jsonHandler, beanValidator, this.uiDesignerProperties.getVersion(),
                         this.uiDesignerProperties.getModelVersion()),
                 new WidgetFileBasedLoader(jsonHandler),

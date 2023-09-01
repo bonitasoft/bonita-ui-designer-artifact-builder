@@ -31,7 +31,7 @@ public class FakePageRepository extends PageRepository {
     private final Map<String, Page> repo;
 
     public FakePageRepository() {
-        super(new WorkspaceProperties().getPages().getDir(), new WorkspaceUidProperties().getTemplateResourcesPath(),
+        super(new WorkspaceProperties().getPages().getDir(), new WorkspaceUidProperties().getExtractPath(),
                 null, null, null, null);
         repo = new HashMap<>();
     }

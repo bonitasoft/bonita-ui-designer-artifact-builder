@@ -16,11 +16,6 @@
  */
 package org.bonitasoft.web.designer.config;
 
-import static java.nio.file.Files.createDirectories;
-import static org.bonitasoft.web.designer.i18n.I18nInitializer.I18N_RESOURCES;
-import static org.bonitasoft.web.designer.workspace.Workspace.EXTRACT_BACKEND_RESOURCES;
-
-import java.io.IOException;
 import java.nio.file.Path;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -32,7 +27,6 @@ import lombok.Data;
 public class WorkspaceUidProperties {
 
     public static final String FRAGMENTS = "fragments";
-    public static final String TEMPLATES_RESOURCES = "templates";
     private static final String PAGES_DEFAULT_DIRECTORY = "pages";
 
     private boolean liveBuildEnabled = true;
@@ -47,20 +41,8 @@ public class WorkspaceUidProperties {
         return getPath().resolve(PAGES_DEFAULT_DIRECTORY);
     }
 
-    public Path getTmpI18nPath() throws IOException {
-        return createDirectories(getPath().resolve(I18N_RESOURCES));
-    }
-
-    public Path getExportBackendResourcesPath() {
-        return getExtractPath().resolve(EXTRACT_BACKEND_RESOURCES).resolve("runtime");
-    }
-
     public Path getExtractPath() {
         return path.resolve("extract");
-    }
-
-    public Path getTemplateResourcesPath() {
-        return getExtractPath().resolve(TEMPLATES_RESOURCES);
     }
 
 }

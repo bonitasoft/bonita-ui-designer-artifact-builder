@@ -29,7 +29,6 @@ import org.bonitasoft.web.designer.common.repository.JsonFileBasedLoader;
 import org.bonitasoft.web.designer.common.repository.JsonFileBasedPersister;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.config.WorkspaceProperties;
-import org.bonitasoft.web.designer.config.WorkspaceUidProperties;
 import org.bonitasoft.web.designer.model.JsonHandler;
 import org.bonitasoft.web.designer.model.JsonHandlerFactory;
 import org.bonitasoft.web.designer.model.fragment.Fragment;
@@ -55,7 +54,7 @@ public class TemporaryFragmentRepository {
 
         repository = new FragmentRepository(
                 uiDesignerProperties.getWorkspace().getFragments().getDir(),
-                new WorkspaceUidProperties().getTemplateResourcesPath(),
+                uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve("angularjs").resolve("templates"),
                 new JsonFileBasedPersister<>(jsonHandler, validator, uiDesignerProperties.getVersion(),
                         uiDesignerProperties.getModelVersion()),
                 new JsonFileBasedLoader<>(jsonHandler, Fragment.class),

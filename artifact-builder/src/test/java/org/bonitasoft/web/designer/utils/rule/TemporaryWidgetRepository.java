@@ -57,7 +57,7 @@ public class TemporaryWidgetRepository {
 
         repository = new WidgetRepository(
                 workspaceProperties.getWidgets().getDir(),
-                uiDesignerProperties.getWorkspaceUid().getTemplateResourcesPath(),
+                uiDesignerProperties.getWorkspaceUid().getExtractPath().resolve("angularjs").resolve("templates"),
                 new JsonFileBasedPersister<>(jsonHandler, mock(BeanValidator.class), "1.13.0", Version.MODEL_VERSION),
                 new WidgetFileBasedLoader(jsonHandler),
                 mock(BeanValidator.class),
