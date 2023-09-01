@@ -24,6 +24,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
@@ -124,7 +125,7 @@ public class AssetService<T extends Assetable> {
     }
 
     public String getAssetContent(T component, Asset asset) throws IOException {
-        return new String(assetRepository.readAllBytes(component.getId(), asset));
+        return new String(assetRepository.readAllBytes(component.getId(), asset), StandardCharsets.UTF_8);
     }
 
     /**
