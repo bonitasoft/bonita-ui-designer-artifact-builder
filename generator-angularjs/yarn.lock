@@ -803,7 +803,7 @@ babel-core@6.3.17:
     slash "^1.0.0"
     source-map "^0.5.0"
 
-babel-core@^6.0.0, babel-core@^6.0.2, babel-core@^6.26.0:
+babel-core@^6.0.2, babel-core@^6.26.0:
   version "6.26.3"
   resolved "https://registry.npmjs.org/babel-core/-/babel-core-6.26.3.tgz#b2e2f09e342d0f0c88e2f02e067794125e75c207"
   integrity sha512-6jyFLuDmeidKmUEb3NM+/yawG0M2bDZ9Z1qbZP59cyHLz8kYGKYwpJP0UwUKKUiTRNvxfLesJnTedqczP7cTDA==
@@ -3915,12 +3915,10 @@ just-debounce@^1.0.0:
   resolved "https://registry.npmjs.org/just-debounce/-/just-debounce-1.1.0.tgz#2f81a3ad4121a76bc7cb45dbf704c0d76a8e5ddf"
   integrity sha512-qpcRocdkUmf+UTNBYx5w6dexX5J31AKK1OmPwH630a83DdVVUIngk55RSAiIGpQyoH0dlr872VHfPjnQnK1qDQ==
 
-karma-babel-preprocessor@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/karma-babel-preprocessor/-/karma-babel-preprocessor-6.0.1.tgz#7ae1d3e64950dbe11f421b74040ab08fb5a66c21"
-  integrity sha1-euHT5klQ2+EfQht0BAqwj7WmbCE=
-  dependencies:
-    babel-core "^6.0.0"
+karma-babel-preprocessor@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/karma-babel-preprocessor/-/karma-babel-preprocessor-7.0.0.tgz#18756d818f97a5e88f91902674cd9130177a8dce"
+  integrity sha512-k8YUot8ZAAYhAeUxOsOGUEXW7AlB6SkoIVGfavEBCAdGHzWuraOBoR2wCxxdePUCvcItIxSUyQnOj6DuZdEJYA==
 
 karma-coverage@^2.2.1:
   version "2.2.1"
