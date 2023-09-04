@@ -3,7 +3,6 @@ const config = require('../config');
 const gettextWidget = require('./gettext-widget.js');
 const gettext = require('gulp-angular-gettext');
 const concat = require('gulp-concat');
-const replace = require('gulp-replace');
 
 /**
  * Extract translation keys from Json widget files
