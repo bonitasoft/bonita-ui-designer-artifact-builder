@@ -21,6 +21,7 @@ import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Files.write;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -132,7 +133,7 @@ public class JsonFileBasedPersister<T extends Identifiable> {
             } catch (Exception e) {
                 if (indexFileContent.length > 0) { //file is not empty and cannot be parsed
                     logger.error("Failed to parse '{}' file with content:\n{}",
-                            indexPath, new String(indexFileContent), e);
+                            indexPath, new String(indexFileContent, StandardCharsets.UTF_8), e);
                 }
                 //else file is empty, ignore exception
             }

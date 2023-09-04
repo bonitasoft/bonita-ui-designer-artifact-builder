@@ -71,8 +71,8 @@ public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
             AssetRepository<Page> pageAssetRepository,
             FragmentRepository fragmentRepository,
             Path widgetUserRepoPath,
-            Path uidWorkspace,
-            boolean liveBuildEnabled) {
+            GeneratorProperties generatorProperties) {
+        this.generatorProperties = generatorProperties;
         this.widgetIdVisitor = widgetIdVisitor;
         this.directiveFileGenerator = directiveFileGenerator;
         this.widgetUserRepoPath = widgetUserRepoPath;
@@ -83,8 +83,6 @@ public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
                 new PropertyValuesVisitor(fragmentRepository),
                 new VariableModelVisitor(fragmentRepository));
 
-        this.generatorProperties = new GeneratorProperties(uidWorkspace);
-        generatorProperties.setLiveBuildEnabled(liveBuildEnabled);
         this.htmlBuilderVisitor = new HtmlBuilderVisitor(fragmentRepository);
         var directivesCollector = new DirectivesCollector(jsonHandler,
                 generatorProperties.getTmpPagesRepositoryPath(),

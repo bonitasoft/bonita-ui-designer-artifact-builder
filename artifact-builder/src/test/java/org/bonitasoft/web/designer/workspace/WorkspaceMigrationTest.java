@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
 
+import org.bonitasoft.web.angularjs.GeneratorProperties;
 import org.bonitasoft.web.designer.*;
 import org.bonitasoft.web.designer.config.UiDesignerProperties;
 import org.bonitasoft.web.designer.migration.page.UIBootstrapAssetMigrationStep;
@@ -67,8 +68,11 @@ class WorkspaceMigrationTest {
         Files.createFile(assetCss.resolve("style.css"));
 
         JsonHandler jsonHandler = new JsonHandlerFactory().create();
-        final UiDesignerCore core = new UiDesignerCoreFactory(uiDesignerProperties, jsonHandler).create();
-        ArtifactBuilder artifactBuilder = new ArtifactBuilderFactory(uiDesignerProperties, jsonHandler, core).create();
+        var generatorProperties = new GeneratorProperties(tempdir);
+        final UiDesignerCore core = new UiDesignerCoreFactory(uiDesignerProperties, generatorProperties, jsonHandler)
+                .create();
+        ArtifactBuilder artifactBuilder = new ArtifactBuilderFactory(uiDesignerProperties, generatorProperties,
+                jsonHandler, core).create();
 
         workspace = artifactBuilder.getWorkspace();
         workspace.initialize();

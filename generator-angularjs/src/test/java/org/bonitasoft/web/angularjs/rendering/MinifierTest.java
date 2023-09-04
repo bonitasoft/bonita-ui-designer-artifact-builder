@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.bonitasoft.web.angularjs.export.Minifier;
 import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
@@ -44,7 +45,7 @@ class MinifierTest {
 
         byte[] min = Minifier.minify(content.getBytes());
 
-        assertThat(new String(min, "UTF-8")).isEqualTo(expected);
+        assertThat(new String(min, StandardCharsets.UTF_8)).isEqualTo(expected);
     }
 
     @Test

@@ -51,7 +51,7 @@ public class JsonHandlerFactory {
 
         //By default all properties without explicit view definition are included in serialization.
         //To use JsonView we have to change this parameter
-        objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
+        objectMapper.disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
 
         //We don't have to serialize null values
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

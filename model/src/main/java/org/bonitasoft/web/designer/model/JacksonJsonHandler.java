@@ -113,7 +113,8 @@ public class JacksonJsonHandler implements JsonHandler {
         objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
         try {
             return objectMapper
-                    .writerWithDefaultPrettyPrinter().writeValueAsString(object);
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(object);
         } finally {
             objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         }
