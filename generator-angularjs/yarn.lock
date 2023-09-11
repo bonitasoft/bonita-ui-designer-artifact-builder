@@ -6019,7 +6019,7 @@ through2@4.0.2, through2@^4.0.2:
   dependencies:
     readable-stream "3"
 
-through2@^0.6.1, through2@^0.6.5:
+through2@^0.6.1:
   version "0.6.5"
   resolved "https://registry.npmjs.org/through2/-/through2-0.6.5.tgz#41ab9c67b29d57209071410e1d7a7a968cd3ad48"
   integrity sha1-QaucZ7KdVyCQcUEOHXp6lozTrUg=
