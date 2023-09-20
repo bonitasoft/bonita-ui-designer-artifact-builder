@@ -48,7 +48,7 @@
     "karma": "^6.4.2",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-coverage": "^2.2.1",
-    "karma-jasmine": "^4.0.2",
+    "karma-jasmine": "^5.1.0",
     "karma-junit-reporter": "^2.0.1",
     "karma-phantomjs-launcher": "^1.0.4",
     "license-checker": "^25.0.1",
