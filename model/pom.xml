@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-09</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>ui-designer-artifact-builder-model</artifactId>
   <name>Bonita UI Designer Artifact Builder Model</name>
