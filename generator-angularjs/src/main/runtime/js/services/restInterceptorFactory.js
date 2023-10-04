@@ -7,6 +7,7 @@
 
     var openConfirmationModal = function (redirectMessage, cancelMessage, windowToRefresh) {
       try {
+        //Using injector to get modal service to avoid dependency cycle issue
         $modal = $modal || $injector.get('$modal');
         confirmationModalIsOpen = true;
         var confirmModal = $modal.open({
@@ -20,7 +21,7 @@
               };
             }
           },
-          // Template needs to be defined here instead of external file because the request to templateURL would also fail with 401 or 503
+          //Template needs to be defined here instead of external file because the request to templateURL would also fail with 401 or 503
           template: '<div class="modal-header">\n' +
             '    <h3 class="modal-title">{{\'An error occurred with the requested operation\' | uiTranslate}}</h3>\n' +
             '</div>\n' +
@@ -38,7 +39,7 @@
         });
         confirmModal.result.then(
           function () {
-            //reload the page in order for the authentication filter to redirect to the login or maintenance page
+            //Reload the page in order for the authentication filter to redirect to the login or maintenance page
             windowToRefresh.location.reload();
           }, function () {
             confirmationModalIsOpen = false;
