@@ -2,47 +2,42 @@
   'use strict';
 
   angular.module('bonitasoft.ui.services').factory('restInterceptorFactory', ['$q', '$location', '$window', '$filter', '$injector', function ($q, $location, $window, $filter, $injector) {
-    var $modal;
-    var confirmationModalIsOpen = false;
+    var ngDialog;
+    var confirmationDialogIsOpen = false;
 
-    var openConfirmationModal = function (redirectMessage, cancelMessage, windowToRefresh) {
+    var openConfirmationDialog = function (redirectMessage, cancelMessage, windowToRefresh) {
       try {
         //Using injector to get modal service to avoid dependency cycle issue
-        $modal = $modal || $injector.get('$modal');
-        confirmationModalIsOpen = true;
-        var confirmModal = $modal.open({
-          controller: 'httpErrorModalCtrl',
-          size: 'md',
-          resolve: {
-            messages: function () {
-              return {
-                'redirect': redirectMessage,
-                'cancel': cancelMessage
-              };
-            }
+        ngDialog = ngDialog || $injector.get('ngDialog');
+        confirmationDialogIsOpen = true;
+        var confirmDialog = ngDialog.openConfirm({
+          data: {
+            'redirect': redirectMessage,
+            'cancel': cancelMessage
           },
+          plain: true,
           //Template needs to be defined here instead of external file because the request to templateURL would also fail with 401 or 503
           template: '<div class="modal-header">\n' +
             '    <h3 class="modal-title">{{\'An error occurred with the requested operation\' | uiTranslate}}</h3>\n' +
             '</div>\n' +
             '<div class="modal-body">\n' +
-            '    <p>{{messages.redirect}}</p>\n' +
-            '    <p>{{messages.cancel}}</p>\n' +
+            '    <p>{{ngDialogData.redirect}}</p>\n' +
+            '    <p>{{ngDialogData.cancel}}</p>\n' +
             '</div>\n' +
             '<div class="modal-footer">\n' +
             '    <div>\n' +
             '        <button id="confirm" type="submit" class="btn btn-primary" ng-click="confirm()" >{{\'OK\' | uiTranslate}}</button>\n' +
-            '        <button id="cancel" type="submit" class="btn btn-default" ng-click="cancel()">{{\'Cancel\' | uiTranslate}}</button>\n' +
+            '        <button id="cancel" type="submit" class="btn btn-default" ng-click="closeThisDialog()">{{\'Cancel\' | uiTranslate}}</button>\n' +
             '    </div>\n' +
             '</div>\n' +
             '</div>'
         });
-        confirmModal.result.then(
+        confirmDialog.confirm.then(
           function () {
             //Reload the page in order for the authentication filter to redirect to the login or maintenance page
             windowToRefresh.location.reload();
           }, function () {
-            confirmationModalIsOpen = false;
+            confirmationDialogIsOpen = false;
           });
       } catch (e) {
         // In case there is an issue with the modal
@@ -60,7 +55,7 @@
 
     return {
       'responseError': function (rejection) {
-        if (!confirmationModalIsOpen) {
+        if (!confirmationDialogIsOpen) {
           let pageURL = $location.absUrl();
           let urlContext = pageURL.substring(0, pageURL.indexOf($location.path()));
           //if the REST request was for the same webapp as the page
@@ -79,12 +74,12 @@
             }
             switch (rejection.status) {
               case 401:
-                openConfirmationModal($filter('uiTranslate')('Your session is no longer active. Click on OK to be redirected and log back in.'),
+                openConfirmationDialog($filter('uiTranslate')('Your session is no longer active. Click on OK to be redirected and log back in.'),
                   $filter('uiTranslate')('Click on Cancel to remain on this page and try to execute the operation again once you logged back in (e.g. in another tab).'),
                   windowToRefresh);
                 break;
               case 503:
-                openConfirmationModal($filter('uiTranslate')('Server is under maintenance. Click on OK to be redirected to the maintenance page.'),
+                openConfirmationDialog($filter('uiTranslate')('Server is under maintenance. Click on OK to be redirected to the maintenance page.'),
                   $filter('uiTranslate')('Click on Cancel to remain on this page and wait for the maintenance to end.'), windowToRefresh);
                 break;
             }

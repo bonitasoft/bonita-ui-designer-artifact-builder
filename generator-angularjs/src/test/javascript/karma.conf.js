@@ -32,6 +32,7 @@ module.exports = function (config) {
       'node_modules/angular-sanitize/angular-sanitize.min.js',
       'node_modules/angular-gettext/dist/angular-gettext.min.js',
       'node_modules/angular-cookies/angular-cookies.min.js',
+      'node_modules/ng-dialog/js/ngDialog.min.js',
       'src/main/runtime/js/**/*.module.js',
       'src/main/runtime/js/**/*.js',
       'target/widget-directives/**/*.js',
