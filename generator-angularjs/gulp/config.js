@@ -21,6 +21,7 @@ let paths = {
   css: [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/ng-dialog/css/ngDialog.min.css',
+    'node_modules/ng-dialog/css/ngDialog-theme-default.min.css',
     'src/main/runtime/css/**.css'
   ],
   widgets: ['src/main/resources/widgets/**/*.*'],

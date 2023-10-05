@@ -15,6 +15,7 @@
             'redirect': redirectMessage,
             'cancel': cancelMessage
           },
+          className: 'ngdialog-theme-default',
           plain: true,
           //Template needs to be defined here instead of external file because the request to templateURL would also fail with 401 or 503
           template: '<div class="modal-header">\n' +
@@ -32,7 +33,7 @@
             '</div>\n' +
             '</div>'
         });
-        confirmDialog.confirm.then(
+        confirmDialog.then(
           function () {
             //Reload the page in order for the authentication filter to redirect to the login or maintenance page
             windowToRefresh.location.reload();
@@ -40,6 +41,7 @@
             confirmationDialogIsOpen = false;
           });
       } catch (e) {
+        console.log(e);
         // In case there is an issue with the modal
         windowToRefresh.location.reload();
       }
