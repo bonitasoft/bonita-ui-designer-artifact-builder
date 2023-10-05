@@ -5,13 +5,14 @@
     var ngDialog;
     var confirmationDialogIsOpen = false;
 
-    var openConfirmationDialog = function (redirectMessage, cancelMessage, windowToRefresh) {
+    var openConfirmationDialog = function (errorInfo, redirectMessage, cancelMessage, windowToRefresh) {
       try {
         //Using injector to get modal service to avoid dependency cycle issue
         ngDialog = ngDialog || $injector.get('ngDialog');
         confirmationDialogIsOpen = true;
         var confirmDialog = ngDialog.openConfirm({
           data: {
+            'info': errorInfo,
             'redirect': redirectMessage,
             'cancel': cancelMessage
           },
@@ -22,6 +23,7 @@
             '    <h3 class="modal-title">{{\'An error occurred with the requested operation\' | uiTranslate}}</h3>\n' +
             '</div>\n' +
             '<div class="modal-body">\n' +
+            '    <p>{{ngDialogData.info}}</p>\n' +
             '    <p>{{ngDialogData.redirect}}</p>\n' +
             '    <p>{{ngDialogData.cancel}}</p>\n' +
             '</div>\n' +
@@ -76,13 +78,16 @@
             }
             switch (rejection.status) {
               case 401:
-                openConfirmationDialog($filter('uiTranslate')('Your session is no longer active. Click on OK to be redirected and log back in.'),
+                openConfirmationDialog($filter('uiTranslate')('Your session is no longer active.'),
+                  $filter('uiTranslate')('Click on OK to be redirected and log back in.'),
                   $filter('uiTranslate')('Click on Cancel to remain on this page and try to execute the operation again once you logged back in (e.g. in another tab).'),
                   windowToRefresh);
                 break;
               case 503:
-                openConfirmationDialog($filter('uiTranslate')('Server is under maintenance. Click on OK to be redirected to the maintenance page.'),
-                  $filter('uiTranslate')('Click on Cancel to remain on this page and wait for the maintenance to end.'), windowToRefresh);
+                openConfirmationDialog($filter('uiTranslate')('Server is under maintenance.'),
+                  $filter('uiTranslate')('Click on OK to be redirected to the maintenance page.'),
+                  $filter('uiTranslate')('Click on Cancel to remain on this page and wait for the maintenance to end.'),
+                  windowToRefresh);
                 break;
             }
           }
