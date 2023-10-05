@@ -38,7 +38,7 @@ input[type='url'].ng-invalid.ng-dirty {
 
 /* Error redirection dialog */
 .ngdialog .ngdialog-content {
-    width: 80vh;
+    width: 80vw;
     max-width: 700px;
 }
 
