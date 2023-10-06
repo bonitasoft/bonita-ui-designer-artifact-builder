@@ -5,6 +5,8 @@ describe('Service: restInterceptorFactory', function () {
 
   var restInterceptorFactory, $location, $q, $window, $filter;
 
+  var mockDialog = jasmine.createSpyObj('ngDialog', ['openConfirm']);
+
   beforeEach(function() {
     $window = {
       location: {
@@ -13,6 +15,7 @@ describe('Service: restInterceptorFactory', function () {
     };
     module(function($provide) {
       $provide.value('$window', $window);
+      $provide.value('ngDialog', mockDialog);
     });
   });
 
@@ -22,15 +25,15 @@ describe('Service: restInterceptorFactory', function () {
     $filter = _$filter_;
     $location = _$location_;
     $location.absUrl = function() {
-      return 'http://domain.host/bonita/app/myApp/caselist/'
+      return 'http://domain.host/bonita/app/myApp/caselist/';
     };
     $location.path = function() {
-      return '/app/myApp/caselist/'
+      return '/app/myApp/caselist/';
     };
-    restInterceptorFactory = _restInterceptorFactory_;
-    spyOn(window, 'confirm').and.callFake(function () {
-      return true;
+    mockDialog.openConfirm.and.callFake(function () {
+      return $q.resolve();
     });
+    restInterceptorFactory = _restInterceptorFactory_;
     spyOn($q, 'reject');
   }));
 
