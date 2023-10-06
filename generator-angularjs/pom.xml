@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.0-alpha-09</version>
+    <version>1.0.0-alpha-10</version>
   </parent>
   <artifactId>ui-designer-artifact-builder-generator-angularjs</artifactId>
   <name>Bonita UI Designer AngularJs Generator</name>

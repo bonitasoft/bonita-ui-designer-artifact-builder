@@ -481,6 +481,11 @@ angular-sanitize@bonitasoft/bower-angular-sanitize#v1.3.21:
   version "1.3.21"
   resolved "https://codeload.github.com/bonitasoft/bower-angular-sanitize/tar.gz/955a78ff88d633793d51f80a89692ac9ed8ea9c1"
 
+angular@1.3.x:
+  version "1.3.20"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.3.20.tgz#b23a3d7c5e7f99f7d95b9b4d49b9ac355269baee"
+  integrity sha512-FCpJxWBm1z9L/+BYLTXYs7a6z8eTYqxZlW4tcWTw9azOZQ4ySzj9f9NOn9u05UtJ4TX28pkaxCC6aDMXoZmF6w==
+
 angular@bonitasoft/bower-angular#v1.3.21:
   version "1.3.21"
   resolved "https://codeload.github.com/bonitasoft/bower-angular/tar.gz/edacae22fb4173deacde72a3023e112a4f90bba4"
@@ -4210,6 +4215,13 @@ ng-annotate@^1.2.1:
     stringmap "~0.2.2"
     stringset "~0.2.1"
     tryor "~0.1.2"
+
+ng-dialog@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/ng-dialog/-/ng-dialog-0.4.0.tgz#a790e2b61625ca6e5322032536e4ea8746ee5657"
+  integrity sha512-XPCBLVnC5sTNSeedFMpnnvegnjk8S39Bd4Q2tDsUDIqL/us8WriSbIYMkyXQnFJHZQ6JCphN9fRIhEf9TXCrFA==
+  dependencies:
+    angular "1.3.x"
 
 nice-try@^1.0.4:
   version "1.0.5"

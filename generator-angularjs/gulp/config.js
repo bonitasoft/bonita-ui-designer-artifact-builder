@@ -12,13 +12,16 @@ let paths = {
     'node_modules/angular-sanitize/angular-sanitize.min.js',
     'node_modules/angular-messages/angular-messages.min.js',
     'node_modules/angular-gettext/dist/angular-gettext.min.js',
-    'node_modules/angular-cookies/angular-cookies.min.js'
+    'node_modules/angular-cookies/angular-cookies.min.js',
+    'node_modules/ng-dialog/js/ngDialog.min.js'
   ],
   fonts: [
     'node_modules/bootstrap/dist/fonts/*.*'
   ],
   css: [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
+    'node_modules/ng-dialog/css/ngDialog.min.css',
+    'node_modules/ng-dialog/css/ngDialog-theme-default.min.css',
     'src/main/runtime/css/**.css'
   ],
   widgets: ['src/main/resources/widgets/**/*.*'],
