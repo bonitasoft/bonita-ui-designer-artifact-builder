@@ -477,9 +477,10 @@ angular-mocks@1.3.18:
   resolved "https://registry.npmjs.org/angular-mocks/-/angular-mocks-1.3.18.tgz#062a29a89b7a35cd58e3606ed755731d908eabb9"
   integrity sha1-BiopqJt6Nc1Y42Bu11VzHZCOq7k=
 
-angular-sanitize@bonitasoft/bower-angular-sanitize#v1.3.21:
-  version "1.3.21"
-  resolved "https://codeload.github.com/bonitasoft/bower-angular-sanitize/tar.gz/955a78ff88d633793d51f80a89692ac9ed8ea9c1"
+angular-sanitize@bonitasoft/bower-angular-sanitize#v1.8.3:
+  version "1.8.3"
+  uid "7d2d056aee4b69046a55ba57cc2808e5e58aab65"
+  resolved "https://codeload.github.com/bonitasoft/bower-angular-sanitize/tar.gz/7d2d056aee4b69046a55ba57cc2808e5e58aab65"
 
 angular@1.3.x:
   version "1.3.20"
