@@ -16,18 +16,18 @@
  */
 package org.bonitasoft.web.designer.migration;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.SequenceInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import org.apache.commons.io.IOUtils;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.SequenceInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 public class StyleAddErrorDialogPropertiesMigrationStep extends AbstractMigrationStep<Page> {
 
@@ -60,7 +60,7 @@ public class StyleAddErrorDialogPropertiesMigrationStep extends AbstractMigratio
     private byte[] getMigratedAssetContent(String styleCssContent) throws IOException {
         try (var is = getClass()
                 .getResourceAsStream("/templates/migration/assets/css/styleAddErrorDialogProperties.css");
-             var sis = new SequenceInputStream(
+                var sis = new SequenceInputStream(
                         new ByteArrayInputStream(styleCssContent.getBytes(StandardCharsets.UTF_8)),
                         new ByteArrayInputStream(IOUtils.toByteArray(is)))) {
             return IOUtils.toByteArray(sis);

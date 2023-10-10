@@ -16,6 +16,14 @@
  */
 package org.bonitasoft.web.designer.migration;
 
+import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
+import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
+import static org.bonitasoft.web.designer.model.asset.AssetType.CSS;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.InputStream;
+
 import org.apache.commons.io.IOUtils;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.asset.Asset;
@@ -26,14 +34,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.InputStream;
-
-import static org.bonitasoft.web.designer.builder.AssetBuilder.anAsset;
-import static org.bonitasoft.web.designer.builder.PageBuilder.aPage;
-import static org.bonitasoft.web.designer.model.asset.AssetType.CSS;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class StyleAddErrorDialogPropertiesMigrationStepTest {
