@@ -157,8 +157,8 @@ public class UiDesignerCoreFactory {
                 new Migration<>("2.2", new AddModelVersionMigrationStep<>("2.2")),
                 new Migration<>("2.3", new SetInterpretHtmlTrueMigrationStep<>(componentVisitor)),
                 new Migration<>("2.4", new AccessibilityCheckListAndRadioButtonsMigrationStep(componentVisitor)),
-                new Migration<>("2.5", new StyleUpdateInputTypeMigrationStep(pageAssetService)));
-        new Migration<>("2.6", new StyleAddModalContainerPropertiesMigrationStep(pageAssetService));
+                new Migration<>("2.5", new StyleUpdateInputTypeMigrationStep(pageAssetService)),
+                new Migration<>("2.6", new StyleAddModalContainerPropertiesMigrationStep(pageAssetService)));
 
         List<Migration<Widget>> widgetMigrationStepsList = List.<Migration<Widget>> of(
                 new Migration<>("1.0.2", new AssetIdMigrationStep<>()),
