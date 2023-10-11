@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.JacksonJsonHandler;
@@ -31,10 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Slf4j
 public class LocalizationAddErrorDialogTranslationsMigrationStep extends AbstractMigrationStep<Page> {
-
-    private static final Logger logger = LoggerFactory
-            .getLogger(LocalizationAddErrorDialogTranslationsMigrationStep.class);
 
     private AssetService<Page> assetService;
 
@@ -51,8 +50,7 @@ public class LocalizationAddErrorDialogTranslationsMigrationStep extends Abstrac
             if (asset.getName().equals("localization.json")) {
                 var pageLocalizationContent = assetService.getAssetBinaryContent(artifact, asset);
                 assetService.save(artifact, asset, getMigratedAssetContent(pageLocalizationContent));
-                logger.info(
-                        "[MIGRATION] Adding error dialog translations in asset [{}] to {} [{}] (introduced in 1.17.5)",
+                log.info("[MIGRATION] Adding error dialog translations in asset [{}] to {} [{}] (introduced in 1.17.5)",
                         asset.getName(), artifact.getType(), artifact.getName());
             }
         }
@@ -83,7 +81,6 @@ public class LocalizationAddErrorDialogTranslationsMigrationStep extends Abstrac
                 }
                 newLocalizationContent.put(language, mergedLanguageTranslations);
             }
-            String test = IOUtils.toString(jsonHandler.toPrettyJsonFromComplexMap(newLocalizationContent), "UTF-8");
             return jsonHandler.toPrettyJsonFromComplexMap(newLocalizationContent);
         }
     }
