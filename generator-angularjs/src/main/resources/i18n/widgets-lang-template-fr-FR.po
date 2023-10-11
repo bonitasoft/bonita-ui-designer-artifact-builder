@@ -11,19 +11,19 @@ msgstr ""
 "X-Crowdin-File-ID: 71887\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2023-06-20 04:06\n"
+"PO-Revision-Date: 2023-10-10 04:06\n"
 
 msgid ","
-msgstr ""
+msgstr ","
 
 msgid "."
-msgstr ""
+msgstr "."
 
 msgid "../API/"
 msgstr ".. /API/"
 
 msgid "../API/formFileUpload"
-msgstr ""
+msgstr "../API/formFileUpload"
 
 msgid "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> String variables (with or without time information)"
 msgstr "Variables de type String au format <a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> (avec ou sans information de fuseau horaire)"
@@ -131,7 +131,7 @@ msgid "API request parameters"
 msgstr "Paramètres de requête de l'API"
 
 msgid "Action"
-msgstr ""
+msgstr "Action"
 
 msgid "Add"
 msgstr "Ajouter"
@@ -188,7 +188,7 @@ msgid "An extended table widget that provides column sorting, filtering, and pag
 msgstr "Un widget de tableau étendu qui propose le tri des colonnes, le filtrage et la pagination en plus des fonctions du widget Table standard."
 
 msgid "Animation"
-msgstr ""
+msgstr "Animation"
 
 msgid "Another possibility would be adding different containers inside the modal and specify any of the\n"
 "            following classes:"
@@ -219,7 +219,7 @@ msgid "As used in the URL after the application token"
 msgstr "Tel qu’utilisé dans l’URL après le token de l’application"
 
 msgid "Asset"
-msgstr ""
+msgstr "Asset"
 
 msgid "Asset Name"
 msgstr "Nom de l'asset"
@@ -264,10 +264,10 @@ msgid "Bind to a Variable to filter the table 'Content'"
 msgstr "Binder à une variable pour filtrer le tableau « Contenu »"
 
 msgid "Bonita API"
-msgstr ""
+msgstr "Bonita API"
 
 msgid "Bonita BPM"
-msgstr ""
+msgstr "Bonita BPM"
 
 msgid "Bordered"
 msgstr "Avec bordure"
@@ -327,7 +327,7 @@ msgid "Collection"
 msgstr "Collections"
 
 msgid "Collections"
-msgstr ""
+msgstr "Collections"
 
 msgid "Colors"
 msgstr "Couleurs"
@@ -379,7 +379,7 @@ msgid "Customize the default look and feel as follows:"
 msgstr "Personnaliser l'affichage comme suit :"
 
 msgid "DELETE"
-msgstr ""
+msgstr "DELETE"
 
 msgid "Data"
 msgstr "Données"
@@ -397,7 +397,7 @@ msgid "Data-Table"
 msgstr "Data table"
 
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 msgid "Date & time display"
 msgstr "Affichage des dates et heures"
@@ -420,7 +420,7 @@ msgid "Date objects"
 msgstr "Objets Date"
 
 msgid "Debounce"
-msgstr ""
+msgstr "Debounce"
 
 msgid "Decimal separator"
 msgstr "Séparateur décimal"
@@ -556,7 +556,7 @@ msgid "For more information, refer to the <a href=\"javascript:void(0);\" open-h
 msgstr "Pour plus d'information, reportez-vous à la section d'aide <a href=\"javascript:void(0);\" open-help=\"localization\" editor-mode=\"page\"><em>localisation</em></a>."
 
 msgid "Format"
-msgstr ""
+msgstr "Format"
 
 msgid "Format used to display the date"
 msgstr "Format utilisé pour afficher la date"
@@ -571,7 +571,7 @@ msgid "Frame"
 msgstr "Cadre"
 
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 msgid "Graphical display of numerical data to ease understanding. This widget is based on angular-chart-0.8.1, which is based on Chart.js. For information see http://jtblin.github.io/angular-chart.js/ and http://www.chartjs.org/docs/. Available chart types to display a single set of data are pie, doughnut, and polar area. For multiple sets of data, available chart types are bar, line, and radar."
 msgstr "Affichage graphique de données numériques. Ce widget est basé sur angular-chart-0.8.1, qui est lui-même basé sur Chart.js. Pour plus d'informations, consultez http://jtblin.github.io/angular-chart.js/ et http://www.chartjs.org/docs/. Les différents types de graphiques disponibles pour afficher un unique jeu de données sont Secteurs, Anneau et Polaire. Pour afficher un ou plusieurs jeux de données, les différents types de graphiques disponibles sont Colonnes, Courbes et Radar."
@@ -778,7 +778,7 @@ msgid "Max value"
 msgstr "Valeur maximum"
 
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 msgid "Min value"
 msgstr "Valeur minimum"
@@ -856,10 +856,10 @@ msgid "Open modal"
 msgstr "Ouvrir une fenêtre modale"
 
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 msgid "PUT"
-msgstr ""
+msgstr "PUT"
 
 msgid "Page size"
 msgstr "Taille de la page"
@@ -877,7 +877,7 @@ msgid "Pie"
 msgstr "Secteurs"
 
 msgid "Placeholder"
-msgstr ""
+msgstr "Espace réservé"
 
 msgid "Polar Area"
 msgstr "Aire polaire"
@@ -898,7 +898,7 @@ msgid "Process version"
 msgstr "Version du processus"
 
 msgid "Radar"
-msgstr ""
+msgstr "Radar"
 
 msgid "Read-only"
 msgstr "Lecture seule"
@@ -1055,7 +1055,7 @@ msgid "Step"
 msgstr "Étape"
 
 msgid "Style"
-msgstr ""
+msgstr "Style"
 
 msgid "Style toolbar"
 msgstr "Barre d'outils de style"
@@ -1317,10 +1317,10 @@ msgid "Trigger for an action in a page or form"
 msgstr "Déclenchement d'une action dans une page ou un formulaire"
 
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 msgid "URL parameters"
 msgstr "Paramètres d'URL"
@@ -1395,7 +1395,7 @@ msgid "Value to add"
 msgstr "Valeur à ajouter"
 
 msgid "Variable"
-msgstr ""
+msgstr "Variable"
 
 msgid "Variable content formatted in HTML"
 msgstr "Contenu d'une variable, formaté en HTML"
@@ -1450,31 +1450,31 @@ msgid "Zebra-striping"
 msgstr "Alternance de couleur"
 
 msgid "_self"
-msgstr ""
+msgstr "_self"
 
 msgid "center"
 msgstr "au centre"
 
 msgid "danger"
-msgstr ""
+msgstr "danger"
 
 msgid "default"
 msgstr "par défaut"
 
 msgid "email"
-msgstr ""
+msgstr "email"
 
 msgid "formInput"
-msgstr ""
+msgstr "formInput"
 
 msgid "h:mm:ss a"
 msgstr "HH:mm:ss"
 
 msgid "http://"
-msgstr ""
+msgstr "http://"
 
 msgid "info"
-msgstr ""
+msgstr "info"
 
 msgid "large"
 msgstr "grande"
@@ -1483,7 +1483,7 @@ msgid "left"
 msgstr "A gauche"
 
 msgid "link"
-msgstr ""
+msgstr "lien"
 
 msgid "medium"
 msgstr "moyenne"
@@ -1492,7 +1492,7 @@ msgid "none"
 msgstr "aucune"
 
 msgid "number"
-msgstr ""
+msgstr "nombre"
 
 msgid "password"
 msgstr "mot de passe"
@@ -1501,7 +1501,7 @@ msgid "pills"
 msgstr "pilules"
 
 msgid "primary"
-msgstr ""
+msgstr "primaire"
 
 msgid "right"
 msgstr "à droite"
@@ -1510,7 +1510,7 @@ msgid "small"
 msgstr "petite"
 
 msgid "success"
-msgstr ""
+msgstr "succès"
 
 msgid "tabs"
 msgstr "onglets"
@@ -1522,14 +1522,14 @@ msgid "top"
 msgstr "En haut"
 
 msgid "url"
-msgstr ""
+msgstr "url"
 
 msgid "warning"
-msgstr ""
+msgstr "avertissement"
 
 msgid "whitespace"
 msgstr "espace"
 
 msgid "€"
-msgstr ""
+msgstr "€"
 
