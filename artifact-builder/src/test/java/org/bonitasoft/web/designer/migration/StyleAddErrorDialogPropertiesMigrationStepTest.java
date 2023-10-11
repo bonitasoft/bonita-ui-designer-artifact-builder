@@ -45,7 +45,7 @@ class StyleAddErrorDialogPropertiesMigrationStepTest {
     private StyleAddErrorDialogPropertiesMigrationStep step;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         step = new StyleAddErrorDialogPropertiesMigrationStep(pageAssetService);
     }
 

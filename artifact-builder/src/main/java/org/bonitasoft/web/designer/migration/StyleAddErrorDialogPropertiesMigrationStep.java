@@ -26,14 +26,13 @@ import org.apache.commons.io.IOUtils;
 import org.bonitasoft.web.designer.controller.asset.AssetService;
 import org.bonitasoft.web.designer.model.migrationReport.MigrationStepReport;
 import org.bonitasoft.web.designer.model.page.Page;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class StyleAddErrorDialogPropertiesMigrationStep extends AbstractMigrationStep<Page> {
 
-    private static final Logger logger = LoggerFactory.getLogger(StyleAddErrorDialogPropertiesMigrationStep.class);
-
-    private AssetService<Page> assetService;
+    private final AssetService<Page> assetService;
 
     public StyleAddErrorDialogPropertiesMigrationStep(AssetService<Page> assetService) {
         this.assetService = assetService;
@@ -45,7 +44,7 @@ public class StyleAddErrorDialogPropertiesMigrationStep extends AbstractMigratio
             if (asset.getName().equals("style.css")) {
                 var pageStyleCssContent = assetService.getAssetContent(artifact, asset);
                 assetService.save(artifact, asset, getMigratedAssetContent(pageStyleCssContent));
-                logger.info("[MIGRATION] Adding error dialog classes in asset [{}] to {} [{}] (introduced in 1.17.5)",
+                log.info("[MIGRATION] Adding error dialog classes in asset [{}] to {} [{}] (introduced in 1.17.5)",
                         asset.getName(), artifact.getType(), artifact.getName());
             }
         }
