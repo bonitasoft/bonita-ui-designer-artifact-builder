@@ -1,0 +1,42 @@
+{
+  "fr-FR": {
+    "Title": "Titre",
+    "OK": "OK",
+    "$locale": {
+      "DATETIME_FORMATS": {
+        "AMPMS": [
+          "AM",
+          "PM"
+        ]
+      }
+    },
+    "An error occurred with the requested operation": "Une erreur s'est produite lors de l'opération demandée",
+    "Your session is no longer active.": "Votre session n'est plus active.",
+    "Click on OK to be redirected and log back in.": "Cliquez sur OK pour être redirigé et vous reconnecter.",
+    "Click on Cancel to remain on this page and try to execute the operation again once you logged back in (e.g. in another tab).": "Cliquez sur Annuler pour rester sur cette page et essayer d'exécuter à nouveau l'opération après vous être reconnecté (e.g. dans un autre onglet).",
+    "Server is under maintenance.": "Une maintenance est en cours sur le serveur.",
+    "Click on OK to be redirected to the maintenance page.": "Cliquez sur OK pour être redirigé vers la page de maintenance.",
+    "Click on Cancel to remain on this page and wait for the maintenance to end.": "Cliquez sur Annuler pour rester sur cette page et attendre la fin des opérations de maintenance.",
+    "Cancel": "Annuler"
+  },
+  "es-ES": {
+    "Title": "Título",
+    "OK": "Aceptar",
+    "$locale": {
+      "DATETIME_FORMATS": {
+        "AMPMS": [
+          "a. m.",
+          "p. m."
+        ]
+      }
+    },
+    "An error occurred with the requested operation": "Ha ocurrido un error con la operación solicitada",
+    "Your session is no longer active.": "Su sesión ya no es válida o ha expirado.",
+    "Click on OK to be redirected and log back in.": "Haz click en Aceptar para volver a iniciar sesión.",
+    "Click on Cancel to remain on this page and try to execute the operation again once you logged back in (e.g. in another tab).": "Haz click en Cancelar para permanecer en esta página e intentar de nuevo la operación cuando su sesión sera de nuevo iniciada (p.ej. en otra pestaña).",
+    "Server is under maintenance.": "El servidor está en mantenimiento.",
+    "Click on OK to be redirected to the maintenance page.": "Haz click en Aceptar para ser redirigido.",
+    "Click on Cancel to remain on this page and wait for the maintenance to end.": "Haz click en Cancelar para permanecer en esta página y esperar a que finalice el mantenimiento.",
+    "Cancel": "Cancelar"
+  }
+}
