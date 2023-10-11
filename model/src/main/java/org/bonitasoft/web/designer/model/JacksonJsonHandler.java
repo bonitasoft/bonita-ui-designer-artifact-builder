@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.bonitasoft.web.designer.model.exception.MalformedJsonException;
@@ -70,6 +71,13 @@ public class JacksonJsonHandler implements JsonHandler {
     }
 
     @Override
+    public LinkedHashMap<String, Object> fromJsonToComplexMap(byte[] bytes) throws IOException {
+        var factory = TypeFactory.defaultInstance();
+        var mapType = factory.constructMapType(LinkedHashMap.class, String.class, Object.class);
+        return objectMapper.readValue(bytes, mapType);
+    }
+
+    @Override
     public byte[] toJson(Object object) throws IOException {
         // Use UTF8 to accept any character and have platform-independent files.
         return objectMapper.writeValueAsString(object).getBytes(StandardCharsets.UTF_8);
@@ -96,6 +104,15 @@ public class JacksonJsonHandler implements JsonHandler {
     public byte[] toJson(Map<String, String> map) throws IOException {
         // Use UTF8 to accept any character and have platform-independent files.
         return objectMapper.writeValueAsString(map).getBytes(StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public byte[] toPrettyJsonFromComplexMap(LinkedHashMap<String, Object> map) throws IOException {
+        // Use UTF8 to accept any character and have platform-independent files.
+        return objectMapper.writer().with(new LocalizationPrettyPrinter(": ")
+                .withArrayIndenter(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE))
+                .writeValueAsString(map)
+                .getBytes(StandardCharsets.UTF_8);
     }
 
     @Override

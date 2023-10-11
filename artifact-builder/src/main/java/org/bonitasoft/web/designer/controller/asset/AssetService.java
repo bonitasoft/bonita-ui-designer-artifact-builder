@@ -125,7 +125,11 @@ public class AssetService<T extends Assetable> {
     }
 
     public String getAssetContent(T component, Asset asset) throws IOException {
-        return new String(assetRepository.readAllBytes(component.getId(), asset), StandardCharsets.UTF_8);
+        return new String(getAssetBinaryContent(component, asset), StandardCharsets.UTF_8);
+    }
+
+    public byte[] getAssetBinaryContent(T component, Asset asset) throws IOException {
+        return assetRepository.readAllBytes(component.getId(), asset);
     }
 
     /**

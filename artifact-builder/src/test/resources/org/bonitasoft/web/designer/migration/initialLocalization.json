@@ -1,0 +1,26 @@
+{
+  "fr-FR": {
+    "Title": "Titre",
+    "OK": "Accepter",
+    "$locale": {
+      "DATETIME_FORMATS": {
+        "AMPMS": [
+          "AM",
+          "PM"
+        ]
+      }
+    }
+  },
+  "es-ES": {
+    "Title": "Título",
+    "OK": "OK",
+    "$locale": {
+      "DATETIME_FORMATS": {
+        "AMPMS": [
+          "a. m.",
+          "p. m."
+        ]
+      }
+    }
+  }
+}

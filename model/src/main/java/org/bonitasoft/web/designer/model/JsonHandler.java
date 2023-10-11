@@ -18,6 +18,7 @@ package org.bonitasoft.web.designer.model;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -33,6 +34,8 @@ public interface JsonHandler {
 
     Map<String, String> fromJsonToMap(byte[] bytes) throws IOException;
 
+    LinkedHashMap<String, Object> fromJsonToComplexMap(byte[] bytes) throws IOException;
+
     byte[] toJson(Object object) throws IOException;
 
     byte[] toJson(Object object, Class<?> serializationView) throws IOException;
@@ -42,6 +45,8 @@ public interface JsonHandler {
     String toJsonString(Object object, Class<?> serializationView) throws IOException;
 
     byte[] toJson(Map<String, String> map) throws IOException;
+
+    byte[] toPrettyJsonFromComplexMap(LinkedHashMap<String, Object> map) throws IOException;
 
     byte[] toPrettyJson(Object object, Class<?> serializationView) throws IOException;
 
