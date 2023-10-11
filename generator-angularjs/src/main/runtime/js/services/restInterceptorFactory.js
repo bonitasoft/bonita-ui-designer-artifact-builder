@@ -17,6 +17,7 @@
             'cancel': cancelMessage
           },
           className: 'ngdialog-theme-default',
+          showClose: false,
           plain: true,
           //Template needs to be defined here instead of external file because the request to templateURL would also fail with 401 or 503
           template: '<div class="modal-header">\n' +
