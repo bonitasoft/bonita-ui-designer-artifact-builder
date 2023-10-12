@@ -3,7 +3,7 @@
   "name" : "Modal container",
   "type" : "container",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Group of widgets used to define the arrangement of the page elements. Its content is display like in modal.",
   "template" : "",
   "controller" : "@pbModalContainer.ctrl.js",

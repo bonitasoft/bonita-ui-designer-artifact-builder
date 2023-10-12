@@ -3,7 +3,7 @@
   "name" : "Text",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Short string or paragraph of text to be displayed. Can include HTML tags",
   "template" : "@pbText.tpl.html",
   "properties" : [

@@ -3,7 +3,7 @@
   "name" : "Title",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Text used to structure the page or form content",
   "template" : "@pbTitle.tpl.html",
   "properties" : [

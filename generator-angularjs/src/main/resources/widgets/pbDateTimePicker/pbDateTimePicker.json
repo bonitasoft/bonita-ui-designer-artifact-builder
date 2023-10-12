@@ -3,7 +3,7 @@
   "name" : "Date Time Picker",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Calendar for selecting a date and time",
   "template" : "@pbDateTimePicker.tpl.html",
   "controller" : "@pbDateTimePicker.ctrl.js",

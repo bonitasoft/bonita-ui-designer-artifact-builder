@@ -3,7 +3,7 @@
   "name" : "Select",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Dropdown list of available values. The user selects one value",
   "template" : "@pbSelect.tpl.html",
   "controller" : "@pbSelect.ctrl.js",

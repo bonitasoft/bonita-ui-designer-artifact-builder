@@ -3,7 +3,7 @@
   "name" : "Form container",
   "type" : "container",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Container used for a form. Eases validation",
   "template" : "",
   "properties" : [ ],

@@ -3,7 +3,7 @@
   "name" : "Input",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Field where the user can enter information",
   "template" : "@pbInput.tpl.html",
   "controller" : "@pbInput.ctrl.js",

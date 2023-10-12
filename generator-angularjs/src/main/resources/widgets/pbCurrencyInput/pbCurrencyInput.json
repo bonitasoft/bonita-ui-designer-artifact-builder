@@ -3,7 +3,7 @@
   "name" : "Currency Input",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Field where the user can enter information with a currency formatting.",
   "template" : "@pbCurrencyInput.tpl.html",
   "controller" : "@pbCurrencyInput.ctrl.js",

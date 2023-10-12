@@ -3,7 +3,7 @@
   "name" : "Data table",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Table with pagination and filtering capabilities",
   "template" : "@pbDataTable.tpl.html",
   "controller" : "@pbDataTable.ctrl.js",

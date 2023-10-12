@@ -3,7 +3,7 @@
   "name" : "Tab",
   "type" : "container",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Group of widgets, inside a Tabs container",
   "template" : "",
   "properties" : [

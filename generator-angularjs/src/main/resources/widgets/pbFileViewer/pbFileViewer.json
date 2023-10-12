@@ -3,7 +3,7 @@
   "name" : "File Viewer",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Link to display or download a document",
   "template" : "@pbFileViewer.tpl.html",
   "controller" : "@pbFileViewer.ctrl.js",

@@ -3,7 +3,7 @@
   "name" : "Radio Buttons",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Set of buttons for mutually exclusive options. The user selects one option",
   "template" : "@pbRadioButtons.tpl.html",
   "controller" : "@pbRadioButtons.ctrl.js",

@@ -3,7 +3,7 @@
   "name" : "Date Picker",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Calendar for selecting a date (only)",
   "template" : "@pbDatePicker.tpl.html",
   "controller" : "@pbDatePicker.ctrl.js",
