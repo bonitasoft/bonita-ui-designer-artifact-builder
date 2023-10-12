@@ -17,9 +17,7 @@
 package org.bonitasoft.web.designer.workspace;
 
 import static java.nio.file.Files.*;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
@@ -191,7 +189,6 @@ class WorkspaceTest {
         createDirectories(temporaryFolder.resolve("pages").resolve(".metadata"));
         createDirectories(temporaryFolder.resolve("pages").resolve("myPage"));
         createFile(temporaryFolder.resolve("pages/myPage/myPage.json"));
-        createFile(temporaryFolder.resolve("pages/.metadata/.index.json"));
         createFile(temporaryFolder.resolve("pages/.metadata/myPage.json"));
         createFile(temporaryFolder.resolve("pages/.metadata/oldestPage.json"));
 
@@ -313,7 +310,8 @@ class WorkspaceTest {
 
         write(createFile(temporaryFolder.resolve("pages/myPage/myPage.json")),
                 pageContent.getBytes(), StandardOpenOption.WRITE);
-
+        var indexFile = temporaryFolder.resolve("pages/.metadata/.index.json");
+        Files.delete(indexFile);
         write(createFile(temporaryFolder.resolve("pages/.metadata/.index.json")),
                 "{\"4a732c6f-254b-4b37-841f-9582696d40e9\":\"anyPage\",\"225ca6c5-9a72-4a03-a890-2e6bc2aeed93\":\"myPage\"}"
                         .getBytes(),
@@ -325,12 +323,9 @@ class WorkspaceTest {
 
         assertThat(temporaryFolder.resolve("pages").resolve("myPage")).exists();
         assertThat(temporaryFolder.resolve("pages").resolve("myPage").resolve("js")).doesNotExist();
-        await().atMost(2, SECONDS).untilAsserted(
-                () -> assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve(".index.json"))
-                        .exists());
+        assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve(".index.json")).exists();
         assertThat(contentOf(temporaryFolder.resolve("pages").resolve(".metadata").resolve(".index.json")))
                 .isEqualTo("{\"123ca6c5-9a72-4a03-a890-2e6bc2aeed93\":\"myPage\"}");
-
         assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve("oldestPage.json"))
                 .doesNotExist();
         assertThat(temporaryFolder.resolve("pages").resolve(".metadata").resolve("myPage.json")).exists();

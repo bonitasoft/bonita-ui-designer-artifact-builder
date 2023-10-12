@@ -78,10 +78,12 @@ public class Workspace {
 
     protected AtomicBoolean initialized = new AtomicBoolean(false);
 
-    public Workspace(UiDesignerProperties uiDesignerProperties, WidgetRepository widgetRepository,
+    public Workspace(UiDesignerProperties uiDesignerProperties,
+            WidgetRepository widgetRepository,
             PageRepository pageRepository,
             GeneratorStrategy generatorStrategy,
-            AssetDependencyImporter<Widget> widgetAssetDependencyImporter, ResourcesCopier resourcesCopier,
+            AssetDependencyImporter<Widget> widgetAssetDependencyImporter,
+            ResourcesCopier resourcesCopier,
             List<LiveRepositoryUpdate> migrations,
             JsonHandler jsonHandler) {
         this.widgetRepository = widgetRepository;
@@ -116,6 +118,7 @@ public class Workspace {
                     migration.start();
                 }
                 cleanPageWorkspace();
+                pageRepository.refreshIndexing(pageRepository.getAll());
                 initialized.set(true);
             } catch (IOException e) {
                 throw new DesignerInitializerException("Unable to initialize workspace", e);
