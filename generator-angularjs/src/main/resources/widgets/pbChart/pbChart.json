@@ -3,7 +3,7 @@
   "name" : "Chart",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Graphical display of numerical data to ease understanding. This widget is based on angular-chart-0.8.1, which is based on Chart.js. For information see http://jtblin.github.io/angular-chart.js/ and http://www.chartjs.org/docs/. Available chart types to display a single set of data are pie, doughnut, and polar area. For multiple sets of data, available chart types are bar, line, and radar.",
   "template" : "@pbChart.tpl.html",
   "controller" : "@pbChart.ctrl.js",

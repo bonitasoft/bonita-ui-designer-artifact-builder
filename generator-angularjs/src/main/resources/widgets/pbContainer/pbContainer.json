@@ -3,7 +3,7 @@
   "name" : "Container",
   "type" : "container",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Group of widgets used to define the arrangement of the page elements. Its content can be repeated over an array",
   "template" : "",
   "properties" : [

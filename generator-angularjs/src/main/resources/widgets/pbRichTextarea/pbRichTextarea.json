@@ -3,7 +3,7 @@
   "name" : "Rich text area",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Expendable text input field with HTML formatting, including style, image, links... This widget is based on textAngular.",
   "template" : "@pbRichTextarea.tpl.html",
   "controller" : "@pbRichTextarea.ctrl.js",

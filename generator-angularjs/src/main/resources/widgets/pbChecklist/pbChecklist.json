@@ -3,7 +3,7 @@
   "name" : "Checklist",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Set of checkboxes for options. The user selects zero or more",
   "template" : "@pbChecklist.tpl.html",
   "controller" : "@pbChecklist.ctrl.js",

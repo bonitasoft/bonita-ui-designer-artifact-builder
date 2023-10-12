@@ -3,7 +3,7 @@
   "name" : "Checkbox",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Unique checkbox for an option. The user checks it or not",
   "template" : "@pbCheckbox.tpl.html",
   "controller" : "@pbCheckbox.ctrl.js",

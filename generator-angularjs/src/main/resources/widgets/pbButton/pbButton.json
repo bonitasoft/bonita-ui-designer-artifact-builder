@@ -3,7 +3,7 @@
   "name" : "Button",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Trigger for an action in a page or form",
   "template" : "@pbButton.tpl.html",
   "controller" : "@pbButton.ctrl.js",

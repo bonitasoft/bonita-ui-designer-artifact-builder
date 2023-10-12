@@ -3,7 +3,7 @@
   "name" : "Autocomplete",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Input field with content completion from a given list",
   "template" : "@pbAutocomplete.tpl.html",
   "controller" : "@pbAutocomplete.ctrl.js",

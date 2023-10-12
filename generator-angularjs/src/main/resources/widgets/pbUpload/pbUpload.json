@@ -3,7 +3,7 @@
   "name" : "Upload",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "File chooser for uploading a document to a form",
   "template" : "@pbUpload.tpl.html",
   "controller" : "@pbUpload.ctrl.js",

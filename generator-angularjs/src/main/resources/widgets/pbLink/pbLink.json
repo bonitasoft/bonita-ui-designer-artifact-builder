@@ -3,7 +3,7 @@
   "name" : "Link",
   "type" : "widget",
   "custom" : false,
-  "modelVersion" : "2.5",
+  "modelVersion" : "2.6",
   "description" : "Navigation link to another page or form",
   "template" : "@pbLink.tpl.html",
   "controller" : "@pbLink.ctrl.js",
