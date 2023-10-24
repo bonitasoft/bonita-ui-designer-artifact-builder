@@ -11,7 +11,7 @@ msgstr ""
 "X-Crowdin-File-ID: 71887\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2023-10-10 04:06\n"
+"PO-Revision-Date: 2023-10-17 04:06\n"
 
 msgid ","
 msgstr ","
@@ -36,7 +36,7 @@ msgid "<b><em>Today</em> button</b> sets the selected date to the current date f
 "            It doesn't change the selected time, except when the time is not set.\n"
 "            In that case, it's rounded up or down to the closest 5 min value."
 msgstr "<b>Le bouton <em>Aujourd'hui</em></b> affiche dans le widget la date du jour de l’utilisateur.\n"
-"             Si l'heure est déjà définie, elle est gardée telle quelle. Sinon, elle est arrondi à la dizaine de minutes la plus proche de l'heure actuelle."
+"             Si l'heure est déjà définie, elle est gardée telle quelle. Sinon, elle est arrondie à la dizaine de minutes la plus proche de l'heure actuelle."
 
 msgid "<b>With <em>Handle time zone</em> set to \"no\"</b>: User time zone is ignored and the value of the widget does not contain any time zone information (e.g., yyyy-MM-ddTHH:mm:ss)."
 msgstr "<b>Lorsque <em>Gérer fuseaux horaires</em> est à \"non\"</b> : le fuseau horaire de l’utilisateur est ignoré et la <em>Valeur</em> du widget ne contient aucune information de fuseau horaire (par exemple, yyyy-MM-ddTHH:mm:ss)."

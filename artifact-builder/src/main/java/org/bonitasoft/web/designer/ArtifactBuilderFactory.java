@@ -106,7 +106,8 @@ public class ArtifactBuilderFactory {
                 core.getPageAssetRepository(),
                 core.getFragmentRepository(),
                 uiDesignerProperties.getWorkspace().getWidgets().getDir(),
-                generatorProperties);
+                generatorProperties,
+                uiDesignerProperties.getModelVersion());
 
         /**
          * END Specific generation

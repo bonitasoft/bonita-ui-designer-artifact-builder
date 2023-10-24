@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.bonitasoft.web</groupId>
   <artifactId>ui-designer-artifact-builder-parent</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Aggregator</name>
   <description>This module is the aggregator module</description>
@@ -80,7 +80,7 @@
     <gitflow-maven-plugin.version>1.20.0</gitflow-maven-plugin.version>
     <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
     <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
-    <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
     <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
     <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
     <spotless-maven-plugin.version>2.40.0</spotless-maven-plugin.version>
