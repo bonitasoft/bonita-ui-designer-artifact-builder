@@ -58,13 +58,16 @@ public class DefaultHtmlGenerator implements HtmlGenerator {
 
     private final List<PageFactory> pageFactories;
 
+    private String modelVersion;
+
     public DefaultHtmlGenerator(HtmlBuilderVisitor htmlBuilderVisitor,
             DirectivesCollector directivesCollector,
             RequiredModulesVisitor requiredModulesVisitor,
             AssetVisitor assetVisitor,
             AssetRepository<Widget> widgetAssetRepository,
             AssetRepository<Page> pageAssetRepository,
-            List<PageFactory> pageFactories) {
+            List<PageFactory> pageFactories,
+            String modelVersion) {
         this.htmlBuilderVisitor = htmlBuilderVisitor;
         this.directivesCollector = directivesCollector;
         this.requiredModulesVisitor = requiredModulesVisitor;
@@ -72,6 +75,7 @@ public class DefaultHtmlGenerator implements HtmlGenerator {
         this.widgetAssetRepository = widgetAssetRepository;
         this.pageAssetRepository = pageAssetRepository;
         this.pageFactories = pageFactories;
+        this.modelVersion = modelVersion;
     }
 
     public <P extends Previewable & Identifiable> String generateHtml(P previewable)
@@ -99,6 +103,7 @@ public class DefaultHtmlGenerator implements HtmlGenerator {
         var sortedAssets = getSortedAssets(previewable);
         var template = new TemplateEngine("page.hbs.html")
                 .with("resourceContext", resourceContext == null ? "" : resourceContext)
+                .with("uidModelVersion", modelVersion)
                 .with("directives",
                         this.directivesCollector.buildUniqueDirectivesFiles(previewable, previewable.getId()))
                 .with("rowsHtml", htmlBuilderVisitor.build(previewable.getRows()))

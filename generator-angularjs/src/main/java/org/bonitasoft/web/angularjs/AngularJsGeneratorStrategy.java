@@ -71,7 +71,8 @@ public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
             AssetRepository<Page> pageAssetRepository,
             FragmentRepository fragmentRepository,
             Path widgetUserRepoPath,
-            GeneratorProperties generatorProperties) {
+            GeneratorProperties generatorProperties,
+            String modelVersion) {
         this.generatorProperties = generatorProperties;
         this.widgetIdVisitor = widgetIdVisitor;
         this.directiveFileGenerator = directiveFileGenerator;
@@ -99,7 +100,8 @@ public class AngularJsGeneratorStrategy extends CommonGeneratorStrategy {
                 assetVisitor,
                 widgetAssetRepository,
                 pageAssetRepository,
-                pageFactories);
+                pageFactories,
+                modelVersion);
         this.fragmentDirectiveBuilder = new FragmentDirectiveBuilder(watcher, jsonHandler,
                 this.getHtmlBuilderVisitor(),
                 this.generatorProperties.isLiveBuildEnabled());
