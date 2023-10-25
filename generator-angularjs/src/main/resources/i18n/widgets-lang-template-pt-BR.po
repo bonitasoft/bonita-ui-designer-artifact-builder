@@ -11,22 +11,22 @@ msgstr ""
 "X-Crowdin-File-ID: 71887\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
-"PO-Revision-Date: 2023-10-17 04:06\n"
+"PO-Revision-Date: 2023-10-24 04:07\n"
 
 msgid ","
-msgstr ""
+msgstr ","
 
 msgid "."
-msgstr ""
+msgstr "."
 
 msgid "../API/"
-msgstr ""
+msgstr "../API/"
 
 msgid "../API/formFileUpload"
-msgstr ""
+msgstr "../API/formFileUpload"
 
 msgid "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> String variables (with or without time information)"
-msgstr "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> variáveis de sequência de caracteres (com ou sem informações de hora)"
+msgstr "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> variáveis de caracteres (com ou sem informações de hora)"
 
 msgid "<b><em>Now</em> button</b> sets the selected date and time to the current date and time for the user.\n"
 "            For the time, it is rounded up or down to the closest 5 min value."
@@ -275,7 +275,7 @@ msgid "Bonita API"
 msgstr "API Bonita"
 
 msgid "Bonita BPM"
-msgstr ""
+msgstr "Bonita BPM"
 
 msgid "Bordered"
 msgstr "Borda"
@@ -581,7 +581,7 @@ msgid "Frame"
 msgstr "Quadro"
 
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 msgid "Graphical display of numerical data to ease understanding. This widget is based on angular-chart-0.8.1, which is based on Chart.js. For information see http://jtblin.github.io/angular-chart.js/ and http://www.chartjs.org/docs/. Available chart types to display a single set of data are pie, doughnut, and polar area. For multiple sets of data, available chart types are bar, line, and radar."
 msgstr "Exibição gráfica de dados numéricos para facilitar a compreensão. Esta widget é baseada em angular-chart-0.8.1, que é baseada em Chart.js. Para obter informações, consulte http://jtblin.github.io/angular-chart. s/ e http://www.chartjs.org/docs/. Tipos de gráficos disponíveis para exibir um conjunto único de dados são torta, avelã e área polar. Para vários conjuntos de dados, tipos de gráficos disponíveis são barra, linha e radar."
@@ -713,7 +713,7 @@ msgid "It is possible to deactivate the animation when the modal appears. The ma
 msgstr "É possível desativar a animação quando o modal aparece. O uso principal desta opção seria criar um assistente, onde vários containers modais são exibidos em uma sequência."
 
 msgid "Item"
-msgstr ""
+msgstr "Item"
 
 msgid "Item to remove"
 msgstr "Item a ser removido"
@@ -761,7 +761,7 @@ msgid "Line"
 msgstr "Linha"
 
 msgid "Link"
-msgstr ""
+msgstr "Link"
 
 msgid "Link to display or download a document"
 msgstr "Link para exibir ou baixar um documento"
@@ -776,7 +776,7 @@ msgid "Long number values (Milliseconds since epoch)"
 msgstr "Valores de número longo (milissegundos desde período)"
 
 msgid "MM/dd/yyyy"
-msgstr ""
+msgstr "MM/dd/yyyy"
 
 msgid "Make sure the technical format value and its translations is a valid <a href=\"https://code.angularjs.org/1.3.18/docs/api/ng/filter/date\" target=\"_blank\">date format</a>."
 msgstr "Certifique-se de que o valor do formato técnico e suas traduções são válidos <a href=\"https://code.angularjs.org/1.3.18/docs/api/ng/filter/date\" target=\"_blank\">formato data</a>."
@@ -797,7 +797,7 @@ msgid "Miscellaneous toolbar"
 msgstr "Barra de ferramentas diversas"
 
 msgid "Modal"
-msgstr ""
+msgstr "Modal"
 
 msgid "Modal Id"
 msgstr "Id Modal"
@@ -818,7 +818,7 @@ msgid "Navigation link to another page or form"
 msgstr "Link de navegação para outra página ou formulário"
 
 msgid "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,<br/>consectetur,<br/>adipisci velit..."
-msgstr ""
+msgstr "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,<br/>consectetur,<br/>adipisci velit..."
 
 msgid "New window (_blank)"
 msgstr "Nova janela (_blank)"
@@ -866,10 +866,10 @@ msgid "Open modal"
 msgstr "Abrir Modal"
 
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 msgid "PUT"
-msgstr ""
+msgstr "PUT"
 
 msgid "Page size"
 msgstr "Tamanho da página"
@@ -908,7 +908,7 @@ msgid "Process version"
 msgstr "Versão do processo"
 
 msgid "Radar"
-msgstr ""
+msgstr "Radar"
 
 msgid "Read-only"
 msgstr "Somente leitura"
@@ -1114,7 +1114,7 @@ msgid "Tab properties usage"
 msgstr "Uso de propriedades de guia"
 
 msgid "Tab x"
-msgstr ""
+msgstr "Tab x"
 
 msgid "Table"
 msgstr "Tabela"
@@ -1338,7 +1338,7 @@ msgid "Type"
 msgstr "Tipo"
 
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 msgid "URL parameters"
 msgstr "Parâmetro de URL"
@@ -1467,7 +1467,7 @@ msgid "You need to use this following css selector in your theme.css file:"
 msgstr "Você precisa usar este seletor css no seu arquivo theme.css:"
 
 msgid "Zebra-striping"
-msgstr ""
+msgstr "Zebra-striping"
 
 msgid "_self"
 msgstr "_auto"
@@ -1482,16 +1482,16 @@ msgid "default"
 msgstr "padrão"
 
 msgid "email"
-msgstr ""
+msgstr "email"
 
 msgid "formInput"
 msgstr "formulárioEntrada"
 
 msgid "h:mm:ss a"
-msgstr ""
+msgstr "h:mm:ss a"
 
 msgid "http://"
-msgstr ""
+msgstr "http://"
 
 msgid "info"
 msgstr "informação"
@@ -1503,7 +1503,7 @@ msgid "left"
 msgstr "esquerda"
 
 msgid "link"
-msgstr ""
+msgstr "link"
 
 msgid "medium"
 msgstr "médio"
@@ -1518,7 +1518,7 @@ msgid "password"
 msgstr "senha"
 
 msgid "pills"
-msgstr ""
+msgstr "pills"
 
 msgid "primary"
 msgstr "primário"
@@ -1542,7 +1542,7 @@ msgid "top"
 msgstr "superior"
 
 msgid "url"
-msgstr ""
+msgstr "url"
 
 msgid "warning"
 msgstr "advertência"
@@ -1551,5 +1551,5 @@ msgid "whitespace"
 msgstr "espaço em branco"
 
 msgid "€"
-msgstr ""
+msgstr "€"
 
