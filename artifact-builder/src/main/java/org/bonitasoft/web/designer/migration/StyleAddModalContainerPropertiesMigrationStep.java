@@ -44,7 +44,7 @@ public class StyleAddModalContainerPropertiesMigrationStep extends AbstractMigra
         for (var asset : artifact.getAssets()) {
             if (asset.getName().equals("style.css")) {
                 var pageStyleCssContent = assetService.getAssetContent(artifact, asset);
-                assetService.save(artifact, asset, getMigratedAssetContent(pageStyleCssContent));
+                assetService.save(artifact, asset, getMigratedAssetContent(pageStyleCssContent + "\n\n"));
                 logger.info("[MIGRATION] Adding modalContainer classes in asset [{}] to {} [{}] (introduced in 1.8.28)",
                         asset.getName(), artifact.getType(), artifact.getName());
             }

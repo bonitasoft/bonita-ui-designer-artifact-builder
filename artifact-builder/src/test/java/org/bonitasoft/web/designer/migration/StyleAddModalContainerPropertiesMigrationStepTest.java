@@ -63,11 +63,11 @@ class StyleAddModalContainerPropertiesMigrationStepTest {
         when(pageAssetService.getAssetContent(page, style)).thenReturn(initContent);
         InputStream is = getClass()
                 .getResourceAsStream("/templates/migration/assets/css/styleAddModalContainerProperties.css");
-        String content = initContent.concat(IOUtils.toString(is));
 
         step.migrate(page);
 
-        verify(pageAssetService).save(page, expectedAsset("style.css"), content.getBytes());
+        String expectedContent = initContent.concat("\n\n").concat(IOUtils.toString(is));
+        verify(pageAssetService).save(page, expectedAsset("style.css"), expectedContent.getBytes());
     }
 
 }

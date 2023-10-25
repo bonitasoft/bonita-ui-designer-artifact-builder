@@ -43,7 +43,7 @@ public class StyleAddErrorDialogPropertiesMigrationStep extends AbstractMigratio
         for (var asset : artifact.getAssets()) {
             if (asset.getName().equals("style.css")) {
                 var pageStyleCssContent = assetService.getAssetContent(artifact, asset);
-                assetService.save(artifact, asset, getMigratedAssetContent(pageStyleCssContent));
+                assetService.save(artifact, asset, getMigratedAssetContent(pageStyleCssContent + "\n\n"));
                 log.info("[MIGRATION] Adding error dialog classes in asset [{}] to {} [{}] (introduced in 1.17.5)",
                         asset.getName(), artifact.getType(), artifact.getName());
             }
