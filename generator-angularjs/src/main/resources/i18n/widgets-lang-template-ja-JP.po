@@ -11,19 +11,19 @@ msgstr ""
 "X-Crowdin-File-ID: 71887\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
-"PO-Revision-Date: 2023-10-20 04:07\n"
+"PO-Revision-Date: 2023-10-29 04:07\n"
 
 msgid ","
-msgstr ""
+msgstr ","
 
 msgid "."
-msgstr ""
+msgstr "."
 
 msgid "../API/"
-msgstr ""
+msgstr "../API/"
 
 msgid "../API/formFileUpload"
-msgstr ""
+msgstr "../API/formFileUpload"
 
 msgid "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> String variables (with or without time information)"
 msgstr "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a>で書式化された文字列変数 (時間情報の有無にかかわらず)"
@@ -272,10 +272,10 @@ msgid "Bind to a Variable to filter the table 'Content'"
 msgstr "テーブル「Content」をフィルタリングする変数にバインドします。"
 
 msgid "Bonita API"
-msgstr ""
+msgstr "Bonita API"
 
 msgid "Bonita BPM"
-msgstr ""
+msgstr "Bonita BPM"
 
 msgid "Bordered"
 msgstr "境界線"
@@ -406,7 +406,7 @@ msgid "Data-Table"
 msgstr "データテーブル"
 
 msgid "Date"
-msgstr ""
+msgstr "日付"
 
 msgid "Date & time display"
 msgstr "日時の表示"
@@ -581,7 +581,7 @@ msgid "Frame"
 msgstr "フレーム"
 
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 msgid "Graphical display of numerical data to ease understanding. This widget is based on angular-chart-0.8.1, which is based on Chart.js. For information see http://jtblin.github.io/angular-chart.js/ and http://www.chartjs.org/docs/. Available chart types to display a single set of data are pie, doughnut, and polar area. For multiple sets of data, available chart types are bar, line, and radar."
 msgstr "理解を容易にするための数値データのグラフィカル表示。このウィジェットはChart.js に基づいている angular-chart-0.8.1 に基づいています。\n"
@@ -869,10 +869,10 @@ msgid "Open modal"
 msgstr "モーダルを開く"
 
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 msgid "PUT"
-msgstr ""
+msgstr "PUT"
 
 msgid "Page size"
 msgstr "ページサイズ"
@@ -1117,7 +1117,7 @@ msgid "Tab properties usage"
 msgstr "タブのプロパティの使用"
 
 msgid "Tab x"
-msgstr ""
+msgstr "Tab x"
 
 msgid "Table"
 msgstr "テーブル"
@@ -1147,7 +1147,7 @@ msgid "Technical time format"
 msgstr "テクニカルな時刻書式"
 
 msgid "Text"
-msgstr ""
+msgstr "テキスト"
 
 msgid "Text used to structure the page or form content"
 msgstr "ページまたはフォームのコンテンツの構造化に使用されるテキスト"
@@ -1342,7 +1342,7 @@ msgid "Type"
 msgstr "タイプ"
 
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 msgid "URL parameters"
 msgstr "URL パラメータ"
@@ -1474,16 +1474,16 @@ msgid "Zebra-striping"
 msgstr "Zebra-striping（ゼブラ ストライピング）"
 
 msgid "_self"
-msgstr ""
+msgstr "_self"
 
 msgid "center"
 msgstr "中央"
 
 msgid "danger"
-msgstr ""
+msgstr "danger"
 
 msgid "default"
-msgstr ""
+msgstr "デフォルト"
 
 msgid "email"
 msgstr "電子メール"
@@ -1492,25 +1492,25 @@ msgid "formInput"
 msgstr "formInput(フォーム入力）"
 
 msgid "h:mm:ss a"
-msgstr ""
+msgstr "h:mm:ss a"
 
 msgid "http://"
-msgstr ""
+msgstr "http://"
 
 msgid "info"
-msgstr ""
+msgstr "info"
 
 msgid "large"
-msgstr ""
+msgstr "large"
 
 msgid "left"
 msgstr "左"
 
 msgid "link"
-msgstr ""
+msgstr "リンク"
 
 msgid "medium"
-msgstr ""
+msgstr "medium"
 
 msgid "none"
 msgstr "なし"
@@ -1522,19 +1522,19 @@ msgid "password"
 msgstr "パスワード"
 
 msgid "pills"
-msgstr ""
+msgstr "pills"
 
 msgid "primary"
-msgstr ""
+msgstr "primary"
 
 msgid "right"
 msgstr "右"
 
 msgid "small"
-msgstr ""
+msgstr "small"
 
 msgid "success"
-msgstr ""
+msgstr "成功"
 
 msgid "tabs"
 msgstr "タブ"
@@ -1546,14 +1546,14 @@ msgid "top"
 msgstr "トップへ"
 
 msgid "url"
-msgstr ""
+msgstr "url"
 
 msgid "warning"
-msgstr ""
+msgstr "警告"
 
 msgid "whitespace"
 msgstr "空白"
 
 msgid "€"
-msgstr ""
+msgstr "€"
 
