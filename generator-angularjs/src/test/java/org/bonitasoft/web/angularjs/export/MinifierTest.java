@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.angularjs.rendering;
+package org.bonitasoft.web.angularjs.export;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import org.bonitasoft.web.angularjs.export.Minifier;
 import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
 import org.junit.jupiter.api.Test;
 
@@ -35,12 +34,14 @@ class MinifierTest {
     void should_minify_input() throws IOException {
         String content = "function PbInputCtrl($scope, $log, widgetNameFactory) {\n" + "\n'use strict';\n" +
                 "\n  this.name = widgetNameFactory.getName('pbInput');\n" +
+                "\n  var myString = `http://some-url.com ${name} other`;\n" +
                 "\n  if (!$scope.properties.isBound('value')) {\n" +
                 "    $log.error('the pbInput property named \"value\" need to be bound to a variable');\n" +
                 "  }\n}\n";
         String expected = "\n" +
                 "function PbInputCtrl($scope,$log,widgetNameFactory){'use strict';this.name=widgetNameFactory.getName" +
-                "('pbInput');if(!$scope.properties.isBound('value')){$log.error('the pbInput property named \"value\"" +
+                "('pbInput');var myString=`http://some-url.com ${name} other`;if(!$scope.properties.isBound('value')){$log.error('the pbInput property named \"value\""
+                +
                 " need to be bound to a variable');}}";
 
         byte[] min = Minifier.minify(content.getBytes());
@@ -51,16 +52,16 @@ class MinifierTest {
     @Test
     void should_throw_exeption_when_content_have_bad_unterminated_comment() throws IOException {
         String badCommentTemplate = "/** dffsf /";
-        String content = badCommentTemplate + "content";
+        var content = (badCommentTemplate + "content").getBytes();
 
-        assertThrows(GenerationException.class, () -> Minifier.minify(content.getBytes()));
+        assertThrows(GenerationException.class, () -> Minifier.minify(content));
     }
 
     @Test
     void should_throw_exeption_when_content_have_bad_unterminated_string() throws IOException {
         String unterminatedString = "'use strict\n";
-        String content = "function PbInputCtrl($scope, $log, widgetNameFactory) { \n" + unterminatedString;
+        var content = ("function PbInputCtrl($scope, $log, widgetNameFactory) { \n" + unterminatedString).getBytes();
 
-        assertThrows(GenerationException.class, () -> Minifier.minify(content.getBytes()));
+        assertThrows(GenerationException.class, () -> Minifier.minify(content));
     }
 }

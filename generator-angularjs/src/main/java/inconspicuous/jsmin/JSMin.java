@@ -16,95 +16,56 @@
  */
 package inconspicuous.jsmin;
 
-/*
- * org.inconspicuous.jsmin.JSMin.java 2006-02-13
- * Copyright (c) 2006 John Reilly (www.inconspicuous.org)
- * This work is a translation from C to Java of jsmin.c published by
- * Douglas Crockford. Permission is hereby granted to use the Java
- * version under the same conditions as the jsmin.c on which it is
- * based.
- * jsmin.c 2003-04-21
- * Copyright (c) 2002 Douglas Crockford (www.crockford.com)
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * The Software shall be used for Good, not Evil.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
 
+/**
+ * Copyright (c) 2006 John Reilly (www.inconspicuous.org) This work is a
+ * translation from C to Java of jsmin.c published by Douglas Crockford.
+ * Permission is hereby granted to use the Java version under the same
+ * conditions as the jsmin.c on which it is based.
+ * <p>
+ * http://www.crockford.com/javascript/jsmin.html
+ */
+@SuppressWarnings("serial")
 public class JSMin {
 
     private static final int EOF = -1;
 
-    private PushbackInputStream in;
-    private OutputStream out;
+    private final PushbackInputStream in;
+
+    private final OutputStream out;
 
     private int theA;
+
     private int theB;
 
-    public JSMin(InputStream in, OutputStream out) {
+    private int theX = EOF;
+
+    private int theY = EOF;
+
+    public JSMin(final InputStream in, final OutputStream out) {
         this.in = new PushbackInputStream(in);
         this.out = out;
     }
 
     /**
-     * isAlphanum -- return true if the character is a letter, digit,
-     * underscore, dollar sign, or non-ASCII character.
+     * isAlphanum -- return true if the character is a letter, digit, underscore,
+     * dollar sign, or non-ASCII character.
      */
-    static boolean isAlphanum(int c) {
-        return ((c >= 'a' && c <= 'z') ||
-                (c >= '0' && c <= '9') ||
-                (c >= 'A' && c <= 'Z') ||
-                c == '_' ||
-                c == '$' ||
-                c == '\\' ||
-                c > 126);
-    }
-
-    public static void main(String arg[]) {
-        try {
-            JSMin jsmin = new JSMin(new FileInputStream(arg[0]), System.out);
-            jsmin.jsmin();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnterminatedRegExpLiteralException e) {
-            e.printStackTrace();
-        } catch (UnterminatedCommentException e) {
-            e.printStackTrace();
-        } catch (UnterminatedStringLiteralException e) {
-            e.printStackTrace();
-        }
+    static boolean isAlphanum(final int c) {
+        return ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')
+                || (c >= 'A' && c <= 'Z') || c == '_' || c == '$' || c == '\\' || c > 126);
     }
 
     /**
      * get -- return the next character from stdin. Watch out for lookahead. If
-     * the character is a control character, translate it to a space or
-     * linefeed.
+     * the character is a control character, translate it to a space or linefeed.
      */
     int get() throws IOException {
-        int c = in.read();
+        final int c = in.read();
 
         if (c >= ' ' || c == '\n' || c == EOF) {
             return c;
@@ -121,7 +82,7 @@ public class JSMin {
      * Get the next character without getting it.
      */
     int peek() throws IOException {
-        int lookaheadChar = in.read();
+        final int lookaheadChar = in.read();
         in.unread(lookaheadChar);
         return lookaheadChar;
     }
@@ -138,50 +99,57 @@ public class JSMin {
                     for (;;) {
                         c = get();
                         if (c <= '\n') {
-                            return c;
+                            break;
                         }
                     }
-
+                    break;
                 case '*':
                     get();
-                    for (;;) {
+                    while (c != ' ') {
                         switch (get()) {
                             case '*':
                                 if (peek() == '/') {
                                     get();
-                                    return ' ';
+                                    c = ' ';
                                 }
                                 break;
                             case EOF:
                                 throw new UnterminatedCommentException();
                         }
                     }
-
-                default:
-                    return c;
+                    break;
             }
 
         }
+        theY = theX;
+        theX = c;
         return c;
     }
 
     /**
-     * action -- do something! What you do is determined by the argument: 1
-     * Output A. Copy B to A. Get the next B. 2 Copy B to A. Get the next B.
-     * (Delete A). 3 Get the next B. (Delete B). action treats a string as a
-     * single character. Wow! action recognizes a regular expression if it is
-     * preceded by ( or , or =.
+     * action -- do something! What you do is determined by the argument:
+     * <ul>
+     * <li>1 Output A. Copy B to A. Get the next B.</li>
+     * <li>2 Copy B to A. Get the next B. (Delete A).</li>
+     * <li>3 Get the next B. (Delete B).</li>
+     * </ul>
+     * action treats a string as a single character. Wow!<br/>
+     * action recognizes a regular expression if it is preceded by ( or , or =.
      */
 
-    void action(int d) throws IOException, UnterminatedRegExpLiteralException,
-            UnterminatedCommentException, UnterminatedStringLiteralException {
+    void action(final int d) throws IOException,
+            UnterminatedRegExpLiteralException, UnterminatedCommentException,
+            UnterminatedStringLiteralException {
         switch (d) {
             case 1:
                 out.write(theA);
+                if (theA == theB && (theA == '+' || theA == '-') && theY != theA) {
+                    out.write(' ');
+                }
             case 2:
                 theA = theB;
 
-                if (theA == '\'' || theA == '"') {
+                if (theA == '\'' || theA == '"' || theA == '`') {
                     for (;;) {
                         out.write(theA);
                         theA = get();
@@ -200,12 +168,39 @@ public class JSMin {
 
             case 3:
                 theB = next();
-                if (theB == '/' && (theA == '(' || theA == ',' || theA == '=')) {
+                if (theB == '/'
+                        && (theA == '(' || theA == ',' || theA == '=' || theA == ':'
+                                || theA == '[' || theA == '!' || theA == '&' || theA == '|'
+                                || theA == '?' || theA == '+' || theA == '-' || theA == '~'
+                                || theA == '*' || theA == '/' || theA == '{' || theA == '\n')) {
                     out.write(theA);
+                    if (theA == '/' || theA == '*') {
+                        out.write(' ');
+                    }
                     out.write(theB);
                     for (;;) {
                         theA = get();
-                        if (theA == '/') {
+                        if (theA == '[') {
+                            for (;;) {
+                                out.write(theA);
+                                theA = get();
+                                if (theA == ']') {
+                                    break;
+                                }
+                                if (theA == '\\') {
+                                    out.write(theA);
+                                    theA = get();
+                                }
+                                if (theA <= '\n') {
+                                    throw new UnterminatedRegExpLiteralException();
+                                }
+                            }
+                        } else if (theA == '/') {
+                            switch (peek()) {
+                                case '/':
+                                case '*':
+                                    throw new UnterminatedRegExpLiteralException();
+                            }
                             break;
                         } else if (theA == '\\') {
                             out.write(theA);
@@ -226,8 +221,13 @@ public class JSMin {
      * replaced with spaces. Carriage returns will be replaced with linefeeds.
      * Most spaces and linefeeds will be removed.
      */
-    public void jsmin() throws IOException, UnterminatedRegExpLiteralException, UnterminatedCommentException,
-            UnterminatedStringLiteralException {
+    public void jsmin() throws IOException, UnterminatedRegExpLiteralException,
+            UnterminatedCommentException, UnterminatedStringLiteralException {
+        if (peek() == 0xEF) {
+            get();
+            get();
+            get();
+        }
         theA = '\n';
         action(3);
         while (theA != EOF) {
@@ -246,6 +246,8 @@ public class JSMin {
                         case '(':
                         case '+':
                         case '-':
+                        case '!':
+                        case '~':
                             action(1);
                             break;
                         case ' ':
@@ -277,6 +279,7 @@ public class JSMin {
                                 case '-':
                                 case '"':
                                 case '\'':
+                                case '`':
                                     action(1);
                                     break;
                                 default:
@@ -296,13 +299,13 @@ public class JSMin {
         out.flush();
     }
 
-    public class UnterminatedCommentException extends Exception {
+    public static class UnterminatedCommentException extends Exception {
     }
 
-    public class UnterminatedStringLiteralException extends Exception {
+    public static class UnterminatedStringLiteralException extends Exception {
     }
 
-    public class UnterminatedRegExpLiteralException extends Exception {
+    public static class UnterminatedRegExpLiteralException extends Exception {
     }
 
 }
