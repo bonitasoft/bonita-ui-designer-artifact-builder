@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.bonitasoft.web</groupId>
   <artifactId>ui-designer-artifact-builder-parent</artifactId>
-  <version>1.1.0</version>
+  <version>1.0.6</version>
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Aggregator</name>
   <description>This module is the aggregator module</description>
