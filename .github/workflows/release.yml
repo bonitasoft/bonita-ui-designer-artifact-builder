@@ -41,4 +41,4 @@ jobs:
           git config user.name "GitHub Actions"
       
       - name: Create Release 
-        run: ./mvnw -ntp --batch-mode -Dstyle.color=always gitflow:release -DgitFlowConfg.developmentBranch=${{ github.ref_name }} -DdevelopmentVersion=${{ github.event.inputs.nextVersion }} -DreleaseVersion=${{ github.event.inputs.version }} -DskipReleaseMergeProdBranch=${{ github.event.inputs.skipMergeReleaseInMaster }} -Dverbose
+        run: ./mvnw -ntp --batch-mode -Dstyle.color=always gitflow:release -DgitFlowConfig.developmentBranch=${{ github.ref_name }} -DdevelopmentVersion=${{ github.event.inputs.nextVersion }} -DreleaseVersion=${{ github.event.inputs.version }} -DskipReleaseMergeProdBranch=${{ github.event.inputs.skipMergeReleaseInMaster }} -Dverbose
