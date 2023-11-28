@@ -83,7 +83,7 @@
     <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
     <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
     <build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
-    <spotless-maven-plugin.version>2.40.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.41.0</spotless-maven-plugin.version>
     <mockito-junit-jupiter.version>5.3.1</mockito-junit-jupiter.version>
     <mockito-core-plugin.version>5.3.1</mockito-core-plugin.version>
     <!-- Spotless resources location -->
@@ -324,6 +324,10 @@
               <licenseHeader>
                 <file>${header.file}</file>
               </licenseHeader>
+              <!-- Exclude generated sources -->
+              <excludes>
+                <exclude>**/target/**/*.java</exclude>
+              </excludes>
             </java>
           </configuration>
         </plugin>
