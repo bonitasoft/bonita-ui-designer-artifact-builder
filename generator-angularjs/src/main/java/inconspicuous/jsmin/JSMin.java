@@ -17,9 +17,10 @@
 package inconspicuous.jsmin;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PushbackInputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * Copyright (c) 2006 John Reilly (www.inconspicuous.org) This work is a
@@ -29,218 +30,256 @@ import java.io.PushbackInputStream;
  * <p>
  * http://www.crockford.com/javascript/jsmin.html
  */
-@SuppressWarnings("serial")
 public class JSMin {
 
     private static final int EOF = -1;
 
-    private final PushbackInputStream in;
+    private Reader in;
+    private Writer out;
 
-    private final OutputStream out;
+    private int the_a;
+    private int the_b;
+    private int look_ahead = EOF;
+    private int the_x = EOF;
+    private int the_y = EOF;
 
-    private int theA;
+    /**
+     * Performs minification of the given input script.
+     *
+     * @param script the source script
+     * @return the minified script
+     * @throws JSMin.MinifyException
+     */
+    public static String minify(String script) throws JSMin.MinifyException {
+        StringReader in = new StringReader(script);
+        StringWriter out = new StringWriter();
+        minify(in, out);
+        return out.toString();
+    }
 
-    private int theB;
+    /**
+     * Performs minification of the input read from in and writes the minified
+     * script to out.
+     *
+     * @param in the source script read
+     * @param out the minified script writer
+     * @throws JSMin.MinifyException
+     */
+    public static void minify(Reader in, Writer out) throws JSMin.MinifyException {
+        try {
+            JSMin min = new JSMin(in, out);
+            min.apply();
+        } catch (IOException e) {
+            error("Failed to read/write input: " + e.getMessage());
+        }
+    }
 
-    private int theX = EOF;
+    /**
+     * Throws a runtime exception with the given message.
+     * 
+     * @param message the message
+     * @throws JSMin.MinifyException
+     */
+    private static void error(String message) throws JSMin.MinifyException {
+        throw new MinifyException("JSMIN error: " + message);
+    }
 
-    private int theY = EOF;
-
-    public JSMin(final InputStream in, final OutputStream out) {
-        this.in = new PushbackInputStream(in);
+    /**
+     * Private constructor of the JSMin class
+     */
+    private JSMin(Reader in, Writer out) throws IOException {
+        this.in = in;
         this.out = out;
     }
 
     /**
-     * isAlphanum -- return true if the character is a letter, digit, underscore,
+     * is_alphanum -- return true if the character is a letter, digit, underscore,
      * dollar sign, or non-ASCII character.
      */
-    static boolean isAlphanum(final int c) {
-        return ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')
-                || (c >= 'A' && c <= 'Z') || c == '_' || c == '$' || c == '\\' || c > 126);
+    private boolean is_alphanum(int codeunit) {
+        return (((codeunit >= 'a') && (codeunit <= 'z')) || ((codeunit >= '0') && (codeunit <= '9'))
+                || ((codeunit >= 'A') && (codeunit <= 'Z')) || (codeunit == '_') || (codeunit == '$')
+                || (codeunit == '\\') || (codeunit > 126));
     }
 
     /**
-     * get -- return the next character from stdin. Watch out for lookahead. If
-     * the character is a control character, translate it to a space or linefeed.
+     * get -- return the next character from stdin. Watch out for lookahead. If the
+     * character is a control character, translate it to a space or linefeed.
      */
-    int get() throws IOException {
-        final int c = in.read();
-
-        if (c >= ' ' || c == '\n' || c == EOF) {
-            return c;
+    private int get() throws IOException {
+        int codeunit = this.look_ahead;
+        this.look_ahead = EOF;
+        if (codeunit == EOF) {
+            codeunit = this.in.read();
         }
-
-        if (c == '\r') {
+        if ((codeunit >= ' ') || (codeunit == '\n') || (codeunit == EOF)) {
+            return codeunit;
+        }
+        if (codeunit == '\r') {
             return '\n';
         }
-
         return ' ';
     }
 
     /**
-     * Get the next character without getting it.
+     * peek -- get the next character without advancing.
      */
-    int peek() throws IOException {
-        final int lookaheadChar = in.read();
-        in.unread(lookaheadChar);
-        return lookaheadChar;
+    private int peek() throws IOException {
+        this.look_ahead = this.get();
+        return this.look_ahead;
     }
 
     /**
-     * next -- get the next character, excluding comments. peek() is used to see
-     * if a '/' is followed by a '/' or '*'.
+     * next -- get the next character, excluding comments. peek() is used to see if
+     * a '/' is followed by a '/' or '*'.
+     * 
+     * @throws JSMin.MinifyException
      */
-    int next() throws IOException, UnterminatedCommentException {
-        int c = get();
-        if (c == '/') {
-            switch (peek()) {
+    private int next() throws IOException, JSMin.MinifyException {
+        int codeunit = this.get();
+        if (codeunit == '/') {
+            switch (this.peek()) {
                 case '/':
                     for (;;) {
-                        c = get();
-                        if (c <= '\n') {
+                        codeunit = this.get();
+                        if (codeunit <= '\n') {
                             break;
                         }
                     }
                     break;
                 case '*':
-                    get();
-                    while (c != ' ') {
-                        switch (get()) {
+                    this.get();
+                    while (codeunit != ' ') {
+                        switch (this.get()) {
                             case '*':
-                                if (peek() == '/') {
-                                    get();
-                                    c = ' ';
+                                if (this.peek() == '/') {
+                                    this.get();
+                                    codeunit = ' ';
                                 }
                                 break;
                             case EOF:
-                                throw new UnterminatedCommentException();
+                                error("Unterminated comment.");
                         }
                     }
                     break;
             }
-
         }
-        theY = theX;
-        theX = c;
-        return c;
+        this.the_y = this.the_x;
+        this.the_x = codeunit;
+        return codeunit;
     }
 
     /**
-     * action -- do something! What you do is determined by the argument:
-     * <ul>
-     * <li>1 Output A. Copy B to A. Get the next B.</li>
-     * <li>2 Copy B to A. Get the next B. (Delete A).</li>
-     * <li>3 Get the next B. (Delete B).</li>
-     * </ul>
-     * action treats a string as a single character. Wow!<br/>
-     * action recognizes a regular expression if it is preceded by ( or , or =.
+     * action -- do something! What you do is determined by the argument: 1 Output
+     * A. Copy B to A. Get the next B. 2 Copy B to A. Get the next B. (Delete A). 3
+     * Get the next B. (Delete B). action treats a string as a single character.
+     * action recognizes a regular expression if it is preceded by the likes of '('
+     * or ',' or '='.
+     * 
+     * @throws JSMin.MinifyException
      */
-
-    void action(final int d) throws IOException,
-            UnterminatedRegExpLiteralException, UnterminatedCommentException,
-            UnterminatedStringLiteralException {
-        switch (d) {
+    private void action(int determined) throws IOException, JSMin.MinifyException {
+        switch (determined) {
             case 1:
-                out.write(theA);
-                if (theA == theB && (theA == '+' || theA == '-') && theY != theA) {
-                    out.write(' ');
+                this.out.write(this.the_a);
+                if (((this.the_y == '\n') || (this.the_y == ' '))
+                        && ((this.the_a == '+') || (this.the_a == '-') || (this.the_a == '*') || (this.the_a == '/'))
+                        && ((this.the_b == '+') || (this.the_b == '-') || (this.the_b == '*') || (this.the_b == '/'))) {
+                    this.out.write(this.the_y);
                 }
             case 2:
-                theA = theB;
-
-                if (theA == '\'' || theA == '"' || theA == '`') {
+                this.the_a = this.the_b;
+                if ((this.the_a == '\'') || (this.the_a == '"') || (this.the_a == '`')) {
                     for (;;) {
-                        out.write(theA);
-                        theA = get();
-                        if (theA == theB) {
+                        this.out.write(this.the_a);
+                        this.the_a = this.get();
+                        if (this.the_a == this.the_b) {
                             break;
                         }
-                        if (theA <= '\n') {
-                            throw new UnterminatedStringLiteralException();
+                        if (this.the_a == '\\') {
+                            this.out.write(this.the_a);
+                            this.the_a = this.get();
                         }
-                        if (theA == '\\') {
-                            out.write(theA);
-                            theA = get();
+                        if (this.the_a == EOF) {
+                            error("Unterminated string literal.");
                         }
                     }
                 }
-
             case 3:
-                theB = next();
-                if (theB == '/'
-                        && (theA == '(' || theA == ',' || theA == '=' || theA == ':'
-                                || theA == '[' || theA == '!' || theA == '&' || theA == '|'
-                                || theA == '?' || theA == '+' || theA == '-' || theA == '~'
-                                || theA == '*' || theA == '/' || theA == '{' || theA == '\n')) {
-                    out.write(theA);
-                    if (theA == '/' || theA == '*') {
-                        out.write(' ');
+                this.the_b = this.next();
+                if ((this.the_b == '/') && ((this.the_a == '(') || (this.the_a == ',') || (this.the_a == '=')
+                        || (this.the_a == ':') || (this.the_a == '[') || (this.the_a == '!') || (this.the_a == '&')
+                        || (this.the_a == '|') || (this.the_a == '?') || (this.the_a == '+') || (this.the_a == '-')
+                        || (this.the_a == '~') || (this.the_a == '*') || (this.the_a == '/') || (this.the_a == '{')
+                        || (this.the_a == '}') || (this.the_a == ';'))) {
+                    this.out.write(this.the_a);
+                    if ((this.the_a == '/') || (this.the_a == '*')) {
+                        this.out.write(' ');
                     }
-                    out.write(theB);
+                    this.out.write(this.the_b);
                     for (;;) {
-                        theA = get();
-                        if (theA == '[') {
+                        this.the_a = this.get();
+                        if (this.the_a == '[') {
                             for (;;) {
-                                out.write(theA);
-                                theA = get();
-                                if (theA == ']') {
+                                this.out.write(this.the_a);
+                                this.the_a = this.get();
+                                if (this.the_a == ']') {
                                     break;
                                 }
-                                if (theA == '\\') {
-                                    out.write(theA);
-                                    theA = get();
+                                if (this.the_a == '\\') {
+                                    this.out.write(this.the_a);
+                                    this.the_a = this.get();
                                 }
-                                if (theA <= '\n') {
-                                    throw new UnterminatedRegExpLiteralException();
+                                if (this.the_a == EOF) {
+                                    error("Unterminated set in Regular Expression literal.");
                                 }
                             }
-                        } else if (theA == '/') {
-                            switch (peek()) {
+                        } else if (this.the_a == '/') {
+                            switch (this.peek()) {
                                 case '/':
                                 case '*':
-                                    throw new UnterminatedRegExpLiteralException();
+                                    error("Unterminated set in Regular Expression literal.");
                             }
                             break;
-                        } else if (theA == '\\') {
-                            out.write(theA);
-                            theA = get();
-                        } else if (theA <= '\n') {
-                            throw new UnterminatedRegExpLiteralException();
+                        } else if (this.the_a == '\\') {
+                            this.out.write(this.the_a);
+                            this.the_a = this.get();
                         }
-                        out.write(theA);
+                        if (this.the_a == EOF) {
+                            error("Unterminated Regular Expression literal.");
+                        }
+                        this.out.write(this.the_a);
                     }
-                    theB = next();
+                    this.the_b = this.next();
                 }
         }
     }
 
     /**
      * jsmin -- Copy the input to the output, deleting the characters which are
-     * insignificant to JavaScript. Comments will be removed. Tabs will be
-     * replaced with spaces. Carriage returns will be replaced with linefeeds.
-     * Most spaces and linefeeds will be removed.
+     * insignificant to JavaScript. Comments will be removed. Tabs will be replaced
+     * with spaces. Carriage returns will be replaced with linefeeds. Most spaces
+     * and linefeeds will be removed.
+     * 
+     * @throws JSMin.MinifyException
      */
-    public void jsmin() throws IOException, UnterminatedRegExpLiteralException,
-            UnterminatedCommentException, UnterminatedStringLiteralException {
-        if (peek() == 0xEF) {
-            get();
-            get();
-            get();
+    public void apply() throws IOException, JSMin.MinifyException {
+
+        if (this.peek() == 0xEF) {
+            this.get();
+            this.get();
+            this.get();
         }
-        theA = '\n';
-        action(3);
-        while (theA != EOF) {
-            switch (theA) {
+
+        this.the_a = '\n';
+        this.action(3);
+        while (this.the_a != EOF) {
+            switch (this.the_a) {
                 case ' ':
-                    if (isAlphanum(theB)) {
-                        action(1);
-                    } else {
-                        action(2);
-                    }
+                    this.action(this.is_alphanum(this.the_b) ? 1 : 2);
                     break;
                 case '\n':
-                    switch (theB) {
+                    switch (this.the_b) {
                         case '{':
                         case '[':
                         case '(':
@@ -248,30 +287,22 @@ public class JSMin {
                         case '-':
                         case '!':
                         case '~':
-                            action(1);
+                            this.action(1);
                             break;
                         case ' ':
-                            action(3);
+                            this.action(3);
                             break;
                         default:
-                            if (isAlphanum(theB)) {
-                                action(1);
-                            } else {
-                                action(2);
-                            }
+                            this.action(this.is_alphanum(this.the_b) ? 1 : 2);
                     }
                     break;
                 default:
-                    switch (theB) {
+                    switch (this.the_b) {
                         case ' ':
-                            if (isAlphanum(theA)) {
-                                action(1);
-                                break;
-                            }
-                            action(3);
+                            this.action(this.is_alphanum(this.the_a) ? 1 : 3);
                             break;
                         case '\n':
-                            switch (theA) {
+                            switch (this.the_a) {
                                 case '}':
                                 case ']':
                                 case ')':
@@ -280,32 +311,25 @@ public class JSMin {
                                 case '"':
                                 case '\'':
                                 case '`':
-                                    action(1);
+                                    this.action(1);
                                     break;
                                 default:
-                                    if (isAlphanum(theA)) {
-                                        action(1);
-                                    } else {
-                                        action(3);
-                                    }
+                                    this.action(this.is_alphanum(this.the_a) ? 1 : 3);
                             }
                             break;
                         default:
-                            action(1);
+                            this.action(1);
                             break;
                     }
             }
         }
-        out.flush();
     }
 
-    public static class UnterminatedCommentException extends Exception {
-    }
+    public static class MinifyException extends Exception {
 
-    public static class UnterminatedStringLiteralException extends Exception {
-    }
-
-    public static class UnterminatedRegExpLiteralException extends Exception {
+        public MinifyException(String message) {
+            super(message);
+        }
     }
 
 }
