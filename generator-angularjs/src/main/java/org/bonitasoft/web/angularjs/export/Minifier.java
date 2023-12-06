@@ -16,29 +16,23 @@
  */
 package org.bonitasoft.web.angularjs.export;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
+import java.nio.charset.StandardCharsets;
 
 import inconspicuous.jsmin.JSMin;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public final class Minifier {
 
     public static byte[] minify(byte[] contentToMinify) {
-        try (var bis = new ByteArrayInputStream(contentToMinify); var out = new ByteArrayOutputStream()) {
-            var jsmin = new JSMin(bis, out);
-            jsmin.jsmin();
-            return out.toByteArray();
-        } catch (IOException e) {
-            throw new GenerationException("Error when minify", e);
-        } catch (JSMin.UnterminatedCommentException e) {
-            throw new GenerationException("Error when minify: Unterminated Comment", e);
-        } catch (JSMin.UnterminatedStringLiteralException e) {
-            throw new GenerationException("Error when minify: Unterminated String", e);
-        } catch (JSMin.UnterminatedRegExpLiteralException e) {
-            throw new GenerationException("Error when minify: Unterminated RegExp literal", e);
+        String jsmin;
+        try {
+            jsmin = JSMin.minify(new String(contentToMinify, StandardCharsets.UTF_8));
+            return jsmin.getBytes(StandardCharsets.UTF_8);
+        } catch (JSMin.MinifyException e) {
+            log.warn("Something went wrong when minifying JS content. Non minified content will be packaged instead.",
+                    e);
+            return contentToMinify;
         }
     }
 }
