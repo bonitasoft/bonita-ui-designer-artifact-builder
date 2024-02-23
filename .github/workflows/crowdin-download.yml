@@ -65,6 +65,10 @@ jobs:
       - name: Count modified lines
         run: |
           echo "modifiedlines=$(git diff --word-diff --unified=0 | grep -Ev "^diff --git|^index|^\+\+\+|^---|^@@|PO-Revision-Date" | wc -l)" >> $GITHUB_ENV
+      - uses: bonitasoft/git-setup-action@v1
+        id: git-setup
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
       - name: Create Pull Request
         if: env.modifiedlines > 0
         uses: peter-evans/create-pull-request@v6
@@ -72,6 +76,8 @@ jobs:
         with:
           branch: feat/${{ matrix.branch }}/update-translations
           base: ${{ matrix.branch }}
+          author: ${{ steps.git-setup.outputs.name}} <${{ steps.git-setup.outputs.email}}>
+          committer: ${{ steps.git-setup.outputs.name}} <${{ steps.git-setup.outputs.email}}>
           commit-message: "feat(l10n):[${{ matrix.branch }}] Translations update"
           title: "feat(l10n):[${{ matrix.branch }}] Translations update"
           body: |
