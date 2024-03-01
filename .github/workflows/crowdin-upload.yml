@@ -3,10 +3,9 @@ name: Crowdin upload files
 # Triggers the workflow every night
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: "0 3 * * *"
 
   workflow_dispatch:
-    inputs:
 
 jobs:
   list-branches:
@@ -65,28 +64,8 @@ jobs:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_API_KEY_V2 }}
       - name: Send message to Slack channel
         if: ${{ failure() }}
-        uses: slackapi/slack-github-action@v1.25.0
+        uses: bonitasoft/notify-slack-action@v1
         with:
-          channel-id: 'CFD1SMX7V'
-          payload: |
-            {
-              "blocks": [
-                  {
-                      "type": "section",
-                      "text": {
-                          "type": "mrkdwn",
-                          "text": ":x: Upload ${{ matrix.branch }} crowdin key failed in UI-Designer Artifact Builder."
-                      }
-                  },
-                  {
-                      "type": "section",
-                      "text": {
-                          "type": "mrkdwn",
-                          "text": "More details about the error <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}?check_suite_focus=true| here>"
-                      }
-                  }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          channel-id: ${{ vars.UID_SLACK_CHANNEL_ID }}
+          message: ":x: Upload ${{ matrix.branch }} crowdin key failed in UI-Designer Artifact Builder."
