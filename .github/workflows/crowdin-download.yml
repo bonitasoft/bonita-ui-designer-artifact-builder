@@ -3,7 +3,7 @@ name: Crowdin download files
 # Triggers the workflow every night
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: "0 4 * * *"
 
   workflow_dispatch:
 
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ matrix.branch }}
-          fetch-depth: '1'
+          fetch-depth: "1"
       - name: Set Crowdin branch name
         run: |
           echo "crowdinBranch=$(echo ${{ matrix.branch }} | tr / -)" >> $GITHUB_ENV
@@ -45,7 +45,7 @@ jobs:
           upload_sources: false
           download_translations: true
           crowdin_branch_name: ${{ env.crowdinBranch }}
-          download_translations_args: '--all'
+          download_translations_args: "--all"
           create_pull_request: false
           push_translations: false
         #  Note: we cannot use for now the "Create pull request" feature, until selecting multiple languages is supported by Crowdin CLI
@@ -85,8 +85,8 @@ jobs:
 
       - name: Send message to Slack channel
         if: ${{ failure() }}
-        uses: bonitasoft/actions/packages/notify-slack@v2.2.0
+        uses: bonitasoft/notify-slack-action@v1
         with:
-          CHANNEL_ID: ${{ secrets.SLACK_UID_CHANNEL_ID }}
-          MESSAGE: ":x: Download ${{ matrix.branch }} crowdin translation failed in UI-Designer Artifact Builder."
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          channel-id: ${{ vars.UID_SLACK_CHANNEL_ID }}
+          message: ":x: Download ${{ matrix.branch }} crowdin translation failed in UI-Designer Artifact Builder."
