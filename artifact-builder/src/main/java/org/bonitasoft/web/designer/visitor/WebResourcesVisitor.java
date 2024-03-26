@@ -209,11 +209,13 @@ public class WebResourcesVisitor implements ElementVisitor<Map<String, WebResour
         List<String> resources = variables.values().stream()
                 .filter(new BonitaVariableResourcePredicate(BONITA_RESOURCE_REGEX))
                 .map(new BonitaResourceTransformer(BONITA_RESOURCE_REGEX))
+                .filter(Objects::nonNull)
                 .collect(toList());
 
         variables.values().stream()
                 .filter(new BonitaVariableResourcePredicate(EXTENSION_RESOURCE_REGEX))
                 .map(new BonitaResourceTransformer(EXTENSION_RESOURCE_REGEX))
+                .filter(Objects::nonNull)
                 .forEach(resources::add);
 
         if (containsBusinessDataVariable(variables.values())) {
@@ -237,7 +239,7 @@ public class WebResourcesVisitor implements ElementVisitor<Map<String, WebResour
         entryResources.forEach(r -> {
             if (mapResources.containsKey(r)) {
                 mapResources.get(r).addToScopes(scope);
-            } else {
+            } else if (!r.isEmpty()) {
                 var wr = new WebResource(r.split("\\|")[0], r.split("\\|")[1], scope);
                 mapResources.put(r, wr);
             }
