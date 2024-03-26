@@ -164,8 +164,7 @@ class WebResourcesVisitorTest {
     }
 
     private Page setUpPageForResourcesTests(String id) {
-        Page page = aPage().withId(id).build();
-        return page;
+        return aPage().withId(id).build();
     }
 
     private Variable anApiVariable(String value) {
@@ -235,6 +234,19 @@ class WebResourcesVisitorTest {
                 .containsKey("GET|extension/user/group/unusedid")
                 .containsKey("GET|extension/CA31/SQLToObject")
                 .containsKey("GET|extension/case");
+    }
+
+    @Test
+    void should_not_add_bonita_dynamic_api_extensions_resources() throws Exception {
+        Page page = setUpPageForResourcesTests("myPage");
+
+        HashMap<String, Variable> variables = new HashMap<>();
+        variables.put("foo", anApiVariable("../API/extension/{{ some.dynamic.resource }}?filter=mine"));
+        page.setVariables(variables);
+
+        var properties = webResourcesVisitor.visit(page);
+
+        assertThat(properties).doesNotContainKey("GET|extension/").isEmpty();
     }
 
     @Test
