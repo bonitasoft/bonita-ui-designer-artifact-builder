@@ -66,11 +66,11 @@
     "sourceMap": "inline"
   },
   "dependencies": {
-    "angular": "bonitasoft/bower-angular#v1.3.21",
+    "angular": "bonitasoft/bower-angular#v1.3.22",
     "angular-cookies": "1.3.11",
     "angular-gettext": "2.4.2",
     "angular-messages": "1.3.18",
-    "angular-sanitize": "bonitasoft/bower-angular-sanitize#v1.3.21",
+    "angular-sanitize": "bonitasoft/bower-angular-sanitize#v1.3.22",
     "ng-dialog": "0.4.0",
     "bootstrap": "3.4.1",
     "jquery": "^3.7.1"
