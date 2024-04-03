@@ -11,19 +11,19 @@ msgstr ""
 "X-Crowdin-File-ID: 71887\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2023-10-29 04:07\n"
+"PO-Revision-Date: 2024-04-03 03:03\n"
 
 msgid ","
-msgstr ""
+msgstr ","
 
 msgid "."
-msgstr ""
+msgstr "."
 
 msgid "../API/"
 msgstr ".. /API/"
 
 msgid "../API/formFileUpload"
-msgstr ""
+msgstr "../API/formFileUpload"
 
 msgid "<a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> String variables (with or without time information)"
 msgstr "Variables String con formato <a href=\"https://en.wikipedia.org/wiki/ISO_8601\" target=\"_blank\">ISO 8601</a> (con o sin información de tiempo)"
@@ -251,7 +251,7 @@ msgid "BDM APIs are not yet sortable. For other APIs, test in the preview or ref
 msgstr "Las APIs BDM no están clasificadas todavía. Para conocer otras APIs, prueba en la vista previa o consulta las páginas de 'API REST' en la documentación de BonitaBPM"
 
 msgid "Bar"
-msgstr ""
+msgstr "Barra"
 
 msgid "Bind the <em>formInput</em> variable of your form."
 msgstr "Vincule las variables <em>formInput</em> del formulario."
@@ -266,10 +266,10 @@ msgid "Bind to a Variable to filter the table 'Content'"
 msgstr "Enlazar una Variable para filtrar el 'Contenido' de la tabla"
 
 msgid "Bonita API"
-msgstr ""
+msgstr "API Bonita"
 
 msgid "Bonita BPM"
-msgstr ""
+msgstr "BPM Bonita"
 
 msgid "Bordered"
 msgstr "Bordeado"
@@ -362,7 +362,7 @@ msgid "Content"
 msgstr "Contenido"
 
 msgid "Control"
-msgstr ""
+msgstr "Control"
 
 msgid "Create a filter variable in the variable panel. If you are using an Input widget, this\n"
 "                variable has no value."
@@ -393,10 +393,10 @@ msgid "Data sent on click"
 msgstr "Datos enviados al hacer click"
 
 msgid "Data source"
-msgstr ""
+msgstr "Fuente de datos"
 
 msgid "Data-Table"
-msgstr ""
+msgstr "Tabla de datos"
 
 msgid "Date"
 msgstr "Fecha"
@@ -473,7 +473,7 @@ msgid "Displayed key"
 msgstr "Clave mostrada"
 
 msgid "Doughnut"
-msgstr ""
+msgstr "Anillo"
 
 msgid "Dropdown list of available values. The user selects one value"
 msgstr "Lista desplegable de valores disponibles. El usuario selecciona un valor"
@@ -570,10 +570,10 @@ msgid "Formatting toolbar"
 msgstr "Barra de herramientas de formato"
 
 msgid "Frame"
-msgstr ""
+msgstr "Cuadro"
 
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 msgid "Graphical display of numerical data to ease understanding. This widget is based on angular-chart-0.8.1, which is based on Chart.js. For information see http://jtblin.github.io/angular-chart.js/ and http://www.chartjs.org/docs/. Available chart types to display a single set of data are pie, doughnut, and polar area. For multiple sets of data, available chart types are bar, line, and radar."
 msgstr "Representación gráfica de datos numéricos para facilitar la comprensión. Este widget se basa en angular-chart-0.8.1, que, a su vez, se basa en Chart.js. Para obtener información, vea http://jtblin.github.io/angular-chart.js/ y http://www.chartjs.org/docs/. Los tipos de gráfico disponibles para mostrar un único conjunto de datos son \"Pie\", \"Doughnut\" y \"Polar area\". Para varios conjuntos de datos, los tipos de gráfico disponibles son \"Bar\", \"Line\" y \"Radar\"."
@@ -705,7 +705,7 @@ msgid "It is possible to deactivate the animation when the modal appears. The ma
 msgstr "Es posible desactivar la animación de entrada de la modal. El uso principal de esta opción es para crear un wizard o asistente, es decir, cuando varios contenedores se van a mostrar en secuencia."
 
 msgid "Item"
-msgstr ""
+msgstr "Elemento"
 
 msgid "Item to remove"
 msgstr "Elemento a eliminar"
@@ -789,10 +789,10 @@ msgid "Miscellaneous toolbar"
 msgstr "Barra de herramientas Miscelánea"
 
 msgid "Modal"
-msgstr ""
+msgstr "Ventana modal"
 
 msgid "Modal Id"
-msgstr ""
+msgstr "ID de la ventana modal"
 
 msgid "Modals"
 msgstr "Modales"
@@ -810,7 +810,7 @@ msgid "Navigation link to another page or form"
 msgstr "Enlace a otra página o formulario"
 
 msgid "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,<br/>consectetur,<br/>adipisci velit..."
-msgstr ""
+msgstr "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,<br/>consectetur,<br/>adipisci velit..."
 
 msgid "New window (_blank)"
 msgstr "Nueva ventana (_blank)"
@@ -819,7 +819,7 @@ msgid "Next page to display, for applications. In the Portal, it is ignored as n
 msgstr "Página siguiente para mostrar, en las aplicaciones. En el Portal, se ignora ya que la navegación se gestiona automáticamente"
 
 msgid "No"
-msgstr ""
+msgstr "No"
 
 msgid "No: user time zone is ignored. <br>Yes: display/input reflects the user time zone and may be different from value"
 msgstr "No: la zona horaria del usuario no es tenida en cuenta. <br>Sí: la pantalla/entrada refleja la zona horaria del usuario y puede ser diferente del valor"
@@ -858,10 +858,10 @@ msgid "Open modal"
 msgstr "Abrir modal"
 
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 msgid "PUT"
-msgstr ""
+msgstr "PUT"
 
 msgid "Page size"
 msgstr "Tamaño de página"
@@ -876,13 +876,13 @@ msgid "Perform an HTTP request"
 msgstr "Llevar a cabo una petición HTTP"
 
 msgid "Pie"
-msgstr ""
+msgstr "Circular"
 
 msgid "Placeholder"
-msgstr ""
+msgstr "Texto provisional"
 
 msgid "Polar Area"
-msgstr ""
+msgstr "Área polar"
 
 msgid "Preview of"
 msgstr "Vista previa de"
@@ -900,7 +900,7 @@ msgid "Process version"
 msgstr "Versión de proceso"
 
 msgid "Radar"
-msgstr ""
+msgstr "De radar"
 
 msgid "Read-only"
 msgstr "Sólo lectura"
@@ -1105,7 +1105,7 @@ msgid "Tab properties usage"
 msgstr "Uso de propiedades de la pestaña"
 
 msgid "Tab x"
-msgstr ""
+msgstr "Pestaña x"
 
 msgid "Table"
 msgstr "Tabla"
@@ -1323,7 +1323,7 @@ msgid "Type"
 msgstr "Tipo"
 
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 msgid "URL parameters"
 msgstr "Parámetros de URL"
@@ -1398,7 +1398,7 @@ msgid "Value to add"
 msgstr "Valor a agregar"
 
 msgid "Variable"
-msgstr ""
+msgstr "Variable"
 
 msgid "Variable content formatted in HTML"
 msgstr "Contenido de la variable formateada en HTML"
@@ -1450,34 +1450,34 @@ msgid "You need to use this following css selector in your theme.css file:"
 msgstr "Necesita utilisar el siguiente selector css en su fichero \"theme.css\":"
 
 msgid "Zebra-striping"
-msgstr ""
+msgstr "Con rayas de zebra"
 
 msgid "_self"
-msgstr ""
+msgstr "_self"
 
 msgid "center"
 msgstr "centrado"
 
 msgid "danger"
-msgstr ""
+msgstr "peligro"
 
 msgid "default"
-msgstr ""
+msgstr "por defecto"
 
 msgid "email"
-msgstr ""
+msgstr "correo electrónico"
 
 msgid "formInput"
-msgstr ""
+msgstr "formularioEntrada"
 
 msgid "h:mm:ss a"
 msgstr "H:mm:ss"
 
 msgid "http://"
-msgstr ""
+msgstr "http://"
 
 msgid "info"
-msgstr ""
+msgstr "información"
 
 msgid "large"
 msgstr "grande"
@@ -1495,16 +1495,16 @@ msgid "none"
 msgstr "ninguno"
 
 msgid "number"
-msgstr ""
+msgstr "número"
 
 msgid "password"
-msgstr ""
+msgstr "contraseña "
 
 msgid "pills"
-msgstr ""
+msgstr "pastillas"
 
 msgid "primary"
-msgstr ""
+msgstr "primario"
 
 msgid "right"
 msgstr "derecha"
@@ -1513,26 +1513,26 @@ msgid "small"
 msgstr "pequeño"
 
 msgid "success"
-msgstr ""
+msgstr "éxito"
 
 msgid "tabs"
-msgstr ""
+msgstr "pestañas"
 
 msgid "text"
-msgstr ""
+msgstr "texto"
 
 msgid "top"
 msgstr "Arriba"
 
 msgid "url"
-msgstr ""
+msgstr "url"
 
 msgid "warning"
-msgstr ""
+msgstr "advertencia"
 
 msgid "whitespace"
 msgstr "espacio blanco"
 
 msgid "€"
-msgstr ""
+msgstr "€"
 
