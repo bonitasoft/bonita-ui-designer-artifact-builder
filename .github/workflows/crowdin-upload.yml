@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: List branches
         id: extract_branches
-        uses: bonitasoft/actions/packages/list-branches@v2.2.0
+        uses: bonitasoft/actions/packages/list-branches@v3
         with:
           branches_list: "develop support/.*"
   devUpload:
@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "crowdinBranch=$(echo ${{ matrix.branch }} | tr / -)" >> $GITHUB_ENV
       - name: crowdin action
-        uses: crowdin/github-action@v1
+        uses: crowdin/github-action@v2
         with:
           upload_sources: true
           crowdin_branch_name: ${{ env.crowdinBranch }}
