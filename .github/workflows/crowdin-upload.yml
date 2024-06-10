@@ -3,7 +3,7 @@ name: Crowdin upload files
 # Triggers the workflow every night
 on:
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 3 * * 0"
 
   workflow_dispatch:
 
@@ -50,8 +50,17 @@ jobs:
       - name: Set Crowdin branch name
         run: |
           echo "crowdinBranch=$(echo ${{ matrix.branch }} | tr / -)" >> $GITHUB_ENV
+
+      - name: Retrieve secrets from Keeper
+        uses: Keeper-Security/ksm-action@v1
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          secrets: |
+            ${{ vars.KEEPER_CROWDIN_RECORD_ID }}/field/login > env:CROWDIN_PROJECT_ID
+            ${{ vars.KEEPER_CROWDIN_RECORD_ID }}/field/password > env:CROWDIN_PERSONAL_TOKEN
+            
       - name: crowdin action
-        uses: crowdin/github-action@v1
+        uses: crowdin/github-action@v2
         with:
           upload_sources: true
           crowdin_branch_name: ${{ env.crowdinBranch }}
@@ -60,8 +69,7 @@ jobs:
           dryrun_action: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_API_KEY_V2 }}
+
       - name: Send message to Slack channel
         if: ${{ failure() }}
         uses: bonitasoft/notify-slack-action@v1
