@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: List branches
         id: extract_branches
-        uses: bonitasoft/actions/packages/list-branches@v2.2.0
+        uses: bonitasoft/actions/packages/list-branches@v3
         with:
           branches_list: "develop support/.*"
   download-l10n-from-crowdin:
@@ -77,7 +77,7 @@ jobs:
           keeper-secret-config: ${{ secrets.KSM_CONFIG }}
       - name: Create Pull Request
         if: env.modifiedlines > 0
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         id: create-pr
         with:
           branch: feat/${{ matrix.branch }}/update-translations
