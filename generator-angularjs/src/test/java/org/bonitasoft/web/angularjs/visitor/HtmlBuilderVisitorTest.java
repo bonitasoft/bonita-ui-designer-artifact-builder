@@ -184,7 +184,30 @@ class HtmlBuilderVisitorTest {
     }
 
     @org.junit.Test
-    void should_generate_html_for_a_formcontainer() throws GenerationException {
+    public void should_build_a_tab_container_with_lazy_load_property() throws Exception {
+        assertThatHtmlBody(visitor.visit(aTabContainer()
+                .withId("1")
+                .with(aContainer()
+                        .with(aRow().with(aParagraph().withReference("paragraph-reference")))
+                        .withReference("container-reference"))
+                .withPropertyValue("isLazyLoad", false)
+                .withReference("tab-reference")
+                .build())).isEqualToBody(testResource.load("simpleTabContainerLazyLoad.html"));
+    }
+
+    @Test
+    public void should_build_a_tab_container_without_lazy_load_property() throws Exception {
+        assertThatHtmlBody(visitor.visit(aTabContainer()
+                .withId("1")
+                .with(aContainer()
+                        .with(aRow().with(aParagraph().withReference("paragraph-reference")))
+                        .withReference("container-reference"))
+                .withReference("tab-reference")
+                .build())).isEqualToBody(testResource.load("simpleTabContainerWithoutLazyLoad.html"));
+    }
+
+    @Test
+    public void should_generate_html_for_a_formcontainer() throws GenerationException {
         assertThatHtmlBody(
                 visitor.visit(aFormContainer()
                         .with(aContainer().withReference("container-reference").build())
