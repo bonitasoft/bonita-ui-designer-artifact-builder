@@ -11,7 +11,7 @@ msgstr ""
 "X-Crowdin-File-ID: 72344\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2024-04-03 04:09\n"
+"PO-Revision-Date: 2024-11-07 10:09\n"
 
 msgid ","
 msgstr ","
@@ -72,7 +72,7 @@ msgid "<code>Zebra-striping</code><em>(Defaults: yes)</em>: Apply a Zebra style 
 msgstr "<code>Zebra-striping</code><em>(Por defecto: activado)</em>Aplica un estilo \"Cebra\" (Un color diferente para lineas intercaladas)."
 
 msgid "<code>cssClasses</code> <em>(Default: none)</em>: Add css classes on tab. This css class will\n"
-"                be attached to <strong>tab-heading</strong> html element."
+"            be attached to <strong>tab-heading</strong> html element."
 msgstr "<code>cssClasses</code> <em>(Por defecto: Ninguna)</em>: Agrega clases Css de encabezados. Esta clase Csss será asociada al elemento Html <strong>Encabezado de Columna</strong>."
 
 msgid "<code>disabled</code> <em>(Default: no)</em>: Whether tab is clickable and can be activated."
@@ -557,6 +557,9 @@ msgstr "Por ejemplo #FF0000, #0066FF"
 msgid "For more information, refer to the <a href=\"javascript:void(0);\" open-help=\"localization\" editor-mode=\"page\"><em>localization</em> help section</a>."
 msgstr "Para obtener más información, consulte la <a href=\"javascript:void(0);\" open-help=\"localization\" editor-mode=\"page\"> sección de ayuda de la <em>localización</em></a>."
 
+msgid "Form validation"
+msgstr "Validación de formularios"
+
 msgid "Format"
 msgstr "Formato"
 
@@ -728,6 +731,9 @@ msgstr "Etiquetas"
 msgid "Last"
 msgstr "Último"
 
+msgid "Lazy loading"
+msgstr "Carga diferida"
+
 msgid "Legend hidden"
 msgstr "Leyenda oculta"
 
@@ -805,6 +811,9 @@ msgstr "Varios grupos de widgets, cada grupo en una pestaña"
 
 msgid "Multiple set charts"
 msgstr "Gráficas de conjunto múltiple"
+
+msgid "Must be set to 'no' to enable input validation within the tab."
+msgstr "Debe establecerse en 'no' para habilitar la validación de entrada dentro de la pestaña."
 
 msgid "Navigation link to another page or form"
 msgstr "Enlace a otra página o formulario"
@@ -983,6 +992,12 @@ msgstr "Configurar la fuente de datos como Bonita API para poblar la tabla de da
 
 msgid "Set the input time on the same line as the input date"
 msgstr "Introduzca la hora y la fecha en la misma línea"
+
+msgid "Set to 'yes' to load the content only when tab is active"
+msgstr ""
+
+msgid "Setting this property to <code>no</code> will load the content of each tab during the initial page load, which may result in slower loading times."
+msgstr "Establecer esta propiedad en <code>no</code> cargará el contenido de cada pestaña durante la carga de la página inicial, que puede resultar en tiempos de carga más lentos."
 
 msgid "Short hint that describes the expected input format for the date"
 msgstr "Ayuda breve que describe el formato esperado para la introducción de la fecha"
@@ -1286,6 +1301,9 @@ msgstr "Para mostrar los datos, establezca las propiedades de los encabezados de
 
 msgid "To embed a pop-in into another pop-in at runtime, drop the first modal container at the bottom, drop the second modal container below the first one, and drop the button that opens the second pop-in within the first modal container."
 msgstr "Para embeber una modal dentro de otra modal en tiempo de ejecución, añada la primera modal al final, añada la segunda modal debajo de la primera, añada un botón en la primera modal que abra la segunda modal."
+
+msgid "To enable form validation across multiple tabs, set the <b>Lazy loading</b> property to <code>no</code> for each tab."
+msgstr "Para habilitar la validación de formularios a través de múltiples pestañas, establezca la propiedad <b>Carga diferida</b> a <code>sin</code> para cada pestaña."
 
 msgid "To get the data from a selected row, bind selected row to a variable."
 msgstr "Para recuperar los datos de una fila seleccionada, vincule el parametro \"fila seleccionada\" a una variable."

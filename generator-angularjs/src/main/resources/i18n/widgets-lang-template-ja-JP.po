@@ -11,7 +11,7 @@ msgstr ""
 "X-Crowdin-File-ID: 72344\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
-"PO-Revision-Date: 2024-04-03 04:09\n"
+"PO-Revision-Date: 2024-11-07 10:06\n"
 
 msgid ","
 msgstr ","
@@ -73,7 +73,7 @@ msgid "<code>Zebra-striping</code><em>(Defaults: yes)</em>: Apply a Zebra style 
 msgstr "<code>ストライプは</code><em>(デフォルト: はい)</em>: ゼブラ スタイルを適用します (このスタイルは偶数と奇数の行に異なる背景色を設定します)。"
 
 msgid "<code>cssClasses</code> <em>(Default: none)</em>: Add css classes on tab. This css class will\n"
-"                be attached to <strong>tab-heading</strong> html element."
+"            be attached to <strong>tab-heading</strong> html element."
 msgstr "<code>cssClasses</code> <em>(デフォルト: なし)</em>: タブに css クラスを追加します。 この css クラスは\n"
 "                 <strong>tab-heading</strong> html 要素に添付されます。"
 
@@ -565,6 +565,9 @@ msgstr "例えば #FF0000、#0066FF"
 msgid "For more information, refer to the <a href=\"javascript:void(0);\" open-help=\"localization\" editor-mode=\"page\"><em>localization</em> help section</a>."
 msgstr "詳細については、<a href=\"javascript:void(0);\" open-help=\"localization\" editor-mode=\"page\"><em>ローカリゼーション</em>のヘルプ セクション</a> を参照してください。"
 
+msgid "Form validation"
+msgstr "フォームのバリデーション(検証)"
+
 msgid "Format"
 msgstr "書式"
 
@@ -739,6 +742,9 @@ msgstr "ラベル"
 msgid "Last"
 msgstr "最後の行"
 
+msgid "Lazy loading"
+msgstr "遅延読み込み"
+
 msgid "Legend hidden"
 msgstr "凡例を非表示"
 
@@ -816,6 +822,9 @@ msgstr "複数のウィジェットグループ、タブ内の各グループ"
 
 msgid "Multiple set charts"
 msgstr "複数のセットチャート"
+
+msgid "Must be set to 'no' to enable input validation within the tab."
+msgstr "タブ内で入力検証を有効にするには、「いいえ」に設定する必要があります。"
 
 msgid "Navigation link to another page or form"
 msgstr "別のページやフォームへのナビゲーション リンク"
@@ -995,6 +1004,12 @@ msgstr "データソースをBonitaAPIに設定して、Bonita REST\n"
 
 msgid "Set the input time on the same line as the input date"
 msgstr "入力日付と同じ行に入力時刻を設定します。"
+
+msgid "Set to 'yes' to load the content only when tab is active"
+msgstr "タブがアクティブな場合にのみコンテンツを読み込むには「はい」を設定します"
+
+msgid "Setting this property to <code>no</code> will load the content of each tab during the initial page load, which may result in slower loading times."
+msgstr "このプロパティを <code>no</code> に設定すると、最初のページ読み込み時に各タブのコンテンツが読み込まれます。 読み込み時間が遅くなる可能性があります"
 
 msgid "Short hint that describes the expected input format for the date"
 msgstr "期待する日付の入力書式を説明するショートヒント"
@@ -1303,6 +1318,9 @@ msgstr "データを表示するには、ヘッダープロパティをカンマ
 
 msgid "To embed a pop-in into another pop-in at runtime, drop the first modal container at the bottom, drop the second modal container below the first one, and drop the button that opens the second pop-in within the first modal container."
 msgstr "実行時にポップインを別のポップインに埋め込むには、最初のモーダルコンテナを下部にドロップし、2番目のモーダルコンテナを最初のモーダルコンテナの下にドロップし、2番目のモーダルコンテナを開くボタンを最初のモーダルコンテナ内にドロップします。"
+
+msgid "To enable form validation across multiple tabs, set the <b>Lazy loading</b> property to <code>no</code> for each tab."
+msgstr "複数のタブでフォームの検証を有効にするには、各タブで <b>遅延読み込み</b> プロパティを <code>no</code> に設定します。"
 
 msgid "To get the data from a selected row, bind selected row to a variable."
 msgstr "選択した行からデータを取得するには、選択した行を変数にバインドします。"

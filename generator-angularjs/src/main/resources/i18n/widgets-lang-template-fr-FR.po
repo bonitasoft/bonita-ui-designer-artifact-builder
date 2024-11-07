@@ -11,7 +11,7 @@ msgstr ""
 "X-Crowdin-File-ID: 72344\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2024-04-03 04:09\n"
+"PO-Revision-Date: 2024-11-07 10:04\n"
 
 msgid ","
 msgstr ","
@@ -70,7 +70,7 @@ msgid "<code>Zebra-striping</code><em>(Defaults: yes)</em>: Apply a Zebra style 
 msgstr "<code>Rayures</code><em>(par défaut : oui)</em>: Appliquer un style \"rayures\" (couleur de fond différente entre lignes paires et impaires)."
 
 msgid "<code>cssClasses</code> <em>(Default: none)</em>: Add css classes on tab. This css class will\n"
-"                be attached to <strong>tab-heading</strong> html element."
+"            be attached to <strong>tab-heading</strong> html element."
 msgstr "<code>Classes CSS</code> <em>(par défaut : aucune)</em> : Ajouter des classes CSS sur l'onglet. Ces classes CSS seront attachées à l'élément html <strong>tab-heading</strong> ."
 
 msgid "<code>disabled</code> <em>(Default: no)</em>: Whether tab is clickable and can be activated."
@@ -555,6 +555,9 @@ msgstr "Par exemple, #FF0000, #0066FF"
 msgid "For more information, refer to the <a href=\"javascript:void(0);\" open-help=\"localization\" editor-mode=\"page\"><em>localization</em> help section</a>."
 msgstr "Pour plus d'information, reportez-vous à la section d'aide <a href=\"javascript:void(0);\" open-help=\"localization\" editor-mode=\"page\"><em>localisation</em></a>."
 
+msgid "Form validation"
+msgstr "Validation de formulaire"
+
 msgid "Format"
 msgstr "Format"
 
@@ -726,6 +729,9 @@ msgstr "Libellés"
 msgid "Last"
 msgstr "Dernier"
 
+msgid "Lazy loading"
+msgstr "Chargement différé"
+
 msgid "Legend hidden"
 msgstr "Légende masquée"
 
@@ -803,6 +809,9 @@ msgstr "Plusieurs groupes de widgets, chaque groupe représentant un onglet"
 
 msgid "Multiple set charts"
 msgstr "Graphiques multiples"
+
+msgid "Must be set to 'no' to enable input validation within the tab."
+msgstr "Doit être défini à 'non' pour activer la validation de formulaire dans l'onglet."
 
 msgid "Navigation link to another page or form"
 msgstr "Lien de navigation vers une autre page ou formulaire"
@@ -981,6 +990,12 @@ msgstr "Passez la propriété Source de données à API Bonita pour remplir le t
 
 msgid "Set the input time on the same line as the input date"
 msgstr "Saisie de la date et de l’heure sur la même ligne"
+
+msgid "Set to 'yes' to load the content only when tab is active"
+msgstr "Définir à \"Oui\" pour charger le contenu uniquement lorsque l'onglet est actif"
+
+msgid "Setting this property to <code>no</code> will load the content of each tab during the initial page load, which may result in slower loading times."
+msgstr "Définir cette propriété à <code>non</code> chargera le contenu de chaque onglet lors du chargement de la page initiale, ce qui pourrait entraîner un ralentissement des temps de chargement."
 
 msgid "Short hint that describes the expected input format for the date"
 msgstr "Court indice qui décrit le format attendu pour la saisie de la date"
@@ -1283,6 +1298,9 @@ msgstr "Pour afficher les données, définissez les propriétés des en-têtes a
 
 msgid "To embed a pop-in into another pop-in at runtime, drop the first modal container at the bottom, drop the second modal container below the first one, and drop the button that opens the second pop-in within the first modal container."
 msgstr "Pour ouvrir une pop-in à partir d'une autre pop-in à l’exécution, placez le premier container modal en bas de votre contenu de page, puis le deuxième container modal sous le premier. Enfin, placez le bouton qui ouvre la deuxième pop-in dans le premier container modal."
+
+msgid "To enable form validation across multiple tabs, set the <b>Lazy loading</b> property to <code>no</code> for each tab."
+msgstr "Pour activer la validation de formulaire dans plusieurs onglets, définissez la propriété <b>Chargement différé</b> à <code>no</code> pour chaque onglet."
 
 msgid "To get the data from a selected row, bind selected row to a variable."
 msgstr "Pour récupérer les données d'une ligne sélectionnée, liez la ligne sélectionnée à une variable."
