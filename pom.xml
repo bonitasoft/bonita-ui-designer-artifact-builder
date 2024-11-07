@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.bonitasoft.web</groupId>
   <artifactId>ui-designer-artifact-builder-parent</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.0.11-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Bonita UI Designer Artifact Builder Aggregator</name>
   <description>This module is the aggregator module</description>
@@ -302,10 +302,10 @@
                 <indentBlankLines>false</indentBlankLines>
                 <indentSchemaLocation>false</indentSchemaLocation>
                 <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
-                <sortOrderFile></sortOrderFile>
-                <sortDependencies></sortDependencies>
-                <sortDependencyExclusions></sortDependencyExclusions>
-                <sortPlugins></sortPlugins>
+                <sortOrderFile />
+                <sortDependencies />
+                <sortDependencyExclusions />
+                <sortPlugins />
                 <sortProperties>false</sortProperties>
                 <sortModules>false</sortModules>
                 <sortExecutions>false</sortExecutions>
@@ -392,7 +392,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <configuration></configuration>
+        <configuration />
         <executions>
           <!-- enable flattening -->
           <execution>
