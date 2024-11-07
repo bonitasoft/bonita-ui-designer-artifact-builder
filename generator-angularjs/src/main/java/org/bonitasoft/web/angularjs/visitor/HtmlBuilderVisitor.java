@@ -98,8 +98,14 @@ public class HtmlBuilderVisitor implements ElementVisitor<String> {
 
     @Override
     public String visit(TabContainer tabContainer) {
+        // If the isLazyLoad property is not exist, activate the lazy loading behavior
+        var defaultLazyLoadValue = new PropertyValue();
+        defaultLazyLoadValue.setValue(true);
+        boolean isLazyLoad = (boolean) tabContainer.getPropertyValues().getOrDefault("isLazyLoad", defaultLazyLoadValue)
+                .getValue();
         return new TemplateEngine("tabContainer.hbs.html")
-                .with(CONTENT, tabContainer.getContainer().accept(this))
+                .with("isLazyLoad", isLazyLoad)
+                .with("content", tabContainer.getContainer().accept(this))
                 .build(tabContainer);
     }
 
