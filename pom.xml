@@ -302,10 +302,10 @@
                 <indentBlankLines>false</indentBlankLines>
                 <indentSchemaLocation>false</indentSchemaLocation>
                 <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
-                <sortOrderFile />
-                <sortDependencies />
-                <sortDependencyExclusions />
-                <sortPlugins />
+                <sortOrderFile></sortOrderFile>
+                <sortDependencies></sortDependencies>
+                <sortDependencyExclusions></sortDependencyExclusions>
+                <sortPlugins></sortPlugins>
                 <sortProperties>false</sortProperties>
                 <sortModules>false</sortModules>
                 <sortExecutions>false</sortExecutions>
@@ -392,7 +392,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <configuration />
+        <configuration></configuration>
         <executions>
           <!-- enable flattening -->
           <execution>
