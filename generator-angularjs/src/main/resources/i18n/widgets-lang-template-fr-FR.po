@@ -11,7 +11,7 @@ msgstr ""
 "X-Crowdin-File-ID: 72344\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2024-11-07 10:04\n"
+"PO-Revision-Date: 2025-01-26 04:08\n"
 
 msgid ","
 msgstr ","
@@ -71,7 +71,7 @@ msgstr "<code>Rayures</code><em>(par défaut : oui)</em>: Appliquer un style \"r
 
 msgid "<code>cssClasses</code> <em>(Default: none)</em>: Add css classes on tab. This css class will\n"
 "            be attached to <strong>tab-heading</strong> html element."
-msgstr "<code>Classes CSS</code> <em>(par défaut : aucune)</em> : Ajouter des classes CSS sur l'onglet. Ces classes CSS seront attachées à l'élément html <strong>tab-heading</strong> ."
+msgstr "<code>cssClasses</code> <em>(par défaut : aucune)</em> : Ajouter des classes CSS sur l'onglet. Ces classes CSS seront appliquées sur l'élément html <strong>tab-heading</strong> ."
 
 msgid "<code>disabled</code> <em>(Default: no)</em>: Whether tab is clickable and can be activated."
 msgstr "<code>Désactivé</code> <em>(par défaut : non)</em>: Définit si l'onglet est activé (cliquable) ou non."
