@@ -87,11 +87,22 @@ describe('FileViewer Widget', function() {
       scope.properties.type = 'Process document';
       scope.properties.document = {
         id: '321',
-        fileName: 'file"with>forbidden.txt',
-        url: 'documentDownload?fileName=file"with>forbidden.txt&contentStorageId=321'
+        fileName: 'file%22with_forbidden.txt',
+        url: 'documentDownload?fileName=file%2522with_forbidden.txt&contentStorageId=321'
       };
       scope.$apply();
-      expect(element.find('a.FileViewer-fileName').text().trim()).toEqual('file&#34;with&gt;forbidden.txt');
+      expect(element.find('a.FileViewer-fileName').text().trim()).toEqual('file%22with_forbidden.txt');
+    });
+
+    it('should display filename with accentuated characters correctly', function() {
+      scope.properties.type = 'Process document';
+      scope.properties.document = {
+        id: '321',
+        fileName: 'file with éèàç.pdf',
+        url: 'documentDownload?fileName=file+with+e%CC%81e%CC%80a%CC%80c%CC%A7.pdf&contentStorageId=321'
+      };
+      scope.$apply();
+      expect(element.find('a.FileViewer-fileName').text().trim()).toEqual('file with éèàç.pdf');
     });
 
     it('should download zip process documents initialized by an external system', function() {
