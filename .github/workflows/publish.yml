@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     name: Publication pipeline
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,7 +28,7 @@ jobs:
             ${{ vars.KEEPER_GPG_ARTIFACT_SIGNING_RECORD_ID }}/field/login > env:GPG_KEYNAME
             ${{ vars.KEEPER_GPG_ARTIFACT_SIGNING_RECORD_ID }}/custom_field/gpg-private-key > env:GPG_PRIVATE_KEY
             ${{ vars.KEEPER_GPG_ARTIFACT_SIGNING_RECORD_ID }}/field/password > env:MAVEN_GPG_PASSPHRASE
-        
+
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -39,6 +39,6 @@ jobs:
           server-password: MAVEN_PASSWORD # env variable for token in deploy
           gpg-private-key: ${{ env.GPG_PRIVATE_KEY }} # Value of the GPG private key to import
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
-          
+
       - name: Publish to Maven Central
         run: ./mvnw -ntp --batch-mode deploy -Prelease
