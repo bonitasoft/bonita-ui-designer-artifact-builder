@@ -57,8 +57,8 @@
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <uidModelVersion>2.6</uidModelVersion>
     <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
-    <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
-    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
+    <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
     <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
     <maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
@@ -83,7 +83,7 @@
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
     <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
-    <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>2.44.3</spotless-maven-plugin.version>
     <mockito-junit-jupiter.version>5.3.1</mockito-junit-jupiter.version>
     <mockito-core-plugin.version>5.3.1</mockito-core-plugin.version>
     <!-- Spotless resources location -->
