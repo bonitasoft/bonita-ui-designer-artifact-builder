@@ -20,6 +20,8 @@ Build pages designed with the [UI Designer][uid-repo] for your Bonita applicatio
 
 * Build it using maven `./mvnw clean verify`
 
+**Note**: if an error occurs at phantomjs startup (especially when running on Ubuntu 24), disable openssl by setting an environment variable `OPENSSL_CONF=/dev/null`.
+
 ## Contribute
 
 ### Report issues
