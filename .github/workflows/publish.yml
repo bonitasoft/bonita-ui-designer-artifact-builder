@@ -42,3 +42,5 @@ jobs:
           
       - name: Publish to Maven Central
         run: ./mvnw -ntp --batch-mode deploy -Prelease
+        env:
+          OPENSSL_CONF: /dev/null # Disable OpenSSL config to let phantomjs start, see https://stackoverflow.com/a/72679175
