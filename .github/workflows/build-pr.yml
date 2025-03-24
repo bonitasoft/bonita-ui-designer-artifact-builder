@@ -10,7 +10,7 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -33,11 +33,13 @@ jobs:
       - name: Build with Sonarcloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENSSL_CONF: /dev/null # Disable OpenSSL config to let phantomjs start, see https://stackoverflow.com/a/72679175
         if: ${{ env.SONAR_TOKEN != '' }}
         run: ./mvnw -B -ntp verify sonar:sonar
         
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENSSL_CONF: /dev/null # Disable OpenSSL config to let phantomjs start, see https://stackoverflow.com/a/72679175
         if: ${{ env.SONAR_TOKEN == '' }}
         run: ./mvnw -B -ntp verify
