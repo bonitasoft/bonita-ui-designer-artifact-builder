@@ -9,9 +9,6 @@
   <artifactId>ui-designer-artifact-builder</artifactId>
   <name>Bonita UI Designer Artifact Builder</name>
   <description>This module is the backend component use to build UID artifacts.</description>
-  <properties>
-    <maven.deploy.skip>false</maven.deploy.skip>
-  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -191,7 +188,7 @@
             <phase>generate-sources</phase>
             <configuration>
               <sources>
-                <source>${project.build.directory}/generated-sources/</source>
+                <source>${project.build.directory}/Sgenerated-sources/</source>
               </sources>
             </configuration>
           </execution>
