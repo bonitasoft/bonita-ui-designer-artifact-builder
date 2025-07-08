@@ -188,7 +188,7 @@
             <phase>generate-sources</phase>
             <configuration>
               <sources>
-                <source>${project.build.directory}/Sgenerated-sources/</source>
+                <source>${project.build.directory}/generated-sources/</source>
               </sources>
             </configuration>
           </execution>
