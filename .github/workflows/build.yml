@@ -13,7 +13,7 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -31,6 +31,7 @@ jobs:
 
       - name: Build and deploy
         env:
+          OPENSSL_CONF: /dev/null # Disable OpenSSL config to let phantomjs start, see https://stackoverflow.com/a/72679175
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Needed to get PR information, if any
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: ./mvnw -B -ntp deploy sonar:sonar
