@@ -9,9 +9,6 @@
   <artifactId>coverage-report</artifactId>
   <packaging>pom</packaging>
   <name>Coverage report</name>
-  <properties>
-    <maven.deploy.skip>true</maven.deploy.skip>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>

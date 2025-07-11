@@ -9,9 +9,6 @@
   <artifactId>ui-designer-artifact-builder</artifactId>
   <name>Bonita UI Designer Artifact Builder</name>
   <description>This module is the backend component use to build UID artifacts.</description>
-  <properties>
-    <maven.deploy.skip>false</maven.deploy.skip>
-  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -196,10 +193,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
