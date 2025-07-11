@@ -111,12 +111,11 @@ class ImporterResolverTest {
     @Test
     void should_throw_NotFoundException_for_an_unknown_artifact_type() throws Exception {
         // Given
-        when(widgetImporter.tryToImportAndGenerateReport(any(), eq(false))).thenThrow(new ImportException(PAGE_NOT_FOUND, "error"));
+        when(widgetImporter.tryToImportAndGenerateReport(any(), eq(false)))
+                .thenThrow(new ImportException(PAGE_NOT_FOUND, "error"));
         Files.createDirectory(tempDir.resolve("resources"));
         // When
-        final Throwable throwable = catchThrowable(() ->
-                artifactBuilder.importWidget(tempDir, false)
-        );
+        final Throwable throwable = catchThrowable(() -> artifactBuilder.importWidget(tempDir, false));
         // Then
         assertThat(throwable).isInstanceOf(ImportException.class);
         ImportException exception = (ImportException) throwable;

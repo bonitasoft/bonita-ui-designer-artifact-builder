@@ -137,8 +137,10 @@ class PathImporterTest {
 
     @Test
     void should_throw_import_exception_when_an_import_error_occurs() throws Exception {
-        when(importStore.store(fragmentImporter, unzipedPath)).thenReturn(new Import(fragmentImporter, "a-uuid", unzipedPath));
-        doThrow(new ImportException(ImportException.Type.PAGE_NOT_FOUND, "an Error message")).when(fragmentImporter).tryToImportAndGenerateReport(any(),any(Boolean.class));
+        when(importStore.store(fragmentImporter, unzipedPath))
+                .thenReturn(new Import(fragmentImporter, "a-uuid", unzipedPath));
+        doThrow(new ImportException(ImportException.Type.PAGE_NOT_FOUND, "an Error message")).when(fragmentImporter)
+                .tryToImportAndGenerateReport(any(), any(Boolean.class));
 
         assertThrows(ImportException.class, () -> artifactBuilder.importFragment(unzipedPath, false));
     }

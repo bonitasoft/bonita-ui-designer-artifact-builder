@@ -307,7 +307,8 @@ class WidgetServiceTest {
     void should_not_allow_to_delete_a_custom_widget_used_in_a_page() {
         when(widgetRepository.get("customLabel")).thenReturn(aWidget().custom().withId("customLabel").build());
         when(pageRepository.getComponentName()).thenReturn("page");
-        when(pageRepository.getArtifactsUsingWidget("customLabel")).thenReturn(singletonList(aPage().withName("person").build()));
+        when(pageRepository.getArtifactsUsingWidget("customLabel"))
+                .thenReturn(singletonList(aPage().withName("person").build()));
         when(fragmentRepository.getComponentName()).thenReturn("fragment");
         when(fragmentRepository.getArtifactsUsingWidget("customLabel"))
                 .thenReturn(asList(aFragment().withName("personFragment1").build(),
@@ -315,7 +316,8 @@ class WidgetServiceTest {
 
         assertThatThrownBy(() -> widgetService.delete("customLabel"))
                 .isInstanceOf(InUseException.class)
-                .hasMessage("The widget cannot be deleted because it is used in 2 fragments, <personFragment1>, <personFragment2> 1 page, <person>");
+                .hasMessage(
+                        "The widget cannot be deleted because it is used in 2 fragments, <personFragment1>, <personFragment2> 1 page, <person>");
     }
 
     @Test
@@ -349,11 +351,11 @@ class WidgetServiceTest {
 
     @Test
     void should_throw_NotFoundException_when_adding_a_property_to_an_unexisting_widget() {
-        when(widgetRepository.addProperty(eq("unknownWidget"), any(Property.class))).thenThrow(new NotFoundException("not found"));
+        when(widgetRepository.addProperty(eq("unknownWidget"), any(Property.class)))
+                .thenThrow(new NotFoundException("not found"));
         var property = aProperty().build();
-        
-        assertThatThrownBy(() ->
-                widgetService.addProperty("unknownWidget", property))
+
+        assertThatThrownBy(() -> widgetService.addProperty("unknownWidget", property))
                 .isInstanceOf(NotFoundException.class);
     }
 
@@ -361,9 +363,8 @@ class WidgetServiceTest {
     void should_throw_RepositoryException_when_error_appear_while_saving_property() {
         when(widgetRepository.addProperty(eq("label"), any(Property.class))).thenThrow(RepositoryException.class);
         var property = aProperty().build();
-        
-        assertThatThrownBy(() ->
-                widgetService.addProperty("label", property))
+
+        assertThatThrownBy(() -> widgetService.addProperty("label", property))
                 .isInstanceOf(RepositoryException.class);
     }
 
@@ -396,11 +397,11 @@ class WidgetServiceTest {
 
     @Test
     void should_throw_RepositoryException_when_error_appear_while_updating_property() {
-        when(widgetRepository.updateProperty(eq("label"), eq("toBeUpdated"), any(Property.class))).thenThrow(RepositoryException.class);
+        when(widgetRepository.updateProperty(eq("label"), eq("toBeUpdated"), any(Property.class)))
+                .thenThrow(RepositoryException.class);
         var property = aProperty().build();
-        
-        assertThatThrownBy(() ->
-                widgetService.updateProperty("label", "toBeUpdated", property))
+
+        assertThatThrownBy(() -> widgetService.updateProperty("label", "toBeUpdated", property))
                 .isInstanceOf(RepositoryException.class);
     }
 
@@ -423,20 +424,18 @@ class WidgetServiceTest {
     }
 
     @Test
-    void should_throw_NotFoundException_when_widget_or_property_not_found_while_deleting_property()  {
+    void should_throw_NotFoundException_when_widget_or_property_not_found_while_deleting_property() {
         when(widgetRepository.deleteProperty("label", "toBeDeleted"))
                 .thenThrow(new NotFoundException("Widget [ toBeDeleted ] not found"));
 
-        assertThatThrownBy(() ->
-                widgetService.deleteProperty("label", "toBeDeleted"))
+        assertThatThrownBy(() -> widgetService.deleteProperty("label", "toBeDeleted"))
                 .isInstanceOf(NotFoundException.class);
-     }
+    }
 
     @Test
-    void should_respond_500_when_error_appear_while_deleting_property()  {
+    void should_respond_500_when_error_appear_while_deleting_property() {
         when(widgetRepository.deleteProperty("label", "toBeDeleted")).thenThrow(RepositoryException.class);
-        assertThatThrownBy(() ->
-                widgetService.deleteProperty("label", "toBeDeleted"))
+        assertThatThrownBy(() -> widgetService.deleteProperty("label", "toBeDeleted"))
                 .isInstanceOf(RepositoryException.class);
     }
 
@@ -565,13 +564,12 @@ class WidgetServiceTest {
     }
 
     @Test
-    void should_throw_IOException_when_widget_asset_included_in_page_produce_IOException()  {
+    void should_throw_IOException_when_widget_asset_included_in_page_produce_IOException() {
         when(widgetAssetService.findAssetPath("widget-id", "asset.js", AssetType.JAVASCRIPT.getPrefix()))
                 .thenThrow(new RuntimeException("can't read file"));
         var prefix = AssetType.JAVASCRIPT.getPrefix();
-        
-        assertThatThrownBy(() ->
-            widgetService.findAssetPath("widget-id", "asset.js", prefix))
+
+        assertThatThrownBy(() -> widgetService.findAssetPath("widget-id", "asset.js", prefix))
                 .isInstanceOf(RuntimeException.class);
     }
 
@@ -604,7 +602,7 @@ class WidgetServiceTest {
     }
 
     @Test
-    void should_not_allow_to_delete_a_custom_widget_used_in_a_fragment()  {
+    void should_not_allow_to_delete_a_custom_widget_used_in_a_fragment() {
         when(widgetRepository.get("customLabel")).thenReturn(aWidget().custom().withId("customLabel").build());
         when(pageRepository.getArtifactsUsingWidget("customLabel")).thenReturn(emptyList());
         when(fragmentRepository.getComponentName()).thenReturn("fragment");

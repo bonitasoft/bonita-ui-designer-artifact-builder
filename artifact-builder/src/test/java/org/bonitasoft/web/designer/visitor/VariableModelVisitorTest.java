@@ -141,8 +141,9 @@ class VariableModelVisitorTest {
                 .withVariable("foo", variable)
                 .build());
 
-        assertThat(variableModelVisitor.visit(aTabsContainer().with(aTabContainer().with(aContainer().with(aFragmentElement()
-                .withFragmentId("fragment-id"))))
+        assertThat(variableModelVisitor.visit(aTabsContainer()
+                .with(aTabContainer().with(aContainer().with(aFragmentElement()
+                        .withFragmentId("fragment-id"))))
                 .build())).containsExactly(entry("fragment-id", singletonMap("foo", variable)));
     }
 

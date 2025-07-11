@@ -189,11 +189,11 @@ class PropertyValuesVisitorTest {
                 .withReference("fragment-element-id")
                 .withPropertyValue("foo", "bar", "baz")
                 .build())).containsExactly(
-                entry("fragment-element-id", singletonMap("foo", propertyValue)));
+                        entry("fragment-element-id", singletonMap("foo", propertyValue)));
     }
 
     @Test
-    void should_associate_component_property_values_contained_in_a_fragment_with_its_id(){
+    void should_associate_component_property_values_contained_in_a_fragment_with_its_id() {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .with(aRow().with(aComponent()
                         .withReference("component-id")
@@ -204,8 +204,8 @@ class PropertyValuesVisitorTest {
                 .withFragmentId("fragment-id")
                 .withReference("fragment-element-id")
                 .build())).containsOnly(
-                entry("fragment-element-id", emptyMap()),
-                entry("component-id", singletonMap("foo", propertyValue)));
+                        entry("fragment-element-id", emptyMap()),
+                        entry("component-id", singletonMap("foo", propertyValue)));
     }
 
     @Test
