@@ -6,6 +6,7 @@ function WidgetController($scope, $log, $window, $sce, $sanitize) {
 
   $scope.$watch('[properties.document, properties.url]', function() {
     controller.fileName = $sanitize(getFileName());
+    $scope.sanitizedFileName = controller.fileName;
     controller.loadDocument();
   }, true);
 

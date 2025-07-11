@@ -12,13 +12,15 @@
      title="{{'View' | uiTranslate}} {{ ctrl.fileName || ctrl.getDocumentViewUrl() }}"
      ng-if="ctrl.isImage() || ctrl.isPDF()"
      ng-href="{{ctrl.getTrustedDocumentViewUrl()}}"
+     ng-bind-html=sanitizedFileName
      box-viewer>
       {{ ctrl.fileName || ctrl.getDocumentViewUrl() }}
   </a>
   <a class="FileViewer-fileName"
      title="{{'Download' | uiTranslate}} {{ ctrl.fileName || ctrl.getDocumentDownloadUrl() }}"
      ng-if="!ctrl.isImage() && !ctrl.isPDF()"
-     ng-href="{{ctrl.getDocumentDownloadUrl()}}">
+     ng-href="{{ctrl.getDocumentDownloadUrl()}}"
+     ng-bind-html=sanitizedFileName>
       {{ ctrl.fileName || ctrl.getDocumentDownloadUrl() }}
   </a>
 
