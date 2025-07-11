@@ -110,16 +110,16 @@ class ImportReportTest {
     }
 
     private Fragment mockExistsInRepository(Fragment fragment) {
-            when(fragmentDependencyImporter.exists(fragment)).thenReturn(true);
-            when(fragmentDependencyImporter.getOriginalElementFromRepository(fragment)).thenReturn(fragment);
-            return fragment;
-        }
+        when(fragmentDependencyImporter.exists(fragment)).thenReturn(true);
+        when(fragmentDependencyImporter.getOriginalElementFromRepository(fragment)).thenReturn(fragment);
+        return fragment;
+    }
 
     private Widget mockExistsInRepository(Widget widget) {
-            when(widgetDependencyImporter.exists(widget)).thenReturn(true);
-            when(widgetDependencyImporter.getOriginalElementFromRepository(widget)).thenReturn(widget);
-            return widget;
-        }
+        when(widgetDependencyImporter.exists(widget)).thenReturn(true);
+        when(widgetDependencyImporter.getOriginalElementFromRepository(widget)).thenReturn(widget);
+        return widget;
+    }
 
     @Test
     void should_report_imported_element_when_it_is_a_fragment() throws Exception {

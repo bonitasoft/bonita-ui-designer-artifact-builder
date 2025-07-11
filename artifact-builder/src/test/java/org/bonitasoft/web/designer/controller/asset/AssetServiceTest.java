@@ -167,12 +167,12 @@ class AssetServiceTest {
 
     @ParameterizedTest
     @MethodSource("invalidArgsForDuplicate")
-    void should_not_duplicate_asset_when_arg_invalid(Path artifactSourcePath, Path artifactTargetPath, String sourceArtifactId, String targetArtifactId,
-                                                            String expectedErrorMessage) {
+    void should_not_duplicate_asset_when_arg_invalid(Path artifactSourcePath, Path artifactTargetPath,
+            String sourceArtifactId, String targetArtifactId,
+            String expectedErrorMessage) {
         when(repository.getComponentName()).thenReturn("page");
-        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                assetService.duplicateAsset(artifactSourcePath, artifactTargetPath, sourceArtifactId, targetArtifactId)
-        );
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> assetService
+                .duplicateAsset(artifactSourcePath, artifactTargetPath, sourceArtifactId, targetArtifactId));
         assertThat(exception.getMessage()).isEqualTo(expectedErrorMessage);
     }
 

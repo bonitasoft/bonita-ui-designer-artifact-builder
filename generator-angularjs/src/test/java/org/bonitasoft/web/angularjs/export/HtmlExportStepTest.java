@@ -55,7 +55,7 @@ class HtmlExportStepTest {
     @Test
     void should_export_webapp_generator_folder() throws Exception {
         when(htmlGenerator.generateHtml(ArgumentMatchers.any(Page.class))).thenReturn("");
-        
+
         step.execute(zipper, PageBuilder.aPage().build());
 
         Mockito.verify(zipper).addDirectoryToZip(get(new File("src/test/resources/").toURI()), Zipper.ALL_DIRECTORIES,
