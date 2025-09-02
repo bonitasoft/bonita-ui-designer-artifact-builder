@@ -6,9 +6,12 @@ on:
       - develop
       - release/*
       - support/*
+    paths-ignore:
+      - ".github/**"
+      - "!.github/workflows/build-pr.yml"
+      - "**/*.md"
 
 jobs:
-
   build:
     runs-on: ubuntu-24.04
     steps:
