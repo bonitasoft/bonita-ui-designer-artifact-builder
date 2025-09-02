@@ -22,9 +22,10 @@ jobs:
         uses: bonitasoft/actions/packages/list-branches@v3
         with:
           branches_list: "develop support/.*"
+
   devUpload:
     name: Crowdin upload
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: list-branches
     strategy:
       max-parallel: 1
