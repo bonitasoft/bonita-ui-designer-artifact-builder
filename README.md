@@ -51,6 +51,6 @@ To release a new version, maintainers may use the Release and Publication GitHub
 
 [java]: https://adoptium.net/temurin/releases/?version=11
 [uid-repo]: https://github.com/bonitasoft/bonita-ui-designer
-[documentation]: https://documentation.bonitasoft.com
+[documentation]: https://documentation.ofelia.com
 
     
