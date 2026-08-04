@@ -182,10 +182,6 @@
                 <directory>artifact-builder/node_modules</directory>
                 <followSymlinks>false</followSymlinks>
               </fileset>
-              <fileset>
-                <directory>infrastructure/crowdin/build</directory>
-                <followSymlinks>false</followSymlinks>
-              </fileset>
             </filesets>
           </configuration>
         </plugin>
@@ -462,10 +458,6 @@
               <filesets>
                 <fileset>
                   <directory>node</directory>
-                  <followSymlinks>false</followSymlinks>
-                </fileset>
-                <fileset>
-                  <directory>infrastructure/crowdin/build</directory>
                   <followSymlinks>false</followSymlinks>
                 </fileset>
               </filesets>
