@@ -28,7 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 
 import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.designer.builder.FragmentBuilder;

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A library (published to Maven Central as `org.bonitasoft.web:ui-designer-artifact-builder`) that builds artifacts designed with the Bonita UI Designer: it imports/migrates page, fragment and widget JSON models and generates the runnable HTML/zip output. Java 11, multi-module Maven, gitflow branching (default branch: `develop`, PRs target `develop`).
+A library (published to Maven Central as `org.bonitasoft.web:ui-designer-artifact-builder`) that builds artifacts designed with the Bonita UI Designer: it imports/migrates page, fragment and widget JSON models and generates the runnable HTML/zip output. Java 17, multi-module Maven, gitflow branching (default branch: `develop`, PRs target `develop`).
 
 ## Build & test commands
 
@@ -19,7 +19,7 @@ A library (published to Maven Central as `org.bonitasoft.web:ui-designer-artifac
 
 Gotchas:
 - **PhantomJS** (JS tests in `generator-angularjs`): on Ubuntu 24 set `OPENSSL_CONF=/dev/null` or the build fails at phantomjs startup.
-- **Spotless runs at `process-sources` and fails the build**: Eclipse formatter (`formatter.xml`), import order `java/javax/org/com` (`eclipse.importorder`), license header (`header.txt`), sorted poms. `-Poffline` skips the check.
+- **Spotless runs at `process-sources` and fails the build**: Eclipse formatter (`formatter.xml`), import order `java/javax/jakarta/org/com` (`eclipse.importorder`), license header (`header.txt`), sorted poms. `-Poffline` skips the check.
 - `-PkeepNodeModules` avoids wiping `node_modules` on `clean` (yarn install is slow).
 - Building a module alone requires its siblings installed or `-am` (e.g. `./mvnw test -pl common -am`).
 

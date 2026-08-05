@@ -18,8 +18,8 @@ package org.bonitasoft.web.designer.repository;
 
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 
 import org.bonitasoft.web.designer.model.exception.ConstraintValidationException;
 

@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 
 import org.bonitasoft.web.designer.builder.PageBuilder;
 import org.bonitasoft.web.designer.common.livebuild.Watcher;

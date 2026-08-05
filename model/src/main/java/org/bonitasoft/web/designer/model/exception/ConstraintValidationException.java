@@ -20,7 +20,7 @@ import static org.apache.commons.lang3.StringUtils.chop;
 
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolation;
 
 public class ConstraintValidationException extends RuntimeException {
 
