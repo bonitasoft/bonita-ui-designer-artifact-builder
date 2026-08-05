@@ -19,6 +19,7 @@ A library (published to Maven Central as `org.bonitasoft.web:ui-designer-artifac
 
 Gotchas:
 - **PhantomJS** (JS tests in `generator-angularjs`): on Ubuntu 24 set `OPENSSL_CONF=/dev/null` or the build fails at phantomjs startup.
+- **The maven-enforcer-plugin fails the build at `validate`** on JDK < 17 and on any javax-generation Bean Validation / EL dependency (see the `bannedDependencies` rule in the root pom).
 - **Spotless runs at `process-sources` and fails the build**: Eclipse formatter (`formatter.xml`), import order `java/javax/jakarta/org/com` (`eclipse.importorder`), license header (`header.txt`), sorted poms. `-Poffline` skips the check.
 - `-PkeepNodeModules` avoids wiping `node_modules` on `clean` (yarn install is slow).
 - Building a module alone requires its siblings installed or `-am` (e.g. `./mvnw test -pl common -am`).

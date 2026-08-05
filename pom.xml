@@ -340,6 +340,11 @@
                     <exclude>jakarta.validation:jakarta.validation-api:[,3)</exclude>
                     <!-- javax-generation implementation -->
                     <exclude>org.hibernate.validator:hibernate-validator:[,7)</exclude>
+                    <!-- javax-generation EL stack (the 3.x glassfish artifacts still ship the javax.el.* packages) -->
+                    <exclude>javax.el:javax.el-api</exclude>
+                    <exclude>org.glassfish:javax.el</exclude>
+                    <exclude>org.glassfish:jakarta.el:[,4)</exclude>
+                    <exclude>jakarta.el:jakarta.el-api:[,4)</exclude>
                   </excludes>
                   <message>javax-generation Bean Validation artifacts are banned (they ship javax.validation.* packages): use jakarta.validation-api 3.x and hibernate-validator 7+.</message>
                 </bannedDependencies>

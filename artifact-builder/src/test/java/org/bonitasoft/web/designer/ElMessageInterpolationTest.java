@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.bonitasoft.web.designer.repository;
+package org.bonitasoft.web.designer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,7 +33,8 @@ import org.junit.jupiter.api.Test;
  * <p>
  * The test lives in this module (not in model, where the constraints are declared) on purpose: hibernate-validator
  * and expressly are runtime-scoped HERE, so this test classpath is the exact combination consumers get, whereas the
- * model module only sees its own test-scoped provider.
+ * model module only sees its own test-scoped provider. The model and common test classpaths are not separately
+ * guarded: they resolve the same BOM-managed versions, so a divergence would surface here first.
  * <p>
  * NOTE: ${validatedValue} relies on Hibernate Validator's default EL feature level for constraint messages
  * (bean-properties), which HV has been tightening since 6.2. If this test fails after an HV upgrade, check whether
@@ -53,11 +54,11 @@ class ElMessageInterpolationTest {
 
     @Test
     void should_interpolate_el_expressions_in_constraint_messages() {
-        var validator = Validation.buildDefaultValidatorFactory().getValidator();
+        try (var factory = Validation.buildDefaultValidatorFactory()) {
+            var violations = factory.getValidator().validate(new Sample("too-long"));
 
-        var violations = validator.validate(new Sample("too-long"));
-
-        assertThat(violations).extracting(ConstraintViolation::getMessage)
-                .containsExactly("value 'too-long' is too long");
+            assertThat(violations).extracting(ConstraintViolation::getMessage)
+                    .containsExactly("value 'too-long' is too long");
+        }
     }
 }
