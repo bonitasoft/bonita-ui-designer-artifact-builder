@@ -29,7 +29,7 @@ Version 2.0 migrates the library from the `javax` to the `jakarta` namespace. Fo
 * **Java 17 or later** is required (was Java 11).
 * The library now uses the jakarta stack: Bean Validation constraints are `jakarta.validation.*` (Bean Validation 3.x, implemented by Hibernate Validator 8).
 * The `ui-designer-artifact-builder-dependencies` BOM imports Spring Boot 3.5.x dependency management instead of 2.7.x. In particular `org.glassfish:jakarta.el` is no longer managed there: the library ships `org.glassfish.expressly:expressly` as its EL implementation instead.
-* The `model` and `common` test-jars no longer provide Hibernate Validator transitively. If your own tests call `Validation.buildDefaultValidatorFactory()`, declare a Bean Validation implementation (`org.hibernate.validator:hibernate-validator` and `org.glassfish.expressly:expressly`) in your test scope. At runtime, consumers of the `ui-designer-artifact-builder` artifact keep getting the implementation transitively.
+* The `model` and `common` test-jars no longer provide Hibernate Validator transitively. If you depend on those test-jars standalone (without `ui-designer-artifact-builder`) and your tests call `Validation.buildDefaultValidatorFactory()`, declare a Bean Validation implementation (`org.hibernate.validator:hibernate-validator` and `org.glassfish.expressly:expressly`) in your test scope. Projects that also depend on the `ui-designer-artifact-builder` artifact already get the implementation transitively (runtime scope, hence available to tests too).
 
 ## Contribute
 

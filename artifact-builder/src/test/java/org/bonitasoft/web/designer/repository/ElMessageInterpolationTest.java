@@ -30,6 +30,14 @@ import org.junit.jupiter.api.Test;
  * interpolation stops working: depending on the failure mode the default validator factory either throws at creation
  * or falls back to an interpolator that leaves EL expressions unresolved. Both make this test fail, whereas the rest
  * of the codebase only uses literal constraint messages and would stay green.
+ * <p>
+ * The test lives in this module (not in model, where the constraints are declared) on purpose: hibernate-validator
+ * and expressly are runtime-scoped HERE, so this test classpath is the exact combination consumers get, whereas the
+ * model module only sees its own test-scoped provider.
+ * <p>
+ * NOTE: ${validatedValue} relies on Hibernate Validator's default EL feature level for constraint messages
+ * (bean-properties), which HV has been tightening since 6.2. If this test fails after an HV upgrade, check whether
+ * the default feature level changed before suspecting the expressly pin.
  */
 class ElMessageInterpolationTest {
 

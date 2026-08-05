@@ -333,10 +333,15 @@
                   <message>Java 17 or later is required to build this project.</message>
                 </requireJavaVersion>
                 <bannedDependencies>
+                  <searchTransitive>true</searchTransitive>
                   <excludes>
                     <exclude>javax.validation:validation-api</exclude>
+                    <!-- jakarta groupId but still ships the javax.validation.* packages (Bean Validation 2.x / EE 8) -->
+                    <exclude>jakarta.validation:jakarta.validation-api:[,3)</exclude>
+                    <!-- javax-generation implementation -->
+                    <exclude>org.hibernate.validator:hibernate-validator:[,7)</exclude>
                   </excludes>
-                  <message>javax-namespace artifacts are banned, use their jakarta equivalents.</message>
+                  <message>javax-generation Bean Validation artifacts are banned (they ship javax.validation.* packages): use jakarta.validation-api 3.x and hibernate-validator 7+.</message>
                 </bannedDependencies>
               </rules>
             </configuration>

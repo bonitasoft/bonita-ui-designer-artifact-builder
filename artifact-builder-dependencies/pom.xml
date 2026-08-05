@@ -15,6 +15,9 @@
     <expressly.version>5.0.0</expressly.version>
     <handlebar.version>4.3.1</handlebar.version>
   </properties>
+  <!-- NOTE: the enforcer bannedDependencies guard (root pom) inspects resolved dependency graphs only.
+       Entries declared here are NOT checked unless a module in this build actually depends on them, so
+       javax-generation Bean Validation coordinates must be kept out of this BOM by review. -->
   <dependencyManagement>
     <dependencies>
       <dependency>
