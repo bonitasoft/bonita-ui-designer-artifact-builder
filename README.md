@@ -22,6 +22,15 @@ Build pages designed with the [UI Designer][uid-repo] for your Bonita applicatio
 
 **Note**: if an error occurs at phantomjs startup (especially when running on Ubuntu 24), disable openssl by setting an environment variable `OPENSSL_CONF=/dev/null`.
 
+## Upgrading to 2.0
+
+Version 2.0 migrates the library from the `javax` to the `jakarta` namespace. For consumers this means:
+
+* **Java 17 or later** is required (was Java 11).
+* The library now uses the jakarta stack: Bean Validation constraints are `jakarta.validation.*` (Bean Validation 3.x, implemented by Hibernate Validator 8).
+* The `ui-designer-artifact-builder-dependencies` BOM imports Spring Boot 3.5.x dependency management instead of 2.7.x. In particular `org.glassfish:jakarta.el` is no longer managed there: the library ships `org.glassfish.expressly:expressly` as its EL implementation instead.
+* The `model` and `common` test-jars no longer provide Hibernate Validator transitively. If your own tests call `Validation.buildDefaultValidatorFactory()`, declare a Bean Validation implementation (`org.hibernate.validator:hibernate-validator` and `org.glassfish.expressly:expressly`) in your test scope. At runtime, consumers of the `ui-designer-artifact-builder` artifact keep getting the implementation transitively.
+
 ## Contribute
 
 ### Report issues

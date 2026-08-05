@@ -88,7 +88,9 @@
         <artifactId>jsoup</artifactId>
         <version>1.23.1</version>
       </dependency>
-      <!-- EL implementation required by hibernate-validator (not managed by the Spring Boot BOM) -->
+      <!-- EL implementation required by hibernate-validator 8.0.x (which is managed by the Spring Boot BOM, unlike this artifact).
+           Keep this pin in sync when a Spring Boot upgrade moves the hibernate-validator line;
+           ElMessageInterpolationTest in the model module guards the pairing. -->
       <dependency>
         <groupId>org.glassfish.expressly</groupId>
         <artifactId>expressly</artifactId>
