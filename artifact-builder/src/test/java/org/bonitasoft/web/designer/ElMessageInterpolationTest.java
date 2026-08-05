@@ -18,6 +18,7 @@ package org.bonitasoft.web.designer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.el.ExpressionFactory;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.constraints.Size;
@@ -34,7 +35,8 @@ import org.junit.jupiter.api.Test;
  * The test lives in this module (not in model, where the constraints are declared) on purpose: hibernate-validator
  * and expressly are runtime-scoped HERE, so this test classpath is the exact combination consumers get, whereas the
  * model module only sees its own test-scoped provider. The model and common test classpaths are not separately
- * guarded: they resolve the same BOM-managed versions, so a divergence would surface here first.
+ * guarded: they resolve the same BOM-managed versions, so a divergence would surface here first. The test also
+ * asserts the EL provider identity, so a transitive jakarta-generation EL cannot silently stand in for the pin.
  * <p>
  * NOTE: ${validatedValue} relies on Hibernate Validator's default EL feature level for constraint messages
  * (bean-properties), which HV has been tightening since 6.2. If this test fails after an HV upgrade, check whether
@@ -54,6 +56,13 @@ class ElMessageInterpolationTest {
 
     @Test
     void should_interpolate_el_expressions_in_constraint_messages() {
+        // guard the pin, not just "some EL provider": a transitive jakarta-generation EL (e.g. tomcat-embed-el,
+        // managed by the imported Spring Boot BOM) would keep interpolation green while the expressly pin rots.
+        // The provider is identified by its code source, NOT by class name: expressly 5.x kept the legacy
+        // com.sun.el.* packages, so its factory FQCN is identical to the org.glassfish:jakarta.el one
+        assertThat(ExpressionFactory.newInstance().getClass().getProtectionDomain().getCodeSource().getLocation())
+                .asString().contains("expressly");
+
         try (var factory = Validation.buildDefaultValidatorFactory()) {
             var violations = factory.getValidator().validate(new Sample("too-long"));
 
