@@ -53,13 +53,16 @@
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
     </dependency>
+    <!-- Bean Validation runtime, loaded via ServiceLoader by UiDesignerCoreFactory (no compile-time reference) -->
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.expressly</groupId>
       <artifactId>expressly</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <!-- Marked as optional for use outside of spring apps -->
     <!-- Only annotation use is allowed -->
