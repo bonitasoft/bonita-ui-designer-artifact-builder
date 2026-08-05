@@ -18,7 +18,7 @@ package org.bonitasoft.web.designer.model.page;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 
 import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.designer.builder.AssetBuilder;

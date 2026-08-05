@@ -20,8 +20,8 @@ import static org.bonitasoft.web.designer.common.repository.BeanValidatorTest.Te
 import static org.bonitasoft.web.designer.common.repository.BeanValidatorTest.TestBean.anInvalidBean;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import javax.validation.Validation;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Validation;
+import jakarta.validation.constraints.NotNull;
 
 import org.bonitasoft.web.designer.model.exception.ConstraintValidationException;
 import org.bonitasoft.web.designer.repository.BeanValidator;

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A library (published to Maven Central as `org.bonitasoft.web:ui-designer-artifact-builder`) that builds artifacts designed with the Bonita UI Designer: it imports/migrates page, fragment and widget JSON models and generates the runnable HTML/zip output. Java 11, multi-module Maven, gitflow branching (default branch: `develop`, PRs target `develop`).
+A library (published to Maven Central as `org.bonitasoft.web:ui-designer-artifact-builder`) that builds artifacts designed with the Bonita UI Designer: it imports/migrates page, fragment and widget JSON models and generates the runnable HTML/zip output. Java 17, multi-module Maven, gitflow branching (default branch: `develop`, PRs target `develop`).
 
 ## Build & test commands
 

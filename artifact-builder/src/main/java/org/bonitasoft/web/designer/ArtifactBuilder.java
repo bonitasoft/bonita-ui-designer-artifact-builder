@@ -19,7 +19,7 @@ package org.bonitasoft.web.designer;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
 import org.bonitasoft.web.designer.common.repository.exception.NotFoundException;

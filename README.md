@@ -12,7 +12,7 @@ Build pages designed with the [UI Designer][uid-repo] for your Bonita applicatio
 
 ### Pre-requisite
 
-* [Java 11][java] for compilation
+* [Java 17][java] for compilation
 
 ### Build
 
@@ -49,7 +49,7 @@ To release a new version, maintainers may use the Release and Publication GitHub
 * [Documentation][documentation]
 
 
-[java]: https://adoptium.net/temurin/releases/?version=11
+[java]: https://adoptium.net/temurin/releases/?version=17
 [uid-repo]: https://github.com/bonitasoft/bonita-ui-designer
 [documentation]: https://documentation.ofelia.com
 
