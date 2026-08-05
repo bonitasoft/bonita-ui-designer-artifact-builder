@@ -41,7 +41,6 @@ import org.bonitasoft.web.designer.common.repository.exception.RepositoryExcepti
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,8 +51,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class PropertyValuesVisitorTest {
 
-    @Rule
-    public TestResource testResource = new TestResource(this.getClass());
+    private final TestResource testResource = new TestResource(this.getClass());
 
     @Mock
     private FragmentRepository fragmentRepository;

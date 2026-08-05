@@ -94,7 +94,7 @@ class HtmlBuilderVisitorTest {
                 .build())).isEqualToBody(testResource.load("simplecontainer.html"));
     }
 
-    @org.junit.Test
+    @Test
     void should_add_rows_to_the_container() {
 
         assertThatHtmlBody(visitor.visit(aContainer().with(aRow()).withReference("container-reference").build()))
@@ -183,8 +183,8 @@ class HtmlBuilderVisitorTest {
                 .build())).isEqualToBody(testResource.load("tabsContainerWithContent.html"));
     }
 
-    @org.junit.Test
-    public void should_build_a_tab_container_with_lazy_load_property() throws Exception {
+    @Test
+    void should_build_a_tab_container_with_lazy_load_property() throws Exception {
         assertThatHtmlBody(visitor.visit(aTabContainer()
                 .withId("1")
                 .with(aContainer()
