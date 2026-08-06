@@ -326,6 +326,7 @@
             <goals>
               <goal>enforce</goal>
             </goals>
+            <phase>validate</phase>
             <configuration>
               <rules>
                 <requireJavaVersion>
@@ -339,14 +340,21 @@
                   <excludes>
                     <exclude>javax.validation:validation-api</exclude>
                     <!-- jakarta groupId but still ships the javax.validation.* packages (Bean Validation 2.x / EE 8) -->
-                    <exclude>jakarta.validation:jakarta.validation-api:[,3)</exclude>
+                    <exclude>jakarta.validation:jakarta.validation-api:(,3)</exclude>
                     <!-- javax-generation implementation -->
-                    <exclude>org.hibernate.validator:hibernate-validator:[,7)</exclude>
+                    <exclude>org.hibernate.validator:hibernate-validator:(,7)</exclude>
+                    <!-- same implementation under its pre-6.0 groupId (4.x/5.x, all javax; 6+ entries there are
+                         relocation poms that resolve to the new coordinates, so no range is needed) -->
+                    <exclude>org.hibernate:hibernate-validator</exclude>
                     <!-- javax-generation EL stack (the 3.x glassfish artifacts still ship the javax.el.* packages) -->
                     <exclude>javax.el:javax.el-api</exclude>
                     <exclude>org.glassfish:javax.el</exclude>
-                    <exclude>org.glassfish:jakarta.el:[,4)</exclude>
-                    <exclude>jakarta.el:jakarta.el-api:[,4)</exclude>
+                    <exclude>org.glassfish:jakarta.el:(,4)</exclude>
+                    <exclude>jakarta.el:jakarta.el-api:(,4)</exclude>
+                    <!-- javax-generation Tomcat EL (Tomcat 10 is the jakarta cutover; the imported Spring Boot BOM
+                         manages tomcat-embed-el, so a BOM downgrade or override is a realistic re-entry path) -->
+                    <exclude>org.apache.tomcat.embed:tomcat-embed-el:(,10)</exclude>
+                    <exclude>org.apache.tomcat:tomcat-el-api:(,10)</exclude>
                   </excludes>
                   <message>javax-generation Bean Validation and EL artifacts are banned (they ship javax.validation.* / javax.el.* packages): use jakarta.validation-api 3.x, hibernate-validator 7+ and org.glassfish.expressly:expressly.</message>
                 </bannedDependencies>

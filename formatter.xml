@@ -195,7 +195,6 @@
 <setting id="org.eclipse.jdt.core.formatter.brace_position_for_enum_declaration" value="end_of_line"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_annotation_on_type" value="insert"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_while" value="do not insert"/>
-<setting id="org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode" value="enabled"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_try" value="insert"/>
 <setting id="org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line" value="false"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_new_line_after_label" value="do not insert"/>
