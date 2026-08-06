@@ -21,12 +21,10 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.rules.ExternalResource;
 
-public class TestResource extends ExternalResource {
+public class TestResource {
 
-    String packageName;
-    InputStream stream;
+    private final String packageName;
 
     public TestResource(Class<?> aClass) {
         this.packageName = aClass.getPackage().getName();
@@ -34,8 +32,7 @@ public class TestResource extends ExternalResource {
 
     public String load(String fileName) {
         String filePath = "/" + packageName.replace(".", "/") + "/" + fileName;
-        try {
-            stream = getClass().getResourceAsStream(filePath);
+        try (InputStream stream = getClass().getResourceAsStream(filePath)) {
             if (stream == null) {
                 throw new Error(String.format("Unable to load test resource %s", filePath));
             }
@@ -44,17 +41,4 @@ public class TestResource extends ExternalResource {
             throw new Error(String.format("Unable to load test resource %s", filePath), e);
         }
     }
-
-    @Override
-    protected void before() throws Throwable {
-        super.before();
-        stream = getClass().getResourceAsStream(packageName);
-    }
-
-    @Override
-    protected void after() {
-        IOUtils.closeQuietly(stream);
-        super.after();
-    }
-
 }

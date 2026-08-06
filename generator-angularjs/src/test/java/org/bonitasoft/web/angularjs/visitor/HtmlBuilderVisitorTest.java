@@ -59,7 +59,7 @@ class HtmlBuilderVisitorTest {
     @Mock
     private FragmentRepository fragmentRepository;
 
-    public TestResource testResource = new TestResource(DefaultHtmlGenerator.class);
+    private final TestResource testResource = new TestResource(DefaultHtmlGenerator.class);
 
     @BeforeEach
     void setUp() throws Exception {
@@ -94,7 +94,7 @@ class HtmlBuilderVisitorTest {
                 .build())).isEqualToBody(testResource.load("simplecontainer.html"));
     }
 
-    @org.junit.Test
+    @Test
     void should_add_rows_to_the_container() {
 
         assertThatHtmlBody(visitor.visit(aContainer().with(aRow()).withReference("container-reference").build()))
@@ -183,8 +183,8 @@ class HtmlBuilderVisitorTest {
                 .build())).isEqualToBody(testResource.load("tabsContainerWithContent.html"));
     }
 
-    @org.junit.Test
-    public void should_build_a_tab_container_with_lazy_load_property() throws Exception {
+    @Test
+    void should_build_a_tab_container_with_lazy_load_property() throws Exception {
         assertThatHtmlBody(visitor.visit(aTabContainer()
                 .withId("1")
                 .with(aContainer()
@@ -196,7 +196,7 @@ class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_build_a_tab_container_without_lazy_load_property() throws Exception {
+    void should_build_a_tab_container_without_lazy_load_property() throws Exception {
         assertThatHtmlBody(visitor.visit(aTabContainer()
                 .withId("1")
                 .with(aContainer()
@@ -207,7 +207,7 @@ class HtmlBuilderVisitorTest {
     }
 
     @Test
-    public void should_generate_html_for_a_formcontainer() throws GenerationException {
+    void should_generate_html_for_a_formcontainer() throws GenerationException {
         assertThatHtmlBody(
                 visitor.visit(aFormContainer()
                         .with(aContainer().withReference("container-reference").build())

@@ -52,7 +52,6 @@ import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.widget.Widget;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,8 +63,7 @@ class DefaultHtmlGeneratorTest {
 
     private static final byte[] assetsContent = new byte[0];
 
-    @Rule
-    public TestResource testResource = new TestResource(DefaultHtmlGenerator.class);
+    private final TestResource testResource = new TestResource(DefaultHtmlGenerator.class);
 
     @Mock
     private PageFactory pageFactory;
