@@ -15,6 +15,9 @@
     <expressly.version>5.0.0</expressly.version>
     <handlebar.version>4.3.1</handlebar.version>
   </properties>
+  <!-- NOTE: the enforcer bannedDependencies guard (root pom) inspects resolved dependency graphs only.
+       Entries declared here are NOT checked unless a module in this build actually depends on them, so
+       javax-generation Bean Validation coordinates must be kept out of this BOM by review. -->
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -88,7 +91,11 @@
         <artifactId>jsoup</artifactId>
         <version>1.23.1</version>
       </dependency>
-      <!-- EL implementation required by hibernate-validator (not managed by the Spring Boot BOM) -->
+      <!-- EL implementation required by hibernate-validator 8.0.x (which is managed by the Spring Boot BOM, unlike this artifact).
+           Keep this pin in sync when a Spring Boot upgrade moves the hibernate-validator line;
+           ElMessageInterpolationTest (artifact-builder module) guards the pairing. The jakarta.el-api arrives
+           transitively with expressly (the Spring Boot BOM does not manage it), so API and implementation
+           move together with this single pin. -->
       <dependency>
         <groupId>org.glassfish.expressly</groupId>
         <artifactId>expressly</artifactId>

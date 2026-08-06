@@ -22,6 +22,15 @@ Build pages designed with the [UI Designer][uid-repo] for your Bonita applicatio
 
 **Note**: if an error occurs at phantomjs startup (especially when running on Ubuntu 24), disable openssl by setting an environment variable `OPENSSL_CONF=/dev/null`.
 
+## Upgrading to 2.0
+
+Version 2.0 migrates the library from the `javax` to the `jakarta` namespace. For consumers this means:
+
+* **Java 17 or later** is required (was Java 11).
+* The library now uses the jakarta stack: Bean Validation constraints are `jakarta.validation.*` (Bean Validation 3.x, implemented by Hibernate Validator 8), including in public signatures such as `BeanValidator(jakarta.validation.Validator)` and `ConstraintValidationException` - code constructing these directly must migrate its own imports.
+* The `ui-designer-artifact-builder-dependencies` BOM imports Spring Boot 3.5.x dependency management instead of 2.7.x. In particular `org.glassfish:jakarta.el` is no longer managed there: the library ships `org.glassfish.expressly:expressly` as its EL implementation instead. Note that `artifact-builder` has `spring-core` at compile scope, now resolving to Spring Framework 6 - consumers still on Spring 5 / Spring Boot 2.7 are affected even if they do not use the optional Spring integration.
+* The `model` and `common` artifacts no longer bring Hibernate Validator transitively - it moved to test scope there (it was compile scope in 1.x). If you depend on either of them (or on their test-jars) without `ui-designer-artifact-builder` and your own code calls `Validation.buildDefaultValidatorFactory()`, declare `org.hibernate.validator:hibernate-validator` and `org.glassfish.expressly:expressly` yourself, in the scope where you need them. Projects depending on `ui-designer-artifact-builder` still get the implementation transitively (runtime scope, hence on the test classpath too).
+
 ## Contribute
 
 ### Report issues
