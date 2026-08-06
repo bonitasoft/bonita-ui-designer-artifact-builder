@@ -42,6 +42,8 @@ jobs:
           keeper-secret-config: ${{ secrets.KSM_CONFIG }}
 
       - name: Create Release
+        env:
+          OPENSSL_CONF: /dev/null # Disable OpenSSL config to let phantomjs start, see https://stackoverflow.com/a/72679175
         run: >
           ./mvnw -ntp --batch-mode gitflow:release
           -DgitFlowConfig.developmentBranch=${{ github.ref_name }}
