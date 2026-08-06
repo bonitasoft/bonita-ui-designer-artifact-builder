@@ -329,6 +329,8 @@
             <configuration>
               <rules>
                 <requireJavaVersion>
+                  <!-- keep in sync with the java.version property (deliberately not interpolated here:
+                       ${java.version} collides with the JVM system property of the same name) -->
                   <version>[17,)</version>
                   <message>Java 17 or later is required to build this project.</message>
                 </requireJavaVersion>

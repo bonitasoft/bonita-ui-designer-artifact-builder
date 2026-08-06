@@ -44,25 +44,23 @@ import org.junit.jupiter.api.Test;
  */
 class ElMessageInterpolationTest {
 
-    private static class Sample {
-
-        @Size(max = 3, message = "value '${validatedValue}' is too long")
-        private final String name;
-
-        private Sample(String name) {
-            this.name = name;
-        }
+    private record Sample(@Size(max = 3, message = "value '${validatedValue}' is too long") String name) {
     }
 
     @Test
-    void should_interpolate_el_expressions_in_constraint_messages() {
+    void should_resolve_expressly_as_the_el_provider() {
         // guard the pin, not just "some EL provider": a transitive jakarta-generation EL (e.g. tomcat-embed-el,
         // managed by the imported Spring Boot BOM) would keep interpolation green while the expressly pin rots.
         // The provider is identified by its code source, NOT by class name: expressly 5.x kept the legacy
         // com.sun.el.* packages, so its factory FQCN is identical to the org.glassfish:jakarta.el one
-        assertThat(ExpressionFactory.newInstance().getClass().getProtectionDomain().getCodeSource().getLocation())
-                .asString().contains("expressly");
+        var codeSource = ExpressionFactory.newInstance().getClass().getProtectionDomain().getCodeSource();
 
+        assertThat(codeSource).as("EL provider must be the pinned expressly jar").isNotNull();
+        assertThat(codeSource.getLocation()).asString().contains("expressly");
+    }
+
+    @Test
+    void should_interpolate_el_expressions_in_constraint_messages() {
         try (var factory = Validation.buildDefaultValidatorFactory()) {
             var violations = factory.getValidator().validate(new Sample("too-long"));
 
