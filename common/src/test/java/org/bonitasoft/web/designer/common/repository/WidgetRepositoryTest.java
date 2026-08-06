@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 
 import org.bonitasoft.web.designer.builder.PropertyBuilder;
 import org.bonitasoft.web.designer.builder.WidgetBuilder;

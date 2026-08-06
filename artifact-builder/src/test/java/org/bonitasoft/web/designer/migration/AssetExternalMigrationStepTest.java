@@ -34,7 +34,7 @@ class AssetExternalMigrationStepTest {
                 .withAsset(anAsset()
                         .withName("bonita.jpg"))
                 .withAsset(anAsset()
-                        .withName("http://www.bonitasoft.com"))
+                        .withName("http://www.ofelia.com"))
                 .build();
 
         migrationStep.migrate(page);
@@ -43,7 +43,7 @@ class AssetExternalMigrationStepTest {
                 .extracting("name", "external")
                 .containsOnly(
                         tuple("bonita.jpg", false),
-                        tuple("http://www.bonitasoft.com", true));
+                        tuple("http://www.ofelia.com", true));
     }
 
     @Test
@@ -54,7 +54,7 @@ class AssetExternalMigrationStepTest {
                 .withAsset(anAsset()
                         .withExternal(false).withName("bonita.jpg"))
                 .withAsset(anAsset()
-                        .withExternal(true).withName("https://www.bonitasoft.com"))
+                        .withExternal(true).withName("https://www.ofelia.com"))
                 .build();
 
         migrationStep.migrate(page);
@@ -63,6 +63,6 @@ class AssetExternalMigrationStepTest {
                 .extracting("name", "external")
                 .containsOnly(
                         tuple("bonita.jpg", false),
-                        tuple("https://www.bonitasoft.com", true));
+                        tuple("https://www.ofelia.com", true));
     }
 }

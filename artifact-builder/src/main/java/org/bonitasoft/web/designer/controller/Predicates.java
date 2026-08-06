@@ -16,8 +16,10 @@
  */
 package org.bonitasoft.web.designer.controller;
 
-import static org.springframework.beans.BeanUtils.getPropertyDescriptor;
-
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -42,9 +44,17 @@ public class Predicates {
                 var propertyDescriptor = getPropertyDescriptor(object.getClass(), propertyName);
                 return propertyDescriptor != null
                         && Objects.equals(propertyValue, propertyDescriptor.getReadMethod().invoke(object));
-            } catch (ReflectiveOperationException e) {
+            } catch (IntrospectionException | ReflectiveOperationException e) {
                 return false;
             }
         };
+    }
+
+    private static PropertyDescriptor getPropertyDescriptor(Class<?> beanClass, String propertyName)
+            throws IntrospectionException {
+        return Arrays.stream(Introspector.getBeanInfo(beanClass).getPropertyDescriptors())
+                .filter(descriptor -> descriptor.getName().equals(propertyName))
+                .findFirst()
+                .orElse(null);
     }
 }

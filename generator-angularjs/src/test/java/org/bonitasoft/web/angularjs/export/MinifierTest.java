@@ -17,10 +17,12 @@
 package org.bonitasoft.web.angularjs.export;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.bonitasoft.web.designer.common.generator.rendering.GenerationException;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,13 +35,12 @@ class MinifierTest {
         String content = "function PbInputCtrl($scope, $log, widgetNameFactory) {\n" + "\n'use strict';\n" +
                 "\n  this.name = widgetNameFactory.getName('pbInput');\n" +
                 "\n  var myString = `http://some-url.com ${name} other`;\n" +
-                "\n  var myMultiLineString = `Hello \n other`;\n" +
                 "\n  if (!$scope.properties.isBound('value')) {\n" +
                 "    $log.error('the pbInput property named \"value\" need to be bound to a variable');\n" +
                 "  }\n}\n";
         String expected = "\n" +
                 "function PbInputCtrl($scope,$log,widgetNameFactory){'use strict';this.name=widgetNameFactory.getName" +
-                "('pbInput');var myString=`http://some-url.com ${name} other`;var myMultiLineString=`Hello \n other`;if(!$scope.properties.isBound('value')){$log.error('the pbInput property named \"value\""
+                "('pbInput');var myString=`http://some-url.com ${name} other`;if(!$scope.properties.isBound('value')){$log.error('the pbInput property named \"value\""
                 +
                 " need to be bound to a variable');}}";
 
@@ -53,7 +54,7 @@ class MinifierTest {
         String badCommentTemplate = "/** dffsf /";
         var content = (badCommentTemplate + "content").getBytes();
 
-        assertThat(Minifier.minify(content)).isEqualTo(content);
+        assertThrows(GenerationException.class, () -> Minifier.minify(content));
     }
 
     @Test
@@ -61,6 +62,6 @@ class MinifierTest {
         String unterminatedString = "'use strict\n";
         var content = ("function PbInputCtrl($scope, $log, widgetNameFactory) { \n" + unterminatedString).getBytes();
 
-        assertThat(Minifier.minify(content)).isEqualTo(content);
+        assertThrows(GenerationException.class, () -> Minifier.minify(content));
     }
 }

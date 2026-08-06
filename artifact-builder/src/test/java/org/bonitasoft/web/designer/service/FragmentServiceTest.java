@@ -286,7 +286,7 @@ class FragmentServiceTest {
     @Test
     void should_create_a_fragment() {
         // Given
-        when(fragmentRepository.getAll()).thenReturn(Collections.<Fragment>emptyList());
+        when(fragmentRepository.getAll()).thenReturn(Collections.<Fragment> emptyList());
         final String heidi = "Heidi"; // 👺
         Fragment fragment = aFragment()
                 .withName(heidi)
@@ -378,7 +378,7 @@ class FragmentServiceTest {
                 .withName("Persons")
                 .build();
         var id = fragment.getId();
-        
+
         //When
         assertThatThrownBy(() -> fragmentService.save(id, fragment)).isInstanceOf(NotAllowedException.class);
 
@@ -514,19 +514,23 @@ class FragmentServiceTest {
     @Test
     void should_not_allow_to_delete_a_fragment_used_in_a_page() {
         //Given
-        when(pageRepository.findByObjectIds(singletonList("my-fragment"))).thenReturn(Map.of("my-fragment", singletonList(aPage().withName("person").build())));
+        when(pageRepository.findByObjectIds(singletonList("my-fragment")))
+                .thenReturn(Map.of("my-fragment", singletonList(aPage().withName("person").build())));
 
         //When
-        assertThatThrownBy(() -> fragmentService.delete("my-fragment")).isInstanceOf(InUseException.class).hasMessage("The fragment cannot be deleted because it is used in 1 page <person>");
+        assertThatThrownBy(() -> fragmentService.delete("my-fragment")).isInstanceOf(InUseException.class)
+                .hasMessage("The fragment cannot be deleted because it is used in 1 page <person>");
 
     }
 
     @Test
     void should_not_allow_to_delete_a_fragment_used_in_another_fragment() {
-        when(fragmentRepository.findByObjectIds(singletonList("my-fragment"))).thenReturn(Map.of("my-fragment", asList(aFragment().withName("person1").build(),aFragment().withName("person2").build())));
+        when(fragmentRepository.findByObjectIds(singletonList("my-fragment"))).thenReturn(Map.of("my-fragment",
+                asList(aFragment().withName("person1").build(), aFragment().withName("person2").build())));
 
         //When
-        assertThatThrownBy(() -> fragmentService.delete("my-fragment")).isInstanceOf(InUseException.class).hasMessage("The fragment cannot be deleted because it is used in 2 fragments <person1>, <person2>");
+        assertThatThrownBy(() -> fragmentService.delete("my-fragment")).isInstanceOf(InUseException.class)
+                .hasMessage("The fragment cannot be deleted because it is used in 2 fragments <person1>, <person2>");
     }
 
     @Test

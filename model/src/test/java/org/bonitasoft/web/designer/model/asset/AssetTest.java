@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 
 import org.assertj.core.api.Assertions;
 import org.bonitasoft.web.designer.builder.AssetBuilder;

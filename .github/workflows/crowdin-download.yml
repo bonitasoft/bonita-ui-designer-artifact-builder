@@ -3,57 +3,63 @@ name: Crowdin download files
 # Triggers the workflow every night
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: "0 4 * * 0"
 
   workflow_dispatch:
 
 jobs:
   list-branches:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       branches: ${{ steps.extract_branches.outputs.branches }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: List branches
         id: extract_branches
-        uses: bonitasoft/actions/packages/list-branches@v2.2.0
+        uses: bonitasoft/actions/packages/list-branches@v3
         with:
           branches_list: "develop support/.*"
   download-l10n-from-crowdin:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: list-branches
     strategy:
       max-parallel: 1
       matrix:
         branch: ${{ fromJSON(needs.list-branches.outputs.branches) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ matrix.branch }}
-          fetch-depth: '1'
+          
+      - name: Retrieve secrets from Keeper
+        uses: Keeper-Security/ksm-action@v1
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          secrets: |
+            ${{ vars.KEEPER_CROWDIN_RECORD_ID }}/field/login > env:CROWDIN_PROJECT_ID
+            ${{ vars.KEEPER_CROWDIN_RECORD_ID }}/field/password > env:CROWDIN_PERSONAL_TOKEN
+          
       - name: Set Crowdin branch name
         run: |
           echo "crowdinBranch=$(echo ${{ matrix.branch }} | tr / -)" >> $GITHUB_ENV
       # Crowdin download
       - name: Run Crowdin download
-        uses: crowdin/github-action@v1.14.0
+        uses: crowdin/github-action@v2
         with:
           upload_translations: false
           upload_sources: false
           download_translations: true
           crowdin_branch_name: ${{ env.crowdinBranch }}
-          download_translations_args: '--all'
+          download_translations_args: "--all"
           create_pull_request: false
           push_translations: false
         #  Note: we cannot use for now the "Create pull request" feature, until selecting multiple languages is supported by Crowdin CLI
         #       (see https://github.com/crowdin/crowdin-cli/issues/427)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_API_KEY_V2 }}
 
       - name: Clean-up unwanted languages
         # Remove all po files with only 2 letters, such as lang-template-ar.po
@@ -65,13 +71,19 @@ jobs:
       - name: Count modified lines
         run: |
           echo "modifiedlines=$(git diff --word-diff --unified=0 | grep -Ev "^diff --git|^index|^\+\+\+|^---|^@@|PO-Revision-Date" | wc -l)" >> $GITHUB_ENV
+      - uses: bonitasoft/git-setup-action@v1
+        id: git-setup
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
       - name: Create Pull Request
         if: env.modifiedlines > 0
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v8
         id: create-pr
         with:
           branch: feat/${{ matrix.branch }}/update-translations
           base: ${{ matrix.branch }}
+          author: ${{ steps.git-setup.outputs.name}} <${{ steps.git-setup.outputs.email}}>
+          committer: ${{ steps.git-setup.outputs.name}} <${{ steps.git-setup.outputs.email}}>
           commit-message: "feat(l10n):[${{ matrix.branch }}] Translations update"
           title: "feat(l10n):[${{ matrix.branch }}] Translations update"
           body: |
@@ -79,8 +91,8 @@ jobs:
 
       - name: Send message to Slack channel
         if: ${{ failure() }}
-        uses: bonitasoft/actions/packages/notify-slack@v2.2.0
+        uses: bonitasoft/notify-slack-action@v1
         with:
-          CHANNEL_ID: ${{ secrets.SLACK_UID_CHANNEL_ID }}
-          MESSAGE: ":x: Download ${{ matrix.branch }} crowdin translation failed in UI-Designer Artifact Builder."
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          channel-id: ${{ vars.UID_SLACK_CHANNEL_ID }}
+          message: ":x: Download ${{ matrix.branch }} crowdin translation failed in UI-Designer Artifact Builder."

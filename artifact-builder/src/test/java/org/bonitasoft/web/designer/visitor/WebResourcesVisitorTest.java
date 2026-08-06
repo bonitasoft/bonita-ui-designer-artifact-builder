@@ -159,8 +159,8 @@ class WebResourcesVisitorTest {
                 .build());
 
         assertThat(webResourceMap)
-                                .containsEntry("GET|bpm/process", new WebResource("GET", "bpm/process", "Variable"))
-                                .hasSize(2);
+                .containsEntry("GET|bpm/process", new WebResource("GET", "bpm/process", "Variable"))
+                .hasSize(2);
     }
 
     private Page setUpPageForResourcesTests(String id) {

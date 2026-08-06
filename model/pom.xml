@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bonitasoft.web</groupId>
     <artifactId>ui-designer-artifact-builder-parent</artifactId>
-    <version>1.0.10</version>
+    <version>2.0.0</version>
   </parent>
   <artifactId>ui-designer-artifact-builder-model</artifactId>
   <name>Bonita UI Designer Artifact Builder Model</name>
@@ -16,7 +16,6 @@
     <eclipse.formatter.file>${project.parent.basedir}/formatter.xml</eclipse.formatter.file>
     <eclipse.importorder.file>${project.parent.basedir}/eclipse.importorder</eclipse.importorder.file>
     <header.file>${project.parent.basedir}/header.txt</header.file>
-    <maven.deploy.skip>false</maven.deploy.skip>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -55,15 +54,18 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+    <!--  Test dependencies-->
+    <!-- Bean Validation runtime, only needed by tests here (provided at runtime by the artifact-builder module) -->
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>jakarta.el</artifactId>
+      <groupId>org.glassfish.expressly</groupId>
+      <artifactId>expressly</artifactId>
+      <scope>test</scope>
     </dependency>
-    <!--  Test dependencies-->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -107,10 +109,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

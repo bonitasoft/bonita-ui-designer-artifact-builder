@@ -41,7 +41,6 @@ import org.bonitasoft.web.designer.common.repository.exception.RepositoryExcepti
 import org.bonitasoft.web.designer.model.page.Component;
 import org.bonitasoft.web.designer.model.page.Page;
 import org.bonitasoft.web.designer.model.page.PropertyValue;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,8 +51,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class PropertyValuesVisitorTest {
 
-    @Rule
-    public TestResource testResource = new TestResource(this.getClass());
+    private final TestResource testResource = new TestResource(this.getClass());
 
     @Mock
     private FragmentRepository fragmentRepository;
@@ -189,11 +187,11 @@ class PropertyValuesVisitorTest {
                 .withReference("fragment-element-id")
                 .withPropertyValue("foo", "bar", "baz")
                 .build())).containsExactly(
-                entry("fragment-element-id", singletonMap("foo", propertyValue)));
+                        entry("fragment-element-id", singletonMap("foo", propertyValue)));
     }
 
     @Test
-    void should_associate_component_property_values_contained_in_a_fragment_with_its_id(){
+    void should_associate_component_property_values_contained_in_a_fragment_with_its_id() {
         when(fragmentRepository.get("fragment-id")).thenReturn(aFragment()
                 .with(aRow().with(aComponent()
                         .withReference("component-id")
@@ -204,8 +202,8 @@ class PropertyValuesVisitorTest {
                 .withFragmentId("fragment-id")
                 .withReference("fragment-element-id")
                 .build())).containsOnly(
-                entry("fragment-element-id", emptyMap()),
-                entry("component-id", singletonMap("foo", propertyValue)));
+                        entry("fragment-element-id", emptyMap()),
+                        entry("component-id", singletonMap("foo", propertyValue)));
     }
 
     @Test

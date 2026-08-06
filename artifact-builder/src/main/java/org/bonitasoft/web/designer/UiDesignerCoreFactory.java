@@ -20,7 +20,7 @@ import static org.bonitasoft.web.designer.common.migration.Version.INITIAL_MODEL
 
 import java.util.List;
 
-import javax.validation.Validation;
+import jakarta.validation.Validation;
 
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.bonitasoft.web.angularjs.GeneratorProperties;

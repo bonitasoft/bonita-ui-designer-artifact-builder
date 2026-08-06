@@ -3,36 +3,36 @@ name: Crowdin upload files
 # Triggers the workflow every night
 on:
   schedule:
-    - cron: '0 3 * * *'
+    - cron: "0 3 * * 0"
 
   workflow_dispatch:
-    inputs:
 
 jobs:
   list-branches:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       branches: ${{ steps.extract_branches.outputs.branches }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: List branches
         id: extract_branches
-        uses: bonitasoft/actions/packages/list-branches@v2.2.0
+        uses: bonitasoft/actions/packages/list-branches@v3
         with:
           branches_list: "develop support/.*"
+
   devUpload:
     name: Crowdin upload
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: list-branches
     strategy:
       max-parallel: 1
       matrix:
         branch: ${{ fromJSON(needs.list-branches.outputs.branches) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ matrix.branch }}
       - name: Install Yarn
@@ -51,8 +51,17 @@ jobs:
       - name: Set Crowdin branch name
         run: |
           echo "crowdinBranch=$(echo ${{ matrix.branch }} | tr / -)" >> $GITHUB_ENV
+
+      - name: Retrieve secrets from Keeper
+        uses: Keeper-Security/ksm-action@v1
+        with:
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          secrets: |
+            ${{ vars.KEEPER_CROWDIN_RECORD_ID }}/field/login > env:CROWDIN_PROJECT_ID
+            ${{ vars.KEEPER_CROWDIN_RECORD_ID }}/field/password > env:CROWDIN_PERSONAL_TOKEN
+            
       - name: crowdin action
-        uses: crowdin/github-action@v1.14.0
+        uses: crowdin/github-action@v2
         with:
           upload_sources: true
           crowdin_branch_name: ${{ env.crowdinBranch }}
@@ -61,32 +70,11 @@ jobs:
           dryrun_action: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_API_KEY_V2 }}
+
       - name: Send message to Slack channel
         if: ${{ failure() }}
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: bonitasoft/notify-slack-action@v1
         with:
-          channel-id: 'CFD1SMX7V'
-          payload: |
-            {
-              "blocks": [
-                  {
-                      "type": "section",
-                      "text": {
-                          "type": "mrkdwn",
-                          "text": ":x: Upload ${{ matrix.branch }} crowdin key failed in UI-Designer Artifact Builder."
-                      }
-                  },
-                  {
-                      "type": "section",
-                      "text": {
-                          "type": "mrkdwn",
-                          "text": "More details about the error <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}?check_suite_focus=true| here>"
-                      }
-                  }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
+          keeper-secret-config: ${{ secrets.KSM_CONFIG }}
+          channel-id: ${{ vars.UID_SLACK_CHANNEL_ID }}
+          message: ":x: Upload ${{ matrix.branch }} crowdin key failed in UI-Designer Artifact Builder."
