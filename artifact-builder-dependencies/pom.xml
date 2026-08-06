@@ -93,7 +93,9 @@
       </dependency>
       <!-- EL implementation required by hibernate-validator 8.0.x (which is managed by the Spring Boot BOM, unlike this artifact).
            Keep this pin in sync when a Spring Boot upgrade moves the hibernate-validator line;
-           ElMessageInterpolationTest (artifact-builder module) guards the pairing. -->
+           ElMessageInterpolationTest (artifact-builder module) guards the pairing. The jakarta.el-api arrives
+           transitively with expressly (the Spring Boot BOM does not manage it), so API and implementation
+           move together with this single pin. -->
       <dependency>
         <groupId>org.glassfish.expressly</groupId>
         <artifactId>expressly</artifactId>

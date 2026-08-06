@@ -18,6 +18,9 @@ package org.bonitasoft.web.designer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.file.Path;
+import java.util.Collections;
+
 import jakarta.el.ExpressionFactory;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -48,7 +51,16 @@ class ElMessageInterpolationTest {
     }
 
     @Test
-    void should_resolve_expressly_as_the_el_provider() {
+    void should_resolve_expressly_as_the_el_provider() throws Exception {
+        // expressly ships NO META-INF/services registration: ExpressionFactory.newInstance() reaches it through
+        // the EL FactoryFinder hardcoded fallback (com.sun.el.ExpressionFactoryImpl). ServiceLoader is consulted
+        // BEFORE that fallback, so an EL implementation registering itself via services would win over the pin
+        // regardless of classpath order - assert none is present, making the code-source check deterministic
+        var registrations = Collections.list(Thread.currentThread().getContextClassLoader()
+                .getResources("META-INF/services/jakarta.el.ExpressionFactory"));
+
+        assertThat(registrations).as("no EL provider may register via ServiceLoader").isEmpty();
+
         // guard the pin, not just "some EL provider": a transitive jakarta-generation EL (e.g. tomcat-embed-el,
         // managed by the imported Spring Boot BOM) would keep interpolation green while the expressly pin rots.
         // The provider is identified by its code source, NOT by class name: expressly 5.x kept the legacy
@@ -56,7 +68,7 @@ class ElMessageInterpolationTest {
         var codeSource = ExpressionFactory.newInstance().getClass().getProtectionDomain().getCodeSource();
 
         assertThat(codeSource).as("EL provider must be the pinned expressly jar").isNotNull();
-        assertThat(codeSource.getLocation()).asString().contains("expressly");
+        assertThat(Path.of(codeSource.getLocation().toURI()).getFileName().toString()).startsWith("expressly-");
     }
 
     @Test
