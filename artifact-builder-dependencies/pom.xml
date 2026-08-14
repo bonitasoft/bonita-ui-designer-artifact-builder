@@ -12,7 +12,7 @@
   <description>This module is the Bill of Material of the UI Designer Artifact Builder</description>
   <properties>
     <spring-boot.version>3.5.16</spring-boot.version>
-    <expressly.version>5.0.0</expressly.version>
+    <expressly.version>6.0.0</expressly.version>
     <handlebar.version>4.3.1</handlebar.version>
   </properties>
   <!-- NOTE: the enforcer bannedDependencies guard (root pom) inspects resolved dependency graphs only.
